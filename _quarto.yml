@@ -23,6 +23,8 @@ website:
         href: https://twitter.com/aborruso
       - icon: rss
         href: blog.xml
+      - icon: github
+        href: https://github.com/aborruso/aborruso.github.io
 
 format:
   html:
