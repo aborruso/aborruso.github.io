@@ -6,6 +6,8 @@ website:
   site-url: https://aborruso.github.io/
   title: "aborruso's website"
   page-navigation: true
+  repo-url: https://github.com/aborruso/aborruso.github.io
+  repo-actions: [edit, issue]
   navbar:
     background: primary
     search: true
