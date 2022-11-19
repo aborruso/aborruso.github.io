@@ -36,5 +36,6 @@ format:
     link-external-newwindow: true
     link-external-filter: '^(?:http:|https:)\/\/aborruso\.github\.io\'
 
-
-
+execute:
+  daemon: false
+  freeze: auto
