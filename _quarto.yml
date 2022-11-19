@@ -37,6 +37,7 @@ format:
     dir: ltr
     link-external-newwindow: true
     link-external-filter: '.*aborruso\.github\.io\.*'
+    include-in-header: include/rss.html
 
 execute:
   daemon: false
