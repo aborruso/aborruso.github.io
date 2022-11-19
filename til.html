@@ -206,7 +206,7 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </thead>
 <tbody class="list">
-<tr data-index="0" data-categories="quarto,til" data-listing-date-sort="1668816000000" data-listing-file-modified-sort="1668883944201" data-listing-reading-time-sort="1.09" data-listing-title-sort="Il mio primo blog post" data-listing-filename-sort="index.qmd">
+<tr data-index="0" data-categories="quarto,til" data-listing-date-sort="1668816000000" data-listing-file-modified-sort="1668884393128" data-listing-reading-time-sort="1.09" data-listing-title-sort="Il mio primo blog post" data-listing-filename-sort="index.qmd">
 <td class="listing-date">
 Nov 19, 2022
 </td>
@@ -355,6 +355,20 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       });
     }
   }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp(/^(?:http:|https:)\/\/aborruso\.github\.io\/);
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+    var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+      }
+    }
 });
 </script>
 </div> <!-- /content -->
