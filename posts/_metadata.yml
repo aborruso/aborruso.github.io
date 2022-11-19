@@ -1,0 +1,7 @@
+# options apply to all posts in this folder
+
+# freeze computational output
+freeze: true
+
+# Enable banner style title blocks
+title-block-banner: true

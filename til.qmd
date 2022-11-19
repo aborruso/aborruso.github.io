@@ -1,0 +1,11 @@
+---
+title: "TIL (Today I Learned)"
+listing:
+  contents: til
+  sort: "date desc"
+  type: table
+---
+
+Mi piacciono molto le persone che usano il loro sito web, per appuntarsi alcune delle cose che imparano. Come fa il mitico [Simon Willison](https://til.simonwillison.net/).
+
+Qui saranno spesso post "piccoli", in forma di appunti, con magari qualche bruttura di stile.

@@ -1,7 +1,23 @@
 ---
-title: "aborruso.github.io"
+title: "Andrea Borruso"
+image: images/andrea-borruso.jpg
+about:
+  template: trestles
+  image-shape: rounded
+  image-width: 15em
+  links:
+    - text: Twitter
+      href: https://twitter.com/aborruso
+      icon: twitter
+    - text: GitHub
+      href: https://github.com/aborruso
+      icon: github
+    - text: Email
+      href: mailto:aborruso@gmail.com
+      icon: envelope
+
 ---
 
-This is a Quarto website.
+# Ciao
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+Grazie per essere qui. Questo è uno spazio dove inserirò alcuni appunti sulle cose che imparo, sui progetti che mi piacciono e/o che sto facendo, sugli strumenti con cui lavoro e gioco e sulle persone che incontro.

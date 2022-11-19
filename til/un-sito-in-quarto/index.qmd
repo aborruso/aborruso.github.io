@@ -1,0 +1,54 @@
+---
+title: "Il mio primo blog post"
+description: "È un mini post, in cui racconto i miei primi passi con un sito in quarto"
+author: "Andrea Borruso"
+date: "2022-11-19"
+draft: false
+categories:
+  - quarto
+  - til
+---
+
+Uso [**quarto**](https://quarto.org/) da diverse settimane per creare [slide in HTML](https://quarto.org/docs/presentations/revealjs/) scritte in markdown e basate su [reveal.js](https://revealjs.com/).
+
+Quarto è un sistema di pubblicazione scientifica e tecnica, *open source*, basato su [Pandoc](https://pandoc.org/):
+
+- Crea contenuti dinamici con [Python](https://quarto.org/docs/computations/python.html), [R](https://quarto.org/docs/computations/r.html), [Julia](https://quarto.org/docs/computations/julia.html) e [Observable](https://quarto.org/docs/computations/ojs.html);
+- I documenti sono o file markdown in *plain text* o Jupyter notebook;
+- Consente di pubblicare articoli, report, presentazioni, siti Web, blog e libri di alta qualità in HTML, PDF, MS Word, ePub e altri formati;
+- Consente di creare contenuti utilizzando *scientific markdown*, incluse equazioni, citazioni, riferimenti incrociati, pannelli di immagini, didascalie, layout avanzato e altro ancora.
+
+Quello che ho fatto per creare la prima versione di questo sito è stato:
+
+1. Installare [**quarto**](https://quarto.org/docs/get-started/);
+2. creare un nuovo progetto, dandogli per nome il mio profilo utente GitHub;
+
+```bash
+quarto create-project aborruso.github.io --type website
+```
+
+3. impostare a `docs` la cartella di output di pubblicazione del sito, aggiungendo l'istruzione nel file `_quarto.yml`:
+
+```{.yaml filename="_quarto.yml"}
+project:
+  type: website
+  output-dir: docs
+```
+
+4. creare dei primi contenuti da pubblicare come questo post;
+5. creare il repo `aborruso.github.io` su GitHub;
+6. generare il sito con il comando `render`
+
+```bash
+quarto render ./
+```
+
+7. impostare come sorgente delle GitHub Pages del repo creato, la cartella `docs` citata sopra;
+8. pubblicare tutto su GitHub.
+
+Per farlo, mi hanno aiutato queste letture:
+
+- Creating your personal website using Quarto <https://ucsb-meds.github.io/creating-quarto-websites/>
+- Creating a Website (dal sito ufficiale) <https://quarto.org/docs/websites/>
+- Creating a Blog (dal sito ufficiale) <https://quarto.org/docs/websites/website-blog.html>
+
