@@ -16,7 +16,6 @@ website:
         text: Blog
       - href: til.qmd
         text: TIL
-      - about.qmd
   page-footer:
     left: "Contenuti in [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.it) | Costruito con [quarto](https://quarto.org)"
     right:

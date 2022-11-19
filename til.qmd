@@ -4,6 +4,8 @@ listing:
   contents: til
   sort: "date desc"
   type: table
+page-layout: full
+title-block-banner: true
 ---
 
 Mi piacciono molto le persone che usano il loro sito web, per appuntarsi alcune delle cose che imparano. Come fa il mitico [Simon Willison](https://til.simonwillison.net/).
