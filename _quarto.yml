@@ -17,7 +17,7 @@ website:
       - href: til.qmd
         text: TIL
   page-footer:
-    left: "Contenuti in [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.it) | Costruito con [quarto](https://quarto.org)"
+    left: "Costruito con [quarto](https://quarto.org) 😍 | Contenuti in [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.it)"
     right:
       - icon: twitter
         href: https://twitter.com/aborruso
