@@ -34,7 +34,7 @@ format:
     lang: ita
     dir: ltr
     link-external-newwindow: true
-    link-external-filter: '^(?:http:|https:)\/\/aborruso\.github\.io\'
+    link-external-filter: '.*aborruso\.github\.io\.*'
 
 execute:
   daemon: false
