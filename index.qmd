@@ -9,9 +9,6 @@ about:
     - text: Twitter
       href: https://twitter.com/aborruso
       icon: twitter
-    - text: GitHub
-      href: https://github.com/aborruso
-      icon: github
     - text: Email
       href: mailto:aborruso@gmail.com
       icon: envelope
