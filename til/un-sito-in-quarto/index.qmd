@@ -52,7 +52,7 @@ Per farlo, mi hanno aiutato queste letture:
 - Creating a Website (dal sito ufficiale) <https://quarto.org/docs/websites/>
 - Creating a Blog (dal sito ufficiale) <https://quarto.org/docs/websites/website-blog.html>
 
-::: {.callout-important}
+::: {.callout-important appearance="simple"}
 
 ## Importante
 
