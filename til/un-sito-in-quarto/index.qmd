@@ -52,3 +52,6 @@ Per farlo, mi hanno aiutato queste letture:
 - Creating a Website (dal sito ufficiale) <https://quarto.org/docs/websites/>
 - Creating a Blog (dal sito ufficiale) <https://quarto.org/docs/websites/website-blog.html>
 
+::: {.callout-important}
+Ho seguito questi step per la primissima pubblicazione, per vedere subito un primo risultato. Poi ho cambiato molte cose, quindi le impostazioni attuali sono diverse da quelle descritte sopra.
+:::
