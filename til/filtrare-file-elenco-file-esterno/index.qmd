@@ -11,8 +11,7 @@ categories:
 ---
 
 Avevo bisogno di filtrare un file CSV di grandi dimensioni, compresso in zip, a partire da una lista di stringhe contenute in un file.
-
-Dato il CSV, volevo estrarne soltanto le righe che contenevano una delle stringhe presenti in questo file.
+<br>Dato il CSV, volevo estrarne soltanto le righe che contenevano una delle stringhe presenti nel file esterno.
 
 Via CLI, usando lo straordinario `grep` il comando è (`list.txt`, è il file che contiene per ogni riga la stringa da cercare):
 
