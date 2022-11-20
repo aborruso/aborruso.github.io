@@ -2,3 +2,5 @@
 
 _site/*
 docs/*
+
+/.luarc.json

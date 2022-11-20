@@ -12,7 +12,6 @@ about:
     - text: Email
       href: mailto:aborruso@gmail.com
       icon: envelope
-
 ---
 
 # Ciao
@@ -23,3 +22,5 @@ Sono socio dell'[associazione onData](https://www.ondata.it/).
 ---
 
 > Quando hai dato lo stesso consiglio 3 volte, scrivi un post ([David Robinson](https://twitter.com/drob/status/928447584712253440)).
+
+
