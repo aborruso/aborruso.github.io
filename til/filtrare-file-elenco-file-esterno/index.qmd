@@ -1,7 +1,6 @@
 ---
 title: "Come filtrare un file di testo a partire da una lista di stringhe"
 description: "Come usare grep, ripgrep e qsv per applicare un filtro a partire da un file esterno"
-author: "Andrea Borruso"
 date: "2022-11-20"
 draft: false
 categories:

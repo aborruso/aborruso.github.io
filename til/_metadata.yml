@@ -5,5 +5,9 @@ freeze: true
 
 # Enable banner style title blocks
 title-block-banner: true
-
 title-block-banner-color: "#ffffff"
+
+# Default author
+author:
+  - name: Andrea Borruso
+    url: https://twitter.com/aborruso
