@@ -2,12 +2,14 @@
   {
     "listing": "/blog.html",
     "items": [
+      "/til/filtrare-file-elenco-file-esterno/index.html",
       "/til/un-sito-in-quarto/index.html"
     ]
   },
   {
     "listing": "/til.html",
     "items": [
+      "/til/filtrare-file-elenco-file-esterno/index.html",
       "/til/un-sito-in-quarto/index.html"
     ]
   }

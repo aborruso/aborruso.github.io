@@ -10,7 +10,64 @@
 <atom:link href="https://aborruso.github.io/blog.xml" rel="self" type="application/rss+xml"/>
 <description></description>
 <generator>quarto-1.2.269</generator>
-<lastBuildDate>Sat, 19 Nov 2022 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sun, 20 Nov 2022 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Come filtrare un file di testo a partire da una lista di stringhe</title>
+  <dc:creator>Andrea Borruso</dc:creator>
+  <link>https://aborruso.github.io/til/filtrare-file-elenco-file-esterno/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<p>Avevo bisogno di filtrare un file CSV di grandi dimensioni, compresso in zip, a partire da una lista di stringhe contenute in un file.</p>
+<p>Dato il CSV, volevo estrarne soltanto le righe che contenevano una delle stringhe presenti in questo file.</p>
+<p>Via CLI, usando lo straordinario <code>grep</code> il comando è (<code>list.txt</code>, è il file che contiene per ogni riga la stringa da cercare):</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="fu" style="color: #4758AB;">unzip</span> <span class="at" style="color: #657422;">-qq</span> <span class="at" style="color: #657422;">-c</span> <span class="st" style="color: #20794D;">"input.zip"</span>  <span class="kw" style="color: #003B4F;">|</span> <span class="fu" style="color: #4758AB;">grep</span> <span class="at" style="color: #657422;">-F</span> <span class="at" style="color: #657422;">-f</span> list.txt</span></code></pre></div>
+<p>Per me questa modalità ha risolto tutto. Ma ne metto un paio di altre.</p>
+<p>Una è basata su <a href="https://github.com/BurntSushi/ripgrep"><code>ripgrep</code></a>, un’altra straordinaria CLI per la ricerca di testo, più rapida di <code>grep</code>:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="fu" style="color: #4758AB;">unzip</span> <span class="at" style="color: #657422;">-qq</span> <span class="at" style="color: #657422;">-c</span> <span class="st" style="color: #20794D;">"input.zip"</span>  <span class="kw" style="color: #003B4F;">|</span> <span class="ex" style="color: null;">rg</span> <span class="at" style="color: #657422;">-F</span> <span class="at" style="color: #657422;">-f</span> list.txt</span></code></pre></div>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Non si tiene conto del formato
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Queste due modalità non tengono però conto del formato CSV, non riescono ad esempio a cercare per colonna, ma solo per riga. Sotto una soluzione che riesce a farlo.</p>
+</div>
+</div>
+<p>Con <a href="https://github.com/jqnatividad/qsv"><code>qsv</code></a>, è possibile ricercare per colonna:</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="fu" style="color: #4758AB;">unzip</span> <span class="at" style="color: #657422;">-qq</span> <span class="at" style="color: #657422;">-c</span> <span class="st" style="color: #20794D;">"input.zip"</span>  <span class="kw" style="color: #003B4F;">|</span> <span class="ex" style="color: null;">qsv</span> searchset <span class="at" style="color: #657422;">-d</span> <span class="st" style="color: #20794D;">"|"</span> <span class="at" style="color: #657422;">-i</span> <span class="at" style="color: #657422;">-s</span> nomeColonna list.txt</span></code></pre></div>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Nota
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><code>-d "|"</code> per impostare il separatore di colonna del CSV;</li>
+<li><code>-i</code> per ignorare maiuscole e minuscole;</li>
+<li><code>-s nomeColonna</code> per specificare la colonna in cui cercare.</li>
+</ul>
+</div>
+</div>
+
+
+
+ ]]></description>
+  <category>cli</category>
+  <category>til</category>
+  <category>grep</category>
+  <guid>https://aborruso.github.io/til/filtrare-file-elenco-file-esterno/index.html</guid>
+  <pubDate>Sun, 20 Nov 2022 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Il mio primo blog post</title>
   <dc:creator>Andrea Borruso</dc:creator>
