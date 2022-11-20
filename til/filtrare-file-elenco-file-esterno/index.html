@@ -213,8 +213,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 </header>
 
-<p>Avevo bisogno di filtrare un file CSV di grandi dimensioni, compresso in zip, a partire da una lista di stringhe contenute in un file.</p>
-<p>Dato il CSV, volevo estrarne soltanto le righe che contenevano una delle stringhe presenti in questo file.</p>
+<p>Avevo bisogno di filtrare un file CSV di grandi dimensioni, compresso in zip, a partire da una lista di stringhe contenute in un file. <br>Dato il CSV, volevo estrarne soltanto le righe che contenevano una delle stringhe presenti nel file esterno.</p>
 <p>Via CLI, usando lo straordinario <code>grep</code> il comando è (<code>list.txt</code>, è il file che contiene per ogni riga la stringa da cercare):</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span> <span class="at">-qq</span> <span class="at">-c</span> <span class="st">"input.zip"</span>  <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-F</span> <span class="at">-f</span> list.txt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Per me questa modalità ha risolto tutto. Ma ne metto un paio di altre.</p>
