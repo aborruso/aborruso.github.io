@@ -124,6 +124,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     "search-submit-button-title": "Submit"
   }
 }</script>
+<style>
+    .quarto-title-block .quarto-title-banner {
+      color: #ffffff;
+    }
+    </style>
 <link rel="alternate" type="application/rss+xml" title="Il blog del sito di Andrea Borruso" href="https://aborruso.github.io/blog.xml">
 
 
@@ -165,53 +170,55 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Come filtrare un file di testo a partire da una lista di stringhe</h1>
+                  <div>
+        <div class="description">
+          Come usare grep, ripgrep e qsv per applicare un filtro a partire da un file esterno
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">cli</div>
+                <div class="quarto-category">til</div>
+                <div class="quarto-category">grep</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Andrea Borruso </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">November 20, 2022</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
-
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Come filtrare un file di testo a partire da una lista di stringhe</h1>
-  <div class="quarto-categories">
-    <div class="quarto-category">cli</div>
-    <div class="quarto-category">til</div>
-    <div class="quarto-category">grep</div>
-  </div>
-  </div>
-
-<div>
-  <div class="description">
-    Come usare grep, ripgrep e qsv per applicare un filtro a partire da un file esterno
-  </div>
-</div>
+<main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
-<div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Andrea Borruso </p>
-          </div>
-  </div>
-    
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">November 20, 2022</p>
-    </div>
-  </div>
-  
-    
-  </div>
-  
-
-</header>
 
 <p>Avevo bisogno di filtrare un file CSV di grandi dimensioni, compresso in zip, a partire da una lista di stringhe contenute in un file. <br>Dato il CSV, volevo estrarne soltanto le righe che contenevano una delle stringhe presenti nel file esterno.</p>
 <p>Via CLI, usando lo straordinario <code>grep</code> il comando è (<code>list.txt</code>, è il file che contiene per ogni riga la stringa da cercare):</p>
