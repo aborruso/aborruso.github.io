@@ -1,0 +1,52 @@
+---
+title: "Come filtrare un file di testo a partire da una lista di stringhe"
+description: "Come usare grep, ripgrep e qsv per applicare un filtro a partire da un file esterno"
+author: "Andrea Borruso"
+date: "2022-11-20"
+draft: false
+categories:
+  - cli
+  - til
+  - grep
+---
+
+Avevo bisogno di filtrare un file CSV di grandi dimensioni, compresso in zip, a partire da una lista di stringhe contenute in un file.
+
+Dato il CSV, volevo estrarne soltanto le righe che contenevano una delle stringhe presenti in questo file.
+
+Via CLI, usando lo straordinario `grep` il comando è (`list.txt`, è il file che contiene per ogni riga la stringa da cercare):
+
+``` bash
+unzip -qq -c "input.zip"  | grep -F -f list.txt
+```
+
+Per me questa modalità ha risolto tutto. Ma ne metto un paio di altre.
+
+Una è basata su [`ripgrep`](https://github.com/BurntSushi/ripgrep), un'altra straordinaria CLI per la ricerca di testo, più rapida di `grep`:
+
+``` bash
+unzip -qq -c "input.zip"  | rg -F -f list.txt
+```
+
+::: {.callout-note}
+
+## Non si tiene conto del formato
+
+Queste due modalità non tengono però conto del formato CSV, non riescono ad esempio a cercare per colonna, ma solo per riga. Sotto una soluzione che riesce a farlo.
+:::
+
+Con [`qsv`](https://github.com/jqnatividad/qsv), è possibile ricercare per colonna:
+
+
+``` bash
+unzip -qq -c "input.zip"  | qsv searchset -d "|" -i -s nomeColonna list.txt
+```
+
+::: {.callout-note}
+
+## Nota
+
+- `-d "|"` per impostare il separatore di colonna del CSV;
+- `-i` per ignorare maiuscole e minuscole;
+- `-s nomeColonna` per specificare la colonna in cui cercare.
+:::
