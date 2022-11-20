@@ -1,0 +1,18 @@
+---
+title: "Abilitare estensioni sqlite"
+description: "Lorem ipsum"
+author: "Andrea Borruso"
+date: "2022-11-19"
+draft: true
+categories:
+  - sqlite
+  - cli
+  - sql
+---
+
+
+https://github.com/nalgeon/sqlean/
+
+Abilitare per la cli
+
+Abilitare esempio per viewer win https://sqlitebrowser.org/
