@@ -1,7 +1,6 @@
 ---
 title: "Il mio primo blog post"
 description: "È un mini post, in cui racconto i miei primi passi con un sito in quarto"
-author: "Andrea Borruso"
 date: "2022-11-19"
 draft: false
 categories:

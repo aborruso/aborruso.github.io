@@ -1,7 +1,6 @@
 ---
 title: "Quarto: leggere un CSV via Obeservable e visualizzare i dati"
 # description: "È un mini post, in cui racconto i miei primi passi con un sito in quarto"
-author: "Andrea Borruso"
 date: "2022-11-21"
 draft: false
 categories:
