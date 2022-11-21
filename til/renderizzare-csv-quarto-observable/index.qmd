@@ -10,7 +10,7 @@ categories:
 ---
 
 
-Si può usare semplicemente il metodo `FileAttachment` di Observable
+Si può usare semplicemente il metodo `FileAttachment` di Observable, per [`data.csv`](data.csv)
 
 
 ```{{ojs}}
