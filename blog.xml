@@ -10,7 +10,51 @@
 <atom:link href="https://aborruso.github.io/blog.xml" rel="self" type="application/rss+xml"/>
 <description></description>
 <generator>quarto-1.2.269</generator>
-<lastBuildDate>Sun, 20 Nov 2022 00:00:00 GMT</lastBuildDate>
+<lastBuildDate>Mon, 21 Nov 2022 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Quarto: leggere un CSV via Obeservable e visualizzare i dati</title>
+  <dc:creator>Andrea Borruso</dc:creator>
+  <dc:creator>Andrea Borruso</dc:creator>
+  <link>https://aborruso.github.io/til/renderizzare-csv-quarto-observable/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>Si può usare semplicemente il metodo <code>FileAttachment</code> di Observable</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><span class="in" style="color: #5E5E5E;">```{ojs}</span></span>
+<span id="cb1-2">data <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;">FileAttachment</span>(<span class="st" style="color: #20794D;">"data.csv"</span>)<span class="op" style="color: #5E5E5E;">.</span><span class="fu" style="color: #4758AB;">csv</span>({ <span class="dt" style="color: #AD0000;">typed</span><span class="op" style="color: #5E5E5E;">:</span> <span class="kw" style="color: #003B4F;">true</span> })</span>
+<span id="cb1-3">Inputs<span class="op" style="color: #5E5E5E;">.</span><span class="fu" style="color: #4758AB;">table</span>(data)</span>
+<span id="cb1-4"><span class="vs" style="color: #20794D;">```</span></span></code></pre></div>
+<p>per ottenere</p>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb2" data-startfrom="26" data-source-offset="-0" style="background: #f1f3f5;"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 25;"><span id="cb2-26">data <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;">FileAttachment</span>(<span class="st" style="color: #20794D;">"data.csv"</span>)<span class="op" style="color: #5E5E5E;">.</span><span class="fu" style="color: #4758AB;">csv</span>({ <span class="dt" style="color: #AD0000;">typed</span><span class="op" style="color: #5E5E5E;">:</span> <span class="kw" style="color: #003B4F;">true</span> })</span>
+<span id="cb2-27">Inputs<span class="op" style="color: #5E5E5E;">.</span><span class="fu" style="color: #4758AB;">table</span>(data)</span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-2" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+ ]]></description>
+  <category>quarto</category>
+  <category>csv</category>
+  <category>observable</category>
+  <guid>https://aborruso.github.io/til/renderizzare-csv-quarto-observable/index.html</guid>
+  <pubDate>Mon, 21 Nov 2022 00:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Come filtrare un file di testo a partire da una lista di stringhe</title>
   <dc:creator>Andrea Borruso</dc:creator>

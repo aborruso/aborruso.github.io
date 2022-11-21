@@ -7,6 +7,13 @@
     "text": "Ciao\nGrazie per essere qui. Questo è uno spazio dove inserirò alcuni appunti sulle cose che imparo, sui progetti che mi piacciono e/o che sto facendo, sugli strumenti con cui lavoro e gioco e sulle persone che incontro.\nSono socio dell’associazione onData.\n\n\nQuando hai dato lo stesso consiglio 3 volte, scrivi un post (David Robinson)."
   },
   {
+    "objectID": "til/renderizzare-csv-quarto-observable/index.html",
+    "href": "til/renderizzare-csv-quarto-observable/index.html",
+    "title": "Quarto: leggere un CSV via Obeservable e visualizzare i dati",
+    "section": "",
+    "text": "Si può usare semplicemente il metodo FileAttachment di Observable\n```{ojs}\ndata = FileAttachment(\"data.csv\").csv({ typed: true })\nInputs.table(data)\n```\nper ottenere\n\ndata = FileAttachment(\"data.csv\").csv({ typed: true })\nInputs.table(data)"
+  },
+  {
     "objectID": "til/un-sito-in-quarto/index.html",
     "href": "til/un-sito-in-quarto/index.html",
     "title": "Il mio primo blog post",
@@ -25,13 +32,13 @@
     "href": "blog.html",
     "title": "Blog",
     "section": "",
-    "text": "Come filtrare un file di testo a partire da una lista di stringhe\n\n\n\n\n\n\n\ncli\n\n\ntil\n\n\ngrep\n\n\n\n\nCome usare grep, ripgrep e qsv per applicare un filtro a partire da un file esterno\n\n\n\n\n\n\nNov 20, 2022\n\n\nAndrea Borruso\n\n\n\n\n\n\n\n\nIl mio primo blog post\n\n\n\n\n\n\n\nquarto\n\n\ntil\n\n\n\n\nÈ un mini post, in cui racconto i miei primi passi con un sito in quarto\n\n\n\n\n\n\nNov 19, 2022\n\n\nAndrea Borruso, Andrea Borruso\n\n\n\n\n\n\nNo matching items"
+    "text": "Quarto: leggere un CSV via Obeservable e visualizzare i dati\n\n\n\n\n\n\n\nquarto\n\n\ncsv\n\n\nobservable\n\n\n\n\n\n\n\n\n\n\n\nNov 21, 2022\n\n\nAndrea Borruso, Andrea Borruso\n\n\n\n\n\n\n\n\nCome filtrare un file di testo a partire da una lista di stringhe\n\n\n\n\n\n\n\ncli\n\n\ntil\n\n\ngrep\n\n\n\n\nCome usare grep, ripgrep e qsv per applicare un filtro a partire da un file esterno\n\n\n\n\n\n\nNov 20, 2022\n\n\nAndrea Borruso\n\n\n\n\n\n\n\n\nIl mio primo blog post\n\n\n\n\n\n\n\nquarto\n\n\ntil\n\n\n\n\nÈ un mini post, in cui racconto i miei primi passi con un sito in quarto\n\n\n\n\n\n\nNov 19, 2022\n\n\nAndrea Borruso, Andrea Borruso\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "til.html",
     "href": "til.html",
     "title": "TIL (Today I Learned)",
     "section": "",
-    "text": "Che vuol dire TIL?\n\n\n\nMi piacciono molto le persone che usano il loro sito web, per appuntarsi alcune delle cose che imparano. Come fa il mitico Simon Willison. E Simon lo fa in modalità TIL, ovvero Today I Learned.\nI miei qui, saranno spesso post “piccoli”, in forma di appunti, con qualche probabile bruttura di stile.\n\n\n\n\n\n\n\n\n   \n     \n     \n       Order By\n       Default\n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Title\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\nDate\n\n\nTitle\n\n\nAuthor\n\n\n\n\n\n\nNov 20, 2022\n\n\nCome filtrare un file di testo a partire da una lista di stringhe\n\n\nAndrea Borruso\n\n\n\n\nNov 19, 2022\n\n\nIl mio primo blog post\n\n\nAndrea Borruso, Andrea Borruso\n\n\n\n\n\n\nNo matching items"
+    "text": "Che vuol dire TIL?\n\n\n\nMi piacciono molto le persone che usano il loro sito web, per appuntarsi alcune delle cose che imparano. Come fa il mitico Simon Willison. E Simon lo fa in modalità TIL, ovvero Today I Learned.\nI miei qui, saranno spesso post “piccoli”, in forma di appunti, con qualche probabile bruttura di stile.\n\n\n\n\n\n\n\n\n   \n     \n     \n       Order By\n       Default\n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Title\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\nDate\n\n\nTitle\n\n\nAuthor\n\n\n\n\n\n\nNov 21, 2022\n\n\nQuarto: leggere un CSV via Obeservable e visualizzare i dati\n\n\nAndrea Borruso, Andrea Borruso\n\n\n\n\nNov 20, 2022\n\n\nCome filtrare un file di testo a partire da una lista di stringhe\n\n\nAndrea Borruso\n\n\n\n\nNov 19, 2022\n\n\nIl mio primo blog post\n\n\nAndrea Borruso, Andrea Borruso\n\n\n\n\n\n\nNo matching items"
   }
 ]
