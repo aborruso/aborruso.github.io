@@ -11,3 +11,6 @@ title-block-banner-color: "#ffffff"
 author:
   - name: Andrea Borruso
     url: https://twitter.com/aborruso
+    affiliations:
+      - name: Associazione onData
+        url: https://ondata.it
