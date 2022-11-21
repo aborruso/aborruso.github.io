@@ -1,0 +1,28 @@
+---
+title: "Quarto: leggere un CSV via Obeservable e visualizzare i dati"
+# description: "È un mini post, in cui racconto i miei primi passi con un sito in quarto"
+author: "Andrea Borruso"
+date: "2022-11-21"
+draft: false
+categories:
+  - quarto
+  - csv
+  - observable
+---
+
+
+Si può usare semplicemente il metodo `FileAttachment` di Observable
+
+
+```{{ojs}}
+data = FileAttachment("data.csv").csv({ typed: true })
+Inputs.table(data)
+```
+
+per ottenere
+
+```{ojs}
+//| echo: false
+data = FileAttachment("data.csv").csv({ typed: true })
+Inputs.table(data)
+```
