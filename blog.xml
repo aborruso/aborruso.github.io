@@ -72,6 +72,19 @@
 </div>
 </div>
 </div>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Il Quarto del titolo è lui <a href="https://quarto.org/" class="uri">https://quarto.org/</a></p>
+</div>
+</div>
 
 
 
