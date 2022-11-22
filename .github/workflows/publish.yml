@@ -14,10 +14,12 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v2
 
-      - name: crea cartella utente bin, copia dentro l'eseguibile di miller e scrape, installa visidata, installa chrome headless
+      - name: installa moduli python
         run: |-
           pip3 install nbformat
           pip3 install jupyter
+          pip3 install pandas
+          pip3 install altair
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
