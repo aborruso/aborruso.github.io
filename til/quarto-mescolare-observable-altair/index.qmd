@@ -1,0 +1,57 @@
+---
+title: "Quarto: leggere un CSV via Obeservable e visualizzare i dati"
+# description: "È un mini post, in cui racconto i miei primi passi con un sito in quarto"
+date: "2022-11-22"
+draft: false
+categories:
+  - quarto
+  - altair
+  - grafici
+  - observable
+  - til
+---
+
+
+Non è possibile in [Quarto](https://quarto.org/) fare convivere una cella di codice di tipo [Observable](https://observablehq.com/), con una cella Python con un grafico [Altair](https://altair-viz.github.io/).
+
+C'è però un workaround:
+
+- da Altair generare la descrizione del grafico in formato JSON (è in formato [vega-lite](http://vega.github.io/vega-lite/)), con `chart.to_json()`;
+- fare leggere a una cella Observable il JSON, e visualizzare il grafico.
+
+Qui ad esempio creo una cella Observable usata soltanto per come esempio.
+
+```{ojs}
+//| echo: false
+data = FileAttachment("ojs.csv").csv({ typed: true })
+Inputs.table(data)
+```
+
+Poi genero la descrizione di un grafico vega-lite, con Altair, salvando il file [`chart.json`](chart.json).
+
+```{python}
+#| echo: false
+import pandas as pd
+import altair as alt
+
+df = pd.read_csv("altair.csv",keep_default_na=False)
+
+df['year'] = pd.to_datetime(df['year'], format='%Y')
+
+chart=alt.Chart(df).mark_area().encode(
+    alt.X('year:T', timeUnit = 'year',title='year',axis=alt.Axis(tickCount='year')),
+    alt.Y('v:Q',axis=alt.Axis(format='%'),title='percentage'),
+    color='i:N'
+)
+chart.save('chart.json')
+```
+
+
+E infine faccio leggere a Observable la descrizione del grafico, che è stata generata da Altair e la faccio visualizzare.
+
+```{ojs}
+//| echo: false
+file = FileAttachment("chart.json").json()
+embed = require("vega-embed@6")
+embed(file)
+```
