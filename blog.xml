@@ -146,10 +146,13 @@
 </div>
 <p>O in alternativa con <a href="https://observablehq.com/@uwdata/introducing-arquero"><code>arquero</code></a> (ma vale la pena usarlo anche per trasformare i dati)</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3" data-startfrom="34" data-source-offset="-0" style="background: #f1f3f5;"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 33;"><span id="cb3-34"><span class="im" style="color: #00769E;">import</span> { aq<span class="op" style="color: #5E5E5E;">,</span> op } <span class="im" style="color: #00769E;">from</span> <span class="st" style="color: #20794D;">'@uwdata/arquero'</span></span>
-<span id="cb3-35">dati_aquero <span class="op" style="color: #5E5E5E;">=</span> aq<span class="op" style="color: #5E5E5E;">.</span><span class="fu" style="color: #4758AB;">loadCSV</span>(<span class="st" style="color: #20794D;">"data.csv"</span>)</span>
-<span id="cb3-36"></span>
-<span id="cb3-37">dati_aquero<span class="op" style="color: #5E5E5E;">.</span><span class="fu" style="color: #4758AB;">view</span>()</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb3" data-startfrom="33" data-source-offset="9" style="background: #f1f3f5;"><pre class="sourceCode java code-with-copy"><code class="sourceCode java" style="counter-reset: source-line 32;"><span id="cb3-33">```<span class="op" style="color: #5E5E5E;">{</span>ojs<span class="op" style="color: #5E5E5E;">}</span></span>
+<span id="cb3-34"><span class="co" style="color: #5E5E5E;">//| echo: fenced</span></span>
+<span id="cb3-35"><span class="kw" style="color: #003B4F;">import</span> <span class="im" style="color: #00769E;">{ aq, op } from '@uwdata/arquero'</span></span>
+<span id="cb3-36">dati_aquero <span class="op" style="color: #5E5E5E;">=</span> aq<span class="op" style="color: #5E5E5E;">.</span><span class="fu" style="color: #4758AB;">loadCSV</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"data.csv"</span><span class="op" style="color: #5E5E5E;">)</span></span>
+<span id="cb3-37"></span>
+<span id="cb3-38">dati_aquero<span class="op" style="color: #5E5E5E;">.</span><span class="fu" style="color: #4758AB;">view</span><span class="op" style="color: #5E5E5E;">()</span></span>
+<span id="cb3-39">```</span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-2-1" data-nodetype="declaration">
