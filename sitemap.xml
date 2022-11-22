@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://aborruso.github.io/til/filtrare-file-elenco-file-esterno/index.html</loc>
-    <lastmod>2022-11-22T21:05:34.786Z</lastmod>
-  </url>
-  <url>
-    <loc>https://aborruso.github.io/til/un-sito-in-quarto/index.html</loc>
-    <lastmod>2022-11-22T21:05:35.454Z</lastmod>
+    <loc>https://aborruso.github.io/index.html</loc>
+    <lastmod>2022-11-22T21:09:58.399Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/til/renderizzare-csv-quarto-observable/index.html</loc>
-    <lastmod>2022-11-22T21:05:36.050Z</lastmod>
+    <lastmod>2022-11-22T21:10:00.339Z</lastmod>
+  </url>
+  <url>
+    <loc>https://aborruso.github.io/til/un-sito-in-quarto/index.html</loc>
+    <lastmod>2022-11-22T21:10:00.687Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/til/quarto-mescolare-observable-altair/index.html</loc>
-    <lastmod>2022-11-22T21:05:40.506Z</lastmod>
+    <lastmod>2022-11-22T21:10:05.407Z</lastmod>
   </url>
   <url>
-    <loc>https://aborruso.github.io/index.html</loc>
-    <lastmod>2022-11-22T21:05:41.926Z</lastmod>
+    <loc>https://aborruso.github.io/til/filtrare-file-elenco-file-esterno/index.html</loc>
+    <lastmod>2022-11-22T21:10:05.995Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/blog.html</loc>
-    <lastmod>2022-11-22T21:05:42.286Z</lastmod>
+    <lastmod>2022-11-22T21:10:06.743Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/til.html</loc>
-    <lastmod>2022-11-22T21:05:42.634Z</lastmod>
+    <lastmod>2022-11-22T21:10:07.099Z</lastmod>
   </url>
 </urlset>
