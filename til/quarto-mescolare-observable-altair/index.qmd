@@ -1,5 +1,5 @@
 ---
-title: "Quarto: leggere un CSV via Obeservable e visualizzare i dati"
+title: "Fare convivere una cella Observable e grafico Altair in Quarto"
 # description: "È un mini post, in cui racconto i miei primi passi con un sito in quarto"
 date: "2022-11-22"
 draft: false
@@ -22,7 +22,6 @@ C'è però un workaround:
 Qui ad esempio creo una cella Observable usata soltanto per come esempio.
 
 ```{ojs}
-//| echo: false
 data = FileAttachment("ojs.csv").csv({ typed: true })
 Inputs.table(data)
 ```
@@ -30,7 +29,6 @@ Inputs.table(data)
 Poi genero la descrizione di un grafico vega-lite, con Altair, salvando il file [`chart.json`](chart.json).
 
 ```{python}
-#| echo: false
 import pandas as pd
 import altair as alt
 
