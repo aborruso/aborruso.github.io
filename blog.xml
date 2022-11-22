@@ -69,7 +69,7 @@
 <span id="cb2-17">chart.save(<span class="st" style="color: #20794D;">'chart.json'</span>)</span>
 <span id="cb2-18"><span class="in" style="color: #5E5E5E;">```</span></span></code></pre></div>
 </div>
-<p>E infine faccio leggere a Observable la descrizione del grafico, che è stata generata da Altair e la faccio visualizzare.</p>
+<p>E infine faccio leggere a Observable la descrizione del grafico, che è stata generata da Altair e lo faccio visualizzare.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3" data-startfrom="55" data-source-offset="9" style="background: #f1f3f5;"><pre class="sourceCode java code-with-copy"><code class="sourceCode java" style="counter-reset: source-line 54;"><span id="cb3-55">```<span class="op" style="color: #5E5E5E;">{</span>ojs<span class="op" style="color: #5E5E5E;">}</span></span>
 <span id="cb3-56"><span class="co" style="color: #5E5E5E;">//| echo: fenced</span></span>
