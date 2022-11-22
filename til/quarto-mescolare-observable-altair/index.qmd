@@ -31,6 +31,9 @@ Poi genero la descrizione di un grafico vega-lite, con Altair, salvando il file 
 ```{python}
 import pandas as pd
 import altair as alt
+import warnings
+
+warnings.simplefilter(action='ignore', category=FutureWarning)
 
 df = pd.read_csv("altair.csv",keep_default_na=False)
 
