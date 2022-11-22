@@ -14,14 +14,15 @@ categories:
 
 Non è possibile in [Quarto](https://quarto.org/) fare convivere una cella di codice di tipo [Observable](https://observablehq.com/), con una cella Python con un grafico [Altair](https://altair-viz.github.io/).
 
-C'è però un workaround:
+C'è però un *workaround*:
 
 - da Altair generare la descrizione del grafico in formato JSON (è in formato [vega-lite](http://vega.github.io/vega-lite/)), con `chart.to_json()`;
 - fare leggere a una cella Observable il JSON, e visualizzare il grafico.
 
-Qui ad esempio creo una cella Observable usata soltanto per come esempio.
+Qui ad esempio creo una cella Observable usata soltanto come esempio.
 
 ```{ojs}
+//| echo: fenced
 data = FileAttachment("ojs.csv").csv({ typed: true })
 Inputs.table(data)
 ```
@@ -29,6 +30,7 @@ Inputs.table(data)
 Poi genero la descrizione di un grafico vega-lite, con Altair, salvando il file [`chart.json`](chart.json).
 
 ```{python}
+#| echo: fenced
 import pandas as pd
 import altair as alt
 import warnings
