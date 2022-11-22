@@ -1,5 +1,5 @@
 ---
-title: "Fare convivere una cella Observable e grafico Altair in Quarto"
+title: "Fare convivere una cella Observable e un grafico Altair in Quarto"
 # description: "È un mini post, in cui racconto i miei primi passi con un sito in quarto"
 date: "2022-11-22"
 draft: false
