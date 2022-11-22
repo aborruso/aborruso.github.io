@@ -53,7 +53,7 @@ chart.save('chart.json')
 E infine faccio leggere a Observable la descrizione del grafico, che è stata generata da Altair e la faccio visualizzare.
 
 ```{ojs}
-//| echo: false
+//| echo: fenced
 file = FileAttachment("chart.json").json()
 embed = require("vega-embed@6")
 embed(file)
