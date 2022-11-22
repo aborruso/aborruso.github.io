@@ -11,7 +11,7 @@
     "href": "til/renderizzare-csv-quarto-observable/index.html",
     "title": "Quarto: leggere un CSV via Obeservable e visualizzare i dati",
     "section": "",
-    "text": "Si può usare semplicemente il metodo FileAttachment di Observable, per data.csv\n```{ojs}\ndata = FileAttachment(\"data.csv\").csv({ typed: true })\nInputs.table(data)\n```\nper ottenere\n\ndata = FileAttachment(\"data.csv\").csv({ typed: true })\nInputs.table(data)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nOn in alternativa con arquero (ma vale la pena usarlo anche per trasformare i dati)\n\nimport { aq, op } from '@uwdata/arquero'\ndati_aquero = aq.loadCSV(\"data.csv\")\n\ndati_aquero.view()"
+    "text": "Si può usare semplicemente il metodo FileAttachment di Observable, per data.csv\n```{ojs}\ndata = FileAttachment(\"data.csv\").csv({ typed: true })\nInputs.table(data)\n```\nper ottenere\n\ndata = FileAttachment(\"data.csv\").csv({ typed: true })\nInputs.table(data)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nO in alternativa con arquero (ma vale la pena usarlo anche per trasformare i dati)\n\nimport { aq, op } from '@uwdata/arquero'\ndati_aquero = aq.loadCSV(\"data.csv\")\n\ndati_aquero.view()"
   },
   {
     "objectID": "til/un-sito-in-quarto/index.html",
