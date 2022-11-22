@@ -31,6 +31,7 @@ Inputs.table(data)
 O in alternativa con [`arquero`](https://observablehq.com/@uwdata/introducing-arquero) (ma vale la pena usarlo anche per trasformare i dati)
 
 ```{ojs}
+//| echo: fenced
 import { aq, op } from '@uwdata/arquero'
 dati_aquero = aq.loadCSV("data.csv")
 
