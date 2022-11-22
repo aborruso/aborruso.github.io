@@ -28,7 +28,7 @@ Inputs.table(data)
 ```
 
 
-On in alternativa con `arquero` (ma vale la pena usarlo anche per trasformare i dati)
+O in alternativa con `arquero` (ma vale la pena usarlo anche per trasformare i dati)
 
 ```{ojs}
 import { aq, op } from '@uwdata/arquero'
