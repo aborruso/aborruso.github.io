@@ -50,7 +50,7 @@ chart.save('chart.json')
 ```
 
 
-E infine faccio leggere a Observable la descrizione del grafico, che è stata generata da Altair e la faccio visualizzare.
+E infine faccio leggere a Observable la descrizione del grafico, che è stata generata da Altair e lo faccio visualizzare.
 
 ```{ojs}
 //| echo: fenced
