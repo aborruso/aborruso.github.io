@@ -2,6 +2,7 @@
   {
     "listing": "/blog.html",
     "items": [
+      "/til/quarto-mescolare-observable-altair/index.html",
       "/til/renderizzare-csv-quarto-observable/index.html",
       "/til/filtrare-file-elenco-file-esterno/index.html",
       "/til/un-sito-in-quarto/index.html"
@@ -10,6 +11,7 @@
   {
     "listing": "/til.html",
     "items": [
+      "/til/quarto-mescolare-observable-altair/index.html",
       "/til/renderizzare-csv-quarto-observable/index.html",
       "/til/filtrare-file-elenco-file-esterno/index.html",
       "/til/un-sito-in-quarto/index.html"
