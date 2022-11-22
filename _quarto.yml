@@ -9,7 +9,7 @@ website:
   repo-url: https://github.com/aborruso/aborruso.github.io
   repo-actions: [edit, issue]
   navbar:
-    background: primary
+    background: "#75aadb"
     search: true
     left:
       - href: index.qmd

@@ -4,8 +4,10 @@
 freeze: true
 
 # Enable banner style title blocks
-title-block-banner: true
+title-block-banner: "#75aadb"
 title-block-banner-color: "#ffffff"
+
+toc-location: left
 
 # Default author
 author:

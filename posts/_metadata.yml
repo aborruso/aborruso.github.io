@@ -8,6 +8,8 @@ title-block-banner: true
 
 title-block-banner-color: "#ffffff"
 
+toc-location: left
+
 # Default author
 author:
   - name: Andrea Borruso
