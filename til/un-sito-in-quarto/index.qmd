@@ -6,6 +6,7 @@ draft: false
 categories:
   - quarto
   - til
+  - github
 ---
 
 Uso [**quarto**](https://quarto.org/) da diverse settimane per creare [slide in HTML](https://quarto.org/docs/presentations/revealjs/) scritte in markdown e basate su [reveal.js](https://revealjs.com/).
