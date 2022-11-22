@@ -36,3 +36,8 @@ dati_aquero = aq.loadCSV("data.csv")
 
 dati_aquero.view()
 ```
+
+
+::: {.callout-note}
+Il Quarto del titolo è lui <https://quarto.org/>
+:::
