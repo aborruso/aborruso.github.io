@@ -12,7 +12,7 @@
 <generator>quarto-1.2.269</generator>
 <lastBuildDate>Tue, 22 Nov 2022 00:00:00 GMT</lastBuildDate>
 <item>
-  <title>Quarto: leggere un CSV via Obeservable e visualizzare i dati</title>
+  <title>Fare convivere una cella Observable e grafico Altair in Quarto</title>
   <dc:creator>Andrea Borruso</dc:creator>
   <link>https://aborruso.github.io/til/quarto-mescolare-observable-altair/index.html</link>
   <description><![CDATA[ 
@@ -28,8 +28,8 @@
 </ul>
 <p>Qui ad esempio creo una cella Observable usata soltanto per come esempio.</p>
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb1" data-startfrom="26" data-source-offset="-0" style="background: #f1f3f5;"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 25;"><span id="cb1-26">data <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;">FileAttachment</span>(<span class="st" style="color: #20794D;">"ojs.csv"</span>)<span class="op" style="color: #5E5E5E;">.</span><span class="fu" style="color: #4758AB;">csv</span>({ <span class="dt" style="color: #AD0000;">typed</span><span class="op" style="color: #5E5E5E;">:</span> <span class="kw" style="color: #003B4F;">true</span> })</span>
-<span id="cb1-27">Inputs<span class="op" style="color: #5E5E5E;">.</span><span class="fu" style="color: #4758AB;">table</span>(data)</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb1" data-startfrom="25" data-source-offset="-0" style="background: #f1f3f5;"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 24;"><span id="cb1-25">data <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;">FileAttachment</span>(<span class="st" style="color: #20794D;">"ojs.csv"</span>)<span class="op" style="color: #5E5E5E;">.</span><span class="fu" style="color: #4758AB;">csv</span>({ <span class="dt" style="color: #AD0000;">typed</span><span class="op" style="color: #5E5E5E;">:</span> <span class="kw" style="color: #003B4F;">true</span> })</span>
+<span id="cb1-26">Inputs<span class="op" style="color: #5E5E5E;">.</span><span class="fu" style="color: #4758AB;">table</span>(data)</span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-1-1" data-nodetype="declaration">
@@ -47,16 +47,28 @@
 </div>
 <p>Poi genero la descrizione di un grafico vega-lite, con Altair, salvando il file <a href="chart.json"><code>chart.json</code></a>.</p>
 <div class="cell" data-execution_count="1">
-<div class="cell-output cell-output-stderr">
-<pre><code>/home/runner/.local/lib/python3.10/site-packages/altair/utils/core.py:317: FutureWarning: iteritems is deprecated and will be removed in a future version. Use .items instead.
-  for col_name, dtype in df.dtypes.iteritems():</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="im" style="color: #00769E;">import</span> pandas <span class="im" style="color: #00769E;">as</span> pd</span>
+<span id="cb2-2"><span class="im" style="color: #00769E;">import</span> altair <span class="im" style="color: #00769E;">as</span> alt</span>
+<span id="cb2-3"><span class="im" style="color: #00769E;">import</span> warnings</span>
+<span id="cb2-4"></span>
+<span id="cb2-5">warnings.simplefilter(action<span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">'ignore'</span>, category<span class="op" style="color: #5E5E5E;">=</span><span class="pp" style="color: #AD0000;">FutureWarning</span>)</span>
+<span id="cb2-6"></span>
+<span id="cb2-7">df <span class="op" style="color: #5E5E5E;">=</span> pd.read_csv(<span class="st" style="color: #20794D;">"altair.csv"</span>,keep_default_na<span class="op" style="color: #5E5E5E;">=</span><span class="va" style="color: #111111;">False</span>)</span>
+<span id="cb2-8"></span>
+<span id="cb2-9">df[<span class="st" style="color: #20794D;">'year'</span>] <span class="op" style="color: #5E5E5E;">=</span> pd.to_datetime(df[<span class="st" style="color: #20794D;">'year'</span>], <span class="bu" style="color: null;">format</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">'%Y'</span>)</span>
+<span id="cb2-10"></span>
+<span id="cb2-11">chart<span class="op" style="color: #5E5E5E;">=</span>alt.Chart(df).mark_area().encode(</span>
+<span id="cb2-12">    alt.X(<span class="st" style="color: #20794D;">'year:T'</span>, timeUnit <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">'year'</span>,title<span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">'year'</span>,axis<span class="op" style="color: #5E5E5E;">=</span>alt.Axis(tickCount<span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">'year'</span>)),</span>
+<span id="cb2-13">    alt.Y(<span class="st" style="color: #20794D;">'v:Q'</span>,axis<span class="op" style="color: #5E5E5E;">=</span>alt.Axis(<span class="bu" style="color: null;">format</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">'%'</span>),title<span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">'percentage'</span>),</span>
+<span id="cb2-14">    color<span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">'i:N'</span></span>
+<span id="cb2-15">)</span>
+<span id="cb2-16">chart.save(<span class="st" style="color: #20794D;">'chart.json'</span>)</span></code></pre></div>
 </div>
 <p>E infine faccio leggere a Observable la descrizione del grafico, che è stata generata da Altair e la faccio visualizzare.</p>
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb3" data-startfrom="54" data-source-offset="-0" style="background: #f1f3f5;"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 53;"><span id="cb3-54">file <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;">FileAttachment</span>(<span class="st" style="color: #20794D;">"chart.json"</span>)<span class="op" style="color: #5E5E5E;">.</span><span class="fu" style="color: #4758AB;">json</span>()</span>
-<span id="cb3-55">embed <span class="op" style="color: #5E5E5E;">=</span> <span class="pp" style="color: #AD0000;">require</span>(<span class="st" style="color: #20794D;">"vega-embed@6"</span>)</span>
-<span id="cb3-56"><span class="fu" style="color: #4758AB;">embed</span>(file)</span></code></pre></div>
+<div class="sourceCode cell-code hidden" id="cb3" data-startfrom="55" data-source-offset="-0" style="background: #f1f3f5;"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 54;"><span id="cb3-55">file <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;">FileAttachment</span>(<span class="st" style="color: #20794D;">"chart.json"</span>)<span class="op" style="color: #5E5E5E;">.</span><span class="fu" style="color: #4758AB;">json</span>()</span>
+<span id="cb3-56">embed <span class="op" style="color: #5E5E5E;">=</span> <span class="pp" style="color: #AD0000;">require</span>(<span class="st" style="color: #20794D;">"vega-embed@6"</span>)</span>
+<span id="cb3-57"><span class="fu" style="color: #4758AB;">embed</span>(file)</span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-2-1" data-nodetype="declaration">
