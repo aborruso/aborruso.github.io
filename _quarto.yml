@@ -33,7 +33,7 @@ format:
     theme: cosmo
     css: styles.css
     toc: true
-    lang: ita
+    lang: it
     dir: ltr
     link-external-newwindow: true
     link-external-filter: '.*aborruso\.github\.io\.*'
