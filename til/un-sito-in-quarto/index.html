@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="ita" xml:lang="ita" dir="ltr"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="it" xml:lang="it" dir="ltr"><head>
 
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.2.269">
@@ -7,7 +7,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Andrea Borruso">
-<meta name="dcterms.date" content="2022-11-19">
 <meta name="description" content="È un mini post, in cui racconto i miei primi passi con un sito in quarto">
 
 <title>aborruso’s website - Il mio primo blog post</title>
@@ -113,15 +112,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   "type": "overlay",
   "limit": 20,
   "language": {
-    "search-no-results-text": "No results",
-    "search-matching-documents-text": "matching documents",
-    "search-copy-link-title": "Copy link to search",
-    "search-hide-matches-text": "Hide additional matches",
-    "search-more-match-text": "more match in this document",
-    "search-more-matches-text": "more matches in this document",
-    "search-clear-button-title": "Clear",
-    "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-no-results-text": "Nessun risultato",
+    "search-matching-documents-text": "documenti trovati",
+    "search-copy-link-title": "Copiare il link nella ricerca",
+    "search-hide-matches-text": "Nascondere i risultati aggiuntivi",
+    "search-more-match-text": "ci sono altri risultati in questo documento",
+    "search-more-matches-text": "ulteriori risultati in questo documento",
+    "search-clear-button-title": "Pulire",
+    "search-detached-cancel-button-title": "Cancellare",
+    "search-submit-button-title": "Inviare"
   }
 }</script>
 <style>
@@ -189,8 +188,8 @@ background: #75aadb;
   </div>
     
   <div class="quarto-title-meta-author">
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-heading">Affiliation</div>
+    <div class="quarto-title-meta-heading">Autore/a</div>
+    <div class="quarto-title-meta-heading">Affiliazione</div>
     
       <div class="quarto-title-meta-contents">
       <a href="https://twitter.com/aborruso">Andrea Borruso</a> 
@@ -208,9 +207,9 @@ background: #75aadb;
 
         
       <div>
-      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-heading">Data di Pubblicazione</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">November 19, 2022</p>
+        <p class="date">19 novembre 2022</p>
       </div>
     </div>
     
@@ -245,7 +244,7 @@ background: #75aadb;
 <li>Installare <a href="https://quarto.org/docs/get-started/"><strong>quarto</strong></a>;</li>
 <li>creare un nuovo progetto, dandogli per nome il mio profilo utente GitHub;</li>
 </ol>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> create-project aborruso.github.io <span class="at">--type</span> website</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> create-project aborruso.github.io <span class="at">--type</span> website</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ol start="3" type="1">
 <li>impostare a <code>docs</code> la cartella di output di pubblicazione del sito, aggiungendo l’istruzione nel file <code>_quarto.yml</code>:</li>
 </ol>
@@ -255,14 +254,14 @@ background: #75aadb;
 </div>
 <div class="sourceCode" id="cb2"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">project</span><span class="kw">:</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">type</span><span class="kw">:</span><span class="at"> website</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">output-dir</span><span class="kw">:</span><span class="at"> docs</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="fu">output-dir</span><span class="kw">:</span><span class="at"> docs</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ol start="4" type="1">
 <li>creare dei primi contenuti da pubblicare come questo post;</li>
 <li>creare il repo <code>aborruso.github.io</code> su GitHub;</li>
 <li>generare il sito con il comando <code>render</code></li>
 </ol>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render ./</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render ./</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ol start="7" type="1">
 <li>impostare come sorgente delle GitHub Pages del repo creato, la cartella <code>docs</code> citata sopra;</li>
 <li>pubblicare tutto su GitHub.</li>
@@ -330,12 +329,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // flash "checked"
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
+    button.setAttribute("title", "Copiato!");
     let tooltip;
     if (window.bootstrap) {
       button.setAttribute("data-bs-toggle", "tooltip");
       button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
+      button.setAttribute("data-bs-title", "Copiato!");
       tooltip = new bootstrap.Tooltip(button, 
         { trigger: "manual", 
           customClass: "code-copy-button-tooltip",
