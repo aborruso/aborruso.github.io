@@ -17,3 +17,8 @@ author:
     affiliations:
       - name: Associazion onData
         url: https://ondata.it
+
+knitr:
+  opts_chunk:
+    message: false
+    warning: false

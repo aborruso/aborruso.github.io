@@ -1,0 +1,44 @@
+---
+title: "Quarto: visualizzare una tabella HTML a partire da un CSV"
+ description: "Come farlo a partire dal kernel R"
+date: "2022-11-25"
+draft: false
+categories:
+  - quarto
+  - csv
+  - rstat
+  - til
+---
+
+```{r}
+#| echo: false
+library(tidyverse)
+library(lubridate)
+library(knitr)
+```
+
+Un paio di appunti molto veloci per visualizzare una tabella HTML a partire da un CSV, per me che non sono un utente R.
+
+Una modalità che semplicemente "stampa" la tabella per come è:
+
+```{r}
+#| echo: fenced
+#| label: tbl-simple
+#| tbl-cap: "Simple table"
+
+t = read_csv("input.csv")
+library(knitr)
+kable(t)
+```
+
+Un'altra che la pagina:
+
+```{r}
+#| echo: fenced
+#| label: tbl-paginated
+#| tbl-cap: "Paginated table"
+
+t = read_csv("input.csv")
+
+rmarkdown::paged_table(t)
+```
