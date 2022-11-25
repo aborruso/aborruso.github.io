@@ -1,6 +1,6 @@
 ---
 title: "Quarto: visualizzare una tabella HTML a partire da un CSV"
- description: "Come farlo a partire dal kernel R"
+description: "Come farlo a partire dal kernel R"
 date: "2022-11-25"
 draft: false
 categories:
