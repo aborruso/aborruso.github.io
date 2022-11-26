@@ -14,6 +14,10 @@ categories:
 
 Non è possibile in [Quarto](https://quarto.org/) fare convivere una cella di codice di tipo [Observable](https://observablehq.com/), con una cella Python con un grafico [Altair](https://altair-viz.github.io/).
 
+::: aside
+Vedi issue [3424](https://github.com/quarto-dev/quarto-cli/issues/3424)
+:::
+
 C'è però un *workaround*:
 
 - da Altair generare la descrizione del grafico in formato JSON (è in formato [vega-lite](http://vega.github.io/vega-lite/)), con `chart.to_json()`;

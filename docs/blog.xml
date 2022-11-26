@@ -236,18 +236,21 @@
 
 
 <p>Non è possibile in <a href="https://quarto.org/">Quarto</a> fare convivere una cella di codice di tipo <a href="https://observablehq.com/">Observable</a>, con una cella Python con un grafico <a href="https://altair-viz.github.io/">Altair</a>.</p>
-<p>C’è però un <em>workaround</em>:</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p>Vedi issue <a href="https://github.com/quarto-dev/quarto-cli/issues/3424">3424</a></p>
+</div></div><p>C’è però un <em>workaround</em>:</p>
 <ul>
 <li>da Altair generare la descrizione del grafico in formato JSON (è in formato <a href="http://vega.github.io/vega-lite/">vega-lite</a>), con <code>chart.to_json()</code>;</li>
 <li>fare leggere a una cella Observable il JSON, e visualizzare il grafico.</li>
 </ul>
 <p>Qui ad esempio creo una cella Observable usata soltanto come esempio.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1" data-startfrom="24" data-source-offset="9" style="background: #f1f3f5;"><pre class="sourceCode java code-with-copy"><code class="sourceCode java" style="counter-reset: source-line 23;"><span id="cb1-24">```<span class="op" style="color: #5E5E5E;">{</span>ojs<span class="op" style="color: #5E5E5E;">}</span></span>
-<span id="cb1-25"><span class="co" style="color: #5E5E5E;">//| echo: fenced</span></span>
-<span id="cb1-26">data <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;">FileAttachment</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"ojs.csv"</span><span class="op" style="color: #5E5E5E;">).</span><span class="fu" style="color: #4758AB;">csv</span><span class="op" style="color: #5E5E5E;">({</span> typed<span class="op" style="color: #5E5E5E;">:</span> <span class="kw" style="color: #003B4F;">true</span> <span class="op" style="color: #5E5E5E;">})</span></span>
-<span id="cb1-27">Inputs<span class="op" style="color: #5E5E5E;">.</span><span class="fu" style="color: #4758AB;">table</span><span class="op" style="color: #5E5E5E;">(</span>data<span class="op" style="color: #5E5E5E;">)</span></span>
-<span id="cb1-28">```</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb1" data-startfrom="28" data-source-offset="9" style="background: #f1f3f5;"><pre class="sourceCode java code-with-copy"><code class="sourceCode java" style="counter-reset: source-line 27;"><span id="cb1-28">```<span class="op" style="color: #5E5E5E;">{</span>ojs<span class="op" style="color: #5E5E5E;">}</span></span>
+<span id="cb1-29"><span class="co" style="color: #5E5E5E;">//| echo: fenced</span></span>
+<span id="cb1-30">data <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;">FileAttachment</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"ojs.csv"</span><span class="op" style="color: #5E5E5E;">).</span><span class="fu" style="color: #4758AB;">csv</span><span class="op" style="color: #5E5E5E;">({</span> typed<span class="op" style="color: #5E5E5E;">:</span> <span class="kw" style="color: #003B4F;">true</span> <span class="op" style="color: #5E5E5E;">})</span></span>
+<span id="cb1-31">Inputs<span class="op" style="color: #5E5E5E;">.</span><span class="fu" style="color: #4758AB;">table</span><span class="op" style="color: #5E5E5E;">(</span>data<span class="op" style="color: #5E5E5E;">)</span></span>
+<span id="cb1-32">```</span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-1-1" data-nodetype="declaration">
@@ -286,12 +289,12 @@
 </div>
 <p>E infine faccio leggere a Observable la descrizione del grafico, che è stata generata da Altair e lo faccio visualizzare.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3" data-startfrom="55" data-source-offset="9" style="background: #f1f3f5;"><pre class="sourceCode java code-with-copy"><code class="sourceCode java" style="counter-reset: source-line 54;"><span id="cb3-55">```<span class="op" style="color: #5E5E5E;">{</span>ojs<span class="op" style="color: #5E5E5E;">}</span></span>
-<span id="cb3-56"><span class="co" style="color: #5E5E5E;">//| echo: fenced</span></span>
-<span id="cb3-57">file <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;">FileAttachment</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"chart.json"</span><span class="op" style="color: #5E5E5E;">).</span><span class="fu" style="color: #4758AB;">json</span><span class="op" style="color: #5E5E5E;">()</span></span>
-<span id="cb3-58">embed <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;">require</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"vega-embed@6"</span><span class="op" style="color: #5E5E5E;">)</span></span>
-<span id="cb3-59"><span class="fu" style="color: #4758AB;">embed</span><span class="op" style="color: #5E5E5E;">(</span>file<span class="op" style="color: #5E5E5E;">)</span></span>
-<span id="cb3-60">```</span></code></pre></div>
+<div class="sourceCode cell-code" id="cb3" data-startfrom="59" data-source-offset="9" style="background: #f1f3f5;"><pre class="sourceCode java code-with-copy"><code class="sourceCode java" style="counter-reset: source-line 58;"><span id="cb3-59">```<span class="op" style="color: #5E5E5E;">{</span>ojs<span class="op" style="color: #5E5E5E;">}</span></span>
+<span id="cb3-60"><span class="co" style="color: #5E5E5E;">//| echo: fenced</span></span>
+<span id="cb3-61">file <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;">FileAttachment</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"chart.json"</span><span class="op" style="color: #5E5E5E;">).</span><span class="fu" style="color: #4758AB;">json</span><span class="op" style="color: #5E5E5E;">()</span></span>
+<span id="cb3-62">embed <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;">require</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"vega-embed@6"</span><span class="op" style="color: #5E5E5E;">)</span></span>
+<span id="cb3-63"><span class="fu" style="color: #4758AB;">embed</span><span class="op" style="color: #5E5E5E;">(</span>file<span class="op" style="color: #5E5E5E;">)</span></span>
+<span id="cb3-64">```</span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-2-1" data-nodetype="declaration">
