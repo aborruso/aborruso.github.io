@@ -1,5 +1,6 @@
 /.quarto/
 /_freeze/
+garage/*
 
 _site/*
 

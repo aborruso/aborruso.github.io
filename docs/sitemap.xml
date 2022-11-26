@@ -2,34 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://aborruso.github.io/blog.html</loc>
-    <lastmod>2022-11-26T09:52:08.938Z</lastmod>
+    <lastmod>2022-11-26T14:13:22.260Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/index.html</loc>
-    <lastmod>2022-11-26T09:52:09.845Z</lastmod>
-  </url>
-  <url>
-    <loc>https://aborruso.github.io/til/filtrare-file-elenco-file-esterno/index.html</loc>
-    <lastmod>2022-11-26T09:52:14.506Z</lastmod>
-  </url>
-  <url>
-    <loc>https://aborruso.github.io/til/quarto-mescolare-observable-altair/index.html</loc>
-    <lastmod>2022-11-26T09:52:16.962Z</lastmod>
-  </url>
-  <url>
-    <loc>https://aborruso.github.io/til/quarto-renderizzare-tabelle-r/index.html</loc>
-    <lastmod>2022-11-26T09:52:18.722Z</lastmod>
-  </url>
-  <url>
-    <loc>https://aborruso.github.io/til/renderizzare-csv-quarto-observable/index.html</loc>
-    <lastmod>2022-11-26T09:52:20.257Z</lastmod>
-  </url>
-  <url>
-    <loc>https://aborruso.github.io/til/un-sito-in-quarto/index.html</loc>
-    <lastmod>2022-11-26T09:52:21.572Z</lastmod>
+    <lastmod>2022-11-26T14:13:23.336Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/til.html</loc>
-    <lastmod>2022-11-26T09:52:24.269Z</lastmod>
+    <lastmod>2022-11-26T14:13:26.914Z</lastmod>
+  </url>
+  <url>
+    <loc>https://aborruso.github.io/til/filtrare-file-elenco-file-esterno/index.html</loc>
+    <lastmod>2022-11-26T14:13:28.757Z</lastmod>
+  </url>
+  <url>
+    <loc>https://aborruso.github.io/til/quarto-mescolare-observable-altair/index.html</loc>
+    <lastmod>2022-11-26T14:13:32.111Z</lastmod>
+  </url>
+  <url>
+    <loc>https://aborruso.github.io/til/quarto-renderizzare-tabelle-r/index.html</loc>
+    <lastmod>2022-11-26T14:13:34.801Z</lastmod>
+  </url>
+  <url>
+    <loc>https://aborruso.github.io/til/renderizzare-csv-quarto-observable/index.html</loc>
+    <lastmod>2022-11-26T14:13:37.184Z</lastmod>
+  </url>
+  <url>
+    <loc>https://aborruso.github.io/til/un-sito-in-quarto/index.html</loc>
+    <lastmod>2022-11-26T14:13:38.737Z</lastmod>
   </url>
 </urlset>
