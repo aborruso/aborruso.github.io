@@ -10,7 +10,7 @@ categories:
   - rstats
 ---
 
-Per prima cosa carico delle librerie per leggere il CSV e per renderizzare la tabella, e carico la tabella:
+Per prima cosa carico delle librerie per leggere il CSV e per renderizzare la tabella, e carico la [tabella](input.csv):
 
 ```{{r}}
 library(tidyverse)
