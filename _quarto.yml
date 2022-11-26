@@ -42,3 +42,7 @@ format:
 execute:
   daemon: false
   freeze: auto
+
+
+language:
+  title-block-author-single: "Autore/Autrice"
