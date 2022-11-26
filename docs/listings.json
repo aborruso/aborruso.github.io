@@ -2,6 +2,7 @@
   {
     "listing": "/blog.html",
     "items": [
+      "/til/quarto-renderizzare-tabelle-r/index.html",
       "/til/quarto-mescolare-observable-altair/index.html",
       "/til/renderizzare-csv-quarto-observable/index.html",
       "/til/filtrare-file-elenco-file-esterno/index.html",
@@ -11,6 +12,7 @@
   {
     "listing": "/til.html",
     "items": [
+      "/til/quarto-renderizzare-tabelle-r/index.html",
       "/til/quarto-mescolare-observable-altair/index.html",
       "/til/renderizzare-csv-quarto-observable/index.html",
       "/til/filtrare-file-elenco-file-esterno/index.html",

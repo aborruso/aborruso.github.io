@@ -1,0 +1,58 @@
+---
+title: "Quarto: renderizzare una tabella a partire da un CSV"
+description: "Come farlo con il kernel R"
+date: "2022-11-26"
+draft: false
+categories:
+  - quarto
+  - csv
+  - til
+  - rstats
+---
+
+Per prima cosa carico delle librerie per leggere il CSV e per renderizzare la tabella, e carico la tabella:
+
+```{{r}}
+library(tidyverse)
+library(lubridate)
+library(knitr)
+
+t = read_csv("input.csv")
+```
+
+```{r}
+#| echo: false
+library(tidyverse)
+library(lubridate)
+library(knitr)
+
+t = read_csv("input.csv")
+```
+
+E poi le renderizzo in vari modi.
+
+```{r}
+#| echo: fenced
+kable(t)
+```
+
+```{r}
+#| echo: fenced
+#| tbl-cap: "Soltanto le prime righe"
+kable(head(t))
+```
+
+
+```{r}
+#| echo: fenced
+#| tbl-cap: "Selezionare righe e colonne"
+kable(t[1:4, 1:2])
+```
+
+
+```{r}
+#| echo: fenced
+#| tbl-cap: "Paginazione"
+
+rmarkdown::paged_table(t)
+```
