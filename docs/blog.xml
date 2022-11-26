@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss  xmlns:atom="http://www.w3.org/2005/Atom" 
+      xmlns:media="http://search.yahoo.com/mrss/" 
+      xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+      xmlns:dc="http://purl.org/dc/elements/1.1/" 
+      version="2.0">
+<channel>
+<title>aborruso&#39;s website</title>
+<link>https://aborruso.github.io/blog.html</link>
+<atom:link href="https://aborruso.github.io/blog.xml" rel="self" type="application/rss+xml"/>
+<description></description>
+<generator>quarto-1.3.21</generator>
+<lastBuildDate>Mon, 21 Nov 2022 23:00:00 GMT</lastBuildDate>
+<item>
+  <title>Fare convivere una cella Observable e un grafico Altair in Quarto</title>
+  <dc:creator>Andrea Borruso</dc:creator>
+  <link>https://aborruso.github.io/til/quarto-mescolare-observable-altair/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>Non è possibile in <a href="https://quarto.org/">Quarto</a> fare convivere una cella di codice di tipo <a href="https://observablehq.com/">Observable</a>, con una cella Python con un grafico <a href="https://altair-viz.github.io/">Altair</a>.</p>
+<p>C’è però un <em>workaround</em>:</p>
+<ul>
+<li>da Altair generare la descrizione del grafico in formato JSON (è in formato <a href="http://vega.github.io/vega-lite/">vega-lite</a>), con <code>chart.to_json()</code>;</li>
+<li>fare leggere a una cella Observable il JSON, e visualizzare il grafico.</li>
+</ul>
+<p>Qui ad esempio creo una cella Observable usata soltanto come esempio.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" data-startfrom="24" data-source-offset="9" style="background: #f1f3f5;"><pre class="sourceCode java code-with-copy"><code class="sourceCode java" style="counter-reset: source-line 23;"><span id="cb1-24">```<span class="op" style="color: #5E5E5E;">{</span>ojs<span class="op" style="color: #5E5E5E;">}</span></span>
+<span id="cb1-25"><span class="co" style="color: #5E5E5E;">//| echo: fenced</span></span>
+<span id="cb1-26">data <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;">FileAttachment</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"ojs.csv"</span><span class="op" style="color: #5E5E5E;">).</span><span class="fu" style="color: #4758AB;">csv</span><span class="op" style="color: #5E5E5E;">({</span> typed<span class="op" style="color: #5E5E5E;">:</span> <span class="kw" style="color: #003B4F;">true</span> <span class="op" style="color: #5E5E5E;">})</span></span>
+<span id="cb1-27">Inputs<span class="op" style="color: #5E5E5E;">.</span><span class="fu" style="color: #4758AB;">table</span><span class="op" style="color: #5E5E5E;">(</span>data<span class="op" style="color: #5E5E5E;">)</span></span>
+<span id="cb1-28">```</span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-2" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</div>
+<p>Poi genero la descrizione di un grafico vega-lite, con Altair, salvando il file <a href="chart.json"><code>chart.json</code></a>.</p>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><span class="in" style="color: #5E5E5E;">```{python}</span></span>
+<span id="cb2-2"><span class="im" style="color: #00769E;">import</span> pandas <span class="im" style="color: #00769E;">as</span> pd</span>
+<span id="cb2-3"><span class="im" style="color: #00769E;">import</span> altair <span class="im" style="color: #00769E;">as</span> alt</span>
+<span id="cb2-4"><span class="im" style="color: #00769E;">import</span> warnings</span>
+<span id="cb2-5"></span>
+<span id="cb2-6">warnings.simplefilter(action<span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">'ignore'</span>, category<span class="op" style="color: #5E5E5E;">=</span><span class="pp" style="color: #AD0000;">FutureWarning</span>)</span>
+<span id="cb2-7"></span>
+<span id="cb2-8">df <span class="op" style="color: #5E5E5E;">=</span> pd.read_csv(<span class="st" style="color: #20794D;">"altair.csv"</span>,keep_default_na<span class="op" style="color: #5E5E5E;">=</span><span class="va" style="color: #111111;">False</span>)</span>
+<span id="cb2-9"></span>
+<span id="cb2-10">df[<span class="st" style="color: #20794D;">'year'</span>] <span class="op" style="color: #5E5E5E;">=</span> pd.to_datetime(df[<span class="st" style="color: #20794D;">'year'</span>], <span class="bu" style="color: null;">format</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">'%Y'</span>)</span>
+<span id="cb2-11"></span>
+<span id="cb2-12">chart<span class="op" style="color: #5E5E5E;">=</span>alt.Chart(df).mark_area().encode(</span>
+<span id="cb2-13">    alt.X(<span class="st" style="color: #20794D;">'year:T'</span>, timeUnit <span class="op" style="color: #5E5E5E;">=</span> <span class="st" style="color: #20794D;">'year'</span>,title<span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">'year'</span>,axis<span class="op" style="color: #5E5E5E;">=</span>alt.Axis(tickCount<span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">'year'</span>)),</span>
+<span id="cb2-14">    alt.Y(<span class="st" style="color: #20794D;">'v:Q'</span>,axis<span class="op" style="color: #5E5E5E;">=</span>alt.Axis(<span class="bu" style="color: null;">format</span><span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">'%'</span>),title<span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">'percentage'</span>),</span>
+<span id="cb2-15">    color<span class="op" style="color: #5E5E5E;">=</span><span class="st" style="color: #20794D;">'i:N'</span></span>
+<span id="cb2-16">)</span>
+<span id="cb2-17">chart.save(<span class="st" style="color: #20794D;">'chart.json'</span>)</span>
+<span id="cb2-18"><span class="in" style="color: #5E5E5E;">```</span></span></code></pre></div>
+</div>
+<p>E infine faccio leggere a Observable la descrizione del grafico, che è stata generata da Altair e lo faccio visualizzare.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3" data-startfrom="55" data-source-offset="9" style="background: #f1f3f5;"><pre class="sourceCode java code-with-copy"><code class="sourceCode java" style="counter-reset: source-line 54;"><span id="cb3-55">```<span class="op" style="color: #5E5E5E;">{</span>ojs<span class="op" style="color: #5E5E5E;">}</span></span>
+<span id="cb3-56"><span class="co" style="color: #5E5E5E;">//| echo: fenced</span></span>
+<span id="cb3-57">file <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;">FileAttachment</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"chart.json"</span><span class="op" style="color: #5E5E5E;">).</span><span class="fu" style="color: #4758AB;">json</span><span class="op" style="color: #5E5E5E;">()</span></span>
+<span id="cb3-58">embed <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;">require</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"vega-embed@6"</span><span class="op" style="color: #5E5E5E;">)</span></span>
+<span id="cb3-59"><span class="fu" style="color: #4758AB;">embed</span><span class="op" style="color: #5E5E5E;">(</span>file<span class="op" style="color: #5E5E5E;">)</span></span>
+<span id="cb3-60">```</span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-3" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+ ]]></description>
+  <category>quarto</category>
+  <category>altair</category>
+  <category>grafici</category>
+  <category>observable</category>
+  <category>til</category>
+  <guid>https://aborruso.github.io/til/quarto-mescolare-observable-altair/index.html</guid>
+  <pubDate>Mon, 21 Nov 2022 23:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Quarto: leggere un CSV via Obeservable e visualizzare i dati</title>
+  <dc:creator>Andrea Borruso</dc:creator>
+  <link>https://aborruso.github.io/til/renderizzare-csv-quarto-observable/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>Si può usare semplicemente il metodo <code>FileAttachment</code> di Observable, per <a href="data.csv"><code>data.csv</code></a></p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><span class="in" style="color: #5E5E5E;">```{ojs}</span></span>
+<span id="cb1-2">data <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;">FileAttachment</span>(<span class="st" style="color: #20794D;">"data.csv"</span>)<span class="op" style="color: #5E5E5E;">.</span><span class="fu" style="color: #4758AB;">csv</span>({ <span class="dt" style="color: #AD0000;">typed</span><span class="op" style="color: #5E5E5E;">:</span> <span class="kw" style="color: #003B4F;">true</span> })</span>
+<span id="cb1-3">Inputs<span class="op" style="color: #5E5E5E;">.</span><span class="fu" style="color: #4758AB;">table</span>(data)</span>
+<span id="cb1-4"><span class="vs" style="color: #20794D;">```</span></span></code></pre></div>
+<p>per ottenere</p>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb2" data-startfrom="26" data-source-offset="-0" style="background: #f1f3f5;"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 25;"><span id="cb2-26">data <span class="op" style="color: #5E5E5E;">=</span> <span class="fu" style="color: #4758AB;">FileAttachment</span>(<span class="st" style="color: #20794D;">"data.csv"</span>)<span class="op" style="color: #5E5E5E;">.</span><span class="fu" style="color: #4758AB;">csv</span>({ <span class="dt" style="color: #AD0000;">typed</span><span class="op" style="color: #5E5E5E;">:</span> <span class="kw" style="color: #003B4F;">true</span> })</span>
+<span id="cb2-27">Inputs<span class="op" style="color: #5E5E5E;">.</span><span class="fu" style="color: #4758AB;">table</span>(data)</span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-2" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</div>
+<p>O in alternativa con <a href="https://observablehq.com/@uwdata/introducing-arquero"><code>arquero</code></a> (ma vale la pena usarlo anche per trasformare i dati)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3" data-startfrom="33" data-source-offset="9" style="background: #f1f3f5;"><pre class="sourceCode java code-with-copy"><code class="sourceCode java" style="counter-reset: source-line 32;"><span id="cb3-33">```<span class="op" style="color: #5E5E5E;">{</span>ojs<span class="op" style="color: #5E5E5E;">}</span></span>
+<span id="cb3-34"><span class="co" style="color: #5E5E5E;">//| echo: fenced</span></span>
+<span id="cb3-35"><span class="kw" style="color: #003B4F;">import</span> <span class="im" style="color: #00769E;">{ aq, op } from '@uwdata/arquero'</span></span>
+<span id="cb3-36">dati_aquero <span class="op" style="color: #5E5E5E;">=</span> aq<span class="op" style="color: #5E5E5E;">.</span><span class="fu" style="color: #4758AB;">loadCSV</span><span class="op" style="color: #5E5E5E;">(</span><span class="st" style="color: #20794D;">"data.csv"</span><span class="op" style="color: #5E5E5E;">)</span></span>
+<span id="cb3-37"></span>
+<span id="cb3-38">dati_aquero<span class="op" style="color: #5E5E5E;">.</span><span class="fu" style="color: #4758AB;">view</span><span class="op" style="color: #5E5E5E;">()</span></span>
+<span id="cb3-39">```</span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-3" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</div>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Nota
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Il Quarto del titolo è lui <a href="https://quarto.org/" class="uri">https://quarto.org/</a></p>
+</div>
+</div>
+
+
+
+ ]]></description>
+  <category>quarto</category>
+  <category>csv</category>
+  <category>observable</category>
+  <category>til</category>
+  <guid>https://aborruso.github.io/til/renderizzare-csv-quarto-observable/index.html</guid>
+  <pubDate>Sun, 20 Nov 2022 23:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Come filtrare un file di testo a partire da una lista di stringhe</title>
+  <dc:creator>Andrea Borruso</dc:creator>
+  <link>https://aborruso.github.io/til/filtrare-file-elenco-file-esterno/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>Avevo bisogno di filtrare un file CSV di grandi dimensioni, compresso in zip, a partire da una lista di stringhe contenute in un file. <br>Dato il CSV, volevo estrarne soltanto le righe che contenevano una delle stringhe presenti nel file esterno.</p>
+<p>Via CLI, usando lo straordinario <code>grep</code> il comando è (<code>list.txt</code>, è il file che contiene per ogni riga la stringa da cercare):</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="fu" style="color: #4758AB;">unzip</span> <span class="at" style="color: #657422;">-qq</span> <span class="at" style="color: #657422;">-c</span> <span class="st" style="color: #20794D;">"input.zip"</span>  <span class="kw" style="color: #003B4F;">|</span> <span class="fu" style="color: #4758AB;">grep</span> <span class="at" style="color: #657422;">-F</span> <span class="at" style="color: #657422;">-f</span> list.txt</span></code></pre></div>
+<p>Per me questa modalità ha risolto tutto. Ma ne metto un paio di altre.</p>
+<p>Una è basata su <a href="https://github.com/BurntSushi/ripgrep"><code>ripgrep</code></a>, un’altra straordinaria CLI per la ricerca di testo, più rapida di <code>grep</code>:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="fu" style="color: #4758AB;">unzip</span> <span class="at" style="color: #657422;">-qq</span> <span class="at" style="color: #657422;">-c</span> <span class="st" style="color: #20794D;">"input.zip"</span>  <span class="kw" style="color: #003B4F;">|</span> <span class="ex" style="color: null;">rg</span> <span class="at" style="color: #657422;">-F</span> <span class="at" style="color: #657422;">-f</span> list.txt</span></code></pre></div>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Non si tiene conto del formato
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Queste due modalità non tengono però conto del formato CSV, non riescono ad esempio a cercare per colonna, ma solo per riga. Sotto una soluzione che riesce a farlo.</p>
+</div>
+</div>
+<p>Con <a href="https://github.com/jqnatividad/qsv"><code>qsv</code></a>, è possibile ricercare per colonna:</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="fu" style="color: #4758AB;">unzip</span> <span class="at" style="color: #657422;">-qq</span> <span class="at" style="color: #657422;">-c</span> <span class="st" style="color: #20794D;">"input.zip"</span>  <span class="kw" style="color: #003B4F;">|</span> <span class="ex" style="color: null;">qsv</span> searchset <span class="at" style="color: #657422;">-d</span> <span class="st" style="color: #20794D;">"|"</span> <span class="at" style="color: #657422;">-i</span> <span class="at" style="color: #657422;">-s</span> nomeColonna list.txt</span></code></pre></div>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Nota
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><code>-d "|"</code> per impostare il separatore di colonna del CSV;</li>
+<li><code>-i</code> per ignorare maiuscole e minuscole;</li>
+<li><code>-s nomeColonna</code> per specificare la colonna in cui cercare.</li>
+</ul>
+</div>
+</div>
+
+
+
+ ]]></description>
+  <category>cli</category>
+  <category>til</category>
+  <category>grep</category>
+  <guid>https://aborruso.github.io/til/filtrare-file-elenco-file-esterno/index.html</guid>
+  <pubDate>Sat, 19 Nov 2022 23:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Il mio primo blog post</title>
+  <dc:creator>Andrea Borruso</dc:creator>
+  <link>https://aborruso.github.io/til/un-sito-in-quarto/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>Uso <a href="https://quarto.org/"><strong>quarto</strong></a> da diverse settimane per creare <a href="https://quarto.org/docs/presentations/revealjs/">slide in HTML</a> scritte in markdown e basate su <a href="https://revealjs.com/">reveal.js</a>.</p>
+<p>Quarto è un sistema di pubblicazione scientifica e tecnica, <em>open source</em>, basato su <a href="https://pandoc.org/">Pandoc</a>:</p>
+<ul>
+<li>Crea contenuti dinamici con <a href="https://quarto.org/docs/computations/python.html">Python</a>, <a href="https://quarto.org/docs/computations/r.html">R</a>, <a href="https://quarto.org/docs/computations/julia.html">Julia</a> e <a href="https://quarto.org/docs/computations/ojs.html">Observable</a>;</li>
+<li>I documenti sono o file markdown in <em>plain text</em> o Jupyter notebook;</li>
+<li>Consente di pubblicare articoli, report, presentazioni, siti Web, blog e libri di alta qualità in HTML, PDF, MS Word, ePub e altri formati;</li>
+<li>Consente di creare contenuti utilizzando <em>scientific markdown</em>, incluse equazioni, citazioni, riferimenti incrociati, pannelli di immagini, didascalie, layout avanzato e altro ancora.</li>
+</ul>
+<p>Quello che ho fatto per creare la prima versione di questo sito è stato:</p>
+<ol type="1">
+<li>Installare <a href="https://quarto.org/docs/get-started/"><strong>quarto</strong></a>;</li>
+<li>creare un nuovo progetto, dandogli per nome il mio profilo utente GitHub;</li>
+</ol>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;">quarto</span> create-project aborruso.github.io <span class="at" style="color: #657422;">--type</span> website</span></code></pre></div>
+<ol start="3" type="1">
+<li>impostare a <code>docs</code> la cartella di output di pubblicazione del sito, aggiungendo l’istruzione nel file <code>_quarto.yml</code>:</li>
+</ol>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>_quarto.yml</strong></pre>
+</div>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><span class="fu" style="color: #4758AB;">project</span><span class="kw" style="color: #003B4F;">:</span></span>
+<span id="cb2-2"><span class="at" style="color: #657422;">  </span><span class="fu" style="color: #4758AB;">type</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> website</span></span>
+<span id="cb2-3"><span class="at" style="color: #657422;">  </span><span class="fu" style="color: #4758AB;">output-dir</span><span class="kw" style="color: #003B4F;">:</span><span class="at" style="color: #657422;"> docs</span></span></code></pre></div>
+</div>
+<ol start="4" type="1">
+<li>creare dei primi contenuti da pubblicare come questo post;</li>
+<li>creare il repo <code>aborruso.github.io</code> su GitHub;</li>
+<li>generare il sito con il comando <code>render</code></li>
+</ol>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="ex" style="color: null;">quarto</span> render ./</span></code></pre></div>
+<ol start="7" type="1">
+<li>impostare come sorgente delle GitHub Pages del repo creato, la cartella <code>docs</code> citata sopra;</li>
+<li>pubblicare tutto su GitHub.</li>
+</ol>
+<p>Per farlo, mi hanno aiutato queste letture:</p>
+<ul>
+<li>Creating your personal website using Quarto <a href="https://ucsb-meds.github.io/creating-quarto-websites/" class="uri">https://ucsb-meds.github.io/creating-quarto-websites/</a></li>
+<li>Creating a Website (dal sito ufficiale) <a href="https://quarto.org/docs/websites/" class="uri">https://quarto.org/docs/websites/</a></li>
+<li>Creating a Blog (dal sito ufficiale) <a href="https://quarto.org/docs/websites/website-blog.html" class="uri">https://quarto.org/docs/websites/website-blog.html</a></li>
+</ul>
+<div class="callout-important callout callout-style-simple callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Importante
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Ho seguito questi step per la primissima pubblicazione, per vedere subito un primo risultato. Poi ho cambiato molte cose, quindi le impostazioni attuali sono diverse da quelle descritte sopra.</p>
+</div>
+</div>
+
+
+
+ ]]></description>
+  <category>quarto</category>
+  <category>til</category>
+  <category>github</category>
+  <guid>https://aborruso.github.io/til/un-sito-in-quarto/index.html</guid>
+  <pubDate>Fri, 18 Nov 2022 23:00:00 GMT</pubDate>
+</item>
+</channel>
+</rss>

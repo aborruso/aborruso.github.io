@@ -2,6 +2,5 @@
 /_freeze/
 
 _site/*
-docs/*
 
 /.luarc.json
