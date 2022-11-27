@@ -29,7 +29,7 @@ library(knitr)
 t = read_csv("input.csv")
 ```
 
-E poi le renderizzo in vari modi.
+E poi la renderizzo in vari modi.
 
 ```{r}
 #| echo: fenced
