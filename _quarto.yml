@@ -3,12 +3,19 @@ project:
   render:
     - "*.qmd"
     - "!garage/"
+    - "!risorse/"
   output-dir: docs
 
 website:
   site-url: https://aborruso.github.io/
   title: "aborruso's website"
+  favicon: risorse/favicon.png
   page-navigation: true
+  twitter-card:
+    creator: "@aborruso"
+    card-style: summary_large_image
+  open-graph:
+    locale: it_IT
   repo-url: https://github.com/aborruso/aborruso.github.io
   repo-actions: [edit, issue]
   navbar:
