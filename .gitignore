@@ -5,3 +5,5 @@ garage/*
 _site/*
 
 /.luarc.json
+
+tmp*
