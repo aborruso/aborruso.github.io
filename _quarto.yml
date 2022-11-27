@@ -14,8 +14,10 @@ website:
   twitter-card:
     creator: "@aborruso"
     card-style: summary_large_image
+    image: "risorse/twitter-card.png"
   open-graph:
     locale: it_IT
+    image: "risorse/opengraph.png"
   repo-url: https://github.com/aborruso/aborruso.github.io
   repo-actions: [edit, issue]
   navbar:
