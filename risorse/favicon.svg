@@ -8,7 +8,7 @@
    version="1.1"
    id="svg5"
    inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
-   sodipodi:docname="drawing-1.svg"
+   sodipodi:docname="favicon.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -24,12 +24,12 @@
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="13.455443"
-     inkscape:cx="106.05373"
-     inkscape:cy="286.61263"
+     inkscape:zoom="4.7572175"
+     inkscape:cx="87.866489"
+     inkscape:cy="291.66209"
      inkscape:window-width="1278"
      inkscape:window-height="1000"
-     inkscape:window-x="3193"
+     inkscape:window-x="3186"
      inkscape:window-y="0"
      inkscape:window-maximized="0"
      inkscape:current-layer="layer1" />
@@ -45,7 +45,10 @@
        width="4.2333331"
        height="4.2333331"
        x="23.596397"
-       y="75.508469" />
+       y="75.508469"
+       inkscape:export-filename="rect329.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
     <text
        xml:space="preserve"
        style="font-size:3.04461px;line-height:1.25;font-family:'Helvetica Now Text';-inkscape-font-specification:'Helvetica Now Text';letter-spacing:0px;word-spacing:0px;fill:#ffffff;stroke:none;stroke-width:0.0761153"
