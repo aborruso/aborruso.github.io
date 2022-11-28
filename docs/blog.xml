@@ -25,7 +25,7 @@
 <div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;">duckdb</span> <span class="at" style="color: #657422;">-c</span> <span class="st" style="color: #20794D;">"CREATE TABLE comuni_pir AS SELECT * FROM comuni_pir.csv;EXPORT DATABASE '.' (FORMAT PARQUET);"</span></span></code></pre></div>
 <ul>
 <li>viene creata una tabella <code>comuni_pir</code> in un db temporaneo, a partire dal file <code>CSV</code>;</li>
-<li>viene esportato il db in formato <code>parquet</code> nella directory corrente (che conterrà una sola tabella).</li>
+<li>viene esportato il <a href="comuni_pir.parquet">db</a> in formato <code>parquet</code> nella directory corrente (che conterrà una sola tabella).</li>
 </ul>
 <div class="callout-note callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">

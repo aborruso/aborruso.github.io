@@ -20,7 +20,7 @@ duckdb -c "CREATE TABLE comuni_pir AS SELECT * FROM comuni_pir.csv;EXPORT DATABA
 ```
 
 - viene creata una tabella `comuni_pir` in un db temporaneo, a partire dal file `CSV`;
-- viene esportato il db in formato `parquet` nella directory corrente (che conterrà una sola tabella).
+- viene esportato il [db](comuni_pir.parquet) in formato `parquet` nella directory corrente (che conterrà una sola tabella).
 
 ::: {.callout-note}
 ## Attenzione all'inferencing dei tipi di campo
