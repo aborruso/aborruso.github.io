@@ -24,9 +24,9 @@
 <p>Se si vuole ad esempio creare il file <code>parquet</code> del <a href="comuni_pir.csv">file <code>CSV</code></a> degli <a href="https://idrogeo.isprambiente.it/app/page/open-data">Indicatori di rischio idrogeologico</a> pubblicati da ISPRA, questo è il comando da lanciare:</p>
 <div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;">duckdb</span> <span class="at" style="color: #657422;">-c</span> <span class="st" style="color: #20794D;">"CREATE TABLE comuni_pir AS SELECT * FROM comuni_pir.csv;EXPORT DATABASE '.' (FORMAT PARQUET);"</span></span></code></pre></div>
 <ul>
-<li><code>-c</code> per eseguire i due comandi, separati da <code>;</code> e poi uscire;</li>
 <li>viene creata una tabella <code>comuni_pir</code> in un db temporaneo, a partire dal file <code>CSV</code>;</li>
-<li>viene esportato il <a href="comuni_pir.parquet">db</a> in formato <code>parquet</code> (che conterrà una sola tabella), nella directory corrente.</li>
+<li>viene esportato il <a href="comuni_pir.parquet">db</a> in formato <code>parquet</code> (che conterrà una sola tabella), nella directory corrente;</li>
+<li><code>-c</code> per eseguire i due comandi, separati da <code>;</code> e poi uscire.</li>
 </ul>
 <div class="callout-note callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">
@@ -38,7 +38,7 @@ Attenzione all’inferencing dei tipi di campo
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>I campi di un file CSV non sono associati a una definizione di tipo di campo. DuckDB in <em>import</em> farà il cosiddetto <em>inferencing</em>, ovvero proverà a dedurlo. Non è detto che lo faccia correttamente ed è bene sempre fare un check (celle con valori come <code>08</code>, <code>09</code>, ecc. sono ad esempio spesso mappate come numeri e non come stringhe).</p>
+<p>I campi di un file CSV non sono associati a una definizione di tipo di campo. DuckDB in <em>import</em> farà il cosiddetto <em>inferencing</em>, ovvero proverà a dedurlo.<br>Non è detto che lo faccia correttamente ed è bene sempre fare un check (celle con valori come <code>08</code>, <code>09</code>, ecc. sono ad esempio spesso mappate come numeri e non come stringhe).</p>
 </div>
 </div>
 
