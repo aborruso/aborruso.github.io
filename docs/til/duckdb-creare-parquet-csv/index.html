@@ -253,7 +253,7 @@ background: #75aadb;
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> <span class="at">-c</span> <span class="st">"CREATE TABLE comuni_pir AS SELECT * FROM comuni_pir.csv;EXPORT DATABASE '.' (FORMAT PARQUET);"</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
 <li>viene creata una tabella <code>comuni_pir</code> in un db temporaneo, a partire dal file <code>CSV</code>;</li>
-<li>viene esportato il <a href="comuni_pir.parquet">db</a> in formato <code>parquet</code> nella directory corrente (che conterrà una sola tabella).</li>
+<li>viene esportato il <a href="comuni_pir.parquet">db</a> in formato <code>parquet</code> (che conterrà una sola tabella), nella directory corrente.</li>
 </ul>
 <div class="callout-note callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">
@@ -265,7 +265,7 @@ Attenzione all’inferencing dei tipi di campo
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>I campi di un file CSV non sono associati a una definizione di tipo di campo. DuckDB in import farà il cosiddetto inferencing. Non è detto che lo faccia correttamente ed è bene sempre fare un check (celle con valori come <code>08</code>, <code>09</code>, ecc. sono spesso mappati come numeri e non come stringhe).</p>
+<p>I campi di un file CSV non sono associati a una definizione di tipo di campo. DuckDB in <em>import</em> farà il cosiddetto <em>inferencing</em>, ovvero proverà a dedurlo. Non è detto che lo faccia correttamente ed è bene sempre fare un check (celle con valori come <code>08</code>, <code>09</code>, ecc. sono ad esempio spesso mappate come numeri e non come stringhe).</p>
 </div>
 </div>
 

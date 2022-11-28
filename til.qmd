@@ -2,6 +2,7 @@
 title: "TIL (Today I Learned)"
 listing:
   contents: til
+  fields: [date, title]
   sort: "date desc"
   type: table
 page-layout: full

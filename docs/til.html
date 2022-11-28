@@ -71,7 +71,7 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-date','listing-title','listing-author',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-title-sort'] }],
+      valueNames: ['listing-date','listing-title',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-title-sort'] }],
       
       searchColumns: ["listing-date","listing-title","listing-author"],
     };
@@ -206,9 +206,6 @@ Che vuol dire TIL?
          <option value="listing-title-sort" data-direction="asc">
           Titolo
         </option>
-         <option value="listing-author" data-direction="asc">
-          Autore/Autrice
-        </option>
      </select>
   </div>
     <div class="input-group input-group-sm quarto-listing-filter">
@@ -226,21 +223,15 @@ Che vuol dire TIL?
 <th>
 <a class="sort" data-sort="listing-title-sort" onclick="if (this.classList.contains('sort-asc')) { this.classList.add('sort-desc'); this.classList.remove('sort-asc') } else { this.classList.add('sort-asc'); this.classList.remove('sort-desc')} return false;">Titolo</a>
 </th>
-<th>
-<a class="sort" data-sort="listing-author" onclick="if (this.classList.contains('sort-asc')) { this.classList.add('sort-desc'); this.classList.remove('sort-asc') } else { this.classList.add('sort-asc'); this.classList.remove('sort-desc')} return false;">Autore/Autrice</a>
-</th>
 </tr>
 </thead>
 <tbody class="list">
-<tr data-index="0" data-categories="duckdb,csv,til,parquet,cli" data-listing-date-sort="1669590000000" data-listing-file-modified-sort="1669626995168" data-listing-reading-time-sort="0.64" data-listing-title-sort="DuckDB: creare un file parquet a partire da un CSV" data-listing-filename-sort="index.qmd">
+<tr data-index="0" data-categories="duckdb,csv,til,parquet,cli" data-listing-date-sort="1669590000000" data-listing-file-modified-sort="1669627283948" data-listing-reading-time-sort="0.67" data-listing-title-sort="DuckDB: creare un file parquet a partire da un CSV" data-listing-filename-sort="index.qmd">
 <td class="listing-date">
 28 nov 2022
 </td>
 <td class="listing-title">
 <a href="./til/duckdb-creare-parquet-csv/index.html" class="title">DuckDB: creare un file parquet a partire da un CSV</a>
-</td>
-<td class="listing-author">
-Andrea Borruso
 </td>
 </tr>
 <tr data-index="1" data-categories="quarto,csv,til,rstats" data-listing-date-sort="1669417200000" data-listing-file-modified-sort="1669566494585" data-listing-reading-time-sort="0.25" data-listing-title-sort="Quarto: renderizzare una tabella a partire da un CSV" data-listing-filename-sort="index.qmd">
@@ -250,9 +241,6 @@ Andrea Borruso
 <td class="listing-title">
 <a href="./til/quarto-renderizzare-tabelle-r/index.html" class="title">Quarto: renderizzare una tabella a partire da un CSV</a>
 </td>
-<td class="listing-author">
-Andrea Borruso
-</td>
 </tr>
 <tr data-index="2" data-categories="quarto,altair,grafici,observable,til" data-listing-date-sort="1669071600000" data-listing-file-modified-sort="1669454403815" data-listing-reading-time-sort="0.695" data-listing-title-sort="Fare convivere una cella Observable e un grafico Altair in Quarto" data-listing-filename-sort="index.qmd">
 <td class="listing-date">
@@ -260,9 +248,6 @@ Andrea Borruso
 </td>
 <td class="listing-title">
 <a href="./til/quarto-mescolare-observable-altair/index.html" class="title">Fare convivere una cella Observable e un grafico Altair in Quarto</a>
-</td>
-<td class="listing-author">
-Andrea Borruso
 </td>
 </tr>
 <tr data-index="3" data-categories="quarto,csv,observable,til" data-listing-date-sort="1668985200000" data-listing-file-modified-sort="1669151564181" data-listing-reading-time-sort="0.275" data-listing-title-sort="Quarto: leggere un CSV via Obeservable e visualizzare i dati" data-listing-filename-sort="index.qmd">
@@ -272,9 +257,6 @@ Andrea Borruso
 <td class="listing-title">
 <a href="./til/renderizzare-csv-quarto-observable/index.html" class="title">Quarto: leggere un CSV via Obeservable e visualizzare i dati</a>
 </td>
-<td class="listing-author">
-Andrea Borruso
-</td>
 </tr>
 <tr data-index="4" data-categories="cli,til,grep" data-listing-date-sort="1668898800000" data-listing-file-modified-sort="1668952850151" data-listing-reading-time-sort="0.93" data-listing-title-sort="Come filtrare un file di testo a partire da una lista di stringhe" data-listing-filename-sort="index.qmd">
 <td class="listing-date">
@@ -283,9 +265,6 @@ Andrea Borruso
 <td class="listing-title">
 <a href="./til/filtrare-file-elenco-file-esterno/index.html" class="title">Come filtrare un file di testo a partire da una lista di stringhe</a>
 </td>
-<td class="listing-author">
-Andrea Borruso
-</td>
 </tr>
 <tr data-index="5" data-categories="quarto,til,github" data-listing-date-sort="1668812400000" data-listing-file-modified-sort="1669152000188" data-listing-reading-time-sort="1.24" data-listing-title-sort="Il mio primo blog post" data-listing-filename-sort="index.qmd">
 <td class="listing-date">
@@ -293,9 +272,6 @@ Andrea Borruso
 </td>
 <td class="listing-title">
 <a href="./til/un-sito-in-quarto/index.html" class="title">Il mio primo blog post</a>
-</td>
-<td class="listing-author">
-Andrea Borruso
 </td>
 </tr>
 </tbody>
