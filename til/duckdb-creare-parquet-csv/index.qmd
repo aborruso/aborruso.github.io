@@ -18,7 +18,7 @@ Se si vuole ad esempio creare il file `parquet` del [file `CSV`](comuni_pir.csv)
 ```bash
 duckdb -c "CREATE TABLE comuni_pir AS SELECT * FROM comuni_pir.csv;EXPORT DATABASE '.' (FORMAT PARQUET);"
 ```
-
+- `-c` per eseguire i due comandi, separati da `;` e poi uscire;
 - viene creata una tabella `comuni_pir` in un db temporaneo, a partire dal file `CSV`;
 - viene esportato il [db](comuni_pir.parquet) in formato `parquet` (che conterrà una sola tabella), nella directory corrente.
 
