@@ -252,6 +252,7 @@ background: #75aadb;
 <p>Se si vuole ad esempio creare il file <code>parquet</code> del <a href="comuni_pir.csv">file <code>CSV</code></a> degli <a href="https://idrogeo.isprambiente.it/app/page/open-data">Indicatori di rischio idrogeologico</a> pubblicati da ISPRA, questo è il comando da lanciare:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> <span class="at">-c</span> <span class="st">"CREATE TABLE comuni_pir AS SELECT * FROM comuni_pir.csv;EXPORT DATABASE '.' (FORMAT PARQUET);"</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <ul>
+<li><code>-c</code> per eseguire i due comandi, separati da <code>;</code> e poi uscire;</li>
 <li>viene creata una tabella <code>comuni_pir</code> in un db temporaneo, a partire dal file <code>CSV</code>;</li>
 <li>viene esportato il <a href="comuni_pir.parquet">db</a> in formato <code>parquet</code> (che conterrà una sola tabella), nella directory corrente.</li>
 </ul>
