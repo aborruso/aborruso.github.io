@@ -2,6 +2,7 @@
   {
     "listing": "/blog.html",
     "items": [
+      "/til/duckdb-creare-parquet-csv/index.html",
       "/til/quarto-renderizzare-tabelle-r/index.html",
       "/til/quarto-mescolare-observable-altair/index.html",
       "/til/renderizzare-csv-quarto-observable/index.html",
@@ -12,6 +13,7 @@
   {
     "listing": "/til.html",
     "items": [
+      "/til/duckdb-creare-parquet-csv/index.html",
       "/til/quarto-renderizzare-tabelle-r/index.html",
       "/til/quarto-mescolare-observable-altair/index.html",
       "/til/renderizzare-csv-quarto-observable/index.html",
