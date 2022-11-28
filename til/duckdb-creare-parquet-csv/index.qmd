@@ -18,13 +18,13 @@ Se si vuole ad esempio creare il file `parquet` del [file `CSV`](comuni_pir.csv)
 ```bash
 duckdb -c "CREATE TABLE comuni_pir AS SELECT * FROM comuni_pir.csv;EXPORT DATABASE '.' (FORMAT PARQUET);"
 ```
-- `-c` per eseguire i due comandi, separati da `;` e poi uscire;
 - viene creata una tabella `comuni_pir` in un db temporaneo, a partire dal file `CSV`;
-- viene esportato il [db](comuni_pir.parquet) in formato `parquet` (che conterrà una sola tabella), nella directory corrente.
+- viene esportato il [db](comuni_pir.parquet) in formato `parquet` (che conterrà una sola tabella), nella directory corrente;
+- `-c` per eseguire i due comandi, separati da `;` e poi uscire.
 
 ::: {.callout-note}
 ## Attenzione all'inferencing dei tipi di campo
 
-I campi di un file CSV non sono associati a una definizione di tipo di campo. DuckDB in *import* farà il cosiddetto *inferencing*, ovvero proverà a dedurlo. Non è detto che lo faccia correttamente ed è bene sempre fare un check (celle con valori come `08`, `09`, ecc. sono ad esempio spesso mappate come numeri e non come stringhe).
+I campi di un file CSV non sono associati a una definizione di tipo di campo. DuckDB in *import* farà il cosiddetto *inferencing*, ovvero proverà a dedurlo.<br>Non è detto che lo faccia correttamente ed è bene sempre fare un check (celle con valori come `08`, `09`, ecc. sono ad esempio spesso mappate come numeri e non come stringhe).
 
 :::
