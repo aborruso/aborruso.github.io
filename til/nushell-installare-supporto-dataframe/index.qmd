@@ -6,6 +6,7 @@ draft: false
 categories:
   - nushell
   - dataframe
+  - cli
   - til
 ---
 
@@ -19,7 +20,7 @@ git clone https://github.com/nushell/nushell.git
 
 cd nushell
 
-cargo build --workspace  && cargo run --features dataframe
+cargo install --path=. --all-features
 ```
 
-L'eseguibile `nu` sarà disponibile in `./target/debug/`.
+Verrà installato in `/home/username/.cargo/bin/nu`.

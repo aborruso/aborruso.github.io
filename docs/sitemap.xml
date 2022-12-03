@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://aborruso.github.io/blog.html</loc>
-    <lastmod>2022-12-03T11:23:51.875Z</lastmod>
+    <lastmod>2022-12-03T11:46:07.878Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/index.html</loc>
@@ -10,7 +10,7 @@
   </url>
   <url>
     <loc>https://aborruso.github.io/til.html</loc>
-    <lastmod>2022-12-03T11:23:58.691Z</lastmod>
+    <lastmod>2022-12-03T11:46:12.909Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/til/duckdb-creare-parquet-csv/index.html</loc>
@@ -22,7 +22,7 @@
   </url>
   <url>
     <loc>https://aborruso.github.io/til/nushell-installare-supporto-dataframe/index.html</loc>
-    <lastmod>2022-12-03T11:23:41.964Z</lastmod>
+    <lastmod>2022-12-03T11:45:59.575Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/til/quarto-mescolare-observable-altair/index.html</loc>
