@@ -1,0 +1,25 @@
+---
+title: "Nushell: installarlo con il supporto ai dataframe"
+description: "A partire dal codice sorgente"
+date: "2022-12-03"
+draft: false
+categories:
+  - nushell
+  - dataframe
+  - til
+---
+
+Dalla release `0.72` di [`nushell`](https://www.nushell.sh/) il supporto ai dataframe non è abilitato di *default*.
+
+Questa una modalità di compilarlo, con il supporto abilitato.
+
+```bash
+# clona il repository
+git clone https://github.com/nushell/nushell.git
+
+cd nushell
+
+cargo build --workspace  && cargo run --features dataframe
+```
+
+L'eseguibile `nu` sarà disponibile in `./target/debug/`.
