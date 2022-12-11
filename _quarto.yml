@@ -8,17 +8,17 @@ project:
   output-dir: docs
 
 website:
-  site-url: https://aborruso.github.io/
+  site-url: https://aborruso.github.io
   title: "aborruso's website"
-  favicon: risorse/favicon.png
+  favicon: "risorse/favicon.png"
   page-navigation: true
   twitter-card:
     creator: "@aborruso"
     card-style: summary_large_image
-    image: "risorse/twitter-card.png"
+    image: "/risorse/twitter-card.png"
   open-graph:
     locale: it_IT
-    image: "risorse/opengraph.png"
+    image: "/risorse/opengraph.png"
   repo-url: https://github.com/aborruso/aborruso.github.io
   repo-actions: [edit, issue]
   navbar:

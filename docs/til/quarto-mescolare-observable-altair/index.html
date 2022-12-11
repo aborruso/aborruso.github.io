@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="it" xml:lang="it" dir="ltr"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.21">
+<meta name="generator" content="quarto-1.3.47">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -335,6 +335,7 @@ background: #75aadb;
 {"contents":[{"methodName":"interpret","cellName":"ojs-cell-1","inline":false,"source":"data = FileAttachment(\"ojs.csv\").csv({ typed: true })\nInputs.table(data)\n"},{"methodName":"interpret","cellName":"ojs-cell-2","inline":false,"source":"file = FileAttachment(\"chart.json\").json()\nembed = require(\"vega-embed@6\")\nembed(file)\n"}]}
 </script>
 <script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
 window._ojs.paths.runtimeToDoc = "../../til/quarto-mescolare-observable-altair";
 window._ojs.paths.runtimeToRoot = "../..";
 window._ojs.paths.docToRoot = "../..";
