@@ -6,6 +6,7 @@ draft: false
 engine: knitr
 categories:
   - quarto
+  - TIL
 ---
 
 Ad esempio voglio usare Miller per calcolare la somma di un campo di un file CSV.

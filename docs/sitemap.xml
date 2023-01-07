@@ -2,46 +2,46 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://aborruso.github.io/blog.html</loc>
-    <lastmod>2023-01-07T15:39:03.228Z</lastmod>
+    <lastmod>2023-01-07T15:46:29.004Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/index.html</loc>
-    <lastmod>2023-01-07T15:39:04.473Z</lastmod>
+    <lastmod>2023-01-07T15:46:30.367Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/til.html</loc>
-    <lastmod>2023-01-07T15:39:10.438Z</lastmod>
+    <lastmod>2023-01-07T15:46:36.241Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/til/duckdb-creare-parquet-csv/index.html</loc>
-    <lastmod>2023-01-07T15:39:12.495Z</lastmod>
+    <lastmod>2023-01-07T15:46:38.205Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/til/filtrare-file-elenco-file-esterno/index.html</loc>
-    <lastmod>2023-01-07T15:39:14.257Z</lastmod>
+    <lastmod>2023-01-07T15:46:40.715Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/til/mescolare-r-python-bash/index.html</loc>
-    <lastmod>2023-01-07T15:39:17.789Z</lastmod>
+    <lastmod>2023-01-07T15:46:43.348Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/til/nushell-installare-supporto-dataframe/index.html</loc>
-    <lastmod>2023-01-07T15:39:19.995Z</lastmod>
+    <lastmod>2023-01-07T15:46:45.553Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/til/quarto-mescolare-observable-altair/index.html</loc>
-    <lastmod>2023-01-07T15:39:24.017Z</lastmod>
+    <lastmod>2023-01-07T15:46:50.084Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/til/quarto-renderizzare-tabelle-r/index.html</loc>
-    <lastmod>2023-01-07T15:39:27.169Z</lastmod>
+    <lastmod>2023-01-07T15:46:52.932Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/til/renderizzare-csv-quarto-observable/index.html</loc>
-    <lastmod>2023-01-07T15:39:29.758Z</lastmod>
+    <lastmod>2023-01-07T15:46:55.306Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/til/un-sito-in-quarto/index.html</loc>
-    <lastmod>2023-01-07T15:39:32.493Z</lastmod>
+    <lastmod>2023-01-07T15:46:57.383Z</lastmod>
   </url>
 </urlset>
