@@ -2,42 +2,46 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://aborruso.github.io/blog.html</loc>
-    <lastmod>2022-12-11T09:13:15.166Z</lastmod>
+    <lastmod>2023-01-07T15:39:03.228Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/index.html</loc>
-    <lastmod>2022-12-11T09:13:16.977Z</lastmod>
+    <lastmod>2023-01-07T15:39:04.473Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/til.html</loc>
-    <lastmod>2022-12-11T09:13:23.257Z</lastmod>
+    <lastmod>2023-01-07T15:39:10.438Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/til/duckdb-creare-parquet-csv/index.html</loc>
-    <lastmod>2022-12-11T09:13:25.655Z</lastmod>
+    <lastmod>2023-01-07T15:39:12.495Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/til/filtrare-file-elenco-file-esterno/index.html</loc>
-    <lastmod>2022-12-11T09:13:28.063Z</lastmod>
+    <lastmod>2023-01-07T15:39:14.257Z</lastmod>
+  </url>
+  <url>
+    <loc>https://aborruso.github.io/til/mescolare-r-python-bash/index.html</loc>
+    <lastmod>2023-01-07T15:39:17.789Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/til/nushell-installare-supporto-dataframe/index.html</loc>
-    <lastmod>2022-12-11T09:13:30.451Z</lastmod>
+    <lastmod>2023-01-07T15:39:19.995Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/til/quarto-mescolare-observable-altair/index.html</loc>
-    <lastmod>2022-12-11T09:13:35.237Z</lastmod>
+    <lastmod>2023-01-07T15:39:24.017Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/til/quarto-renderizzare-tabelle-r/index.html</loc>
-    <lastmod>2022-12-11T09:13:38.910Z</lastmod>
+    <lastmod>2023-01-07T15:39:27.169Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/til/renderizzare-csv-quarto-observable/index.html</loc>
-    <lastmod>2022-12-11T09:13:41.879Z</lastmod>
+    <lastmod>2023-01-07T15:39:29.758Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/til/un-sito-in-quarto/index.html</loc>
-    <lastmod>2022-12-11T09:13:44.166Z</lastmod>
+    <lastmod>2023-01-07T15:39:32.493Z</lastmod>
   </url>
 </urlset>

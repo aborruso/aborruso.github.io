@@ -2,6 +2,7 @@
   {
     "listing": "/blog.html",
     "items": [
+      "/til/mescolare-r-python-bash/index.html",
       "/til/nushell-installare-supporto-dataframe/index.html",
       "/til/duckdb-creare-parquet-csv/index.html",
       "/til/quarto-renderizzare-tabelle-r/index.html",
@@ -14,6 +15,7 @@
   {
     "listing": "/til.html",
     "items": [
+      "/til/mescolare-r-python-bash/index.html",
       "/til/nushell-installare-supporto-dataframe/index.html",
       "/til/duckdb-creare-parquet-csv/index.html",
       "/til/quarto-renderizzare-tabelle-r/index.html",

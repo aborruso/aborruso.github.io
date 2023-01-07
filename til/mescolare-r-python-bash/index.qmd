@@ -1,0 +1,38 @@
+---
+title: "Pagina con codice R, Python e utility Bash"
+description: "Combinare le variabili tra blocchi di codice"
+date: "2023-01-07"
+draft: false
+engine: knitr
+categories:
+  - quarto
+---
+
+Ad esempio voglio usare Miller per calcolare la somma di un campo di un file CSV.
+
+Uso `system` in `r`, per lanciare un comando di sistema (in questo caso sono in ambiente Linux), e associo l'output a una variabile.
+
+```{r}
+#| echo: fenced
+sum <- system('mlr --c2n stats1 -a sum -f a /mnt/c/github/aborruso.github.io/til/mescolare-r-python-bash/input.csv', intern = TRUE)
+```
+
+Così facendo posso usare un'opzione comodissima dell'_engine_ `knitr`, che mi consente di inserire il riferimento a una variabile `r` (o un comando `r`) all'interno di un testo `markdown`.
+
+Se scrivo ad esempio
+
+```{markdown}
+La somma è `r sum`.
+```
+
+Avrò restituito
+
+La somma è `r sum`.
+
+E tramite il _package_ di `r` `reticulate` ([qui](https://nrennie.rbind.io/blog/combining-r-and-python-with-reticulate-and-quarto/) un tutorial a tema), posso passare la variabile `r` a un blocco di codice `python`:
+
+```{python}
+#| echo: fenced
+sum_py = r.sum
+print(sum_py)
+```

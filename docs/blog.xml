@@ -9,8 +9,49 @@
 <link>https://aborruso.github.io/blog.html</link>
 <atom:link href="https://aborruso.github.io/blog.xml" rel="self" type="application/rss+xml"/>
 <description></description>
-<generator>quarto-1.3.47</generator>
-<lastBuildDate>Fri, 02 Dec 2022 23:00:00 GMT</lastBuildDate>
+<generator>quarto-1.3.88</generator>
+<lastBuildDate>Fri, 06 Jan 2023 23:00:00 GMT</lastBuildDate>
+<item>
+  <title>Pagina con codice R, Python e utility Bash</title>
+  <dc:creator>Andrea Borruso</dc:creator>
+  <link>https://aborruso.github.io/til/mescolare-r-python-bash/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>Ad esempio voglio usare Miller per calcolare la somma di un campo di un file CSV.</p>
+<p>Uso <code>system</code> in <code>r</code>, per lanciare un comando di sistema (in questo caso sono in ambiente Linux), e associo l’output a una variabile.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><span class="in" style="color: #5E5E5E;">```{r}</span></span>
+<span id="cb1-2">sum <span class="ot" style="color: #003B4F;">&lt;-</span> <span class="fu" style="color: #4758AB;">system</span>(<span class="st" style="color: #20794D;">'mlr --c2n stats1 -a sum -f a /mnt/c/github/aborruso.github.io/til/mescolare-r-python-bash/input.csv'</span>, <span class="at" style="color: #657422;">intern =</span> <span class="cn" style="color: #8f5902;">TRUE</span>)</span>
+<span id="cb1-3"><span class="in" style="color: #5E5E5E;">```</span></span></code></pre></div>
+</div>
+<p>Così facendo posso usare un’opzione comodissima dell’<em>engine</em> <code>knitr</code>, che mi consente di inserire il riferimento a una variabile <code>r</code> (o un comando <code>r</code>) all’interno di un testo <code>markdown</code>.</p>
+<p>Se scrivo ad esempio</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1">La somma è <span class="in" style="color: #5E5E5E;">`r sum`</span>.</span></code></pre></div>
+</div>
+<p>Avrò restituito</p>
+<p>La somma è 9.</p>
+<p>E tramite il <em>package</em> di <code>r</code> <code>reticulate</code>, posso passare la variabile <code>r</code> a un blocco di codice <code>python</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><span class="in" style="color: #5E5E5E;">```{python}</span></span>
+<span id="cb3-2">sum_py <span class="op" style="color: #5E5E5E;">=</span> r.<span class="bu" style="color: null;">sum</span></span>
+<span id="cb3-3"><span class="bu" style="color: null;">print</span>(sum_py)</span>
+<span id="cb3-4"><span class="in" style="color: #5E5E5E;">```</span></span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>9</code></pre>
+</div>
+</div>
+
+
+
+ ]]></description>
+  <category>quarto</category>
+  <guid>https://aborruso.github.io/til/mescolare-r-python-bash/index.html</guid>
+  <pubDate>Fri, 06 Jan 2023 23:00:00 GMT</pubDate>
+</item>
 <item>
   <title>Nushell: installarlo con il supporto ai dataframe</title>
   <dc:creator>Andrea Borruso</dc:creator>
@@ -24,10 +65,8 @@
 <p>Questa una modalità di compilarlo, con il supporto abilitato.</p>
 <div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="co" style="color: #5E5E5E;"># clona il repository</span></span>
 <span id="cb1-2"><span class="fu" style="color: #4758AB;">git</span> clone https://github.com/nushell/nushell.git</span>
-<span id="cb1-3"></span>
-<span id="cb1-4"><span class="bu" style="color: null;">cd</span> nushell</span>
-<span id="cb1-5"></span>
-<span id="cb1-6"><span class="ex" style="color: null;">cargo</span> install <span class="at" style="color: #657422;">--path</span><span class="op" style="color: #5E5E5E;">=</span>. <span class="at" style="color: #657422;">--all-features</span></span></code></pre></div>
+<span id="cb1-3"><span class="bu" style="color: null;">cd</span> nushell</span>
+<span id="cb1-4"><span class="ex" style="color: null;">cargo</span> install <span class="at" style="color: #657422;">--path</span><span class="op" style="color: #5E5E5E;">=</span>. <span class="at" style="color: #657422;">--all-features</span></span></code></pre></div>
 <p>Verrà installato in <code>/home/username/.cargo/bin/nu</code>.</p>
 
 
@@ -57,7 +96,7 @@
 <li>viene esportato il <a href="comuni_pir.parquet">db</a> in formato <code>parquet</code> (che conterrà una sola tabella), nella directory corrente;</li>
 <li><code>-c</code> per eseguire i due comandi, separati da <code>;</code> e poi uscire.</li>
 </ul>
-<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout callout-style-default callout-note callout-captioned">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
@@ -102,7 +141,7 @@ Attenzione all’inferencing dei tipi di campo
 <div class="cell">
 
 </div>
-<p>E poi le renderizzo in vari modi.</p>
+<p>E poi la renderizzo in vari modi.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><span class="in" style="color: #5E5E5E;">```{r}</span></span>
 <span id="cb2-2"><span class="fu" style="color: #4758AB;">kable</span>(t)</span>
@@ -464,7 +503,7 @@ Attenzione all’inferencing dei tipi di campo
 </div>
 </div>
 </div>
-<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout callout-style-default callout-note callout-captioned">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
@@ -503,7 +542,7 @@ Nota
 <p>Per me questa modalità ha risolto tutto. Ma ne metto un paio di altre.</p>
 <p>Una è basata su <a href="https://github.com/BurntSushi/ripgrep"><code>ripgrep</code></a>, un’altra straordinaria CLI per la ricerca di testo, più rapida di <code>grep</code>:</p>
 <div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="fu" style="color: #4758AB;">unzip</span> <span class="at" style="color: #657422;">-qq</span> <span class="at" style="color: #657422;">-c</span> <span class="st" style="color: #20794D;">"input.zip"</span>  <span class="kw" style="color: #003B4F;">|</span> <span class="ex" style="color: null;">rg</span> <span class="at" style="color: #657422;">-F</span> <span class="at" style="color: #657422;">-f</span> list.txt</span></code></pre></div>
-<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout callout-style-default callout-note callout-captioned">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
@@ -518,7 +557,7 @@ Non si tiene conto del formato
 </div>
 <p>Con <a href="https://github.com/jqnatividad/qsv"><code>qsv</code></a>, è possibile ricercare per colonna:</p>
 <div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="fu" style="color: #4758AB;">unzip</span> <span class="at" style="color: #657422;">-qq</span> <span class="at" style="color: #657422;">-c</span> <span class="st" style="color: #20794D;">"input.zip"</span>  <span class="kw" style="color: #003B4F;">|</span> <span class="ex" style="color: null;">qsv</span> searchset <span class="at" style="color: #657422;">-d</span> <span class="st" style="color: #20794D;">"|"</span> <span class="at" style="color: #657422;">-i</span> <span class="at" style="color: #657422;">-s</span> nomeColonna list.txt</span></code></pre></div>
-<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout callout-style-default callout-note callout-captioned">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
@@ -595,7 +634,7 @@ Nota
 <li>Creating a Website (dal sito ufficiale) <a href="https://quarto.org/docs/websites/" class="uri">https://quarto.org/docs/websites/</a></li>
 <li>Creating a Blog (dal sito ufficiale) <a href="https://quarto.org/docs/websites/website-blog.html" class="uri">https://quarto.org/docs/websites/website-blog.html</a></li>
 </ul>
-<div class="callout-important callout callout-style-simple callout-captioned">
+<div class="callout callout-style-simple callout-important callout-captioned">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
