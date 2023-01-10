@@ -15,7 +15,7 @@ Uso `system` in `r`, per lanciare un comando di sistema (in questo caso sono in 
 
 ```{r}
 #| echo: fenced
-sum <- system('mlr --c2n stats1 -a sum -f a /mnt/c/github/aborruso.github.io/til/mescolare-r-python-bash/input.csv', intern = TRUE)
+sum <- system('mlr --c2n stats1 -a sum -f a input.csv', intern = TRUE)
 ```
 
 Così facendo posso usare un'opzione comodissima dell'_engine_ `knitr`, che mi consente di inserire il riferimento a una variabile `r` (o un comando `r`) all'interno di un testo `markdown`.

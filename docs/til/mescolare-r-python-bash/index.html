@@ -249,7 +249,7 @@ background: #75aadb;
 <p>Uso <code>system</code> in <code>r</code>, per lanciare un comando di sistema (in questo caso sono in ambiente Linux), e associo l’output a una variabile.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>sum <span class="ot">&lt;-</span> <span class="fu">system</span>(<span class="st">'mlr --c2n stats1 -a sum -f a /mnt/c/github/aborruso.github.io/til/mescolare-r-python-bash/input.csv'</span>, <span class="at">intern =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>sum <span class="ot">&lt;-</span> <span class="fu">system</span>(<span class="st">'mlr --c2n stats1 -a sum -f a input.csv'</span>, <span class="at">intern =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Così facendo posso usare un’opzione comodissima dell’<em>engine</em> <code>knitr</code>, che mi consente di inserire il riferimento a una variabile <code>r</code> (o un comando <code>r</code>) all’interno di un testo <code>markdown</code>.</p>
