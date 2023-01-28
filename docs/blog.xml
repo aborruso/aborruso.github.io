@@ -26,7 +26,7 @@
 <div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="fu" style="color: #4758AB;">ls</span> <span class="pp" style="color: #AD0000;">**</span><span class="dt" style="color: #AD0000;">\*</span>  <span class="at" style="color: #657422;">-l</span> <span class="kw" style="color: #003B4F;">|</span> <span class="ex" style="color: null;">where</span> created <span class="op" style="color: #5E5E5E;">&lt;</span>= <span class="er" style="color: #AD0000;">(</span><span class="fu" style="color: #4758AB;">date</span> now<span class="kw" style="color: #003B4F;">)</span> <span class="ex" style="color: null;">-</span> 30day</span></code></pre></div>
 <p>Alcune note:</p>
 <ul>
-<li>legge la cartella corrente e tutte le sue sottocartelle con <code>**\*</code>;</li>
+<li>legge la cartella corrente e tutte le sue sottocartelle con <code>**\*</code> (qui c’è il <em>forward slash</em> e quindi è per sistemi Windows; su Linux è <code>**/*</code>);</li>
 <li>filtra tutti i file creati più di 30 giorni fa con <code>where created &lt;= (date now) - 30day</code>.</li>
 </ul>
 

@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://aborruso.github.io/blog.html</loc>
-    <lastmod>2023-01-28T15:42:06.800Z</lastmod>
+    <lastmod>2023-01-28T16:04:04.536Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/index.html</loc>
@@ -10,7 +10,7 @@
   </url>
   <url>
     <loc>https://aborruso.github.io/til.html</loc>
-    <lastmod>2023-01-28T15:42:12.761Z</lastmod>
+    <lastmod>2023-01-28T16:04:08.893Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/til/duckdb-creare-parquet-csv/index.html</loc>
@@ -46,6 +46,6 @@
   </url>
   <url>
     <loc>https://aborruso.github.io/til/nushell-lista-file-piu-vecchi-di/index.html</loc>
-    <lastmod>2023-01-28T15:41:56.832Z</lastmod>
+    <lastmod>2023-01-28T16:03:56.817Z</lastmod>
   </url>
 </urlset>

@@ -81,6 +81,6 @@
     "href": "til/nushell-lista-file-piu-vecchi-di/index.html",
     "title": "Estrarre la lista dei file creati più di 30 giorni fa",
     "section": "",
-    "text": "La data di creazione non è un parametro disponibile e/o interrogabile su tutti i tipi di file sytem.\nIl meraviglioso nushell riesce a farlo un po’ ovunque.\nQuesto un esempio:\nls **\\*  -l | where created <= (date now) - 30day\nAlcune note:\n\nlegge la cartella corrente e tutte le sue sottocartelle con **\\*;\nfiltra tutti i file creati più di 30 giorni fa con where created <= (date now) - 30day."
+    "text": "La data di creazione non è un parametro disponibile e/o interrogabile su tutti i tipi di file sytem.\nIl meraviglioso nushell riesce a farlo un po’ ovunque.\nQuesto un esempio:\nls **\\*  -l | where created <= (date now) - 30day\nAlcune note:\n\nlegge la cartella corrente e tutte le sue sottocartelle con **\\* (qui c’è il forward slash e quindi è per sistemi Windows; su Linux è **/*);\nfiltra tutti i file creati più di 30 giorni fa con where created <= (date now) - 30day."
   }
 ]
