@@ -1,0 +1,25 @@
+---
+title: "Estrarre la lista dei file creati più di 30 giorni fa"
+description: "Usare nushell per farlo sia su Linux che su Windows"
+date: "2023-01-28"
+draft: false
+engine: knitr
+categories:
+  - nushell
+  - til
+---
+
+La data di creazione non è un parametro disponibile e/o interrogabile su tutti i tipi di _file sytem_.
+
+Il meraviglioso [`nushell`](https://www.nushell.sh/) riesce a farlo un po' ovunque.
+
+Questo un esempio:
+
+```bash
+ls **\*  -l | where created <= (date now) - 30day
+```
+
+Alcune note:
+
+- legge la cartella corrente e tutte le sue sottocartelle con `**\*`;
+- filtra tutti i file creati più di 30 giorni fa con `where created <= (date now) - 30day`.
