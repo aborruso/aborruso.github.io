@@ -1,0 +1,39 @@
+---
+title: "Quarto: applicare stile CSS"
+description: "Come farlo soltanto per un tag span (ad esempio per una parola)"
+date: "2023-02-26"
+draft: false
+categories:
+  - quarto
+  - css
+---
+
+Se voglio applicare ad esempio a una sola parola **uno stile definito _inline_**, basterà fare come sotto:
+
+```markdown
+L'arancia è [arancione]{style="color:#ffa500"}.
+```
+
+L'arancia è [arancione]{style="color:#ffa500"}.
+
+Se invece voglio associare a una frase uno stile di `bootstrap` (come quelli sui pulsanti), potrò fare in questo modo:
+
+```markdown
+[☝️ Partecipa]{.btn .btn-success}
+```
+
+[☝️ Partecipa]{.btn .btn-success}
+
+Se infine voglio applicare una determinata classe, seguita da un attributo personalizzato, in modo da poter associare uno stile personalizzato tramite uno specifico `CSS Selector`, potrò fare così:
+
+```markdown
+[Lorem ipsum]{.class key="val"}
+```
+
+Il codice `HTML` generato sarà:
+
+```html
+<p>
+  <span class="class" data-key="val">Lorem ipsum</span>
+</p>
+```

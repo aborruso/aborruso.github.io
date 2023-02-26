@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="it" xml:lang="it" dir="ltr"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.115">
+<meta name="generator" content="quarto-1.3.228">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -71,9 +71,9 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
       
-      searchColumns: ["listing-date","listing-title","listing-author","listing-description","listing-categories"],
+      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -120,6 +120,7 @@ ul.task-list li input[type="checkbox"] {
     <span class="navbar-title">aborruso’s website</span>
     </a>
   </div>
+            <div id="quarto-search" class="" title="Search"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
@@ -138,7 +139,8 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text">TIL</span></a>
   </li>  
 </ul>
-              <div id="quarto-search" class="" title="Search"></div>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
           </div> <!-- /navcollapse -->
       </div> <!-- /container-fluid -->
     </nav>
@@ -165,7 +167,7 @@ ul.task-list li input[type="checkbox"] {
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    <h5 class="quarto-listing-category-title">Categorie</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">Tutti <span class="quarto-category-count">(9)</span></div><div class="category" data-category="altair">altair <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cli">cli <span class="quarto-category-count">(3)</span></div><div class="category" data-category="csv">csv <span class="quarto-category-count">(3)</span></div><div class="category" data-category="dataframe">dataframe <span class="quarto-category-count">(1)</span></div><div class="category" data-category="duckdb">duckdb <span class="quarto-category-count">(1)</span></div><div class="category" data-category="github">github <span class="quarto-category-count">(1)</span></div><div class="category" data-category="grafici">grafici <span class="quarto-category-count">(1)</span></div><div class="category" data-category="grep">grep <span class="quarto-category-count">(1)</span></div><div class="category" data-category="nushell">nushell <span class="quarto-category-count">(2)</span></div><div class="category" data-category="observable">observable <span class="quarto-category-count">(2)</span></div><div class="category" data-category="parquet">parquet <span class="quarto-category-count">(1)</span></div><div class="category" data-category="quarto">quarto <span class="quarto-category-count">(5)</span></div><div class="category" data-category="rstats">rstats <span class="quarto-category-count">(1)</span></div><div class="category" data-category="til">til <span class="quarto-category-count">(9)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categorie</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">Tutti <span class="quarto-category-count">(10)</span></div><div class="category" data-category="altair">altair <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cli">cli <span class="quarto-category-count">(3)</span></div><div class="category" data-category="css">css <span class="quarto-category-count">(1)</span></div><div class="category" data-category="csv">csv <span class="quarto-category-count">(3)</span></div><div class="category" data-category="dataframe">dataframe <span class="quarto-category-count">(1)</span></div><div class="category" data-category="duckdb">duckdb <span class="quarto-category-count">(1)</span></div><div class="category" data-category="github">github <span class="quarto-category-count">(1)</span></div><div class="category" data-category="grafici">grafici <span class="quarto-category-count">(1)</span></div><div class="category" data-category="grep">grep <span class="quarto-category-count">(1)</span></div><div class="category" data-category="nushell">nushell <span class="quarto-category-count">(2)</span></div><div class="category" data-category="observable">observable <span class="quarto-category-count">(2)</span></div><div class="category" data-category="parquet">parquet <span class="quarto-category-count">(1)</span></div><div class="category" data-category="quarto">quarto <span class="quarto-category-count">(6)</span></div><div class="category" data-category="rstats">rstats <span class="quarto-category-count">(1)</span></div><div class="category" data-category="til">til <span class="quarto-category-count">(9)</span></div></div></div>
 <!-- main -->
 <main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
 
@@ -178,7 +180,48 @@ ul.task-list li input[type="checkbox"] {
 
 <div class="quarto-listing quarto-listing-container-default" id="listing-listing">
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="nushell,til" data-listing-date-sort="1674860400000" data-listing-file-modified-sort="1674921778232" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="0.42">
+<div class="quarto-post image-right" data-index="0" data-categories="quarto,css" data-listing-date-sort="1677366000000" data-listing-file-modified-sort="1677452301022" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="0.41">
+<div class="thumbnail">
+<p><a href="./til/quarto-applicare-stili-span/index.html"> <div class="listing-item-img-placeholder" >&nbsp;</div> </a></p>
+</div>
+<div class="body">
+<a href="./til/quarto-applicare-stili-span/index.html">
+<h3 class="no-anchor listing-title">
+Quarto: applicare stile CSS
+</h3>
+<div class="listing-subtitle">
+
+</div>
+</a>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('quarto'); return false;">
+quarto
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('css'); return false;">
+css
+</div>
+</div>
+<a href="./til/quarto-applicare-stili-span/index.html">
+<div class="listing-description">
+<p>Come farlo soltanto per un tag span (ad esempio per una parola)</p>
+</div>
+</a>
+</div>
+<div class="metadata">
+<a href="./til/quarto-applicare-stili-span/index.html">
+<div class="listing-date">
+26 feb 2023
+</div>
+<div class="listing-author">
+Andrea Borruso
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="1" data-categories="nushell,til" data-listing-date-sort="1674860400000" data-listing-file-modified-sort="1674921778232" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="0.42">
+<div class="thumbnail">
+<p><a href="./til/nushell-lista-file-piu-vecchi-di/index.html"> <div class="listing-item-img-placeholder" >&nbsp;</div> </a></p>
+</div>
 <div class="body">
 <a href="./til/nushell-lista-file-piu-vecchi-di/index.html">
 <h3 class="no-anchor listing-title">
@@ -213,7 +256,10 @@ Andrea Borruso
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="1" data-categories="quarto,til" data-listing-date-sort="1673046000000" data-listing-file-modified-sort="1673376910129" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="0.575">
+<div class="quarto-post image-right" data-index="2" data-categories="quarto,til" data-listing-date-sort="1673046000000" data-listing-file-modified-sort="1673376910129" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="0.575">
+<div class="thumbnail">
+<p><a href="./til/mescolare-r-python-bash/index.html"> <div class="listing-item-img-placeholder" >&nbsp;</div> </a></p>
+</div>
 <div class="body">
 <a href="./til/mescolare-r-python-bash/index.html">
 <h3 class="no-anchor listing-title">
@@ -248,7 +294,10 @@ Andrea Borruso
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="2" data-categories="nushell,dataframe,cli,til" data-listing-date-sort="1670022000000" data-listing-file-modified-sort="1673098385561" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="0.155">
+<div class="quarto-post image-right" data-index="3" data-categories="nushell,dataframe,cli,til" data-listing-date-sort="1670022000000" data-listing-file-modified-sort="1673098385561" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="0.155">
+<div class="thumbnail">
+<p><a href="./til/nushell-installare-supporto-dataframe/index.html"> <div class="listing-item-img-placeholder" >&nbsp;</div> </a></p>
+</div>
 <div class="body">
 <a href="./til/nushell-installare-supporto-dataframe/index.html">
 <h3 class="no-anchor listing-title">
@@ -289,7 +338,10 @@ Andrea Borruso
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="3" data-categories="duckdb,csv,til,parquet,cli" data-listing-date-sort="1669590000000" data-listing-file-modified-sort="1673098385525" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="0.725">
+<div class="quarto-post image-right" data-index="4" data-categories="duckdb,csv,til,parquet,cli" data-listing-date-sort="1669590000000" data-listing-file-modified-sort="1673098385525" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="0.725">
+<div class="thumbnail">
+<p><a href="./til/duckdb-creare-parquet-csv/index.html"> <div class="listing-item-img-placeholder" >&nbsp;</div> </a></p>
+</div>
 <div class="body">
 <a href="./til/duckdb-creare-parquet-csv/index.html">
 <h3 class="no-anchor listing-title">
@@ -333,7 +385,10 @@ Andrea Borruso
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="4" data-categories="quarto,csv,til,rstats" data-listing-date-sort="1669417200000" data-listing-file-modified-sort="1673098385642" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="0.25">
+<div class="quarto-post image-right" data-index="5" data-categories="quarto,csv,til,rstats" data-listing-date-sort="1669417200000" data-listing-file-modified-sort="1673098385642" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="0.25">
+<div class="thumbnail">
+<p><a href="./til/quarto-renderizzare-tabelle-r/index.html"> <div class="listing-item-img-placeholder" >&nbsp;</div> </a></p>
+</div>
 <div class="body">
 <a href="./til/quarto-renderizzare-tabelle-r/index.html">
 <h3 class="no-anchor listing-title">
@@ -374,7 +429,10 @@ Andrea Borruso
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="5" data-categories="quarto,altair,grafici,observable,til" data-listing-date-sort="1669071600000" data-listing-file-modified-sort="1673098385609" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="0.695">
+<div class="quarto-post image-right" data-index="6" data-categories="quarto,altair,grafici,observable,til" data-listing-date-sort="1669071600000" data-listing-file-modified-sort="1673098385609" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="0.695">
+<div class="thumbnail">
+<p><a href="./til/quarto-mescolare-observable-altair/index.html"> <div class="listing-item-img-placeholder" >&nbsp;</div> </a></p>
+</div>
 <div class="body">
 <a href="./til/quarto-mescolare-observable-altair/index.html">
 <h3 class="no-anchor listing-title">
@@ -418,7 +476,10 @@ Andrea Borruso
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="6" data-categories="quarto,csv,observable,til" data-listing-date-sort="1668985200000" data-listing-file-modified-sort="1673098385694" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="0.275">
+<div class="quarto-post image-right" data-index="7" data-categories="quarto,csv,observable,til" data-listing-date-sort="1668985200000" data-listing-file-modified-sort="1673098385694" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="0.275">
+<div class="thumbnail">
+<p><a href="./til/renderizzare-csv-quarto-observable/index.html"> <div class="listing-item-img-placeholder" >&nbsp;</div> </a></p>
+</div>
 <div class="body">
 <a href="./til/renderizzare-csv-quarto-observable/index.html">
 <h3 class="no-anchor listing-title">
@@ -459,7 +520,10 @@ Andrea Borruso
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="7" data-categories="cli,til,grep" data-listing-date-sort="1668898800000" data-listing-file-modified-sort="1673098385543" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="0.93">
+<div class="quarto-post image-right" data-index="8" data-categories="cli,til,grep" data-listing-date-sort="1668898800000" data-listing-file-modified-sort="1673098385543" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="0.93">
+<div class="thumbnail">
+<p><a href="./til/filtrare-file-elenco-file-esterno/index.html"> <div class="listing-item-img-placeholder" >&nbsp;</div> </a></p>
+</div>
 <div class="body">
 <a href="./til/filtrare-file-elenco-file-esterno/index.html">
 <h3 class="no-anchor listing-title">
@@ -497,7 +561,10 @@ Andrea Borruso
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="8" data-categories="quarto,til,github" data-listing-date-sort="1668812400000" data-listing-file-modified-sort="1673098385714" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1.24">
+<div class="quarto-post image-right" data-index="9" data-categories="quarto,til,github" data-listing-date-sort="1668812400000" data-listing-file-modified-sort="1673098385714" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1.24">
+<div class="thumbnail">
+<p><a href="./til/un-sito-in-quarto/index.html"> <div class="listing-item-img-placeholder" >&nbsp;</div> </a></p>
+</div>
 <div class="body">
 <a href="./til/un-sito-in-quarto/index.html">
 <h3 class="no-anchor listing-title">
@@ -763,7 +830,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
@@ -777,7 +844,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">Costruito con <a href="https://quarto.org">quarto</a> 😍 | Contenuti in <a href="https://creativecommons.org/licenses/by/4.0/deed.it">CC BY 4.0</a></div>   
-    <div class="nav-footer-right">
+    <div class="nav-footer-center"><div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/aborruso/aborruso.github.io/edit/main/blog.qmd" class="toc-action">Modifica questa pagina</a></p><p><a href="https://github.com/aborruso/aborruso.github.io/issues/new" class="toc-action">Segnala un problema</a></p></div></div></div><div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">
     <a class="nav-link" href="https://twitter.com/aborruso">
