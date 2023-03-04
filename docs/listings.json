@@ -2,6 +2,7 @@
   {
     "listing": "/blog.html",
     "items": [
+      "/til/duckdb-ottimizzazione-performance-import-csv-jsonl-creazione-parquet/index.html",
       "/til/quarto-applicare-stili-span/index.html",
       "/til/nushell-lista-file-piu-vecchi-di/index.html",
       "/til/mescolare-r-python-bash/index.html",
@@ -17,6 +18,7 @@
   {
     "listing": "/til.html",
     "items": [
+      "/til/duckdb-ottimizzazione-performance-import-csv-jsonl-creazione-parquet/index.html",
       "/til/quarto-applicare-stili-span/index.html",
       "/til/nushell-lista-file-piu-vecchi-di/index.html",
       "/til/mescolare-r-python-bash/index.html",

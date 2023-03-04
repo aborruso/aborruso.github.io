@@ -1,0 +1,33 @@
+---
+title: "DuckDB: creare un file parquet a partire da file di testo di grandi dimensioni"
+description: "Un esempio a partire da un file CSV"
+date: "2023-02-26"
+draft: false
+categories:
+  - duckdb
+  - csv
+  - parquet
+  - performance
+---
+
+In queste settimane ho guardato un po' i dati della "[Banca dati Servizio Contratti Pubblici - SCP](https://pnrr.datibenecomune.it/fonti/scp/)" che contiene gli **avvisi**, i **bandi** e gli **esiti di gara** in **formato aperto**, raccolti dalla “Banca dati SCP - Servizio Contratti Pubblici”, gestita dalla Direzione Generale per la regolazione e i contratti pubblici del Ministero delle Infrastrutture e Trasporti.
+
+Nel [dataset](https://dati.mit.gov.it/catalog/dataset/scp) sono presenti file CSV di medie dimensioni, come quello denominato `v_od_atti.csv`, composto da 685.000 righe per 45 colonne, per un totale di circa 570 MB.
+
+Non sono _big data_ e ci sono tanti modi per interrogarlo e trasformarlo con poco sforzo e rapidità. Uno molto comodo è quello di usare [**DuckDB**](https://duckdb.org/): prima per la conversione di formato e poi per tutte le _query_ che si vorranno fare.
+
+Molto comodo convertire il `CSV` in formato [`parquet`](https://parquet.apache.org/). Si passa da circa 570 a 45 MB, e si ha a disposizione un formato che è rapidissimo da interrogare.
+
+Per farlo si può usare DuckDB a riga di comando:
+
+```bash
+echo "COPY (SELECT *
+FROM read_csv_auto('input.csv'))
+TO 'output.parquet' (FORMAT 'PARQUET',
+CODEC  'Snappy',PER_THREAD_OUTPUT TRUE);" \
+| duckdb
+```
+
+E in 10 secondi (sulla mia macchina con 16 GB di RAM e un pentium 7) il file è pronto.
+
+La preziosa fonte/ispirazione è il [bravissimo Mark Litwintschik](https://tech.marksblogg.com/duckdb-geospatial-gis.html).

@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Andrea Borruso">
+<meta name="description" content="Un esempio a partire da un file CSV">
 
-<title>aborruso’s website - Andrea Borruso</title>
+<title>aborruso’s website - DuckDB: creare un file parquet a partire da file di testo di grandi dimensioni</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,25 +22,60 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./risorse/favicon.png" rel="icon" type="image/png">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../risorse/favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -58,19 +95,32 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Inviare"
   }
 }</script>
+<style>
+    .quarto-title-block .quarto-title-banner,
+    .quarto-title-block .quarto-title-banner h1,
+    .quarto-title-block .quarto-title-banner h2,
+    .quarto-title-block .quarto-title-banner h3,
+    .quarto-title-block .quarto-title-banner h4,
+    .quarto-title-block .quarto-title-banner h5,
+    .quarto-title-block .quarto-title-banner h6
+    {
+      color: #ffffff;
+background: #75aadb;
+    }
+    </style>
 <link rel="alternate" type="application/rss+xml" title="Il blog del sito di Andrea Borruso" href="https://aborruso.github.io/blog.xml">
 
 
-<link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="aborruso’s website - Andrea Borruso">
-<meta property="og:description" content="">
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="aborruso’s website - DuckDB: creare un file parquet a partire da file di testo di grandi dimensioni">
+<meta property="og:description" content="Un esempio a partire da un file CSV">
 <meta property="og:image" content="https://aborruso.github.io/risorse/opengraph.png">
 <meta property="og:site-name" content="aborruso's website">
 <meta property="og:locale" content="it_IT">
 <meta property="og:image:height" content="630">
 <meta property="og:image:width" content="1200">
-<meta name="twitter:title" content="aborruso’s website - Andrea Borruso">
-<meta name="twitter:description" content="">
+<meta name="twitter:title" content="aborruso’s website - DuckDB: creare un file parquet a partire da file di testo di grandi dimensioni">
+<meta name="twitter:description" content="Un esempio a partire da un file CSV">
 <meta name="twitter:image" content="https://aborruso.github.io/risorse/twitter-card.png">
 <meta name="twitter:creator" content="@aborruso">
 <meta name="twitter:card" content="summary_large_image">
@@ -78,14 +128,14 @@ ul.task-list li input[type="checkbox"] {
 <meta name="twitter:image-width" content="1024">
 </head>
 
-<body class="nav-fixed">
+<body class="floating nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">aborruso’s website</span>
     </a>
   </div>
@@ -96,15 +146,15 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" rel="" target="" aria-current="page">
+    <a class="nav-link" href="../../index.html" rel="" target="">
  <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./blog.html" rel="" target="">
+    <a class="nav-link" href="../../blog.html" rel="" target="">
  <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./til.html" rel="" target="">
+    <a class="nav-link" href="../../til.html" rel="" target="">
  <span class="menu-text">TIL</span></a>
   </li>  
 </ul>
@@ -115,56 +165,85 @@ ul.task-list li input[type="checkbox"] {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">DuckDB: creare un file parquet a partire da file di testo di grandi dimensioni</h1>
+                  <div>
+        <div class="description">
+          Un esempio a partire da un file CSV
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">duckdb</div>
+                <div class="quarto-category">csv</div>
+                <div class="quarto-category">parquet</div>
+                <div class="quarto-category">performance</div>
+              </div>
+                  </div>
+  </div>
+    
+  <div class="quarto-title-meta-author">
+    <div class="quarto-title-meta-heading">Autore/Autrice</div>
+    <div class="quarto-title-meta-heading">Affiliazione</div>
+    
+      <div class="quarto-title-meta-contents">
+      <p class="author"><a href="https://twitter.com/aborruso">Andrea Borruso</a> </p>
+    </div>
+      <div class="quarto-title-meta-contents">
+          <p class="affiliation">
+              <a href="https://ondata.it">
+              Associazione onData
+              </a>
+            </p>
+        </div>
+      </div>
+
+  <div class="quarto-title-meta">
+
+        
+      <div>
+      <div class="quarto-title-meta-heading">Data di Pubblicazione</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">26 febbraio 2023</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">In questa pagina</h2>
-  <ul>
-  <li><a href="#ciao" id="toc-ciao" class="nav-link active" data-scroll-target="#ciao">Ciao</a></li>
-  </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/aborruso/aborruso.github.io/edit/main/index.qmd" class="toc-action">Modifica questa pagina</a></p><p><a href="https://github.com/aborruso/aborruso.github.io/issues/new" class="toc-action">Segnala un problema</a></p></div></div></nav>
     </div>
 <!-- main -->
-<div class="quarto-about-trestles">
-  <div class="about-entity">
-    <img src="images/andrea-borruso.jpg" class="about-image
-  rounded " style="width: 15em;">
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Andrea Borruso</h1>
-</div>
-<div class="quarto-title-meta">
-  </div>
-</header>
-    <div class="about-links">
-  <a href="https://twitter.com/aborruso" class="about-link" rel="" target="">
-    <i class="bi bi-twitter"></i>
-     <span class="about-link-text">Twitter</span>
-  </a>
-  <a href="mailto:aborruso@gmail.com" class="about-link" rel="" target="">
-    <i class="bi bi-envelope"></i>
-     <span class="about-link-text">Email</span>
-  </a>
-</div>
-  </div>
-  <div class="about-contents"><main class="content" id="quarto-document-content">
-
-<section id="ciao" class="level1">
-<h1>Ciao</h1>
-<p>Grazie per essere qui. Questo è uno spazio dove inserirò alcuni appunti sulle cose che imparo, sui progetti che mi piacciono e/o che sto facendo, sugli strumenti con cui lavoro e gioco e sulle persone che incontro.</p>
-<p>Sono socio dell’<a href="https://www.ondata.it/">associazione onData</a>.</p>
-<hr>
-<blockquote class="blockquote">
-<p>Quando hai dato lo stesso consiglio 3 volte, scrivi un post (<a href="https://twitter.com/drob/status/928447584712253440">David Robinson</a>).</p>
-</blockquote>
+<main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
-</section>
-</main></div>
-</div>
- <!-- /main -->
+
+
+<p>In queste settimane ho guardato un po’ i dati della “<a href="https://pnrr.datibenecomune.it/fonti/scp/">Banca dati Servizio Contratti Pubblici - SCP</a>” che contiene gli <strong>avvisi</strong>, i <strong>bandi</strong> e gli <strong>esiti di gara</strong> in <strong>formato aperto</strong>, raccolti dalla “Banca dati SCP - Servizio Contratti Pubblici”, gestita dalla Direzione Generale per la regolazione e i contratti pubblici del Ministero delle Infrastrutture e Trasporti.</p>
+<p>Nel <a href="https://dati.mit.gov.it/catalog/dataset/scp">dataset</a> sono presenti file CSV di medie dimensioni, come quello denominato <code>v_od_atti.csv</code>, composto da 685.000 righe per 45 colonne, per un totale di circa 570 MB.</p>
+<p>Non sono <em>big data</em> e ci sono tanti modi per interrogarlo e trasformarlo con poco sforzo e rapidità. Uno molto comodo è quello di usare <a href="https://duckdb.org/"><strong>DuckDB</strong></a>: prima per la conversione di formato e poi per tutte le <em>query</em> che si vorranno fare.</p>
+<p>Molto comodo convertire il <code>CSV</code> in formato <a href="https://parquet.apache.org/"><code>parquet</code></a>. Si passa da circa 570 a 45 MB, e si ha a disposizione un formato che è rapidissimo da interrogare.</p>
+<p>Per farlo si può usare DuckDB a riga di comando:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"COPY (SELECT *</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="st">FROM read_csv_auto('input.csv'))</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="st">TO 'output.parquet' (FORMAT 'PARQUET',</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="st">CODEC  'Snappy',PER_THREAD_OUTPUT TRUE);"</span> <span class="dt">\</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">|</span> <span class="ex">duckdb</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>E in 10 secondi (sulla mia macchina con 16 GB di RAM e un pentium 7) il file è pronto.</p>
+<p>La preziosa fonte/ispirazione è il <a href="https://tech.marksblogg.com/duckdb-geospatial-gis.html">bravissimo Mark Litwintschik</a>.</p>
+
+
+
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -185,6 +264,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
   toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
   const isCodeAnnotation = (el) => {
     for (const clz of el.classList) {
       if (clz.startsWith('code-annotation-')) {                     
@@ -411,7 +497,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-left">Costruito con <a href="https://quarto.org">quarto</a> 😍 | Contenuti in <a href="https://creativecommons.org/licenses/by/4.0/deed.it">CC BY 4.0</a></div>   
     <div class="nav-footer-center">
       &nbsp;
-    </div>
+    <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/aborruso/aborruso.github.io/edit/main/til/duckdb-ottimizzazione-performance-import-csv-jsonl-creazione-parquet/index.qmd" class="toc-action">Modifica questa pagina</a></p><p><a href="https://github.com/aborruso/aborruso.github.io/issues/new" class="toc-action">Segnala un problema</a></p></div></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">
@@ -421,7 +507,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </a>
   </li>  
     <li class="nav-item compact">
-    <a class="nav-link" href="./blog.xml">
+    <a class="nav-link" href="../../blog.xml">
       <i class="bi bi-rss" role="img">
 </i> 
     </a>
