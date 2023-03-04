@@ -1,7 +1,7 @@
 ---
 title: "DuckDB: creare un file parquet a partire da file di testo di grandi dimensioni"
 description: "Un esempio a partire da un file CSV"
-date: "2023-02-26"
+date: "2023-03-04"
 draft: false
 categories:
   - duckdb
