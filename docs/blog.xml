@@ -9,8 +9,8 @@
 <link>https://aborruso.github.io/blog.html</link>
 <atom:link href="https://aborruso.github.io/blog.xml" rel="self" type="application/rss+xml"/>
 <description></description>
-<generator>quarto-1.3.242</generator>
-<lastBuildDate>Sat, 25 Feb 2023 23:00:00 GMT</lastBuildDate>
+<generator>quarto-1.3.253</generator>
+<lastBuildDate>Fri, 03 Mar 2023 23:00:00 GMT</lastBuildDate>
 <item>
   <title>DuckDB: creare un file parquet a partire da file di testo di grandi dimensioni</title>
   <dc:creator>Andrea Borruso</dc:creator>
@@ -27,25 +27,25 @@
 <p>Per farlo si può usare DuckDB a riga di comando:</p>
 <div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="bu" style="color: null;
 background-color: null;
-font-style: inherit">echo</span> <span class="st" style="color: #20794D;
+font-style: inherit;">echo</span> <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit">"COPY (SELECT *</span></span>
+font-style: inherit;">"COPY (SELECT *</span></span>
 <span id="cb1-2"><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit">FROM read_csv_auto('input.csv'))</span></span>
+font-style: inherit;">FROM read_csv_auto('input.csv'))</span></span>
 <span id="cb1-3"><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit">TO 'output.parquet' (FORMAT 'PARQUET',</span></span>
+font-style: inherit;">TO 'output.parquet' (FORMAT 'PARQUET',</span></span>
 <span id="cb1-4"><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit">CODEC  'Snappy',PER_THREAD_OUTPUT TRUE);"</span> <span class="dt" style="color: #AD0000;
+font-style: inherit;">CODEC  'Snappy',PER_THREAD_OUTPUT TRUE);"</span> <span class="dt" style="color: #AD0000;
 background-color: null;
-font-style: inherit">\</span></span>
+font-style: inherit;">\</span></span>
 <span id="cb1-5"><span class="kw" style="color: #003B4F;
 background-color: null;
-font-style: inherit">|</span> <span class="ex" style="color: null;
+font-style: inherit;">|</span> <span class="ex" style="color: null;
 background-color: null;
-font-style: inherit">duckdb</span></span></code></pre></div>
+font-style: inherit;">duckdb</span></span></code></pre></div>
 <p>E in 10 secondi (sulla mia macchina con 16 GB di RAM e un pentium 7) il file è pronto.</p>
 <p>La preziosa fonte/ispirazione è il <a href="https://tech.marksblogg.com/duckdb-geospatial-gis.html">bravissimo Mark Litwintschik</a>.</p>
 
@@ -57,7 +57,7 @@ font-style: inherit">duckdb</span></span></code></pre></div>
   <category>parquet</category>
   <category>performance</category>
   <guid>https://aborruso.github.io/til/duckdb-ottimizzazione-performance-import-csv-jsonl-creazione-parquet/index.html</guid>
-  <pubDate>Sat, 25 Feb 2023 23:00:00 GMT</pubDate>
+  <pubDate>Fri, 03 Mar 2023 23:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Quarto: applicare stile CSS</title>
@@ -71,55 +71,55 @@ font-style: inherit">duckdb</span></span></code></pre></div>
 <p>Se voglio applicare ad esempio a una sola parola <strong>uno stile definito <em>inline</em></strong>, basterà fare come sotto:</p>
 <div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1">L'arancia è <span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">[</span><span class="ot" style="color: #003B4F;
+font-style: inherit;">[</span><span class="ot" style="color: #003B4F;
 background-color: null;
-font-style: inherit">arancione</span><span class="co" style="color: #5E5E5E;
+font-style: inherit;">arancione</span><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">]</span>{style="color:#ffa500"}.</span></code></pre></div>
+font-style: inherit;">]</span>{style="color:#ffa500"}.</span></code></pre></div>
 <p>L’arancia è <span style="color:#ffa500">arancione</span>.</p>
 <p>Se invece voglio associare a una frase uno stile di <code>bootstrap</code> (come quelli sui pulsanti), potrò fare in questo modo:</p>
 <div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">[</span><span class="ot" style="color: #003B4F;
+font-style: inherit;">[</span><span class="ot" style="color: #003B4F;
 background-color: null;
-font-style: inherit">☝️ Partecipa</span><span class="co" style="color: #5E5E5E;
+font-style: inherit;">☝️ Partecipa</span><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">]</span>{.btn .btn-success}</span></code></pre></div>
+font-style: inherit;">]</span>{.btn .btn-success}</span></code></pre></div>
 <p><span class="btn btn-success">☝️ Partecipa</span></p>
 <p>Se infine voglio applicare una determinata classe, seguita da un attributo personalizzato, in modo da poter associare uno stile personalizzato tramite uno specifico <code>CSS Selector</code>, potrò fare così:</p>
 <div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">[</span><span class="ot" style="color: #003B4F;
+font-style: inherit;">[</span><span class="ot" style="color: #003B4F;
 background-color: null;
-font-style: inherit">Lorem ipsum</span><span class="co" style="color: #5E5E5E;
+font-style: inherit;">Lorem ipsum</span><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">]</span>{.class key="val"}</span></code></pre></div>
+font-style: inherit;">]</span>{.class key="val"}</span></code></pre></div>
 <p>Il codice <code>HTML</code> generato sarà:</p>
 <div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb4-1"><span class="kw" style="color: #003B4F;
 background-color: null;
-font-style: inherit">&lt;p&gt;</span></span>
+font-style: inherit;">&lt;p&gt;</span></span>
 <span id="cb4-2">  <span class="kw" style="color: #003B4F;
 background-color: null;
-font-style: inherit">&lt;span</span> <span class="er" style="color: #AD0000;
+font-style: inherit;">&lt;span</span> <span class="er" style="color: #AD0000;
 background-color: null;
-font-style: inherit">class</span><span class="ot" style="color: #003B4F;
+font-style: inherit;">class</span><span class="ot" style="color: #003B4F;
 background-color: null;
-font-style: inherit">=</span><span class="st" style="color: #20794D;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit">"class"</span> <span class="er" style="color: #AD0000;
+font-style: inherit;">"class"</span> <span class="er" style="color: #AD0000;
 background-color: null;
-font-style: inherit">data-key</span><span class="ot" style="color: #003B4F;
+font-style: inherit;">data-key</span><span class="ot" style="color: #003B4F;
 background-color: null;
-font-style: inherit">=</span><span class="st" style="color: #20794D;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit">"val"</span><span class="kw" style="color: #003B4F;
+font-style: inherit;">"val"</span><span class="kw" style="color: #003B4F;
 background-color: null;
-font-style: inherit">&gt;</span>Lorem ipsum<span class="kw" style="color: #003B4F;
+font-style: inherit;">&gt;</span>Lorem ipsum<span class="kw" style="color: #003B4F;
 background-color: null;
-font-style: inherit">&lt;/span&gt;</span></span>
+font-style: inherit;">&lt;/span&gt;</span></span>
 <span id="cb4-3"><span class="kw" style="color: #003B4F;
 background-color: null;
-font-style: inherit">&lt;/p&gt;</span></span></code></pre></div>
+font-style: inherit;">&lt;/p&gt;</span></span></code></pre></div>
 
 
 
@@ -143,32 +143,63 @@ font-style: inherit">&lt;/p&gt;</span></span></code></pre></div>
 <p>Questo un esempio:</p>
 <div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit">ls</span> <span class="pp" style="color: #AD0000;
+font-style: inherit;">ls</span> <span class="pp" style="color: #AD0000;
 background-color: null;
-font-style: inherit">**</span><span class="dt" style="color: #AD0000;
+font-style: inherit;">**</span><span class="dt" style="color: #AD0000;
 background-color: null;
-font-style: inherit">\*</span>  <span class="at" style="color: #657422;
+font-style: inherit;">\*</span>  <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit">-l</span> <span class="kw" style="color: #003B4F;
+font-style: inherit;">-l</span> <span class="kw" style="color: #003B4F;
 background-color: null;
-font-style: inherit">|</span> <span class="ex" style="color: null;
+font-style: inherit;">|</span> <span class="ex" style="color: null;
 background-color: null;
-font-style: inherit">where</span> created <span class="op" style="color: #5E5E5E;
+font-style: inherit;">where</span> created <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">&lt;</span>= <span class="er" style="color: #AD0000;
+font-style: inherit;">&lt;</span>= <span class="er" style="color: #AD0000;
 background-color: null;
-font-style: inherit">(</span><span class="fu" style="color: #4758AB;
+font-style: inherit;">(</span><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit">date</span> now<span class="kw" style="color: #003B4F;
+font-style: inherit;">date</span> now<span class="kw" style="color: #003B4F;
 background-color: null;
-font-style: inherit">)</span> <span class="ex" style="color: null;
+font-style: inherit;">)</span> <span class="ex" style="color: null;
 background-color: null;
-font-style: inherit">-</span> 30day</span></code></pre></div>
+font-style: inherit;">-</span> 30day</span></code></pre></div>
 <p>Alcune note:</p>
 <ul>
 <li>legge la cartella corrente e tutte le sue sottocartelle con <code>**\*</code> (qui c’è il <em>forward slash</em> e quindi è per sistemi Windows; su Linux è <code>**/*</code>);</li>
 <li>filtra tutti i file creati più di 30 giorni fa con <code>where created &lt;= (date now) - 30day</code>.</li>
 </ul>
+<p>Se si vogliono cancellare gli elementi presenti nella lista del comando precedente:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ls</span> <span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">**</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\*</span>  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-l</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">|</span> <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">where</span> created <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span>= <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">(</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">date</span> now<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">)</span> <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">-</span> 30day <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">|</span> <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">each</span> { rm <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$in</span>.name }</span></code></pre></div>
+<p><code>$in</code> è una variabile creata automaticamente in corrispondenza di una lista.</p>
 
 
 
@@ -192,28 +223,28 @@ font-style: inherit">-</span> 30day</span></code></pre></div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><span class="in" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">```{r}</span></span>
+font-style: inherit;">```{r}</span></span>
 <span id="cb1-2">sum <span class="ot" style="color: #003B4F;
 background-color: null;
-font-style: inherit">&lt;-</span> <span class="fu" style="color: #4758AB;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit">system</span>(<span class="st" style="color: #20794D;
+font-style: inherit;">system</span>(<span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit">'mlr --c2n stats1 -a sum -f a input.csv'</span>, <span class="at" style="color: #657422;
+font-style: inherit;">'mlr --c2n stats1 -a sum -f a input.csv'</span>, <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit">intern =</span> <span class="cn" style="color: #8f5902;
+font-style: inherit;">intern =</span> <span class="cn" style="color: #8f5902;
 background-color: null;
-font-style: inherit">TRUE</span>)</span>
+font-style: inherit;">TRUE</span>)</span>
 <span id="cb1-3"><span class="in" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">```</span></span></code></pre></div>
+font-style: inherit;">```</span></span></code></pre></div>
 </div>
 <p>Così facendo posso usare un’opzione comodissima dell’<em>engine</em> <code>knitr</code>, che mi consente di inserire il riferimento a una variabile <code>r</code> (o un comando <code>r</code>) all’interno di un testo <code>markdown</code>.</p>
 <p>Se scrivo ad esempio</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1">La somma è <span class="in" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">`r sum`</span>.</span></code></pre></div>
+font-style: inherit;">`r sum`</span>.</span></code></pre></div>
 </div>
 <p>Avrò restituito</p>
 <p>La somma è 9.</p>
@@ -221,18 +252,18 @@ font-style: inherit">`r sum`</span>.</span></code></pre></div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><span class="in" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">```{python}</span></span>
+font-style: inherit;">```{python}</span></span>
 <span id="cb3-2">sum_py <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">=</span> r.<span class="bu" style="color: null;
+font-style: inherit;">=</span> r.<span class="bu" style="color: null;
 background-color: null;
-font-style: inherit">sum</span></span>
+font-style: inherit;">sum</span></span>
 <span id="cb3-3"><span class="bu" style="color: null;
 background-color: null;
-font-style: inherit">print</span>(sum_py)</span>
+font-style: inherit;">print</span>(sum_py)</span>
 <span id="cb3-4"><span class="in" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">```</span></span></code></pre></div>
+font-style: inherit;">```</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>9</code></pre>
 </div>
@@ -259,24 +290,24 @@ font-style: inherit">```</span></span></code></pre></div>
 <p>Questa una modalità di compilarlo, con il supporto abilitato.</p>
 <div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit"># clona il repository</span></span>
+font-style: inherit;"># clona il repository</span></span>
 <span id="cb1-2"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit">git</span> clone https://github.com/nushell/nushell.git</span>
+font-style: inherit;">git</span> clone https://github.com/nushell/nushell.git</span>
 <span id="cb1-3"></span>
 <span id="cb1-4"><span class="bu" style="color: null;
 background-color: null;
-font-style: inherit">cd</span> nushell</span>
+font-style: inherit;">cd</span> nushell</span>
 <span id="cb1-5"></span>
 <span id="cb1-6"><span class="ex" style="color: null;
 background-color: null;
-font-style: inherit">cargo</span> install <span class="at" style="color: #657422;
+font-style: inherit;">cargo</span> install <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit">--path</span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">--path</span><span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">=</span>. <span class="at" style="color: #657422;
+font-style: inherit;">=</span>. <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit">--all-features</span></span></code></pre></div>
+font-style: inherit;">--all-features</span></span></code></pre></div>
 <p>Verrà installato in <code>/home/username/.cargo/bin/nu</code>.</p>
 
 
@@ -302,11 +333,11 @@ font-style: inherit">--all-features</span></span></code></pre></div>
 <p>Se si vuole ad esempio creare il file <code>parquet</code> del <a href="comuni_pir.csv">file <code>CSV</code></a> degli <a href="https://idrogeo.isprambiente.it/app/page/open-data">Indicatori di rischio idrogeologico</a> pubblicati da ISPRA, questo è il comando da lanciare:</p>
 <div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;
 background-color: null;
-font-style: inherit">duckdb</span> <span class="at" style="color: #657422;
+font-style: inherit;">duckdb</span> <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit">-c</span> <span class="st" style="color: #20794D;
+font-style: inherit;">-c</span> <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit">"CREATE TABLE comuni_pir AS SELECT * FROM comuni_pir.csv;EXPORT DATABASE '.' (FORMAT PARQUET);"</span></span></code></pre></div>
+font-style: inherit;">"CREATE TABLE comuni_pir AS SELECT * FROM comuni_pir.csv;EXPORT DATABASE '.' (FORMAT PARQUET);"</span></span></code></pre></div>
 <ul>
 <li>viene creata una tabella <code>comuni_pir</code> in un db temporaneo, a partire dal file <code>CSV</code>;</li>
 <li>viene esportato il <a href="comuni_pir.parquet">db</a> in formato <code>parquet</code> (che conterrà una sola tabella), nella directory corrente;</li>
@@ -349,38 +380,38 @@ Attenzione all’inferencing dei tipi di campo
 <p>Per prima cosa carico delle librerie per leggere il CSV e per renderizzare la tabella, e carico la <a href="input.csv">tabella</a>:</p>
 <div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><span class="in" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">```{r}</span></span>
+font-style: inherit;">```{r}</span></span>
 <span id="cb1-2"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit">library</span>(tidyverse)</span>
+font-style: inherit;">library</span>(tidyverse)</span>
 <span id="cb1-3"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit">library</span>(lubridate)</span>
+font-style: inherit;">library</span>(lubridate)</span>
 <span id="cb1-4"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit">library</span>(knitr)</span>
+font-style: inherit;">library</span>(knitr)</span>
 <span id="cb1-5"></span>
 <span id="cb1-6">t <span class="ot" style="color: #003B4F;
 background-color: null;
-font-style: inherit">=</span> <span class="fu" style="color: #4758AB;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit">read_csv</span>(<span class="st" style="color: #20794D;
+font-style: inherit;">read_csv</span>(<span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit">"input.csv"</span>)</span>
+font-style: inherit;">"input.csv"</span>)</span>
 <span id="cb1-7"><span class="in" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">```</span></span></code></pre></div>
+font-style: inherit;">```</span></span></code></pre></div>
 <p>E poi la renderizzo in vari modi.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><span class="in" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">```{r}</span></span>
+font-style: inherit;">```{r}</span></span>
 <span id="cb2-2"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit">kable</span>(t)</span>
+font-style: inherit;">kable</span>(t)</span>
 <span id="cb2-3"><span class="in" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">```</span></span></code></pre></div>
+font-style: inherit;">```</span></span></code></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped">
 <thead>
@@ -463,18 +494,18 @@ font-style: inherit">```</span></span></code></pre></div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><span class="in" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">```{r}</span></span>
+font-style: inherit;">```{r}</span></span>
 <span id="cb3-2"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">#| tbl-cap: "Soltanto le prime righe"</span></span>
+font-style: inherit;">#| tbl-cap: "Soltanto le prime righe"</span></span>
 <span id="cb3-3"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit">kable</span>(<span class="fu" style="color: #4758AB;
+font-style: inherit;">kable</span>(<span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit">head</span>(t))</span>
+font-style: inherit;">head</span>(t))</span>
 <span id="cb3-4"><span class="in" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">```</span></span></code></pre></div>
+font-style: inherit;">```</span></span></code></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped">
 <caption>Soltanto le prime righe </caption>
@@ -523,28 +554,28 @@ font-style: inherit">```</span></span></code></pre></div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><span class="in" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">```{r}</span></span>
+font-style: inherit;">```{r}</span></span>
 <span id="cb4-2"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">#| tbl-cap: "Selezionare righe e colonne"</span></span>
+font-style: inherit;">#| tbl-cap: "Selezionare righe e colonne"</span></span>
 <span id="cb4-3"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit">kable</span>(t[<span class="dv" style="color: #AD0000;
+font-style: inherit;">kable</span>(t[<span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit">1</span><span class="sc" style="color: #5E5E5E;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">:</span><span class="dv" style="color: #AD0000;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit">4</span>, <span class="dv" style="color: #AD0000;
+font-style: inherit;">4</span>, <span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit">1</span><span class="sc" style="color: #5E5E5E;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">:</span><span class="dv" style="color: #AD0000;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
 background-color: null;
-font-style: inherit">2</span>])</span>
+font-style: inherit;">2</span>])</span>
 <span id="cb4-4"><span class="in" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">```</span></span></code></pre></div>
+font-style: inherit;">```</span></span></code></pre></div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped">
 <caption>Selezionare righe e colonne </caption>
@@ -578,19 +609,19 @@ font-style: inherit">```</span></span></code></pre></div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb5-1"><span class="in" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">```{r}</span></span>
+font-style: inherit;">```{r}</span></span>
 <span id="cb5-2"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">#| tbl-cap: "Paginazione"</span></span>
+font-style: inherit;">#| tbl-cap: "Paginazione"</span></span>
 <span id="cb5-3"></span>
 <span id="cb5-4">rmarkdown<span class="sc" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">::</span><span class="fu" style="color: #4758AB;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit">paged_table</span>(t)</span>
+font-style: inherit;">paged_table</span>(t)</span>
 <span id="cb5-5"><span class="in" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">```</span></span></code></pre></div>
+font-style: inherit;">```</span></span></code></pre></div>
 <div class="cell-output-display">
 
 <div data-pagedtable="false"> <div class="table-caption"><p>Paginazione</p></div>
@@ -633,42 +664,42 @@ font-style: inherit">```</span></span></code></pre></div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1" data-startfrom="28" data-source-offset="9" style="background: #f1f3f5;"><pre class="sourceCode java code-with-copy"><code class="sourceCode java" style="counter-reset: source-line 27;"><span id="cb1-28">```<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">{</span>ojs<span class="op" style="color: #5E5E5E;
+font-style: inherit;">{</span>ojs<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">}</span></span>
+font-style: inherit;">}</span></span>
 <span id="cb1-29"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">//| echo: fenced</span></span>
+font-style: inherit;">//| echo: fenced</span></span>
 <span id="cb1-30">data <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">=</span> <span class="fu" style="color: #4758AB;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit">FileAttachment</span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">FileAttachment</span><span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">(</span><span class="st" style="color: #20794D;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit">"ojs.csv"</span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">"ojs.csv"</span><span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">).</span><span class="fu" style="color: #4758AB;
+font-style: inherit;">).</span><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit">csv</span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">csv</span><span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">({</span> typed<span class="op" style="color: #5E5E5E;
+font-style: inherit;">({</span> typed<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">:</span> <span class="kw" style="color: #003B4F;
+font-style: inherit;">:</span> <span class="kw" style="color: #003B4F;
 background-color: null;
-font-style: inherit">true</span> <span class="op" style="color: #5E5E5E;
+font-style: inherit;">true</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">})</span></span>
+font-style: inherit;">})</span></span>
 <span id="cb1-31">Inputs<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">.</span><span class="fu" style="color: #4758AB;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit">table</span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">table</span><span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">(</span>data<span class="op" style="color: #5E5E5E;
+font-style: inherit;">(</span>data<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">)</span></span>
+font-style: inherit;">)</span></span>
 <span id="cb1-32">```</span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -689,146 +720,146 @@ font-style: inherit">)</span></span>
 <div class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><span class="in" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">```{python}</span></span>
+font-style: inherit;">```{python}</span></span>
 <span id="cb2-2"><span class="im" style="color: #00769E;
 background-color: null;
-font-style: inherit">import</span> pandas <span class="im" style="color: #00769E;
+font-style: inherit;">import</span> pandas <span class="im" style="color: #00769E;
 background-color: null;
-font-style: inherit">as</span> pd</span>
+font-style: inherit;">as</span> pd</span>
 <span id="cb2-3"><span class="im" style="color: #00769E;
 background-color: null;
-font-style: inherit">import</span> altair <span class="im" style="color: #00769E;
+font-style: inherit;">import</span> altair <span class="im" style="color: #00769E;
 background-color: null;
-font-style: inherit">as</span> alt</span>
+font-style: inherit;">as</span> alt</span>
 <span id="cb2-4"><span class="im" style="color: #00769E;
 background-color: null;
-font-style: inherit">import</span> warnings</span>
+font-style: inherit;">import</span> warnings</span>
 <span id="cb2-5"></span>
 <span id="cb2-6">warnings.simplefilter(action<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">=</span><span class="st" style="color: #20794D;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit">'ignore'</span>, category<span class="op" style="color: #5E5E5E;
+font-style: inherit;">'ignore'</span>, category<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">=</span><span class="pp" style="color: #AD0000;
+font-style: inherit;">=</span><span class="pp" style="color: #AD0000;
 background-color: null;
-font-style: inherit">FutureWarning</span>)</span>
+font-style: inherit;">FutureWarning</span>)</span>
 <span id="cb2-7"></span>
 <span id="cb2-8">df <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">=</span> pd.read_csv(<span class="st" style="color: #20794D;
+font-style: inherit;">=</span> pd.read_csv(<span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit">"altair.csv"</span>,keep_default_na<span class="op" style="color: #5E5E5E;
+font-style: inherit;">"altair.csv"</span>,keep_default_na<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">=</span><span class="va" style="color: #111111;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
 background-color: null;
-font-style: inherit">False</span>)</span>
+font-style: inherit;">False</span>)</span>
 <span id="cb2-9"></span>
 <span id="cb2-10">df[<span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit">'year'</span>] <span class="op" style="color: #5E5E5E;
+font-style: inherit;">'year'</span>] <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">=</span> pd.to_datetime(df[<span class="st" style="color: #20794D;
+font-style: inherit;">=</span> pd.to_datetime(df[<span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit">'year'</span>], <span class="bu" style="color: null;
+font-style: inherit;">'year'</span>], <span class="bu" style="color: null;
 background-color: null;
-font-style: inherit">format</span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">format</span><span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">=</span><span class="st" style="color: #20794D;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit">'%Y'</span>)</span>
+font-style: inherit;">'%Y'</span>)</span>
 <span id="cb2-11"></span>
 <span id="cb2-12">chart<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">=</span>alt.Chart(df).mark_area().encode(</span>
+font-style: inherit;">=</span>alt.Chart(df).mark_area().encode(</span>
 <span id="cb2-13">    alt.X(<span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit">'year:T'</span>, timeUnit <span class="op" style="color: #5E5E5E;
+font-style: inherit;">'year:T'</span>, timeUnit <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">=</span> <span class="st" style="color: #20794D;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit">'year'</span>,title<span class="op" style="color: #5E5E5E;
+font-style: inherit;">'year'</span>,title<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">=</span><span class="st" style="color: #20794D;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit">'year'</span>,axis<span class="op" style="color: #5E5E5E;
+font-style: inherit;">'year'</span>,axis<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">=</span>alt.Axis(tickCount<span class="op" style="color: #5E5E5E;
+font-style: inherit;">=</span>alt.Axis(tickCount<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">=</span><span class="st" style="color: #20794D;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit">'year'</span>)),</span>
+font-style: inherit;">'year'</span>)),</span>
 <span id="cb2-14">    alt.Y(<span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit">'v:Q'</span>,axis<span class="op" style="color: #5E5E5E;
+font-style: inherit;">'v:Q'</span>,axis<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">=</span>alt.Axis(<span class="bu" style="color: null;
+font-style: inherit;">=</span>alt.Axis(<span class="bu" style="color: null;
 background-color: null;
-font-style: inherit">format</span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">format</span><span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">=</span><span class="st" style="color: #20794D;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit">'%'</span>),title<span class="op" style="color: #5E5E5E;
+font-style: inherit;">'%'</span>),title<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">=</span><span class="st" style="color: #20794D;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit">'percentage'</span>),</span>
+font-style: inherit;">'percentage'</span>),</span>
 <span id="cb2-15">    color<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">=</span><span class="st" style="color: #20794D;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit">'i:N'</span></span>
+font-style: inherit;">'i:N'</span></span>
 <span id="cb2-16">)</span>
 <span id="cb2-17">chart.save(<span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit">'chart.json'</span>)</span>
+font-style: inherit;">'chart.json'</span>)</span>
 <span id="cb2-18"><span class="in" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">```</span></span></code></pre></div>
+font-style: inherit;">```</span></span></code></pre></div>
 </div>
 <p>E infine faccio leggere a Observable la descrizione del grafico, che è stata generata da Altair e lo faccio visualizzare.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3" data-startfrom="59" data-source-offset="9" style="background: #f1f3f5;"><pre class="sourceCode java code-with-copy"><code class="sourceCode java" style="counter-reset: source-line 58;"><span id="cb3-59">```<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">{</span>ojs<span class="op" style="color: #5E5E5E;
+font-style: inherit;">{</span>ojs<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">}</span></span>
+font-style: inherit;">}</span></span>
 <span id="cb3-60"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">//| echo: fenced</span></span>
+font-style: inherit;">//| echo: fenced</span></span>
 <span id="cb3-61">file <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">=</span> <span class="fu" style="color: #4758AB;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit">FileAttachment</span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">FileAttachment</span><span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">(</span><span class="st" style="color: #20794D;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit">"chart.json"</span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">"chart.json"</span><span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">).</span><span class="fu" style="color: #4758AB;
+font-style: inherit;">).</span><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit">json</span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">json</span><span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">()</span></span>
+font-style: inherit;">()</span></span>
 <span id="cb3-62">embed <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">=</span> <span class="fu" style="color: #4758AB;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit">require</span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">require</span><span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">(</span><span class="st" style="color: #20794D;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit">"vega-embed@6"</span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">"vega-embed@6"</span><span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">)</span></span>
+font-style: inherit;">)</span></span>
 <span id="cb3-63"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit">embed</span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">embed</span><span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">(</span>file<span class="op" style="color: #5E5E5E;
+font-style: inherit;">(</span>file<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">)</span></span>
+font-style: inherit;">)</span></span>
 <span id="cb3-64">```</span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -876,56 +907,56 @@ font-style: inherit">)</span></span>
 <p>Si può usare semplicemente il metodo <code>FileAttachment</code> di Observable, per <a href="data.csv"><code>data.csv</code></a></p>
 <div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><span class="in" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">```{ojs}</span></span>
+font-style: inherit;">```{ojs}</span></span>
 <span id="cb1-2">data <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">=</span> <span class="fu" style="color: #4758AB;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit">FileAttachment</span>(<span class="st" style="color: #20794D;
+font-style: inherit;">FileAttachment</span>(<span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit">"data.csv"</span>)<span class="op" style="color: #5E5E5E;
+font-style: inherit;">"data.csv"</span>)<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">.</span><span class="fu" style="color: #4758AB;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit">csv</span>({ <span class="dt" style="color: #AD0000;
+font-style: inherit;">csv</span>({ <span class="dt" style="color: #AD0000;
 background-color: null;
-font-style: inherit">typed</span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">typed</span><span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">:</span> <span class="kw" style="color: #003B4F;
+font-style: inherit;">:</span> <span class="kw" style="color: #003B4F;
 background-color: null;
-font-style: inherit">true</span> })</span>
+font-style: inherit;">true</span> })</span>
 <span id="cb1-3">Inputs<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">.</span><span class="fu" style="color: #4758AB;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit">table</span>(data)</span>
+font-style: inherit;">table</span>(data)</span>
 <span id="cb1-4"><span class="in" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">```</span></span></code></pre></div>
+font-style: inherit;">```</span></span></code></pre></div>
 <p>per ottenere</p>
 <div class="cell">
 <div class="sourceCode cell-code hidden" id="cb2" data-startfrom="26" data-source-offset="-0" style="background: #f1f3f5;"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 25;"><span id="cb2-26">data <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">=</span> <span class="fu" style="color: #4758AB;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit">FileAttachment</span>(<span class="st" style="color: #20794D;
+font-style: inherit;">FileAttachment</span>(<span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit">"data.csv"</span>)<span class="op" style="color: #5E5E5E;
+font-style: inherit;">"data.csv"</span>)<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">.</span><span class="fu" style="color: #4758AB;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit">csv</span>({ <span class="dt" style="color: #AD0000;
+font-style: inherit;">csv</span>({ <span class="dt" style="color: #AD0000;
 background-color: null;
-font-style: inherit">typed</span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">typed</span><span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">:</span> <span class="kw" style="color: #003B4F;
+font-style: inherit;">:</span> <span class="kw" style="color: #003B4F;
 background-color: null;
-font-style: inherit">true</span> })</span>
+font-style: inherit;">true</span> })</span>
 <span id="cb2-27">Inputs<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">.</span><span class="fu" style="color: #4758AB;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit">table</span>(data)</span></code></pre></div>
+font-style: inherit;">table</span>(data)</span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-1-1" data-nodetype="declaration">
@@ -945,38 +976,38 @@ font-style: inherit">table</span>(data)</span></code></pre></div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3" data-startfrom="33" data-source-offset="9" style="background: #f1f3f5;"><pre class="sourceCode java code-with-copy"><code class="sourceCode java" style="counter-reset: source-line 32;"><span id="cb3-33">```<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">{</span>ojs<span class="op" style="color: #5E5E5E;
+font-style: inherit;">{</span>ojs<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">}</span></span>
+font-style: inherit;">}</span></span>
 <span id="cb3-34"><span class="co" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">//| echo: fenced</span></span>
+font-style: inherit;">//| echo: fenced</span></span>
 <span id="cb3-35"><span class="kw" style="color: #003B4F;
 background-color: null;
-font-style: inherit">import</span> <span class="im" style="color: #00769E;
+font-style: inherit;">import</span> <span class="im" style="color: #00769E;
 background-color: null;
-font-style: inherit">{ aq, op } from '@uwdata/arquero'</span></span>
+font-style: inherit;">{ aq, op } from '@uwdata/arquero'</span></span>
 <span id="cb3-36">dati_aquero <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">=</span> aq<span class="op" style="color: #5E5E5E;
+font-style: inherit;">=</span> aq<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">.</span><span class="fu" style="color: #4758AB;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit">loadCSV</span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">loadCSV</span><span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">(</span><span class="st" style="color: #20794D;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit">"data.csv"</span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">"data.csv"</span><span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">)</span></span>
+font-style: inherit;">)</span></span>
 <span id="cb3-37"></span>
 <span id="cb3-38">dati_aquero<span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">.</span><span class="fu" style="color: #4758AB;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit">view</span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">view</span><span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit">()</span></span>
+font-style: inherit;">()</span></span>
 <span id="cb3-39">```</span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div>
@@ -1037,40 +1068,40 @@ Nota
 <p>Via CLI, usando lo straordinario <code>grep</code> il comando è (<code>list.txt</code>, è il file che contiene per ogni riga la stringa da cercare):</p>
 <div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit">unzip</span> <span class="at" style="color: #657422;
+font-style: inherit;">unzip</span> <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit">-qq</span> <span class="at" style="color: #657422;
+font-style: inherit;">-qq</span> <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit">-c</span> <span class="st" style="color: #20794D;
+font-style: inherit;">-c</span> <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit">"input.zip"</span>  <span class="kw" style="color: #003B4F;
+font-style: inherit;">"input.zip"</span>  <span class="kw" style="color: #003B4F;
 background-color: null;
-font-style: inherit">|</span> <span class="fu" style="color: #4758AB;
+font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit">grep</span> <span class="at" style="color: #657422;
+font-style: inherit;">grep</span> <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit">-F</span> <span class="at" style="color: #657422;
+font-style: inherit;">-F</span> <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit">-f</span> list.txt</span></code></pre></div>
+font-style: inherit;">-f</span> list.txt</span></code></pre></div>
 <p>Per me questa modalità ha risolto tutto. Ma ne metto un paio di altre.</p>
 <p>Una è basata su <a href="https://github.com/BurntSushi/ripgrep"><code>ripgrep</code></a>, un’altra straordinaria CLI per la ricerca di testo, più rapida di <code>grep</code>:</p>
 <div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit">unzip</span> <span class="at" style="color: #657422;
+font-style: inherit;">unzip</span> <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit">-qq</span> <span class="at" style="color: #657422;
+font-style: inherit;">-qq</span> <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit">-c</span> <span class="st" style="color: #20794D;
+font-style: inherit;">-c</span> <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit">"input.zip"</span>  <span class="kw" style="color: #003B4F;
+font-style: inherit;">"input.zip"</span>  <span class="kw" style="color: #003B4F;
 background-color: null;
-font-style: inherit">|</span> <span class="ex" style="color: null;
+font-style: inherit;">|</span> <span class="ex" style="color: null;
 background-color: null;
-font-style: inherit">rg</span> <span class="at" style="color: #657422;
+font-style: inherit;">rg</span> <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit">-F</span> <span class="at" style="color: #657422;
+font-style: inherit;">-F</span> <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit">-f</span> list.txt</span></code></pre></div>
+font-style: inherit;">-f</span> list.txt</span></code></pre></div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1087,25 +1118,25 @@ Non si tiene conto del formato
 <p>Con <a href="https://github.com/jqnatividad/qsv"><code>qsv</code></a>, è possibile ricercare per colonna:</p>
 <div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit">unzip</span> <span class="at" style="color: #657422;
+font-style: inherit;">unzip</span> <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit">-qq</span> <span class="at" style="color: #657422;
+font-style: inherit;">-qq</span> <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit">-c</span> <span class="st" style="color: #20794D;
+font-style: inherit;">-c</span> <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit">"input.zip"</span>  <span class="kw" style="color: #003B4F;
+font-style: inherit;">"input.zip"</span>  <span class="kw" style="color: #003B4F;
 background-color: null;
-font-style: inherit">|</span> <span class="ex" style="color: null;
+font-style: inherit;">|</span> <span class="ex" style="color: null;
 background-color: null;
-font-style: inherit">qsv</span> searchset <span class="at" style="color: #657422;
+font-style: inherit;">qsv</span> searchset <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit">-d</span> <span class="st" style="color: #20794D;
+font-style: inherit;">-d</span> <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit">"|"</span> <span class="at" style="color: #657422;
+font-style: inherit;">"|"</span> <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit">-i</span> <span class="at" style="color: #657422;
+font-style: inherit;">-i</span> <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit">-s</span> nomeColonna list.txt</span></code></pre></div>
+font-style: inherit;">-s</span> nomeColonna list.txt</span></code></pre></div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1157,9 +1188,9 @@ Nota
 </ol>
 <div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;
 background-color: null;
-font-style: inherit">quarto</span> create-project aborruso.github.io <span class="at" style="color: #657422;
+font-style: inherit;">quarto</span> create-project aborruso.github.io <span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit">--type</span> website</span></code></pre></div>
+font-style: inherit;">--type</span> website</span></code></pre></div>
 <ol start="3" type="1">
 <li>impostare a <code>docs</code> la cartella di output di pubblicazione del sito, aggiungendo l’istruzione nel file <code>_quarto.yml</code>:</li>
 </ol>
@@ -1169,27 +1200,27 @@ font-style: inherit">--type</span> website</span></code></pre></div>
 </div>
 <div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit">project</span><span class="kw" style="color: #003B4F;
+font-style: inherit;">project</span><span class="kw" style="color: #003B4F;
 background-color: null;
-font-style: inherit">:</span></span>
+font-style: inherit;">:</span></span>
 <span id="cb2-2"><span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit">  </span><span class="fu" style="color: #4758AB;
+font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit">type</span><span class="kw" style="color: #003B4F;
+font-style: inherit;">type</span><span class="kw" style="color: #003B4F;
 background-color: null;
-font-style: inherit">:</span><span class="at" style="color: #657422;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit"> website</span></span>
+font-style: inherit;"> website</span></span>
 <span id="cb2-3"><span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit">  </span><span class="fu" style="color: #4758AB;
+font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit">output-dir</span><span class="kw" style="color: #003B4F;
+font-style: inherit;">output-dir</span><span class="kw" style="color: #003B4F;
 background-color: null;
-font-style: inherit">:</span><span class="at" style="color: #657422;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
 background-color: null;
-font-style: inherit"> docs</span></span></code></pre></div>
+font-style: inherit;"> docs</span></span></code></pre></div>
 </div>
 <ol start="4" type="1">
 <li>creare dei primi contenuti da pubblicare come questo post;</li>
@@ -1198,7 +1229,7 @@ font-style: inherit"> docs</span></span></code></pre></div>
 </ol>
 <div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="ex" style="color: null;
 background-color: null;
-font-style: inherit">quarto</span> render ./</span></code></pre></div>
+font-style: inherit;">quarto</span> render ./</span></code></pre></div>
 <ol start="7" type="1">
 <li>impostare come sorgente delle GitHub Pages del repo creato, la cartella <code>docs</code> citata sopra;</li>
 <li>pubblicare tutto su GitHub.</li>

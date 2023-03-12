@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="it" xml:lang="it" dir="ltr"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.242">
+<meta name="generator" content="quarto-1.3.253">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -235,6 +235,9 @@ background: #75aadb;
 <li>legge la cartella corrente e tutte le sue sottocartelle con <code>**\*</code> (qui c’è il <em>forward slash</em> e quindi è per sistemi Windows; su Linux è <code>**/*</code>);</li>
 <li>filtra tutti i file creati più di 30 giorni fa con <code>where created &lt;= (date now) - 30day</code>.</li>
 </ul>
+<p>Se si vogliono cancellare gli elementi presenti nella lista del comando precedente:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="pp">**</span><span class="dt">\*</span>  <span class="at">-l</span> <span class="kw">|</span> <span class="ex">where</span> created <span class="op">&lt;</span>= <span class="er">(</span><span class="fu">date</span> now<span class="kw">)</span> <span class="ex">-</span> 30day <span class="kw">|</span> <span class="ex">each</span> { rm <span class="va">$in</span>.name }</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>$in</code> è una variabile creata automaticamente in corrispondenza di una lista.</p>
 
 
 
