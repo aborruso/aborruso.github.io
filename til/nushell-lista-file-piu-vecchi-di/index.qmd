@@ -23,3 +23,11 @@ Alcune note:
 
 - legge la cartella corrente e tutte le sue sottocartelle con `**\*` (qui c'è il _forward slash_ e quindi è per sistemi Windows; su Linux è `**/*`);
 - filtra tutti i file creati più di 30 giorni fa con `where created <= (date now) - 30day`.
+
+Se si vogliono cancellare gli elementi presenti nella lista del comando precedente:
+
+```bash
+ls **\*  -l | where created <= (date now) - 30day | each { rm $in.name }
+```
+
+`$in` è una variabile creata automaticamente in corrispondenza di una lista.
