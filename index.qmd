@@ -19,7 +19,7 @@ format:
 
 # Ciao
 
-Grazie per essere qui. Questo è uno spazio dove inserirò alcuni appunti sulle cose che imparo, sui progetti che mi piacciono e/o che sto facendo, sugli strumenti con cui lavoro e gioco e sulle persone che incontro.
+Grazie per essere qui. Questo è uno spazio dove inserirò alcuni appunti sulle cose che imparo, sui progetti che mi piacciono e/o che sto sviluppando, sugli strumenti con cui lavoro e gioco e sulle persone che incontro.
 
 Sono socio dell'[associazione onData](https://www.ondata.it/).
 ---
