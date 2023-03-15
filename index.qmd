@@ -12,6 +12,9 @@ about:
     - text: Email
       href: mailto:aborruso@gmail.com
       icon: envelope
+format:
+  html:
+    toc: false
 ---
 
 # Ciao
