@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Andrea Borruso">
+<meta name="description" content="Come installarla e abilitarla">
 
-<title>aborruso’s website - TIL (Today I Learned)</title>
+<title>aborruso’s website - DuckDB: l’estensione spaziale</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,25 +25,23 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./risorse/favicon.png" rel="icon" type="image/png">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../risorse/favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -61,47 +61,32 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Inviare"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
+<style>
+    .quarto-title-block .quarto-title-banner,
+    .quarto-title-block .quarto-title-banner h1,
+    .quarto-title-block .quarto-title-banner h2,
+    .quarto-title-block .quarto-title-banner h3,
+    .quarto-title-block .quarto-title-banner h4,
+    .quarto-title-block .quarto-title-banner h5,
+    .quarto-title-block .quarto-title-banner h6
+    {
+      color: #ffffff;
+background: #75aadb;
     }
-
-    const options = {
-      valueNames: ['listing-date','listing-title',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-title-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
+    </style>
 <link rel="alternate" type="application/rss+xml" title="Il blog del sito di Andrea Borruso" href="https://aborruso.github.io/blog.xml">
 
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="aborruso’s website - TIL (Today I Learned)">
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="aborruso’s website - DuckDB: l’estensione spaziale">
+<meta property="og:description" content="Come installarla e abilitarla">
 <meta property="og:image" content="https://aborruso.github.io/risorse/opengraph.png">
 <meta property="og:site-name" content="aborruso's website">
 <meta property="og:locale" content="it_IT">
 <meta property="og:image:height" content="630">
 <meta property="og:image:width" content="1200">
-<meta name="twitter:title" content="aborruso’s website - TIL (Today I Learned)">
+<meta name="twitter:title" content="aborruso’s website - DuckDB: l’estensione spaziale">
+<meta name="twitter:description" content="Come installarla e abilitarla">
 <meta name="twitter:image" content="https://aborruso.github.io/risorse/twitter-card.png">
 <meta name="twitter:creator" content="@aborruso">
 <meta name="twitter:card" content="summary_large_image">
@@ -109,14 +94,14 @@ ul.task-list li input[type="checkbox"] {
 <meta name="twitter:image-width" content="1024">
 </head>
 
-<body class="nav-fixed">
+<body class="floating nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">aborruso’s website</span>
     </a>
   </div>
@@ -127,15 +112,15 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html" rel="" target="">
+    <a class="nav-link" href="../../index.html" rel="" target="">
  <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./blog.html" rel="" target="">
+    <a class="nav-link" href="../../blog.html" rel="" target="">
  <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./til.html" rel="" target="" aria-current="page">
+    <a class="nav-link" href="../../til.html" rel="" target="">
  <span class="menu-text">TIL</span></a>
   </li>  
 </ul>
@@ -146,191 +131,90 @@ ul.task-list li input[type="checkbox"] {
     </nav>
 </header>
 <!-- content -->
-<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page">
-      <h1 class="title">TIL (Today I Learned)</h1>
-                      </div>
+    <div class="quarto-title column-body">
+      <h1 class="title">DuckDB: l’estensione spaziale</h1>
+                  <div>
+        <div class="description">
+          Come installarla e abilitarla
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">duckdb</div>
+                <div class="quarto-category">spatial</div>
+                <div class="quarto-category">cli</div>
+              </div>
+                  </div>
   </div>
     
-  
+  <div class="quarto-title-meta-author">
+    <div class="quarto-title-meta-heading">Autore/Autrice</div>
+    <div class="quarto-title-meta-heading">Affiliazione</div>
+    
+      <div class="quarto-title-meta-contents">
+      <p class="author"><a href="https://twitter.com/aborruso">Andrea Borruso</a> </p>
+    </div>
+      <div class="quarto-title-meta-contents">
+          <p class="affiliation">
+              <a href="https://ondata.it">
+              Associazione onData
+              </a>
+            </p>
+        </div>
+      </div>
+
   <div class="quarto-title-meta">
 
-      
+        
+      <div>
+      <div class="quarto-title-meta-heading">Data di Pubblicazione</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">23 aprile 2023</p>
+      </div>
+    </div>
     
       
     </div>
     
   
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
     </div>
 <!-- main -->
-<main class="content quarto-banner-title-block column-page" id="quarto-document-content">
+<main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
 
 
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<p>È stata rilasciata <a href="https://github.com/duckdblabs/duckdb_spatial">questa <strong>estensione spaziale</strong></a> per DuckDB.</p>
+<p>Uno dei modi per istallarla è scaricare i binari precompilati, accessibili dai <a href="https://github.com/duckdblabs/duckdb_spatial/actions"><em>workflow</em> di compilazione</a>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="duckdb-spatial.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">I workflow</figcaption><p></p>
+</figure>
 </div>
-<div class="callout-title-container flex-fill">
-Che vuol dire TIL?
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Mi piacciono molto le persone che usano il loro sito web, per appuntarsi alcune delle cose che imparano. Come fa il mitico <a href="https://til.simonwillison.net/">Simon Willison</a>.<br> E Simon lo fa in modalità <strong>TIL</strong>, ovvero <em>Today I Learned</em>.</p>
-<p>I miei qui, saranno spesso post “piccoli”, in forma di appunti, con qualche probabile bruttura di stile.</p>
-</div>
-</div>
+<p>Per installarla:</p>
+<ul>
+<li>decomprimere il file scaricato;</li>
+<li>lanciare duckdb con l’opzione <code>unsigned</code>, ovvero <code>duckdb -unsigned</code>;</li>
+<li>installare l’estensione usando il percorso assoluto del file (sotto un esempio)</li>
+</ul>
+<pre><code>install '/home/user/spatial.duckdb_extension';</code></pre>
+<ul>
+<li>caricare l’estensione, con <code>LOAD spatial;</code>.</li>
+</ul>
 
 
 
-
-<div class="quarto-listing quarto-listing-container-table" id="listing-listing">
-<div class="listing-actions-group">
-   <div class="input-group input-group-sm quarto-listing-sort">
-     <span class="input-group-text"><i class="bi bi-sort-down"></i></span>
-     <select id="listing-listing-sort" class="form-select" aria-label="Ordinare per" onchange="window['quarto-listings']['listing-listing'].sort(this.options[this.selectedIndex].value, { order: this.options[this.selectedIndex].getAttribute('data-direction')})">
-       <option value="" disabled="" selected="" hidden="">Ordinare per</option>
-       <option value="index" data-direction="asc">Predefinito</option>
-         <option value="listing-date-sort" data-direction="asc">
-          Data - Meno recente
-        </option>
-         <option value="listing-date-sort" data-direction="desc">
-          Data - Più recente
-        </option>
-         <option value="listing-title-sort" data-direction="asc">
-          Titolo
-        </option>
-     </select>
-  </div>
-    <div class="input-group input-group-sm quarto-listing-filter">
-      <span class="input-group-text"><i class="bi bi-search"></i></span>
-      <input type="text" class="search form-control" placeholder="Filter">
-    </div>
-</div>
-
-<table class="quarto-listing-table table">
-<thead>
-<tr>
-<th>
-<a class="sort" data-sort="listing-date-sort" onclick="if (this.classList.contains('sort-asc')) { this.classList.add('sort-desc'); this.classList.remove('sort-asc') } else { this.classList.add('sort-asc'); this.classList.remove('sort-desc')} return false;">Data</a>
-</th>
-<th>
-<a class="sort" data-sort="listing-title-sort" onclick="if (this.classList.contains('sort-asc')) { this.classList.add('sort-desc'); this.classList.remove('sort-asc') } else { this.classList.add('sort-asc'); this.classList.remove('sort-desc')} return false;">Titolo</a>
-</th>
-</tr>
-</thead>
-<tbody class="list">
-<tr data-index="0" data-categories="duckdb,spatial,cli" data-listing-date-sort="1682200800000" data-listing-file-modified-sort="1680767415615" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="0.265" data-listing-title-sort="DuckDB: l'estensione spaziale" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">23 apr 2023</span>
-</td>
-<td>
-<a href="./til/installare-duckdb-spatial/index.html" class="title listing-title">DuckDB: l’estensione spaziale</a>
-</td>
-</tr>
-<tr data-index="1" data-categories="duckdb,csv,parquet,performance" data-listing-date-sort="1677884400000" data-listing-file-modified-sort="1678636883606" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="0.99" data-listing-title-sort="DuckDB: creare un file parquet a partire da file di testo di grandi dimensioni" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">4 mar 2023</span>
-</td>
-<td>
-<a href="./til/duckdb-ottimizzazione-performance-import-csv-jsonl-creazione-parquet/index.html" class="title listing-title">DuckDB: creare un file parquet a partire da file di testo di grandi dimensioni</a>
-</td>
-</tr>
-<tr data-index="2" data-categories="quarto,css" data-listing-date-sort="1677366000000" data-listing-file-modified-sort="1678636883576" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="0.41" data-listing-title-sort="Quarto: applicare stile CSS" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">26 feb 2023</span>
-</td>
-<td>
-<a href="./til/quarto-applicare-stili-span/index.html" class="title listing-title">Quarto: applicare stile CSS</a>
-</td>
-</tr>
-<tr data-index="3" data-categories="nushell,til" data-listing-date-sort="1674860400000" data-listing-file-modified-sort="1678636883546" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="0.61" data-listing-title-sort="Estrarre la lista dei file creati più di 30 giorni fa" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">28 gen 2023</span>
-</td>
-<td>
-<a href="./til/nushell-lista-file-piu-vecchi-di/index.html" class="title listing-title">Estrarre la lista dei file creati più di 30 giorni fa</a>
-</td>
-</tr>
-<tr data-index="4" data-categories="quarto,til" data-listing-date-sort="1673046000000" data-listing-file-modified-sort="1678636883476" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="0.585" data-listing-title-sort="Pagina con codice R, Python e utility Bash" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">7 gen 2023</span>
-</td>
-<td>
-<a href="./til/mescolare-r-python-bash/index.html" class="title listing-title">Pagina con codice R, Python e utility Bash</a>
-</td>
-</tr>
-<tr data-index="5" data-categories="nushell,dataframe,cli,til" data-listing-date-sort="1670022000000" data-listing-file-modified-sort="1678636883136" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="0.155" data-listing-title-sort="Nushell: installarlo con il supporto ai dataframe" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">3 dic 2022</span>
-</td>
-<td>
-<a href="./til/nushell-installare-supporto-dataframe/index.html" class="title listing-title">Nushell: installarlo con il supporto ai dataframe</a>
-</td>
-</tr>
-<tr data-index="6" data-categories="duckdb,csv,til,parquet,cli" data-listing-date-sort="1669590000000" data-listing-file-modified-sort="1678636882926" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="0.725" data-listing-title-sort="DuckDB: creare un file parquet a partire da un CSV" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">28 nov 2022</span>
-</td>
-<td>
-<a href="./til/duckdb-creare-parquet-csv/index.html" class="title listing-title">DuckDB: creare un file parquet a partire da un CSV</a>
-</td>
-</tr>
-<tr data-index="7" data-categories="quarto,csv,til,rstats" data-listing-date-sort="1669417200000" data-listing-file-modified-sort="1678636883306" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="0.26" data-listing-title-sort="Quarto: renderizzare una tabella a partire da un CSV" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">26 nov 2022</span>
-</td>
-<td>
-<a href="./til/quarto-renderizzare-tabelle-r/index.html" class="title listing-title">Quarto: renderizzare una tabella a partire da un CSV</a>
-</td>
-</tr>
-<tr data-index="8" data-categories="quarto,altair,grafici,observable,til" data-listing-date-sort="1669071600000" data-listing-file-modified-sort="1678636883246" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="0.705" data-listing-title-sort="Fare convivere una cella Observable e un grafico Altair in Quarto" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">22 nov 2022</span>
-</td>
-<td>
-<a href="./til/quarto-mescolare-observable-altair/index.html" class="title listing-title">Fare convivere una cella Observable e un grafico Altair in Quarto</a>
-</td>
-</tr>
-<tr data-index="9" data-categories="quarto,csv,observable,til" data-listing-date-sort="1668985200000" data-listing-file-modified-sort="1678636883386" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="0.275" data-listing-title-sort="Quarto: leggere un CSV via Obeservable e visualizzare i dati" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">21 nov 2022</span>
-</td>
-<td>
-<a href="./til/renderizzare-csv-quarto-observable/index.html" class="title listing-title">Quarto: leggere un CSV via Obeservable e visualizzare i dati</a>
-</td>
-</tr>
-<tr data-index="10" data-categories="cli,til,grep" data-listing-date-sort="1668898800000" data-listing-file-modified-sort="1678636883086" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="0.93" data-listing-title-sort="Come filtrare un file di testo a partire da una lista di stringhe" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">20 nov 2022</span>
-</td>
-<td>
-<a href="./til/filtrare-file-elenco-file-esterno/index.html" class="title listing-title">Come filtrare un file di testo a partire da una lista di stringhe</a>
-</td>
-</tr>
-<tr data-index="11" data-categories="quarto,til,github" data-listing-date-sort="1668812400000" data-listing-file-modified-sort="1678636883436" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1.24" data-listing-title-sort="Il mio primo blog post" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">19 nov 2022</span>
-</td>
-<td>
-<a href="./til/un-sito-in-quarto/index.html" class="title listing-title">Il mio primo blog post</a>
-</td>
-</tr>
-</tbody>
-
-</table>
-<div class="listing-no-matching d-none">
-Nessun risultato
-</div>
-</div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -584,7 +468,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     <div class="nav-footer-left">Costruito con <a href="https://quarto.org">quarto</a> 😍 | Contenuti in <a href="https://creativecommons.org/licenses/by/4.0/deed.it">CC BY 4.0</a></div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/aborruso/aborruso.github.io/edit/main/til.qmd" class="toc-action">Modifica questa pagina</a></p><p><a href="https://github.com/aborruso/aborruso.github.io/issues/new" class="toc-action">Segnala un problema</a></p></div></div></div>
+    <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/aborruso/aborruso.github.io/edit/main/til/installare-duckdb-spatial/index.qmd" class="toc-action">Modifica questa pagina</a></p><p><a href="https://github.com/aborruso/aborruso.github.io/issues/new" class="toc-action">Segnala un problema</a></p></div></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">
@@ -594,7 +478,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </a>
   </li>  
     <li class="nav-item compact">
-    <a class="nav-link" href="./blog.xml">
+    <a class="nav-link" href="../../blog.xml">
       <i class="bi bi-rss" role="img">
 </i> 
     </a>

@@ -2,6 +2,7 @@
   {
     "listing": "/blog.html",
     "items": [
+      "/til/installare-duckdb-spatial/index.html",
       "/til/duckdb-ottimizzazione-performance-import-csv-jsonl-creazione-parquet/index.html",
       "/til/quarto-applicare-stili-span/index.html",
       "/til/nushell-lista-file-piu-vecchi-di/index.html",
@@ -18,6 +19,7 @@
   {
     "listing": "/til.html",
     "items": [
+      "/til/installare-duckdb-spatial/index.html",
       "/til/duckdb-ottimizzazione-performance-import-csv-jsonl-creazione-parquet/index.html",
       "/til/quarto-applicare-stili-span/index.html",
       "/til/nushell-lista-file-piu-vecchi-di/index.html",
