@@ -1,0 +1,28 @@
+---
+title: "DuckDB: l'estensione spaziale"
+description: "Come installarla e abilitarla"
+date: "2023-04-23"
+draft: false
+categories:
+  - duckdb
+  - spatial
+  - cli
+---
+
+È stata rilasciata [questa **estensione spaziale**](https://github.com/duckdblabs/duckdb_spatial) per DuckDB.
+
+Uno dei modi per istallarla è scaricare i binari precompilati, accessibili dai [*workflow* di compilazione](https://github.com/duckdblabs/duckdb_spatial/actions).
+
+![I workflow](duckdb-spatial.png)
+
+Per installarla:
+
+- decomprimere il file scaricato;
+- lanciare duckdb con l'opzione `unsigned`, ovvero `duckdb -unsigned`;
+- installare l'estensione usando il percorso assoluto del file (sotto un esempio)
+
+```
+install '/home/user/spatial.duckdb_extension';
+```
+
+- caricare l'estensione, con `LOAD spatial;`.
