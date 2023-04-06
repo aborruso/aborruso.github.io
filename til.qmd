@@ -18,5 +18,5 @@ title-block-banner: true
 Mi piacciono molto le persone che usano il loro sito web, per appuntarsi alcune delle cose che imparano. Come fa il mitico [Simon Willison](https://til.simonwillison.net/).<br>
 E Simon lo fa in modalità **TIL**, ovvero *Today I Learned*.
 
-I miei qui, saranno spesso post "piccoli", in forma di appunti, con qualche probabile bruttura di stile.
+I miei post qui, saranno spesso "piccoli", in forma di appunti, con qualche possibile lacuna e/o bruttura.
 :::
