@@ -34,7 +34,13 @@
 <li>lanciare duckdb con l’opzione <code>unsigned</code>, ovvero <code>duckdb -unsigned</code>;</li>
 <li>installare l’estensione usando il percorso assoluto del file (sotto un esempio)</li>
 </ul>
-<pre><code>install '/home/user/spatial.duckdb_extension';</code></pre>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">install</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'/home/user/spatial.duckdb_extension'</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">;</span></span></code></pre></div>
 <ul>
 <li>caricare l’estensione, con <code>LOAD spatial;</code>.</li>
 </ul>

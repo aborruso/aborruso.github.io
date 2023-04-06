@@ -21,7 +21,7 @@ Per installarla:
 - lanciare duckdb con l'opzione `unsigned`, ovvero `duckdb -unsigned`;
 - installare l'estensione usando il percorso assoluto del file (sotto un esempio)
 
-```
+```bash
 install '/home/user/spatial.duckdb_extension';
 ```
 
