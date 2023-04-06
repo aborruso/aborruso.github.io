@@ -5,4 +5,4 @@ title: 404 - questa pagina non esiste!
 
 Impossibile trovare la pagina richiesta (forse è stata spostata o rinominata).
 
-Puoi provare a cercarla con il campo di ricerca in alto a destra.
+Puoi provare a cercarla con lo strumento di ricerca, in alto a destra.
