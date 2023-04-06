@@ -46,7 +46,7 @@
     "href": "til/installare-duckdb-spatial/index.html",
     "title": "DuckDB: l’estensione spaziale",
     "section": "",
-    "text": "È stata rilasciata questa estensione spaziale per DuckDB.\nUno dei modi per istallarla è scaricare i binari precompilati, accessibili dai workflow di compilazione.\n\n\n\nI workflow\n\n\nPer installarla:\n\ndecomprimere il file scaricato;\nlanciare duckdb con l’opzione unsigned, ovvero duckdb -unsigned;\ninstallare l’estensione usando il percorso assoluto del file (sotto un esempio)\n\ninstall '/home/user/spatial.duckdb_extension';\n\ncaricare l’estensione, con LOAD spatial;."
+    "text": "È stata rilasciata questa estensione spaziale per DuckDB.\nUno dei modi per istallarla è scaricare i binari precompilati, accessibili dai workflow di compilazione.\n\n\n\nI workflow, per i vari sistemi operativi\n\n\nPer installarla:\n\ndecomprimere il file scaricato;\nlanciare duckdb con l’opzione unsigned, ovvero duckdb -unsigned;\ninstallare l’estensione usando il percorso assoluto del file (sotto un esempio)\n\ninstall '/home/user/spatial.duckdb_extension';\n\ncaricare l’estensione, con LOAD spatial;."
   },
   {
     "objectID": "til/mescolare-r-python-bash/index.html",

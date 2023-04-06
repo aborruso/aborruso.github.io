@@ -13,7 +13,7 @@ categories:
 
 Uno dei modi per istallarla è scaricare i binari precompilati, accessibili dai [*workflow* di compilazione](https://github.com/duckdblabs/duckdb_spatial/actions).
 
-![I workflow](duckdb-spatial.png)
+![I workflow, per i vari sistemi operativi](duckdb-spatial.png)
 
 Per installarla:
 
