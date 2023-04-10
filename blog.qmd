@@ -13,3 +13,7 @@ listing:
 page-layout: full
 title-block-banner: true
 ---
+
+::: {.callout-note}
+Non ho ancora scritto dei veri blog post, ma soltanto un po' di [TIL](/til/), appunti brevi su cose imparate/scoperte.
+:::
