@@ -15,7 +15,7 @@ title-block-banner: true
 ---
 
 ::: {.callout-note}
-**Non ho ancora scritto dei veri blog post**, ma soltanto un po' di [TIL](/til/), appunti brevi su cose imparate/scoperte.<br>
+**Non ho ancora scritto dei veri blog post**, ma soltanto un po' di [TIL](./til.qmd), appunti brevi su cose imparate/scoperte.<br>
 Questi di sotto quindi al momento sono soltanto una copia dei post che trovi in TIL.
 :::
 
