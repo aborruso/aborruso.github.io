@@ -26,3 +26,11 @@ install '/home/user/spatial.duckdb_extension';
 ```
 
 - caricare l'estensione, con `LOAD spatial;`.
+
+E una volta caricata, potrai vedere tutti i nuovi formati file supportati da duckdb con
+
+```sql
+select * from ST_LIST_DRIVERS() order by 1;
+```
+
+![La lista dei formati disponibili](./estensioni_spaziali.png)

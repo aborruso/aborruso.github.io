@@ -245,6 +245,14 @@ background: #75aadb;
 <ul>
 <li>caricare l’estensione, con <code>LOAD spatial;</code>.</li>
 </ul>
+<p>E una volta caricata, potrai vedere tutti i nuovi formati file supportati da duckdb con</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> <span class="op">*</span> <span class="kw">from</span> ST_LIST_DRIVERS() <span class="kw">order</span> <span class="kw">by</span> <span class="dv">1</span>;</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./estensioni_spaziali.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">La lista dei formati disponibili</figcaption><p></p>
+</figure>
+</div>
 
 
 
