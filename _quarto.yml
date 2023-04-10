@@ -6,6 +6,8 @@ project:
     - "!tmp*qmd"
     - "!risorse/"
   output-dir: docs
+  resources:
+  - "googlecd08604f4edafe6e.html"
 
 website:
   site-url: https://aborruso.github.io
