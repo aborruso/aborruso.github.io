@@ -1,0 +1,46 @@
+---
+title: "Installazione QSV"
+description: "Farlo compilando il codice"
+date: "2023-06-29"
+draft: false
+categories:
+  - qsv
+  - til
+  - cli
+---
+
+
+Di base i comandi sono questi di sotto:
+
+```markdown
+git clone https://github.com/jqnatividad/qsv.git
+cd qsv
+cargo build --release --locked --bin qsv -F all_features
+```
+
+Per il mio ambiente è comodo, prima della compilazione, settare la variabile d'ambiente `CARGO_BUILD_RUSTFLAGS`, per avere in output un binario ottimizzato per la mia CPU:
+
+```markdown
+export CARGO_BUILD_RUSTFLAGS='-C target-cpu=native'
+```
+
+È consigliato avere un ambiente "pulito" prima della compilazione. Quindi la procedura potrebbe diventare questa:
+
+```markdown
+git clone https://github.com/jqnatividad/qsv.git
+rustup up
+cargo clean
+cd qsv
+cargo build --release --locked --bin qsv -F all_features
+```
+
+Se si ha poca RAM (meno di 16GB), è meglio rinunciare ad alcun feature (come `to`, che è oneroso da compilare):
+
+```markdown
+git clone https://github.com/jqnatividad/qsv.git
+rustup up
+cargo clean
+cd qsv
+cargo build --release --locked --bin qsv -F feature_capable,polars
+```
+
