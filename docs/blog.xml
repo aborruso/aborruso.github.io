@@ -1,0 +1,1367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss  xmlns:atom="http://www.w3.org/2005/Atom" 
+      xmlns:media="http://search.yahoo.com/mrss/" 
+      xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+      xmlns:dc="http://purl.org/dc/elements/1.1/" 
+      version="2.0">
+<channel>
+<title>aborruso&#39;s website</title>
+<link>https://aborruso.github.io/blog.html</link>
+<atom:link href="https://aborruso.github.io/blog.xml" rel="self" type="application/rss+xml"/>
+<description></description>
+<generator>quarto-1.4.43</generator>
+<lastBuildDate>Wed, 28 Jun 2023 22:00:00 GMT</lastBuildDate>
+<item>
+  <title>Installazione QSV</title>
+  <dc:creator>Andrea Borruso</dc:creator>
+  <link>https://aborruso.github.io/til/compilare-qsv/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>Di base i comandi sono questi di sotto:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1">git clone https://github.com/jqnatividad/qsv.git</span>
+<span id="cb1-2">cd qsv</span>
+<span id="cb1-3">cargo build --release --locked --bin qsv -F all_features</span></code></pre></div>
+<p>Per il mio ambiente è comodo, prima della compilazione, settare la variabile d’ambiente <code>CARGO_BUILD_RUSTFLAGS</code>, per avere in output un binario ottimizzato per la mia CPU:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1">export CARGO_BUILD_RUSTFLAGS='-C target-cpu=native'</span></code></pre></div>
+<p>È consigliato avere un ambiente “pulito” prima della compilazione. Quindi la procedura potrebbe diventare questa:</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1">git clone https://github.com/jqnatividad/qsv.git</span>
+<span id="cb3-2">rustup up</span>
+<span id="cb3-3">cargo clean</span>
+<span id="cb3-4">cd qsv</span>
+<span id="cb3-5">cargo build --release --locked --bin qsv -F all_features</span></code></pre></div>
+<p>Se si ha poca RAM (meno di 16GB), è meglio rinunciare ad alcun feature (come <code>to</code>, che è oneroso da compilare):</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1">git clone https://github.com/jqnatividad/qsv.git</span>
+<span id="cb4-2">rustup up</span>
+<span id="cb4-3">cargo clean</span>
+<span id="cb4-4">cd qsv</span>
+<span id="cb4-5">cargo build --release --locked --bin qsv -F feature_capable,polars</span></code></pre></div>
+
+
+
+ ]]></description>
+  <category>qsv</category>
+  <category>til</category>
+  <category>cli</category>
+  <guid>https://aborruso.github.io/til/compilare-qsv/index.html</guid>
+  <pubDate>Wed, 28 Jun 2023 22:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>DuckDB: l’estensione spaziale</title>
+  <dc:creator>Andrea Borruso</dc:creator>
+  <link>https://aborruso.github.io/til/installare-duckdb-spatial/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>È stata rilasciata <a href="https://github.com/duckdblabs/duckdb_spatial">questa <strong>estensione spaziale</strong></a> per DuckDB.</p>
+<p>Uno dei modi per istallarla è scaricare i binari precompilati, accessibili dai <a href="https://github.com/duckdblabs/duckdb_spatial/actions"><em>workflow</em> di compilazione</a>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://aborruso.github.io/til/installare-duckdb-spatial/duckdb-spatial.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">I workflow, per i vari sistemi operativi</figcaption>
+</figure>
+</div>
+<p>Per installarla:</p>
+<ul>
+<li>decomprimere il file scaricato;</li>
+<li>lanciare duckdb con l’opzione <code>unsigned</code>, ovvero <code>duckdb -unsigned</code>;</li>
+<li>installare l’estensione usando il percorso assoluto del file (sotto un esempio)</li>
+</ul>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">install</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'/home/user/spatial.duckdb_extension'</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">;</span></span></code></pre></div>
+<ul>
+<li>caricare l’estensione, con <code>LOAD spatial;</code>.</li>
+</ul>
+<p>E una volta caricata, potrai vedere tutti i nuovi formati file supportati da duckdb con</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">select</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">from</span> ST_LIST_DRIVERS() <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">order</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">by</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>;</span></code></pre></div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://aborruso.github.io/til/installare-duckdb-spatial/estensioni_spaziali.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">La lista dei formati disponibili</figcaption>
+</figure>
+</div>
+
+
+
+ ]]></description>
+  <category>duckdb</category>
+  <category>spatial</category>
+  <category>cli</category>
+  <guid>https://aborruso.github.io/til/installare-duckdb-spatial/index.html</guid>
+  <pubDate>Sat, 22 Apr 2023 22:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>DuckDB: creare un file parquet a partire da file di testo di grandi dimensioni</title>
+  <dc:creator>Andrea Borruso</dc:creator>
+  <link>https://aborruso.github.io/til/duckdb-ottimizzazione-performance-import-csv-jsonl-creazione-parquet/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>In queste settimane ho guardato un po’ i dati della “<a href="https://pnrr.datibenecomune.it/fonti/scp/">Banca dati Servizio Contratti Pubblici - SCP</a>” che contiene gli <strong>avvisi</strong>, i <strong>bandi</strong> e gli <strong>esiti di gara</strong> in <strong>formato aperto</strong>, raccolti dalla “Banca dati SCP - Servizio Contratti Pubblici”, gestita dalla Direzione Generale per la regolazione e i contratti pubblici del Ministero delle Infrastrutture e Trasporti.</p>
+<p>Nel <a href="https://dati.mit.gov.it/catalog/dataset/scp">dataset</a> sono presenti file CSV di medie dimensioni, come quello denominato <code>v_od_atti.csv</code>, composto da 685.000 righe per 45 colonne, per un totale di circa 570 MB.</p>
+<p>Non sono <em>big data</em> e ci sono tanti modi per interrogarlo e trasformarlo con poco sforzo e rapidità. Uno molto comodo è quello di usare <a href="https://duckdb.org/"><strong>DuckDB</strong></a>: prima per la conversione di formato e poi per tutte le <em>query</em> che si vorranno fare.</p>
+<p>Molto comodo convertire il <code>CSV</code> in formato <a href="https://parquet.apache.org/"><code>parquet</code></a>. Si passa da circa 570 a 45 MB, e si ha a disposizione un formato che è rapidissimo da interrogare.</p>
+<p>Per farlo si può usare DuckDB a riga di comando:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">echo</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"COPY (SELECT *</span></span>
+<span id="cb1-2"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">FROM read_csv_auto('input.csv'))</span></span>
+<span id="cb1-3"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">TO 'output.parquet' (FORMAT 'PARQUET',</span></span>
+<span id="cb1-4"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">CODEC  'Snappy',PER_THREAD_OUTPUT TRUE);"</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\</span></span>
+<span id="cb1-5"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">|</span> <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">duckdb</span></span></code></pre></div>
+<p>E in 10 secondi (sulla mia macchina con 16 GB di RAM e un pentium 7) il file è pronto.</p>
+<p>La preziosa fonte/ispirazione è il <a href="https://tech.marksblogg.com/duckdb-geospatial-gis.html">bravissimo Mark Litwintschik</a>.</p>
+
+
+
+ ]]></description>
+  <category>duckdb</category>
+  <category>csv</category>
+  <category>parquet</category>
+  <category>performance</category>
+  <guid>https://aborruso.github.io/til/duckdb-ottimizzazione-performance-import-csv-jsonl-creazione-parquet/index.html</guid>
+  <pubDate>Fri, 03 Mar 2023 23:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Quarto: applicare stile CSS</title>
+  <dc:creator>Andrea Borruso</dc:creator>
+  <link>https://aborruso.github.io/til/quarto-applicare-stili-span/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>Se voglio applicare ad esempio a una sola parola <strong>uno stile definito <em>inline</em></strong>, basterà fare come sotto:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1">L'arancia è <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">arancione</span><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span>{style="color:#ffa500"}.</span></code></pre></div>
+<p>L’arancia è <span style="color:#ffa500">arancione</span>.</p>
+<p>Se invece voglio associare a una frase uno stile di <code>bootstrap</code> (come quelli sui pulsanti), potrò fare in questo modo:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">☝️ Partecipa</span><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span>{.btn .btn-success}</span></code></pre></div>
+<p><span class="btn btn-success">☝️ Partecipa</span></p>
+<p>Se infine voglio applicare una determinata classe, seguita da un attributo personalizzato, in modo da poter associare uno stile personalizzato tramite uno specifico <code>CSS Selector</code>, potrò fare così:</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">Lorem ipsum</span><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span>{.class key="val"}</span></code></pre></div>
+<p>Il codice <code>HTML</code> generato sarà:</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb4-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;p&gt;</span></span>
+<span id="cb4-2">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;span</span> <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">class</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"class"</span> <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">data-key</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"val"</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&gt;</span>Lorem ipsum<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;/span&gt;</span></span>
+<span id="cb4-3"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;/p&gt;</span></span></code></pre></div>
+
+
+
+ ]]></description>
+  <category>quarto</category>
+  <category>css</category>
+  <guid>https://aborruso.github.io/til/quarto-applicare-stili-span/index.html</guid>
+  <pubDate>Sat, 25 Feb 2023 23:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Estrarre la lista dei file creati più di 30 giorni fa</title>
+  <dc:creator>Andrea Borruso</dc:creator>
+  <link>https://aborruso.github.io/til/nushell-lista-file-piu-vecchi-di/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>La data di creazione non è un parametro disponibile e/o interrogabile su tutti i tipi di <em>file sytem</em>.</p>
+<p>Il meraviglioso <a href="https://www.nushell.sh/"><code>nushell</code></a> riesce a farlo un po’ ovunque.</p>
+<p>Questo un esempio:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ls</span> <span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">**</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\*</span>  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-l</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">|</span> <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">where</span> created <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span>= <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">(</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">date</span> now<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">)</span> <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">-</span> 30day</span></code></pre></div>
+<p>Alcune note:</p>
+<ul>
+<li>legge la cartella corrente e tutte le sue sottocartelle con <code>**\*</code> (qui c’è il <em>forward slash</em> e quindi è per sistemi Windows; su Linux è <code>**/*</code>);</li>
+<li>filtra tutti i file creati più di 30 giorni fa con <code>where created &lt;= (date now) - 30day</code>.</li>
+</ul>
+<p>Se si vogliono cancellare gli elementi presenti nella lista del comando precedente:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ls</span> <span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">**</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\*</span>  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-l</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">|</span> <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">where</span> created <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span>= <span class="er" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">(</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">date</span> now<span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">)</span> <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">-</span> 30day <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">|</span> <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">each</span> { rm <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$in</span>.name }</span></code></pre></div>
+<p><code>$in</code> è una variabile creata automaticamente in corrispondenza di una lista.</p>
+
+
+
+ ]]></description>
+  <category>nushell</category>
+  <category>til</category>
+  <guid>https://aborruso.github.io/til/nushell-lista-file-piu-vecchi-di/index.html</guid>
+  <pubDate>Fri, 27 Jan 2023 23:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Pagina con codice R, Python e utility Bash</title>
+  <dc:creator>Andrea Borruso</dc:creator>
+  <link>https://aborruso.github.io/til/mescolare-r-python-bash/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>Ad esempio voglio usare Miller per calcolare la somma di un campo di un file CSV.</p>
+<p>Uso <code>system</code> in <code>r</code>, per lanciare un comando di sistema (in questo caso sono in ambiente Linux), e associo l’output a una variabile.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><span class="in" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">```{r}</span></span>
+<span id="cb1-2">sum <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">system</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'mlr --c2n stats1 -a sum -f a input.csv'</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">intern =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>)</span>
+<span id="cb1-3"><span class="in" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">```</span></span></code></pre></div>
+</div>
+<p>Così facendo posso usare un’opzione comodissima dell’<em>engine</em> <code>knitr</code>, che mi consente di inserire il riferimento a una variabile <code>r</code> (o un comando <code>r</code>) all’interno di un testo <code>markdown</code>.</p>
+<p>Se scrivo ad esempio</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1">La somma è <span class="in" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">`r sum`</span>.</span></code></pre></div>
+</div>
+<p>Avrò restituito</p>
+<p>La somma è 9.</p>
+<p>E tramite il <em>package</em> di <code>r</code> <code>reticulate</code> (<a href="https://nrennie.rbind.io/blog/combining-r-and-python-with-reticulate-and-quarto/">qui</a> un tutorial a tema), posso passare la variabile <code>r</code> a un blocco di codice <code>python</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><span class="in" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">```{python}</span></span>
+<span id="cb3-2">sum_py <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> r.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">sum</span></span>
+<span id="cb3-3"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(sum_py)</span>
+<span id="cb3-4"><span class="in" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">```</span></span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>9</code></pre>
+</div>
+</div>
+
+
+
+ ]]></description>
+  <category>quarto</category>
+  <category>til</category>
+  <guid>https://aborruso.github.io/til/mescolare-r-python-bash/index.html</guid>
+  <pubDate>Fri, 06 Jan 2023 23:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Nushell: installarlo con il supporto ai dataframe</title>
+  <dc:creator>Andrea Borruso</dc:creator>
+  <link>https://aborruso.github.io/til/nushell-installare-supporto-dataframe/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>Dalla release <code>0.72</code> di <a href="https://www.nushell.sh/"><code>nushell</code></a> il supporto ai dataframe non è abilitato di <em>default</em>.</p>
+<p>Questa una modalità di compilarlo, con il supporto abilitato.</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># clona il repository</span></span>
+<span id="cb1-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">git</span> clone https://github.com/nushell/nushell.git</span>
+<span id="cb1-3"></span>
+<span id="cb1-4"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">cd</span> nushell</span>
+<span id="cb1-5"></span>
+<span id="cb1-6"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">cargo</span> install <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--path</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>. <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--all-features</span></span></code></pre></div>
+<p>Verrà installato in <code>/home/username/.cargo/bin/nu</code>.</p>
+
+
+
+ ]]></description>
+  <category>nushell</category>
+  <category>dataframe</category>
+  <category>cli</category>
+  <category>til</category>
+  <guid>https://aborruso.github.io/til/nushell-installare-supporto-dataframe/index.html</guid>
+  <pubDate>Fri, 02 Dec 2022 23:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>DuckDB: creare un file parquet a partire da un CSV</title>
+  <dc:creator>Andrea Borruso</dc:creator>
+  <link>https://aborruso.github.io/til/duckdb-creare-parquet-csv/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>DuckDB ha una <a href="https://duckdb.org/docs/api/cli">cli</a> molto comoda e potente.</p>
+<p>Se si vuole ad esempio creare il file <code>parquet</code> del <a href="comuni_pir.csv">file <code>CSV</code></a> degli <a href="https://idrogeo.isprambiente.it/app/page/open-data">Indicatori di rischio idrogeologico</a> pubblicati da ISPRA, questo è il comando da lanciare:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">duckdb</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-c</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"CREATE TABLE comuni_pir AS SELECT * FROM comuni_pir.csv;EXPORT DATABASE '.' (FORMAT PARQUET);"</span></span></code></pre></div>
+<ul>
+<li>viene creata una tabella <code>comuni_pir</code> in un db temporaneo, a partire dal file <code>CSV</code>;</li>
+<li>viene esportato il <a href="comuni_pir.parquet">db</a> in formato <code>parquet</code> (che conterrà una sola tabella), nella directory corrente;</li>
+<li><code>-c</code> per eseguire i due comandi, separati da <code>;</code> e poi uscire.</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Attenzione all’inferencing dei tipi di campo
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>I campi di un file CSV non sono associati a una definizione di tipo di campo. DuckDB in <em>import</em> farà il cosiddetto <em>inferencing</em>, ovvero proverà a dedurlo.<br>Non è detto che lo faccia correttamente ed è bene sempre fare un check (celle con valori come <code>08</code>, <code>09</code>, ecc. sono ad esempio spesso mappate come numeri e non come stringhe).</p>
+</div>
+</div>
+
+
+
+ ]]></description>
+  <category>duckdb</category>
+  <category>csv</category>
+  <category>til</category>
+  <category>parquet</category>
+  <category>cli</category>
+  <guid>https://aborruso.github.io/til/duckdb-creare-parquet-csv/index.html</guid>
+  <pubDate>Sun, 27 Nov 2022 23:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Quarto: renderizzare una tabella a partire da un CSV</title>
+  <dc:creator>Andrea Borruso</dc:creator>
+  <link>https://aborruso.github.io/til/quarto-renderizzare-tabelle-r/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>Per prima cosa carico delle librerie per leggere il CSV e per renderizzare la tabella, e carico la <a href="input.csv">tabella</a>:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><span class="in" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">```{r}</span></span>
+<span id="cb1-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(tidyverse)</span>
+<span id="cb1-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(lubridate)</span>
+<span id="cb1-4"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(knitr)</span>
+<span id="cb1-5"></span>
+<span id="cb1-6">t <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">read_csv</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"input.csv"</span>)</span>
+<span id="cb1-7"><span class="in" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">```</span></span></code></pre></div>
+<p>E poi la renderizzo in vari modi.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><span class="in" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">```{r}</span></span>
+<span id="cb2-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">kable</span>(t)</span>
+<span id="cb2-3"><span class="in" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">```</span></span></code></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">year</th>
+<th style="text-align: left;">i</th>
+<th style="text-align: right;">v</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">2016</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: right;">0.9599717</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2016</td>
+<td style="text-align: left;">G</td>
+<td style="text-align: right;">0.0382419</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2016</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">0.0012658</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2016</td>
+<td style="text-align: left;">W</td>
+<td style="text-align: right;">0.0000122</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2016</td>
+<td style="text-align: left;">S</td>
+<td style="text-align: right;">0.0000454</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2016</td>
+<td style="text-align: left;">O</td>
+<td style="text-align: right;">0.0004631</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2017</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: right;">0.9598036</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2017</td>
+<td style="text-align: left;">G</td>
+<td style="text-align: right;">0.0384042</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2017</td>
+<td style="text-align: left;">C</td>
+<td style="text-align: right;">0.0012674</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2017</td>
+<td style="text-align: left;">W</td>
+<td style="text-align: right;">0.0000153</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2017</td>
+<td style="text-align: left;">S</td>
+<td style="text-align: right;">0.0000486</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2017</td>
+<td style="text-align: left;">O</td>
+<td style="text-align: right;">0.0004608</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2018</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: right;">0.9598013</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><span class="in" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">```{r}</span></span>
+<span id="cb3-2"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#| tbl-cap: "Soltanto le prime righe"</span></span>
+<span id="cb3-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">kable</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">head</span>(t))</span>
+<span id="cb3-4"><span class="in" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">```</span></span></code></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>Soltanto le prime righe </caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;">year</th>
+<th style="text-align: left;">i</th>
+<th style="text-align: right;">v</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">2016</td>
+<td style="text-align: left;">F</td>
+<td style="text-align: right;">0.9599717</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2016</td>
+<td style="text-align: left;">G</td>
+<td style="text-align: right;">0.0382419</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2016</td>
+<td style="text-align: left;">NA</td>
+<td style="text-align: right;">0.0012658</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2016</td>
+<td style="text-align: left;">W</td>
+<td style="text-align: right;">0.0000122</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2016</td>
+<td style="text-align: left;">S</td>
+<td style="text-align: right;">0.0000454</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2016</td>
+<td style="text-align: left;">O</td>
+<td style="text-align: right;">0.0004631</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><span class="in" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">```{r}</span></span>
+<span id="cb4-2"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#| tbl-cap: "Selezionare righe e colonne"</span></span>
+<span id="cb4-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">kable</span>(t[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>])</span>
+<span id="cb4-4"><span class="in" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">```</span></span></code></pre></div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<caption>Selezionare righe e colonne </caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;">year</th>
+<th style="text-align: left;">i</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">2016</td>
+<td style="text-align: left;">F</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2016</td>
+<td style="text-align: left;">G</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2016</td>
+<td style="text-align: left;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2016</td>
+<td style="text-align: left;">W</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb5-1"><span class="in" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">```{r}</span></span>
+<span id="cb5-2"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">#| tbl-cap: "Paginazione"</span></span>
+<span id="cb5-3"></span>
+<span id="cb5-4">rmarkdown<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">paged_table</span>(t)</span>
+<span id="cb5-5"><span class="in" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">```</span></span></code></pre></div>
+<div class="cell-output-display">
+
+<div data-pagedtable="false"> <div class="table-caption"><p>Paginazione</p></div>
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["year"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["i"],"name":[2],"type":["chr"],"align":["left"]},{"label":["v"],"name":[3],"type":["dbl"],"align":["right"]}],"data":[{"1":"2016","2":"F","3":"9.599717e-01"},{"1":"2016","2":"G","3":"3.824185e-02"},{"1":"2016","2":"NA","3":"1.265786e-03"},{"1":"2016","2":"W","3":"1.216128e-05"},{"1":"2016","2":"S","3":"4.540211e-05"},{"1":"2016","2":"O","3":"4.631421e-04"},{"1":"2017","2":"F","3":"9.598036e-01"},{"1":"2017","2":"G","3":"3.840421e-02"},{"1":"2017","2":"C","3":"1.267408e-03"},{"1":"2017","2":"W","3":"1.530294e-05"},{"1":"2017","2":"S","3":"4.864512e-05"},{"1":"2017","2":"O","3":"4.608111e-04"},{"1":"2018","2":"F","3":"9.598013e-01"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+
+
+
+ ]]></description>
+  <category>quarto</category>
+  <category>csv</category>
+  <category>til</category>
+  <category>rstats</category>
+  <guid>https://aborruso.github.io/til/quarto-renderizzare-tabelle-r/index.html</guid>
+  <pubDate>Fri, 25 Nov 2022 23:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Fare convivere una cella Observable e un grafico Altair in Quarto</title>
+  <dc:creator>Andrea Borruso</dc:creator>
+  <link>https://aborruso.github.io/til/quarto-mescolare-observable-altair/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>Non è possibile in <a href="https://quarto.org/">Quarto</a> fare convivere una cella di codice di tipo <a href="https://observablehq.com/">Observable</a>, con una cella Python con un grafico <a href="https://altair-viz.github.io/">Altair</a>.</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p>Vedi issue <a href="https://github.com/quarto-dev/quarto-cli/issues/3424">3424</a></p>
+</div></div><p>C’è però un <em>workaround</em>:</p>
+<ul>
+<li>da Altair generare la descrizione del grafico in formato JSON (è in formato <a href="http://vega.github.io/vega-lite/">vega-lite</a>), con <code>chart.to_json()</code>;</li>
+<li>fare leggere a una cella Observable il JSON, e visualizzare il grafico.</li>
+</ul>
+<p>Qui ad esempio creo una cella Observable usata soltanto come esempio.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" data-startfrom="28" data-source-offset="9" style="background: #f1f3f5;"><pre class="sourceCode java code-with-copy"><code class="sourceCode java" style="counter-reset: source-line 27;"><span id="cb1-28">```<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>ojs<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb1-29"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//| echo: fenced</span></span>
+<span id="cb1-30">data <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">FileAttachment</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ojs.csv"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">).</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">csv</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">({</span> typed<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">true</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">})</span></span>
+<span id="cb1-31">Inputs<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">table</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>data<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span id="cb1-32">```</span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-2" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</div>
+<p>Poi genero la descrizione di un grafico vega-lite, con Altair, salvando il file <a href="chart.json"><code>chart.json</code></a>.</p>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><span class="in" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">```{python}</span></span>
+<span id="cb2-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> pandas <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> pd</span>
+<span id="cb2-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> altair <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> alt</span>
+<span id="cb2-4"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> warnings</span>
+<span id="cb2-5"></span>
+<span id="cb2-6">warnings.simplefilter(action<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'ignore'</span>, category<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="pp" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">FutureWarning</span>)</span>
+<span id="cb2-7"></span>
+<span id="cb2-8">df <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pd.read_csv(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"altair.csv"</span>,keep_default_na<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>)</span>
+<span id="cb2-9"></span>
+<span id="cb2-10">df[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'year'</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pd.to_datetime(df[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'year'</span>], <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">format</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'%Y'</span>)</span>
+<span id="cb2-11"></span>
+<span id="cb2-12">chart<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>alt.Chart(df).mark_area().encode(</span>
+<span id="cb2-13">    alt.X(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'year:T'</span>, timeUnit <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'year'</span>,title<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'year'</span>,axis<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>alt.Axis(tickCount<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'year'</span>)),</span>
+<span id="cb2-14">    alt.Y(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'v:Q'</span>,axis<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>alt.Axis(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">format</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'%'</span>),title<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'percentage'</span>),</span>
+<span id="cb2-15">    color<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'i:N'</span></span>
+<span id="cb2-16">)</span>
+<span id="cb2-17">chart.save(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'chart.json'</span>)</span>
+<span id="cb2-18"><span class="in" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">```</span></span></code></pre></div>
+</div>
+<p>E infine faccio leggere a Observable la descrizione del grafico, che è stata generata da Altair e lo faccio visualizzare.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3" data-startfrom="59" data-source-offset="9" style="background: #f1f3f5;"><pre class="sourceCode java code-with-copy"><code class="sourceCode java" style="counter-reset: source-line 58;"><span id="cb3-59">```<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>ojs<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb3-60"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//| echo: fenced</span></span>
+<span id="cb3-61">file <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">FileAttachment</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"chart.json"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">).</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">json</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">()</span></span>
+<span id="cb3-62">embed <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">require</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"vega-embed@6"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span id="cb3-63"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">embed</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>file<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span id="cb3-64">```</span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-3" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+ ]]></description>
+  <category>quarto</category>
+  <category>altair</category>
+  <category>grafici</category>
+  <category>observable</category>
+  <category>til</category>
+  <guid>https://aborruso.github.io/til/quarto-mescolare-observable-altair/index.html</guid>
+  <pubDate>Mon, 21 Nov 2022 23:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Quarto: leggere un CSV via Obeservable e visualizzare i dati</title>
+  <dc:creator>Andrea Borruso</dc:creator>
+  <link>https://aborruso.github.io/til/renderizzare-csv-quarto-observable/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>Si può usare semplicemente il metodo <code>FileAttachment</code> di Observable, per <a href="data.csv"><code>data.csv</code></a></p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><span class="in" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">```{ojs}</span></span>
+<span id="cb1-2">data <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">FileAttachment</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"data.csv"</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">csv</span>({ <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">typed</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">true</span> })</span>
+<span id="cb1-3">Inputs<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">table</span>(data)</span>
+<span id="cb1-4"><span class="in" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">```</span></span></code></pre></div>
+<p>per ottenere</p>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb2" data-startfrom="26" data-source-offset="-0" style="background: #f1f3f5;"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 25;"><span id="cb2-26">data <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">FileAttachment</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"data.csv"</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">csv</span>({ <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">typed</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">true</span> })</span>
+<span id="cb2-27">Inputs<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">table</span>(data)</span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-2" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</div>
+<p>O in alternativa con <a href="https://observablehq.com/@uwdata/introducing-arquero"><code>arquero</code></a> (ma vale la pena usarlo anche per trasformare i dati)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3" data-startfrom="33" data-source-offset="9" style="background: #f1f3f5;"><pre class="sourceCode java code-with-copy"><code class="sourceCode java" style="counter-reset: source-line 32;"><span id="cb3-33">```<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>ojs<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb3-34"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">//| echo: fenced</span></span>
+<span id="cb3-35"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">import</span> <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">{ aq, op } from '@uwdata/arquero'</span></span>
+<span id="cb3-36">dati_aquero <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> aq<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">loadCSV</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"data.csv"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span id="cb3-37"></span>
+<span id="cb3-38">dati_aquero<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">view</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">()</span></span>
+<span id="cb3-39">```</span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-2-3" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Il Quarto del titolo è lui <a href="https://quarto.org/" class="uri">https://quarto.org/</a></p>
+</div>
+</div>
+
+
+
+ ]]></description>
+  <category>quarto</category>
+  <category>csv</category>
+  <category>observable</category>
+  <category>til</category>
+  <guid>https://aborruso.github.io/til/renderizzare-csv-quarto-observable/index.html</guid>
+  <pubDate>Sun, 20 Nov 2022 23:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Come filtrare un file di testo a partire da una lista di stringhe</title>
+  <dc:creator>Andrea Borruso</dc:creator>
+  <link>https://aborruso.github.io/til/filtrare-file-elenco-file-esterno/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>Avevo bisogno di filtrare un file CSV di grandi dimensioni, compresso in zip, a partire da una lista di stringhe contenute in un file. <br>Dato il CSV, volevo estrarne soltanto le righe che contenevano una delle stringhe presenti nel file esterno.</p>
+<p>Via CLI, usando lo straordinario <code>grep</code> il comando è (<code>list.txt</code>, è il file che contiene per ogni riga la stringa da cercare):</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">unzip</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-qq</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-c</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"input.zip"</span>  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">grep</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-F</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-f</span> list.txt</span></code></pre></div>
+<p>Per me questa modalità ha risolto tutto. Ma ne metto un paio di altre.</p>
+<p>Una è basata su <a href="https://github.com/BurntSushi/ripgrep"><code>ripgrep</code></a>, un’altra straordinaria CLI per la ricerca di testo, più rapida di <code>grep</code>:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">unzip</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-qq</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-c</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"input.zip"</span>  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">|</span> <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">rg</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-F</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-f</span> list.txt</span></code></pre></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Non si tiene conto del formato
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Queste due modalità non tengono però conto del formato CSV, non riescono ad esempio a cercare per colonna, ma solo per riga. Sotto una soluzione che riesce a farlo.</p>
+</div>
+</div>
+<p>Con <a href="https://github.com/jqnatividad/qsv"><code>qsv</code></a>, è possibile ricercare per colonna:</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">unzip</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-qq</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-c</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"input.zip"</span>  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">|</span> <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">qsv</span> searchset <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-d</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"|"</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-i</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-s</span> nomeColonna list.txt</span></code></pre></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Nota
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><code>-d "|"</code> per impostare il separatore di colonna del CSV;</li>
+<li><code>-i</code> per ignorare maiuscole e minuscole;</li>
+<li><code>-s nomeColonna</code> per specificare la colonna in cui cercare.</li>
+</ul>
+</div>
+</div>
+
+
+
+ ]]></description>
+  <category>cli</category>
+  <category>til</category>
+  <category>grep</category>
+  <guid>https://aborruso.github.io/til/filtrare-file-elenco-file-esterno/index.html</guid>
+  <pubDate>Sat, 19 Nov 2022 23:00:00 GMT</pubDate>
+</item>
+<item>
+  <title>Il mio primo blog post</title>
+  <dc:creator>Andrea Borruso</dc:creator>
+  <link>https://aborruso.github.io/til/un-sito-in-quarto/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>Uso <a href="https://quarto.org/"><strong>quarto</strong></a> da diverse settimane per creare <a href="https://quarto.org/docs/presentations/revealjs/">slide in HTML</a> scritte in markdown e basate su <a href="https://revealjs.com/">reveal.js</a>.</p>
+<p>Quarto è un sistema di pubblicazione scientifica e tecnica, <em>open source</em>, basato su <a href="https://pandoc.org/">Pandoc</a>:</p>
+<ul>
+<li>Crea contenuti dinamici con <a href="https://quarto.org/docs/computations/python.html">Python</a>, <a href="https://quarto.org/docs/computations/r.html">R</a>, <a href="https://quarto.org/docs/computations/julia.html">Julia</a> e <a href="https://quarto.org/docs/computations/ojs.html">Observable</a>;</li>
+<li>I documenti sono o file markdown in <em>plain text</em> o Jupyter notebook;</li>
+<li>Consente di pubblicare articoli, report, presentazioni, siti Web, blog e libri di alta qualità in HTML, PDF, MS Word, ePub e altri formati;</li>
+<li>Consente di creare contenuti utilizzando <em>scientific markdown</em>, incluse equazioni, citazioni, riferimenti incrociati, pannelli di immagini, didascalie, layout avanzato e altro ancora.</li>
+</ul>
+<p>Quello che ho fatto per creare la prima versione di questo sito è stato:</p>
+<ol type="1">
+<li>Installare <a href="https://quarto.org/docs/get-started/"><strong>quarto</strong></a>;</li>
+<li>creare un nuovo progetto, dandogli per nome il mio profilo utente GitHub;</li>
+</ol>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">quarto</span> create-project aborruso.github.io <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--type</span> website</span></code></pre></div>
+<ol start="3" type="1">
+<li>impostare a <code>docs</code> la cartella di output di pubblicazione del sito, aggiungendo l’istruzione nel file <code>_quarto.yml</code>:</li>
+</ol>
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>_quarto.yml</strong></pre>
+</div>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb2-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">project</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span></span>
+<span id="cb2-2"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">type</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> website</span></span>
+<span id="cb2-3"><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">  </span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">output-dir</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">:</span><span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;"> docs</span></span></code></pre></div>
+</div>
+<ol start="4" type="1">
+<li>creare dei primi contenuti da pubblicare come questo post;</li>
+<li>creare il repo <code>aborruso.github.io</code> su GitHub;</li>
+<li>generare il sito con il comando <code>render</code></li>
+</ol>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">quarto</span> render ./</span></code></pre></div>
+<ol start="7" type="1">
+<li>impostare come sorgente delle GitHub Pages del repo creato, la cartella <code>docs</code> citata sopra;</li>
+<li>pubblicare tutto su GitHub.</li>
+</ol>
+<p>Per farlo, mi hanno aiutato queste letture:</p>
+<ul>
+<li>Creating your personal website using Quarto <a href="https://ucsb-meds.github.io/creating-quarto-websites/" class="uri">https://ucsb-meds.github.io/creating-quarto-websites/</a></li>
+<li>Creating a Website (dal sito ufficiale) <a href="https://quarto.org/docs/websites/" class="uri">https://quarto.org/docs/websites/</a></li>
+<li>Creating a Blog (dal sito ufficiale) <a href="https://quarto.org/docs/websites/website-blog.html" class="uri">https://quarto.org/docs/websites/website-blog.html</a></li>
+</ul>
+<div class="callout callout-style-simple callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Importante
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Ho seguito questi step per la primissima pubblicazione, per vedere subito un primo risultato. Poi ho cambiato molte cose, quindi le impostazioni attuali sono diverse da quelle descritte sopra.</p>
+</div>
+</div>
+
+
+
+ ]]></description>
+  <category>quarto</category>
+  <category>til</category>
+  <category>github</category>
+  <guid>https://aborruso.github.io/til/un-sito-in-quarto/index.html</guid>
+  <pubDate>Fri, 18 Nov 2022 23:00:00 GMT</pubDate>
+</item>
+</channel>
+</rss>

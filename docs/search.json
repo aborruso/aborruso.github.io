@@ -1,0 +1,114 @@
+[
+  {
+    "objectID": "blog.html",
+    "href": "blog.html",
+    "title": "Blog",
+    "section": "",
+    "text": "Non ho ancora scritto dei veri blog post, ma soltanto un po’ di TIL, appunti brevi su cose imparate/scoperte. Questi di sotto quindi al momento sono soltanto una copia dei post che trovi in TIL.\n\n\n\n\n\n\n\n\n\n\n\n  \n\n\n\n\nInstallazione QSV\n\n\n\n\n\n\n\nqsv\n\n\ntil\n\n\ncli\n\n\n\n\nFarlo compilando il codice\n\n\n\n\n\n\n29 giu 2023\n\n\nAndrea Borruso\n\n\n\n\n\n\n  \n\n\n\n\nDuckDB: l’estensione spaziale\n\n\n\n\n\n\n\nduckdb\n\n\nspatial\n\n\ncli\n\n\n\n\nCome installarla e abilitarla\n\n\n\n\n\n\n23 apr 2023\n\n\nAndrea Borruso\n\n\n\n\n\n\n  \n\n\n\n\nDuckDB: creare un file parquet a partire da file di testo di grandi dimensioni\n\n\n\n\n\n\n\nduckdb\n\n\ncsv\n\n\nparquet\n\n\nperformance\n\n\n\n\nUn esempio a partire da un file CSV, con i parametri ottimizzati per buone performance\n\n\n\n\n\n\n4 mar 2023\n\n\nAndrea Borruso\n\n\n\n\n\n\n  \n\n\n\n\nQuarto: applicare stile CSS\n\n\n\n\n\n\n\nquarto\n\n\ncss\n\n\n\n\nCome farlo soltanto per un tag span (ad esempio per una parola)\n\n\n\n\n\n\n26 feb 2023\n\n\nAndrea Borruso\n\n\n\n\n\n\n  \n\n\n\n\nEstrarre la lista dei file creati più di 30 giorni fa\n\n\n\n\n\n\n\nnushell\n\n\ntil\n\n\n\n\nUsare nushell per farlo sia su Linux che su Windows\n\n\n\n\n\n\n28 gen 2023\n\n\nAndrea Borruso\n\n\n\n\n\n\n  \n\n\n\n\nPagina con codice R, Python e utility Bash\n\n\n\n\n\n\n\nquarto\n\n\ntil\n\n\n\n\nCombinare le variabili tra blocchi di codice\n\n\n\n\n\n\n7 gen 2023\n\n\nAndrea Borruso\n\n\n\n\n\n\n  \n\n\n\n\nNushell: installarlo con il supporto ai dataframe\n\n\n\n\n\n\n\nnushell\n\n\ndataframe\n\n\ncli\n\n\ntil\n\n\n\n\nA partire dal codice sorgente\n\n\n\n\n\n\n3 dic 2022\n\n\nAndrea Borruso\n\n\n\n\n\n\n  \n\n\n\n\nDuckDB: creare un file parquet a partire da un CSV\n\n\n\n\n\n\n\nduckdb\n\n\ncsv\n\n\ntil\n\n\nparquet\n\n\ncli\n\n\n\n\nCome farlo a riga di comando\n\n\n\n\n\n\n28 nov 2022\n\n\nAndrea Borruso\n\n\n\n\n\n\n  \n\n\n\n\nQuarto: renderizzare una tabella a partire da un CSV\n\n\n\n\n\n\n\nquarto\n\n\ncsv\n\n\ntil\n\n\nrstats\n\n\n\n\nCome farlo con il kernel R\n\n\n\n\n\n\n26 nov 2022\n\n\nAndrea Borruso\n\n\n\n\n\n\n  \n\n\n\n\nFare convivere una cella Observable e un grafico Altair in Quarto\n\n\n\n\n\n\n\nquarto\n\n\naltair\n\n\ngrafici\n\n\nobservable\n\n\ntil\n\n\n\n\n\n\n\n\n\n\n\n22 nov 2022\n\n\nAndrea Borruso\n\n\n\n\n\n\n  \n\n\n\n\nQuarto: leggere un CSV via Obeservable e visualizzare i dati\n\n\n\n\n\n\n\nquarto\n\n\ncsv\n\n\nobservable\n\n\ntil\n\n\n\n\n\n\n\n\n\n\n\n21 nov 2022\n\n\nAndrea Borruso\n\n\n\n\n\n\n  \n\n\n\n\nCome filtrare un file di testo a partire da una lista di stringhe\n\n\n\n\n\n\n\ncli\n\n\ntil\n\n\ngrep\n\n\n\n\nCome usare grep, ripgrep e qsv per applicare un filtro a partire da un file esterno\n\n\n\n\n\n\n20 nov 2022\n\n\nAndrea Borruso\n\n\n\n\n\n\n  \n\n\n\n\nIl mio primo blog post\n\n\n\n\n\n\n\nquarto\n\n\ntil\n\n\ngithub\n\n\n\n\nÈ un mini post, in cui racconto i miei primi passi con un sito in quarto\n\n\n\n\n\n\n19 nov 2022\n\n\nAndrea Borruso\n\n\n\n\n\n\nNessun risultato"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Andrea Borruso",
+    "section": "",
+    "text": "Ciao\nGrazie per essere qui. Questo è uno spazio dove inserirò alcuni appunti sulle cose che imparo, sui progetti che mi piacciono e/o che sto sviluppando, sugli strumenti con cui lavoro e gioco e sulle persone che incontro.\nSono socio dell’associazione onData.\n\n\nQuando hai dato lo stesso consiglio 3 volte, scrivi un post (David Robinson)."
+  },
+  {
+    "objectID": "til.html",
+    "href": "til.html",
+    "title": "TIL (Today I Learned)",
+    "section": "",
+    "text": "Che vuol dire TIL?\n\n\n\nMi piacciono molto le persone che usano il loro sito web, per appuntarsi alcune delle cose che imparano. Come fa il mitico Simon Willison. E Simon lo fa in modalità TIL, ovvero Today I Learned.\nI miei post qui saranno spesso “piccoli”, dei TIL in forma di appunti, con qualche possibile lacuna e/o bruttura.\n\n\n\n\n\n\n\n\n   \n     \n     \n       Ordinare per\n       Predefinito\n         \n          Data - Meno recente\n        \n         \n          Data - Più recente\n        \n         \n          Titolo\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\nData\n\n\nTitolo\n\n\n\n\n\n\n29 giu 2023\n\n\nInstallazione QSV\n\n\n\n\n23 apr 2023\n\n\nDuckDB: l’estensione spaziale\n\n\n\n\n4 mar 2023\n\n\nDuckDB: creare un file parquet a partire da file di testo di grandi dimensioni\n\n\n\n\n26 feb 2023\n\n\nQuarto: applicare stile CSS\n\n\n\n\n28 gen 2023\n\n\nEstrarre la lista dei file creati più di 30 giorni fa\n\n\n\n\n7 gen 2023\n\n\nPagina con codice R, Python e utility Bash\n\n\n\n\n3 dic 2022\n\n\nNushell: installarlo con il supporto ai dataframe\n\n\n\n\n28 nov 2022\n\n\nDuckDB: creare un file parquet a partire da un CSV\n\n\n\n\n26 nov 2022\n\n\nQuarto: renderizzare una tabella a partire da un CSV\n\n\n\n\n22 nov 2022\n\n\nFare convivere una cella Observable e un grafico Altair in Quarto\n\n\n\n\n21 nov 2022\n\n\nQuarto: leggere un CSV via Obeservable e visualizzare i dati\n\n\n\n\n20 nov 2022\n\n\nCome filtrare un file di testo a partire da una lista di stringhe\n\n\n\n\n19 nov 2022\n\n\nIl mio primo blog post\n\n\n\n\n\n\nNessun risultato"
+  },
+  {
+    "objectID": "til/compilare-qsv/index.html",
+    "href": "til/compilare-qsv/index.html",
+    "title": "Installazione QSV",
+    "section": "",
+    "text": "Di base i comandi sono questi di sotto:\ngit clone https://github.com/jqnatividad/qsv.git\ncd qsv\ncargo build --release --locked --bin qsv -F all_features\nPer il mio ambiente è comodo, prima della compilazione, settare la variabile d’ambiente CARGO_BUILD_RUSTFLAGS, per avere in output un binario ottimizzato per la mia CPU:\nexport CARGO_BUILD_RUSTFLAGS='-C target-cpu=native'\nÈ consigliato avere un ambiente “pulito” prima della compilazione. Quindi la procedura potrebbe diventare questa:\ngit clone https://github.com/jqnatividad/qsv.git\nrustup up\ncargo clean\ncd qsv\ncargo build --release --locked --bin qsv -F all_features\nSe si ha poca RAM (meno di 16GB), è meglio rinunciare ad alcun feature (come to, che è oneroso da compilare):\ngit clone https://github.com/jqnatividad/qsv.git\nrustup up\ncargo clean\ncd qsv\ncargo build --release --locked --bin qsv -F feature_capable,polars"
+  },
+  {
+    "objectID": "til/duckdb-creare-parquet-csv/index.html",
+    "href": "til/duckdb-creare-parquet-csv/index.html",
+    "title": "DuckDB: creare un file parquet a partire da un CSV",
+    "section": "",
+    "text": "DuckDB ha una cli molto comoda e potente.\nSe si vuole ad esempio creare il file parquet del file CSV degli Indicatori di rischio idrogeologico pubblicati da ISPRA, questo è il comando da lanciare:\nduckdb -c \"CREATE TABLE comuni_pir AS SELECT * FROM comuni_pir.csv;EXPORT DATABASE '.' (FORMAT PARQUET);\"\n\nviene creata una tabella comuni_pir in un db temporaneo, a partire dal file CSV;\nviene esportato il db in formato parquet (che conterrà una sola tabella), nella directory corrente;\n-c per eseguire i due comandi, separati da ; e poi uscire.\n\n\n\n\n\n\n\nAttenzione all’inferencing dei tipi di campo\n\n\n\nI campi di un file CSV non sono associati a una definizione di tipo di campo. DuckDB in import farà il cosiddetto inferencing, ovvero proverà a dedurlo.Non è detto che lo faccia correttamente ed è bene sempre fare un check (celle con valori come 08, 09, ecc. sono ad esempio spesso mappate come numeri e non come stringhe)."
+  },
+  {
+    "objectID": "til/duckdb-ottimizzazione-performance-import-csv-jsonl-creazione-parquet/index.html",
+    "href": "til/duckdb-ottimizzazione-performance-import-csv-jsonl-creazione-parquet/index.html",
+    "title": "DuckDB: creare un file parquet a partire da file di testo di grandi dimensioni",
+    "section": "",
+    "text": "In queste settimane ho guardato un po’ i dati della “Banca dati Servizio Contratti Pubblici - SCP” che contiene gli avvisi, i bandi e gli esiti di gara in formato aperto, raccolti dalla “Banca dati SCP - Servizio Contratti Pubblici”, gestita dalla Direzione Generale per la regolazione e i contratti pubblici del Ministero delle Infrastrutture e Trasporti.\nNel dataset sono presenti file CSV di medie dimensioni, come quello denominato v_od_atti.csv, composto da 685.000 righe per 45 colonne, per un totale di circa 570 MB.\nNon sono big data e ci sono tanti modi per interrogarlo e trasformarlo con poco sforzo e rapidità. Uno molto comodo è quello di usare DuckDB: prima per la conversione di formato e poi per tutte le query che si vorranno fare.\nMolto comodo convertire il CSV in formato parquet. Si passa da circa 570 a 45 MB, e si ha a disposizione un formato che è rapidissimo da interrogare.\nPer farlo si può usare DuckDB a riga di comando:\necho \"COPY (SELECT *\nFROM read_csv_auto('input.csv'))\nTO 'output.parquet' (FORMAT 'PARQUET',\nCODEC  'Snappy',PER_THREAD_OUTPUT TRUE);\" \\\n| duckdb\nE in 10 secondi (sulla mia macchina con 16 GB di RAM e un pentium 7) il file è pronto.\nLa preziosa fonte/ispirazione è il bravissimo Mark Litwintschik."
+  },
+  {
+    "objectID": "til/filtrare-file-elenco-file-esterno/index.html",
+    "href": "til/filtrare-file-elenco-file-esterno/index.html",
+    "title": "Come filtrare un file di testo a partire da una lista di stringhe",
+    "section": "",
+    "text": "Avevo bisogno di filtrare un file CSV di grandi dimensioni, compresso in zip, a partire da una lista di stringhe contenute in un file. Dato il CSV, volevo estrarne soltanto le righe che contenevano una delle stringhe presenti nel file esterno.\nVia CLI, usando lo straordinario grep il comando è (list.txt, è il file che contiene per ogni riga la stringa da cercare):\nunzip -qq -c \"input.zip\"  | grep -F -f list.txt\nPer me questa modalità ha risolto tutto. Ma ne metto un paio di altre.\nUna è basata su ripgrep, un’altra straordinaria CLI per la ricerca di testo, più rapida di grep:\nunzip -qq -c \"input.zip\"  | rg -F -f list.txt\n\n\n\n\n\n\nNon si tiene conto del formato\n\n\n\nQueste due modalità non tengono però conto del formato CSV, non riescono ad esempio a cercare per colonna, ma solo per riga. Sotto una soluzione che riesce a farlo.\n\n\nCon qsv, è possibile ricercare per colonna:\nunzip -qq -c \"input.zip\"  | qsv searchset -d \"|\" -i -s nomeColonna list.txt\n\n\n\n\n\n\nNota\n\n\n\n\n-d \"|\" per impostare il separatore di colonna del CSV;\n-i per ignorare maiuscole e minuscole;\n-s nomeColonna per specificare la colonna in cui cercare."
+  },
+  {
+    "objectID": "til/installare-duckdb-spatial/index.html",
+    "href": "til/installare-duckdb-spatial/index.html",
+    "title": "DuckDB: l’estensione spaziale",
+    "section": "",
+    "text": "È stata rilasciata questa estensione spaziale per DuckDB.\nUno dei modi per istallarla è scaricare i binari precompilati, accessibili dai workflow di compilazione.\n\n\n\nI workflow, per i vari sistemi operativi\n\n\nPer installarla:\n\ndecomprimere il file scaricato;\nlanciare duckdb con l’opzione unsigned, ovvero duckdb -unsigned;\ninstallare l’estensione usando il percorso assoluto del file (sotto un esempio)\n\ninstall '/home/user/spatial.duckdb_extension';\n\ncaricare l’estensione, con LOAD spatial;.\n\nE una volta caricata, potrai vedere tutti i nuovi formati file supportati da duckdb con\nselect * from ST_LIST_DRIVERS() order by 1;\n\n\n\nLa lista dei formati disponibili"
+  },
+  {
+    "objectID": "til/mescolare-r-python-bash/index.html",
+    "href": "til/mescolare-r-python-bash/index.html",
+    "title": "Pagina con codice R, Python e utility Bash",
+    "section": "",
+    "text": "Ad esempio voglio usare Miller per calcolare la somma di un campo di un file CSV.\nUso system in r, per lanciare un comando di sistema (in questo caso sono in ambiente Linux), e associo l’output a una variabile.\n\n```{r}\nsum &lt;- system('mlr --c2n stats1 -a sum -f a input.csv', intern = TRUE)\n```\n\nCosì facendo posso usare un’opzione comodissima dell’engine knitr, che mi consente di inserire il riferimento a una variabile r (o un comando r) all’interno di un testo markdown.\nSe scrivo ad esempio\n\nLa somma è `r sum`.\n\nAvrò restituito\nLa somma è 9.\nE tramite il package di r reticulate (qui un tutorial a tema), posso passare la variabile r a un blocco di codice python:\n\n```{python}\nsum_py = r.sum\nprint(sum_py)\n```\n\n9"
+  },
+  {
+    "objectID": "til/nushell-installare-supporto-dataframe/index.html",
+    "href": "til/nushell-installare-supporto-dataframe/index.html",
+    "title": "Nushell: installarlo con il supporto ai dataframe",
+    "section": "",
+    "text": "Dalla release 0.72 di nushell il supporto ai dataframe non è abilitato di default.\nQuesta una modalità di compilarlo, con il supporto abilitato.\n# clona il repository\ngit clone https://github.com/nushell/nushell.git\n\ncd nushell\n\ncargo install --path=. --all-features\nVerrà installato in /home/username/.cargo/bin/nu."
+  },
+  {
+    "objectID": "til/nushell-lista-file-piu-vecchi-di/index.html",
+    "href": "til/nushell-lista-file-piu-vecchi-di/index.html",
+    "title": "Estrarre la lista dei file creati più di 30 giorni fa",
+    "section": "",
+    "text": "La data di creazione non è un parametro disponibile e/o interrogabile su tutti i tipi di file sytem.\nIl meraviglioso nushell riesce a farlo un po’ ovunque.\nQuesto un esempio:\nls **\\*  -l | where created &lt;= (date now) - 30day\nAlcune note:\n\nlegge la cartella corrente e tutte le sue sottocartelle con **\\* (qui c’è il forward slash e quindi è per sistemi Windows; su Linux è **/*);\nfiltra tutti i file creati più di 30 giorni fa con where created &lt;= (date now) - 30day.\n\nSe si vogliono cancellare gli elementi presenti nella lista del comando precedente:\nls **\\*  -l | where created &lt;= (date now) - 30day | each { rm $in.name }\n$in è una variabile creata automaticamente in corrispondenza di una lista."
+  },
+  {
+    "objectID": "til/quarto-applicare-stili-span/index.html",
+    "href": "til/quarto-applicare-stili-span/index.html",
+    "title": "Quarto: applicare stile CSS",
+    "section": "",
+    "text": "Se voglio applicare ad esempio a una sola parola uno stile definito inline, basterà fare come sotto:\nL'arancia è [arancione]{style=\"color:#ffa500\"}.\nL’arancia è arancione.\nSe invece voglio associare a una frase uno stile di bootstrap (come quelli sui pulsanti), potrò fare in questo modo:\n[☝️ Partecipa]{.btn .btn-success}\n☝️ Partecipa\nSe infine voglio applicare una determinata classe, seguita da un attributo personalizzato, in modo da poter associare uno stile personalizzato tramite uno specifico CSS Selector, potrò fare così:\n[Lorem ipsum]{.class key=\"val\"}\nIl codice HTML generato sarà:\n&lt;p&gt;\n  &lt;span class=\"class\" data-key=\"val\"&gt;Lorem ipsum&lt;/span&gt;\n&lt;/p&gt;"
+  },
+  {
+    "objectID": "til/quarto-mescolare-observable-altair/index.html",
+    "href": "til/quarto-mescolare-observable-altair/index.html",
+    "title": "Fare convivere una cella Observable e un grafico Altair in Quarto",
+    "section": "",
+    "text": "Non è possibile in Quarto fare convivere una cella di codice di tipo Observable, con una cella Python con un grafico Altair.\n\n\nVedi issue 3424\nC’è però un workaround:\n\nda Altair generare la descrizione del grafico in formato JSON (è in formato vega-lite), con chart.to_json();\nfare leggere a una cella Observable il JSON, e visualizzare il grafico.\n\nQui ad esempio creo una cella Observable usata soltanto come esempio.\n\n```{ojs}\n//| echo: fenced\ndata = FileAttachment(\"ojs.csv\").csv({ typed: true })\nInputs.table(data)\n```\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPoi genero la descrizione di un grafico vega-lite, con Altair, salvando il file chart.json.\n\n```{python}\nimport pandas as pd\nimport altair as alt\nimport warnings\n\nwarnings.simplefilter(action='ignore', category=FutureWarning)\n\ndf = pd.read_csv(\"altair.csv\",keep_default_na=False)\n\ndf['year'] = pd.to_datetime(df['year'], format='%Y')\n\nchart=alt.Chart(df).mark_area().encode(\n    alt.X('year:T', timeUnit = 'year',title='year',axis=alt.Axis(tickCount='year')),\n    alt.Y('v:Q',axis=alt.Axis(format='%'),title='percentage'),\n    color='i:N'\n)\nchart.save('chart.json')\n```\n\nE infine faccio leggere a Observable la descrizione del grafico, che è stata generata da Altair e lo faccio visualizzare.\n\n```{ojs}\n//| echo: fenced\nfile = FileAttachment(\"chart.json\").json()\nembed = require(\"vega-embed@6\")\nembed(file)\n```"
+  },
+  {
+    "objectID": "til/quarto-renderizzare-tabelle-r/index.html",
+    "href": "til/quarto-renderizzare-tabelle-r/index.html",
+    "title": "Quarto: renderizzare una tabella a partire da un CSV",
+    "section": "",
+    "text": "Per prima cosa carico delle librerie per leggere il CSV e per renderizzare la tabella, e carico la tabella:\n```{r}\nlibrary(tidyverse)\nlibrary(lubridate)\nlibrary(knitr)\n\nt = read_csv(\"input.csv\")\n```\nE poi la renderizzo in vari modi.\n\n```{r}\nkable(t)\n```\n\n\n\n\nyear\ni\nv\n\n\n\n\n2016\nF\n0.9599717\n\n\n2016\nG\n0.0382419\n\n\n2016\nNA\n0.0012658\n\n\n2016\nW\n0.0000122\n\n\n2016\nS\n0.0000454\n\n\n2016\nO\n0.0004631\n\n\n2017\nF\n0.9598036\n\n\n2017\nG\n0.0384042\n\n\n2017\nC\n0.0012674\n\n\n2017\nW\n0.0000153\n\n\n2017\nS\n0.0000486\n\n\n2017\nO\n0.0004608\n\n\n2018\nF\n0.9598013\n\n\n\n\n\n\n```{r}\n#| tbl-cap: \"Soltanto le prime righe\"\nkable(head(t))\n```\n\n\nSoltanto le prime righe \n\n\nyear\ni\nv\n\n\n\n\n2016\nF\n0.9599717\n\n\n2016\nG\n0.0382419\n\n\n2016\nNA\n0.0012658\n\n\n2016\nW\n0.0000122\n\n\n2016\nS\n0.0000454\n\n\n2016\nO\n0.0004631\n\n\n\n\n\n\n```{r}\n#| tbl-cap: \"Selezionare righe e colonne\"\nkable(t[1:4, 1:2])\n```\n\n\nSelezionare righe e colonne \n\n\nyear\ni\n\n\n\n\n2016\nF\n\n\n2016\nG\n\n\n2016\nNA\n\n\n2016\nW\n\n\n\n\n\n\n```{r}\n#| tbl-cap: \"Paginazione\"\n\nrmarkdown::paged_table(t)\n```\n\n\n Paginazione"
+  },
+  {
+    "objectID": "til/renderizzare-csv-quarto-observable/index.html",
+    "href": "til/renderizzare-csv-quarto-observable/index.html",
+    "title": "Quarto: leggere un CSV via Obeservable e visualizzare i dati",
+    "section": "",
+    "text": "Si può usare semplicemente il metodo FileAttachment di Observable, per data.csv\n```{ojs}\ndata = FileAttachment(\"data.csv\").csv({ typed: true })\nInputs.table(data)\n```\nper ottenere\n\ndata = FileAttachment(\"data.csv\").csv({ typed: true })\nInputs.table(data)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nO in alternativa con arquero (ma vale la pena usarlo anche per trasformare i dati)\n\n```{ojs}\n//| echo: fenced\nimport { aq, op } from '@uwdata/arquero'\ndati_aquero = aq.loadCSV(\"data.csv\")\n\ndati_aquero.view()\n```\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nIl Quarto del titolo è lui https://quarto.org/"
+  },
+  {
+    "objectID": "til/un-sito-in-quarto/index.html",
+    "href": "til/un-sito-in-quarto/index.html",
+    "title": "Il mio primo blog post",
+    "section": "",
+    "text": "Uso quarto da diverse settimane per creare slide in HTML scritte in markdown e basate su reveal.js.\nQuarto è un sistema di pubblicazione scientifica e tecnica, open source, basato su Pandoc:\n\nCrea contenuti dinamici con Python, R, Julia e Observable;\nI documenti sono o file markdown in plain text o Jupyter notebook;\nConsente di pubblicare articoli, report, presentazioni, siti Web, blog e libri di alta qualità in HTML, PDF, MS Word, ePub e altri formati;\nConsente di creare contenuti utilizzando scientific markdown, incluse equazioni, citazioni, riferimenti incrociati, pannelli di immagini, didascalie, layout avanzato e altro ancora.\n\nQuello che ho fatto per creare la prima versione di questo sito è stato:\n\nInstallare quarto;\ncreare un nuovo progetto, dandogli per nome il mio profilo utente GitHub;\n\nquarto create-project aborruso.github.io --type website\n\nimpostare a docs la cartella di output di pubblicazione del sito, aggiungendo l’istruzione nel file _quarto.yml:\n\n\n\n_quarto.yml\n\nproject:\n  type: website\n  output-dir: docs\n\n\ncreare dei primi contenuti da pubblicare come questo post;\ncreare il repo aborruso.github.io su GitHub;\ngenerare il sito con il comando render\n\nquarto render ./\n\nimpostare come sorgente delle GitHub Pages del repo creato, la cartella docs citata sopra;\npubblicare tutto su GitHub.\n\nPer farlo, mi hanno aiutato queste letture:\n\nCreating your personal website using Quarto https://ucsb-meds.github.io/creating-quarto-websites/\nCreating a Website (dal sito ufficiale) https://quarto.org/docs/websites/\nCreating a Blog (dal sito ufficiale) https://quarto.org/docs/websites/website-blog.html\n\n\n\n\n\n\n\nImportante\n\n\n\nHo seguito questi step per la primissima pubblicazione, per vedere subito un primo risultato. Poi ho cambiato molte cose, quindi le impostazioni attuali sono diverse da quelle descritte sopra."
+  }
+]

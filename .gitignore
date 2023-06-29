@@ -1,7 +1,6 @@
 /.quarto/
 /_freeze/
 garage/*
-docs/
 *.Identifier
 
 _site/*
