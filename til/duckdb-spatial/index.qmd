@@ -1,0 +1,43 @@
+---
+title: "duckdb"
+description: "Appunti sull'estensione spaziale"
+date: "2023-07-30"
+draft: true
+categories:
+  - duckdb
+  - spatial
+---
+
+
+I dati in formato Parquet di Overture Maps
+
+<https://github.com/OvertureMaps/data/blob/main/README.md#how-to-access-overture-maps-data>
+
+
+Per scaricarli si può usare aws cli
+
+```bash
+aws s3 cp --recursive 's3://overturemaps-us-west-2/release/2023-07-26-alpha.0/theme=places/' overture
+```
+
+::: {.callout-note}
+`overture` è la cartella di destinazione
+:::
+
+Estrarre i dati come CSV (vedi [qui](https://github.com/bdon/overture-tiles)):
+
+```sql
+COPY (select json_extract(bbox,'$.minx') as x,
+      json_extract(bbox,'$.miny') as y,
+      json_extract_string(names, '$.common[0].value') as name,
+      json_extract_string(categories, '$.main') as category_main,
+      from read_parquet('overture/theme=places/type=place/*')) TO 'pois.csv' (HEADER, DELIMITER ',');
+```
+
+La conversione di dati spaziali si può fare anche così (vedi [qui](https://twitter.com/Maxxen_/status/1684917990171529219?t=EeOQ4FSEfRVmjSAAKtqE7A&s=09))
+
+```
+duckdb -list -noheader -c "LOAD spatial; SELECT st_asgeojson(st_transform(st_geomfromwkb(wkb_geometry), 'EPSG:3857','EPSG:4326')) FROM st_read('/vsicurl/https://raw.githubusercontent.com/duckdblabs/duckdb_spatial/main/test/data/amsterdam_roads.fgb');" | tippecanoe -o output.pmtiles
+```
+
+Altri tip https://github.com/OvertureMaps/data/discussions/23#discussioncomment-6573244
