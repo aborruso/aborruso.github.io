@@ -1,0 +1,19 @@
+---
+title: "Incidenti"
+description: "Palermo"
+date: "2023-07-30"
+draft: true
+categories:
+  - duckdb
+  - spatial
+---
+
+
+https://opendata.comune.palermo.it/opendata-dataset.php?dataset=1713
+
+```
+mlr --csv --ifs ";" put '$Latitudine=sub($Latitudine,",",".");$Longitudine=sub($Longitudine,",",".");$DateISO=strftime(strptime($Data,"%d/%m/%Y"),"%Y-%m-%d");$mese=strftime(strptime($Data,"%d/%m/%Y"),"%m");$ora=strftime(strptime($Ora,"%H:%M"),"%H")'  incidenti.csv
+```
+
+- calendario con i giorni hot
+- mappa con i punti hot, heatmap, esagoni, bertin.js
