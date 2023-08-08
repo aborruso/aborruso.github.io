@@ -1,0 +1,204 @@
+---
+title: "Gestire file CSV grandi, brutti e cattivi"
+description: "Suggerimenti e *tips & tricks*, ispirati da duckdb e OpenCoesione"
+date: "2023-07-30"
+draft: true
+search: false
+code-annotations: hover
+categories:
+  - duckdb
+format:
+  html:
+    code-overflow: scroll
+    crossrefs-hover: false
+---
+
+
+## TL;DR (una breve introduzione)
+
+Il formato **CSV**, con tutti i suoi **difetti**, è ancora **uno dei formati più diffusi per lo scambio di dati**. Ci sono **modalità** di gestire questi file ed eccezionali **strumenti**, che possono rendere molto semplice, efficace e rapido il loro utilizzo. Anche quando sono di **grandi dimensioni**.<br>
+E per fortuna ci sono banche dati "grosse" e importanti come [OpenCoesione](https://opencoesione.gov.it) che danno l'opportunità di fare pratica con questi strumenti.
+In questo lungo post farò una carrelata della compressione dei file CSV, dell'utilizzo di duckdb per analizzarli e del formato parquet come alternativa al CSV.
+
+## I CSV sono brutti e cattivi
+
+Il formato **CSV** è uno dei formati più diffusi per lo **scambio di dati**. È un formato **testuale**, che può essere letto e scritto da quasi tutti i linguaggi di programmazione e da quasi tutti gli strumenti di analisi dati (i "quasi" si potrebbero levare).<br>
+Non è consigliabile utilizzarlo come formato di lavoro, perché le operazioni di **lettura** e **scrittura** sono **lente** e **costose** in termini di risorse (tempo e memoria) e perché è in generale un formato "povero".
+
+Un file CSV è "brutto e cattivo" ad esempio per queste ragioni:
+
+- non consente di definire il **tipo di campo** (stringa, numero, data, ecc.). Tipicamente si è costretti a fare l'**inferenza**, che può essere **errata**;
+- non consente di definire il **separatore di campo** (virgola, punto e virgola, tabulazione, ecc.). Si può fare l'inferenza e/o si può leggere (e si possono fare errrori);
+- non consente di definire il **separatore dei decimali** (virgola, punto, ecc.). Si può fare l'inferenza e/o si può leggere (e si possono fare errrori);
+- non consente di definire l'**encoding** (UTF-8, ISO-8859-1, ecc.). Tipicamente si è costretti a fare l'**inferenza**, che può essere **errata**.
+
+E per questo chi pubblica dati in questo formato, **dovrebbe** a maggior forza [**descriverli**](#descrivere-i-csv) con dei **metadati**. Ma putroppo nella gran parte dei casi, non ci resta che "morire di inferenza".<br>
+
+E si potrebbero aggiungere altre brutture sul formato e di come spesso viene reso disponibile. Ma non è il tema del post.
+
+
+## Compressione dei file CSV
+
+Molti siti che pubblicano file CSV - specie quando sono "grandi" - li pubblicano in formato compresso.<br>
+Questo, come nel caso del file dei progetti di OpenCoesione, è un ottimo modo per ridurre il tempo di *download*: il [file](https://opencoesione.gov.it/it/opendata/progetti_esteso.zip) reso disponibile in formato compresso `ZIP` pesa circa (nella versione di aprile 2023) 240 MB, mentre il file CSV contenuto al suo interno pesa circa 4,4 GB.
+
+Scegliendo un altro formato di compressione, diverso dallo `ZIP`, si possono dare ulteriori vantaggi a chi utilizzerà il file.
+
+Il primo è quello di **renderlo subito pronto all'uso**, come se fosse già decompresso. Che è una cosa molto comoda specie nelle prime **fasi** di lavoro, quelle "**esplorative**", in cui si fa un po' di ispezione, si fanno le prime prove di analisi, di verifica qualità, di adeguatezza dei dati, ecc..
+Il formato di compressione ideale in tal senso è il `GZIP`, che è supportato da quasi tutti gli strumenti di analisi dati, e che è molto efficiente nella compressione dei file CSV.<br>
+È un formato introdotto nel 1992, che ha una **buona compressione** e che è **veloce** da decomprimere. È un formato **_lossless_**, cioè non perde informazioni, e **_streaming_**, cioè può essere decompresso anche senza avere l'intero file, ma solo una parte.<br>
+La gran parte delle applicazioni e linguaggi di *scripting* sono in grado di accedere nativame a un file `gz`; un po' meno con il formato `zip`. Ed è compatibile con tutti i sistemi operativi e tutte le *utility* di compressione e decompressione.
+
+Alcuni esempi di quanto è pronto all'uso, basati sul [CSV dei Progetti del PNRR](https://www.italiadomani.gov.it/content/sogei-ng/it/it/catalogo-open-data/Universo_ReGiS_Progetti.html), compresso da me in [formato `gz`](file/PNRR_Progetti-Universo_REGIS_v2.1.csv.gz).
+
+::: {.callout-note collapse="true"}
+## Ambiente di lavoro utilizzato
+La gran parte degli esempi di comandi e di codice inseriti in questo articolo, sono pensati per essere eseguiti in **ambiente Linux**. Sono replicabili quindi in quasi tutti i sistemi operativi - compresi Mac e Windows - perché Linux o è disponibile "nativamente", o lo è installando applicativi (su Windows ad esempio Windows Subsystem for Linux, WSL).
+:::
+
+Lo posso esplorare con l'utility [`zcat`](https://linux.die.net/man/1/zcat), che "stampa" sulla shell il contenuto del file `gz`:
+
+```bash
+zcat PNRR_Progetti-Universo_REGIS_v2.1.csv.gz | head -n 5
+```
+
+::: {.column-margin}
+`head` estrae le prime 5 righe.
+:::
+
+Mi verrà restituito l'*output* sottostante, e potrò subito constatare che c'è una **riga di intestazione** (non è obbligatoria nei `CSV`), che il **separatore di campo** è il `;`, che il **separatore dei decimali** è la `,` e soprattutto farmi un'idea dei contenuti.
+
+```markdown
+Programma;Missione;Descrizione Missione;Componente;Descrizione Componente;ID Misura;Codice Univoco Misura;Descrizione Misura;ID Submisura;Codice CID;Codice Univoco Submisura;Descrizione Submisura;Amministrazione Titolare;Codice Identificativo Procedura di Attivazione;Titolo Procedura;Tipologia Procedura di Attivazione;CUP;Codice Locale Progetto;Stato CUP;CUP Codice Natura;CUP Descrizione Natura;CUP Codice Tipologia;CUP Descrizione Tipologia;CUP Codice Settore;CUP Descrizione Settore;CUP Codice Sottosettore;CUP Descrizione Sottosettore;CUP Codice Categoria;CUP Descrizione Categoria;Titolo Progetto;Sintesi Progetto;Descrizione Tipo Aiuto;Finanziamento - Stato;Finanziamento Stato - FOI;Finanziamento UE (Diverso da PNRR);Finanziamento Regione;Finanziamento Provincia;Finanziamento Comune;Finanziamento Altro Pubblico;Finanziamento Privato;Finanziamento Da Reperire;Finanziamento PNRR;Finanziamento PNC;Altri Fondi;Finanziamento Totale;Finanziamento Totale Pubblico;Finanziamento Totale Pubblico Netto;Soggetto Attuatore;Codice Fiscale Soggetto Attuatore;Flag Progetti in Essere;Data di Estrazione
+PNRR;M1;Digitalizzazione, innovazione, competitività e cultura;M1C1;Digitalizzazione, innovazione e sicurezza nella PA;M1C1I1.2;M1C1I1.02;Abilitazione al cloud per le PA locali;M1C1I1.2;M1C1I1.2;M1C1I1.02.00;Abilitazione al cloud per le PA locali;PCM - DIPARTIM. TRASFORMAZIONE DIGITALE;1000000237;AVVISO AB. CLOUD COMUNI DEL 15/04/22;Bando;G61C22000240006;G61C22000240006;Attivo;02;ACQUISTO O REALIZZAZIONE DI SERVIZI;19;APPLICATIVI E PIATTAFORME WEB;10;SERVIZI PER LA P.A. E PER LA COLLETTIVITA';01;SERVIZI E TECNOLOGIE PER L'INFORMAZIONE E LE COMUNICAZIONI;007;SISTEMI INFORMATIVI PER LA P.A.;1.2. Ab.Cloud Com Cosoleto;MIGRAZIONE AL CLOUD DEI SERVIZI DIGITALI DELL'AMMINISTRAZIONE*TERRITORIO COMUNALE*N. 9 SERVIZI;INTERVENTO CHE NON COSTITUISCE AIUTO DI STATO;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;47427,00;0,00;0,00;47427,00;47427,00;47427,00;COMUNE DI COSOLETO;01234470803;No;13/06/2023
+PNRR;M1;Digitalizzazione, innovazione, competitività e cultura;M1C1;Digitalizzazione, innovazione e sicurezza nella PA;M1C1I1.2;M1C1I1.02;Abilitazione al cloud per le PA locali;M1C1I1.2;M1C1I1.2;M1C1I1.02.00;Abilitazione al cloud per le PA locali;PCM - DIPARTIM. TRASFORMAZIONE DIGITALE;1000000237;AVVISO AB. CLOUD COMUNI DEL 15/04/22;Bando;F71C22000160006;F71C22000160006;Attivo;02;ACQUISTO O REALIZZAZIONE DI SERVIZI;19;APPLICATIVI E PIATTAFORME WEB;10;SERVIZI PER LA P.A. E PER LA COLLETTIVITA';01;SERVIZI E TECNOLOGIE PER L'INFORMAZIONE E LE COMUNICAZIONI;007;SISTEMI INFORMATIVI PER LA P.A.;1.2. Ab.Cloud Com Bompensiere;MIGRAZIONE AL CLOUD DEI SERVIZI DIGITALI DELL'AMMINISTRAZIONE*TERRITORIO COMUNALE*N. 9 SERVIZI DA MIGRARE;INTERVENTO CHE NON COSTITUISCE AIUTO DI STATO;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;47427,00;0,00;0,00;47427,00;47427,00;47427,00;COMUNE DI BOMPENSIERE;80005060852;No;13/06/2023
+PNRR;M1;Digitalizzazione, innovazione, competitività e cultura;M1C1;Digitalizzazione, innovazione e sicurezza nella PA;M1C1I1.2;M1C1I1.02;Abilitazione al cloud per le PA locali;M1C1I1.2;M1C1I1.2;M1C1I1.02.00;Abilitazione al cloud per le PA locali;PCM - DIPARTIM. TRASFORMAZIONE DIGITALE;1000000237;AVVISO AB. CLOUD COMUNI DEL 15/04/22;Bando;B61C22000190006;B61C22000190006;Attivo;02;ACQUISTO O REALIZZAZIONE DI SERVIZI;19;APPLICATIVI E PIATTAFORME WEB;10;SERVIZI PER LA P.A. E PER LA COLLETTIVITA';01;SERVIZI E TECNOLOGIE PER L'INFORMAZIONE E LE COMUNICAZIONI;007;SISTEMI INFORMATIVI PER LA P.A.;1.2. Ab.Cloud Com Castelgrande;MIGRAZIONE AL CLOUD DEI SERVIZI DIGITALI DELL'AMMINISTRAZIONE*TERRITORIO COMUNALE*9 SERVIZI DA MIGRARE;INTERVENTO CHE NON COSTITUISCE AIUTO DI STATO;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;47427,00;0,00;0,00;47427,00;47427,00;47427,00;COMUNE DI CASTELGRANDE;80004060762;No;13/06/2023
+PNRR;M1;Digitalizzazione, innovazione, competitività e cultura;M1C1;Digitalizzazione, innovazione e sicurezza nella PA;M1C1I1.2;M1C1I1.02;Abilitazione al cloud per le PA locali;M1C1I1.2;M1C1I1.2;M1C1I1.02.00;Abilitazione al cloud per le PA locali;PCM - DIPARTIM. TRASFORMAZIONE DIGITALE;1000000237;AVVISO AB. CLOUD COMUNI DEL 15/04/22;Bando;F31C22000020006;F31C22000020006;Attivo;02;ACQUISTO O REALIZZAZIONE DI SERVIZI;19;APPLICATIVI E PIATTAFORME WEB;10;SERVIZI PER LA P.A. E PER LA COLLETTIVITA';01;SERVIZI E TECNOLOGIE PER L'INFORMAZIONE E LE COMUNICAZIONI;007;SISTEMI INFORMATIVI PER LA P.A.;1.2. Ab.Cloud Com Ittireddu;MIGRAZIONE AL CLOUD DEI SERVIZI DIGITALI DELL'AMMINISTRAZIONE*TERRITORIO COMUNALE*N. 9 SERVIZI DA MIGRARE;INTERVENTO CHE NON COSTITUISCE AIUTO DI STATO;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;47427,00;0,00;0,00;47427,00;47427,00;47427,00;COMUNE DI ITTIREDDU;00283910909;No;13/06/2023
+```
+
+E posso usare in modo diretto strumenti di analisi, trasformazione e filtro di file CSV come lo [straordinario **Miller**](https://miller.readthedocs.io/). E per continuare l'esplorazione di questo dataset, è utile ad esempio avere restituito il conteggio dei record, i valori nulli di ogni campo e anche i valori distinti.<br>
+Ad esempio se voglio avere un'idea dei valori nulli e dei valori distinti soltanto dei campi `Missione`, `Codice Univoco Misura` e `CUP Codice Natura`, utilizzerò il verbo [`cut`](https://miller.readthedocs.io/en/6.8.0/reference-verbs/index.html#cut) e [`summary`](https://miller.readthedocs.io/en/6.8.0/reference-verbs/index.html#summary), applicando la procedura direttamente sul file compresso:
+
+```bash
+mlr --csv --ifs ";" cut -f Missione,"Codice Univoco Misura","CUP Codice Natura" then \
+summary -a count,null_count,distinct_count PNRR_Progetti-Universo_REGIS_v2.1.csv.gz
+```
+
+In output avrò:
+
+| field_name | count | null_count | distinct_count |
+| --- | ---: | ---: | ---: |
+| Missione | 197546 | 0 | 6 |
+| Codice Univoco Misura | 197546 | 0 | 109 |
+| CUP Codice Natura | 197546 | 17683 | 7 |
+
+: *Output* di Miller {.striped .responsive}
+
+E potrò usare strumenti di analisi e trasformazione più "standard", come una ***query* SQL** su questo file CSV compresso. Utilizzando proprio [**DuckDB**](#duckdb).
+
+Ad esempio, per avere il totale del finanziamento PNRR per ogni missione, posso usare questo comando:
+
+
+```bash
+duckdb -csv -c '
+SELECT Missione, SUM("Finanziamento PNRR") AS total_PNRR
+FROM  read_csv_auto("PNRR_Progetti-Universo_REGIS_v2.1.csv.gz"
+GROUP BY Missione
+'
+```
+
+Ma purtroppo ["i CSV sono brutti e cattivi"](#i-csv-sono-brutti-e-cattivi) e senza conoscere il **separatore dei campi**, il **separatore dei decimali**, i **tipi di campo**, sapere se c'è o no la **riga di intestazione**, ecc., è difficile riuscire a interrogare un CSV, anche con DuckDB.
+Per questo motivo è molto raccomandato - oltre a descrivere i file CSV - pubblicare [**CSV standard**](#csv-standard).
+
+::: {.column-margin}
+Sono essenziali allo scopo, le operazioni di esplorazione descritte sopra.
+:::
+
+E allora bisogna aggiungere un po' di parametri (vedi @lst-query-duckdb): per fare in modo che le colonne possano essere correttamente distinte (fissando il parametro `delim`), che siano mappati i nomi dei campi (fissando il parametro `header`), che i numeri decimali siano elaboraboli come tali (fissando il parametro `decimal_separator` e specificando il tipo `FLOAT` per il campo `Finanziamento PNRR`).
+
+```{#lst-query-duckdb .bash lst-cap="Query SQL tramite DuckDB su un CSV compresso"}
+duckdb -csv -c '
+SELECT Missione, SUM("Finanziamento PNRR") AS total_PNRR
+FROM  read_csv_auto(
+	"PNRR_Progetti-Universo_REGIS_v2.1.csv.gz",
+	delim=";", # <1>
+	decimal_separator=",", # <2>
+	header=True, # <3>
+	types={"Finanziamento PNRR":"FLOAT"} # <4>
+)
+GROUP BY Missione
+'
+```
+
+1. imposta il separatore di campi a `;`
+2. imposta il separatore di decimali a `,`
+3. la prima riga è la riga di intestazione
+4. il campo `Finanziamento PNRR` è di tipo `FLOAT`
+
+::: {.callout-tip}
+## Il vantaggio di un CSV standard
+Con un [**CSV standard**](#csv-standard), questi parametri aggiuntivi non sarebbero necessari e si potrebbe usare la prima versione della *query* SQL.
+:::
+
+In output, in mezzo secondo (di fatto, non per dire "in breve tempo"), queste righe di output, per un CSV di circa 200.000 righe per 50 colonne, che è pure compresso:
+
+| Missione | total_PNRR |
+| --- | ---: |
+| M1 | 19245334466.82313 |
+| M2 | 22688516407.240803 |
+| M3 | 22563735313.390625 |
+| M4 | 20129269029.00844 |
+| M5 | 12998257338.579052 |
+| M6 | 8059988416.008047 |
+
+: *Output* della *query* SQL {.striped .responsive}
+
+## CSV "standard"
+
+::: {.callout-note collapse="true"}
+## A proposito di "standard"
+Il formato CSV **non è uno standard**, ma una convenzione non ufficiale che è stata ampiamente adotatta e descritta nella [RFC 4180](https://tools.ietf.org/html/rfc4180).
+:::
+
+Qui utilizzo l'aggettivo "**standard**" per quelle carateristiche che rendono un CSV "**subito pronto**" per essere letto da applicazioni e linguaggi di scripting per l'analisi dei dati.<br>
+Queste sono:
+
+-  **`UTF-8`** come **codifica** dei **caratteri**;
+-  **`,`** come separatore di campi;
+-  **`.`** come separatore dei decimali;
+-  presenza della **riga di intestazione**;
+-  **date** nello standard `**ISO 8601**` (la data "8 marzo 2023" rappresentata ad esempio come "2023-03-08");
+-  ogni colonna **un solo tipo di campo** (es. solo numeri, solo testo, solo date, ecc.). Questo sembra inutile evidenziarlo, ma capita spesso di trovare colonne che contengono valori di tipo diverso (es. numeri e testo) nella stessa colonna;
+-  evitare l'utilizzo di spazi, virgolette o altri caratteri speciali nei **nomi dei campi**.
+
+
+## Descrivere i CSV
+
+## DuckDB
+
+- il SQL figo e comodo (group by all, exclude)
+- json, parquet,
+
+
+## Da svilppare
+
+- [ ] parquet al posto dei CSV https://www-icem7-fr.translate.goog/outils/parquet-devrait-remplacer-le-format-csv/?_x_tr_sl=auto&_x_tr_tl=it&_x_tr_hl=en-US
+- [ ] allegare sempre tracciato record machine readable
+- [ ] il SQL è standard, vecchio e diffuso
+- [ ] comprimere i CSV
+- [ ] dbeaver
+- [ ] il fatto che il csv sia brutto all'inizio
+- [ ] il fatto che non voglio che il mondo sia inondato di CSV
+- [ ] pubblicare CSV standardizzati (utf-8, decimali, field separator, uniformità campi,date)
+- [ ] capitolo frictionless e schema SQL
+
+## Dati coesione
+
+- le date come num
+- per un CSV così grande, la definizione di uno schema per import
+- i numeri sono tutti num, senza distinzione tra interi e float
+- `COD_TIPO_PROCED_ATTIVAZIONE` è dichiarato come num, ma è una stringa
+- nelle spec di  opencoesione non c'è il campo `OC_MACROAREA`
+- c'è un file con il vocabolario dei valori?
+- `PROGRAMMATO_INDICATORE_1` è dichiarato come num, e sembrano esserci numeri decimali, ma hanno come separatore decimale il punto e non la virgola. Verificare se è veramente un numero o se è una stringa
+- `REALIZZATO_INDICATORE_1` è dichiarato come num, e sembrano esserci numeri decimali, ma hanno come separatore decimale il punto e non la virgola. Verificare se è veramente un numero o se è una stringa

@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="it" xml:lang="it" dir="ltr"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.43">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Andrea Borruso">
+<meta name="description" content="Suggerimenti e tips &amp; tricks, ispirati da duckdb e OpenCoesione">
+
+<title>aborruso’s website - Gestire file CSV grandi, brutti e cattivi</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../risorse/favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "Nessun risultato",
+    "search-matching-documents-text": "documenti trovati",
+    "search-copy-link-title": "Copiare il link nella ricerca",
+    "search-hide-matches-text": "Nascondere i risultati aggiuntivi",
+    "search-more-match-text": "ci sono altri risultati in questo documento",
+    "search-more-matches-text": "ulteriori risultati in questo documento",
+    "search-clear-button-title": "Pulire",
+    "search-detached-cancel-button-title": "Cancellare",
+    "search-submit-button-title": "Inviare"
+  }
+}</script>
+<style>
+
+      .quarto-title-block .quarto-title-banner h1,
+      .quarto-title-block .quarto-title-banner h2,
+      .quarto-title-block .quarto-title-banner h3,
+      .quarto-title-block .quarto-title-banner h4,
+      .quarto-title-block .quarto-title-banner h5,
+      .quarto-title-block .quarto-title-banner h6
+      {
+        color: #ffffff;
+      }
+
+      .quarto-title-block .quarto-title-banner {
+        color: #ffffff;
+      }
+</style>
+<link rel="alternate" type="application/rss+xml" title="Il blog del sito di Andrea Borruso" href="https://aborruso.github.io/blog.xml">
+
+
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="aborruso’s website - Gestire file CSV grandi, brutti e cattivi">
+<meta property="og:description" content="Suggerimenti e tips &amp; tricks, ispirati da duckdb e OpenCoesione">
+<meta property="og:image" content="https://aborruso.github.io/risorse/opengraph.png">
+<meta property="og:site-name" content="aborruso's website">
+<meta property="og:locale" content="it_IT">
+<meta property="og:image:height" content="630">
+<meta property="og:image:width" content="1200">
+<meta name="twitter:title" content="aborruso’s website - Gestire file CSV grandi, brutti e cattivi">
+<meta name="twitter:description" content="Suggerimenti e tips &amp; tricks, ispirati da duckdb e OpenCoesione">
+<meta name="twitter:image" content="https://aborruso.github.io/risorse/twitter-card.png">
+<meta name="twitter:creator" content="@aborruso">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image-height" content="512">
+<meta name="twitter:image-width" content="1024">
+</head>
+
+<body class="floating nav-fixed slimcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">aborruso’s website</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="false"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Attiva/disattiva la navigazione" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html" rel="" target="">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog.html" rel="" target="">
+ <span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../til.html" rel="" target="">
+ <span class="menu-text">TIL</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Gestire file CSV grandi, brutti e cattivi</h1>
+                  <div>
+        <div class="description">
+          Suggerimenti e <em>tips &amp; tricks</em>, ispirati da duckdb e OpenCoesione
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">duckdb</div>
+              </div>
+                  </div>
+  </div>
+    
+  <div class="quarto-title-meta-author">
+    <div class="quarto-title-meta-heading">Autore/Autrice</div>
+    <div class="quarto-title-meta-heading">Affiliazione</div>
+    
+      <div class="quarto-title-meta-contents">
+      <p class="author"><a href="https://twitter.com/aborruso">Andrea Borruso</a> </p>
+    </div>
+      <div class="quarto-title-meta-contents">
+          <p class="affiliation">
+              <a href="https://ondata.it">
+              Associazione onData
+              </a>
+            </p>
+        </div>
+      </div>
+
+  <div class="quarto-title-meta">
+
+        
+      <div>
+      <div class="quarto-title-meta-heading">Data di Pubblicazione</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">30 luglio 2023</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">In questa pagina</h2>
+   
+  <ul>
+  <li><a href="#tldr-una-breve-introduzione" id="toc-tldr-una-breve-introduzione" class="nav-link active" data-scroll-target="#tldr-una-breve-introduzione">TL;DR (una breve introduzione)</a></li>
+  <li><a href="#i-csv-sono-brutti-e-cattivi" id="toc-i-csv-sono-brutti-e-cattivi" class="nav-link" data-scroll-target="#i-csv-sono-brutti-e-cattivi">I CSV sono brutti e cattivi</a></li>
+  <li><a href="#compressione-dei-file-csv" id="toc-compressione-dei-file-csv" class="nav-link" data-scroll-target="#compressione-dei-file-csv">Compressione dei file CSV</a></li>
+  <li><a href="#csv-standard" id="toc-csv-standard" class="nav-link" data-scroll-target="#csv-standard">CSV “standard”</a></li>
+  <li><a href="#descrivere-i-csv" id="toc-descrivere-i-csv" class="nav-link" data-scroll-target="#descrivere-i-csv">Descrivere i CSV</a></li>
+  <li><a href="#duckdb" id="toc-duckdb" class="nav-link" data-scroll-target="#duckdb">DuckDB</a></li>
+  <li><a href="#da-svilppare" id="toc-da-svilppare" class="nav-link" data-scroll-target="#da-svilppare">Da svilppare</a></li>
+  <li><a href="#dati-coesione" id="toc-dati-coesione" class="nav-link" data-scroll-target="#dati-coesione">Dati coesione</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/aborruso/aborruso.github.io/edit/main/posts/duckdb-intro-csv/index.qmd" class="toc-action">Modifica questa pagina</a></p><p><a href="https://github.com/aborruso/aborruso.github.io/issues/new" class="toc-action">Segnala un problema</a></p></div></div></nav>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content">
+
+
+
+
+<section id="tldr-una-breve-introduzione" class="level2">
+<h2 class="anchored" data-anchor-id="tldr-una-breve-introduzione">TL;DR (una breve introduzione)</h2>
+<p>Il formato <strong>CSV</strong>, con tutti i suoi <strong>difetti</strong>, è ancora <strong>uno dei formati più diffusi per lo scambio di dati</strong>. Ci sono <strong>modalità</strong> di gestire questi file ed eccezionali <strong>strumenti</strong>, che possono rendere molto semplice, efficace e rapido il loro utilizzo. Anche quando sono di <strong>grandi dimensioni</strong>.<br> E per fortuna ci sono banche dati “grosse” e importanti come <a href="https://opencoesione.gov.it">OpenCoesione</a> che danno l’opportunità di fare pratica con questi strumenti. In questo lungo post farò una carrelata della compressione dei file CSV, dell’utilizzo di duckdb per analizzarli e del formato parquet come alternativa al CSV.</p>
+</section>
+<section id="i-csv-sono-brutti-e-cattivi" class="level2">
+<h2 class="anchored" data-anchor-id="i-csv-sono-brutti-e-cattivi">I CSV sono brutti e cattivi</h2>
+<p>Il formato <strong>CSV</strong> è uno dei formati più diffusi per lo <strong>scambio di dati</strong>. È un formato <strong>testuale</strong>, che può essere letto e scritto da quasi tutti i linguaggi di programmazione e da quasi tutti gli strumenti di analisi dati (i “quasi” si potrebbero levare).<br> Non è consigliabile utilizzarlo come formato di lavoro, perché le operazioni di <strong>lettura</strong> e <strong>scrittura</strong> sono <strong>lente</strong> e <strong>costose</strong> in termini di risorse (tempo e memoria) e perché è in generale un formato “povero”.</p>
+<p>Un file CSV è “brutto e cattivo” ad esempio per queste ragioni:</p>
+<ul>
+<li>non consente di definire il <strong>tipo di campo</strong> (stringa, numero, data, ecc.). Tipicamente si è costretti a fare l’<strong>inferenza</strong>, che può essere <strong>errata</strong>;</li>
+<li>non consente di definire il <strong>separatore di campo</strong> (virgola, punto e virgola, tabulazione, ecc.). Si può fare l’inferenza e/o si può leggere (e si possono fare errrori);</li>
+<li>non consente di definire il <strong>separatore dei decimali</strong> (virgola, punto, ecc.). Si può fare l’inferenza e/o si può leggere (e si possono fare errrori);</li>
+<li>non consente di definire l’<strong>encoding</strong> (UTF-8, ISO-8859-1, ecc.). Tipicamente si è costretti a fare l’<strong>inferenza</strong>, che può essere <strong>errata</strong>.</li>
+</ul>
+<p>E per questo chi pubblica dati in questo formato, <strong>dovrebbe</strong> a maggior forza <a href="#descrivere-i-csv"><strong>descriverli</strong></a> con dei <strong>metadati</strong>. Ma putroppo nella gran parte dei casi, non ci resta che “morire di inferenza”.<br></p>
+<p>E si potrebbero aggiungere altre brutture sul formato e di come spesso viene reso disponibile. Ma non è il tema del post.</p>
+</section>
+<section id="compressione-dei-file-csv" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="compressione-dei-file-csv">Compressione dei file CSV</h2>
+<p>Molti siti che pubblicano file CSV - specie quando sono “grandi” - li pubblicano in formato compresso.<br> Questo, come nel caso del file dei progetti di OpenCoesione, è un ottimo modo per ridurre il tempo di <em>download</em>: il <a href="https://opencoesione.gov.it/it/opendata/progetti_esteso.zip">file</a> reso disponibile in formato compresso <code>ZIP</code> pesa circa (nella versione di aprile 2023) 240 MB, mentre il file CSV contenuto al suo interno pesa circa 4,4 GB.</p>
+<p>Scegliendo un altro formato di compressione, diverso dallo <code>ZIP</code>, si possono dare ulteriori vantaggi a chi utilizzerà il file.</p>
+<p>Il primo è quello di <strong>renderlo subito pronto all’uso</strong>, come se fosse già decompresso. Che è una cosa molto comoda specie nelle prime <strong>fasi</strong> di lavoro, quelle “<strong>esplorative</strong>”, in cui si fa un po’ di ispezione, si fanno le prime prove di analisi, di verifica qualità, di adeguatezza dei dati, ecc.. Il formato di compressione ideale in tal senso è il <code>GZIP</code>, che è supportato da quasi tutti gli strumenti di analisi dati, e che è molto efficiente nella compressione dei file CSV.<br> È un formato introdotto nel 1992, che ha una <strong>buona compressione</strong> e che è <strong>veloce</strong> da decomprimere. È un formato <strong><em>lossless</em></strong>, cioè non perde informazioni, e <strong><em>streaming</em></strong>, cioè può essere decompresso anche senza avere l’intero file, ma solo una parte.<br> La gran parte delle applicazioni e linguaggi di <em>scripting</em> sono in grado di accedere nativame a un file <code>gz</code>; un po’ meno con il formato <code>zip</code>. Ed è compatibile con tutti i sistemi operativi e tutte le <em>utility</em> di compressione e decompressione.</p>
+<p>Alcuni esempi di quanto è pronto all’uso, basati sul <a href="https://www.italiadomani.gov.it/content/sogei-ng/it/it/catalogo-open-data/Universo_ReGiS_Progetti.html">CSV dei Progetti del PNRR</a>, compresso da me in <a href="file/PNRR_Progetti-Universo_REGIS_v2.1.csv.gz">formato <code>gz</code></a>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Ambiente di lavoro utilizzato
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>La gran parte degli esempi di comandi e di codice inseriti in questo articolo, sono pensati per essere eseguiti in <strong>ambiente Linux</strong>. Sono replicabili quindi in quasi tutti i sistemi operativi - compresi Mac e Windows - perché Linux o è disponibile “nativamente”, o lo è installando applicativi (su Windows ad esempio Windows Subsystem for Linux, WSL).</p>
+</div>
+</div>
+</div>
+<p>Lo posso esplorare con l’utility <a href="https://linux.die.net/man/1/zcat"><code>zcat</code></a>, che “stampa” sulla shell il contenuto del file <code>gz</code>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">zcat</span> PNRR_Progetti-Universo_REGIS_v2.1.csv.gz <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 5</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p><code>head</code> estrae le prime 5 righe.</p>
+</div></div><p>Mi verrà restituito l’<em>output</em> sottostante, e potrò subito constatare che c’è una <strong>riga di intestazione</strong> (non è obbligatoria nei <code>CSV</code>), che il <strong>separatore di campo</strong> è il <code>;</code>, che il <strong>separatore dei decimali</strong> è la <code>,</code> e soprattutto farmi un’idea dei contenuti.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>Programma;Missione;Descrizione Missione;Componente;Descrizione Componente;ID Misura;Codice Univoco Misura;Descrizione Misura;ID Submisura;Codice CID;Codice Univoco Submisura;Descrizione Submisura;Amministrazione Titolare;Codice Identificativo Procedura di Attivazione;Titolo Procedura;Tipologia Procedura di Attivazione;CUP;Codice Locale Progetto;Stato CUP;CUP Codice Natura;CUP Descrizione Natura;CUP Codice Tipologia;CUP Descrizione Tipologia;CUP Codice Settore;CUP Descrizione Settore;CUP Codice Sottosettore;CUP Descrizione Sottosettore;CUP Codice Categoria;CUP Descrizione Categoria;Titolo Progetto;Sintesi Progetto;Descrizione Tipo Aiuto;Finanziamento - Stato;Finanziamento Stato - FOI;Finanziamento UE (Diverso da PNRR);Finanziamento Regione;Finanziamento Provincia;Finanziamento Comune;Finanziamento Altro Pubblico;Finanziamento Privato;Finanziamento Da Reperire;Finanziamento PNRR;Finanziamento PNC;Altri Fondi;Finanziamento Totale;Finanziamento Totale Pubblico;Finanziamento Totale Pubblico Netto;Soggetto Attuatore;Codice Fiscale Soggetto Attuatore;Flag Progetti in Essere;Data di Estrazione</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>PNRR;M1;Digitalizzazione, innovazione, competitività e cultura;M1C1;Digitalizzazione, innovazione e sicurezza nella PA;M1C1I1.2;M1C1I1.02;Abilitazione al cloud per le PA locali;M1C1I1.2;M1C1I1.2;M1C1I1.02.00;Abilitazione al cloud per le PA locali;PCM - DIPARTIM. TRASFORMAZIONE DIGITALE;1000000237;AVVISO AB. CLOUD COMUNI DEL 15/04/22;Bando;G61C22000240006;G61C22000240006;Attivo;02;ACQUISTO O REALIZZAZIONE DI SERVIZI;19;APPLICATIVI E PIATTAFORME WEB;10;SERVIZI PER LA P.A. E PER LA COLLETTIVITA';01;SERVIZI E TECNOLOGIE PER L'INFORMAZIONE E LE COMUNICAZIONI;007;SISTEMI INFORMATIVI PER LA P.A.;1.2. Ab.Cloud Com Cosoleto;MIGRAZIONE AL CLOUD DEI SERVIZI DIGITALI DELL'AMMINISTRAZIONE*TERRITORIO COMUNALE*N. 9 SERVIZI;INTERVENTO CHE NON COSTITUISCE AIUTO DI STATO;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;47427,00;0,00;0,00;47427,00;47427,00;47427,00;COMUNE DI COSOLETO;01234470803;No;13/06/2023</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>PNRR;M1;Digitalizzazione, innovazione, competitività e cultura;M1C1;Digitalizzazione, innovazione e sicurezza nella PA;M1C1I1.2;M1C1I1.02;Abilitazione al cloud per le PA locali;M1C1I1.2;M1C1I1.2;M1C1I1.02.00;Abilitazione al cloud per le PA locali;PCM - DIPARTIM. TRASFORMAZIONE DIGITALE;1000000237;AVVISO AB. CLOUD COMUNI DEL 15/04/22;Bando;F71C22000160006;F71C22000160006;Attivo;02;ACQUISTO O REALIZZAZIONE DI SERVIZI;19;APPLICATIVI E PIATTAFORME WEB;10;SERVIZI PER LA P.A. E PER LA COLLETTIVITA';01;SERVIZI E TECNOLOGIE PER L'INFORMAZIONE E LE COMUNICAZIONI;007;SISTEMI INFORMATIVI PER LA P.A.;1.2. Ab.Cloud Com Bompensiere;MIGRAZIONE AL CLOUD DEI SERVIZI DIGITALI DELL'AMMINISTRAZIONE*TERRITORIO COMUNALE*N. 9 SERVIZI DA MIGRARE;INTERVENTO CHE NON COSTITUISCE AIUTO DI STATO;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;47427,00;0,00;0,00;47427,00;47427,00;47427,00;COMUNE DI BOMPENSIERE;80005060852;No;13/06/2023</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>PNRR;M1;Digitalizzazione, innovazione, competitività e cultura;M1C1;Digitalizzazione, innovazione e sicurezza nella PA;M1C1I1.2;M1C1I1.02;Abilitazione al cloud per le PA locali;M1C1I1.2;M1C1I1.2;M1C1I1.02.00;Abilitazione al cloud per le PA locali;PCM - DIPARTIM. TRASFORMAZIONE DIGITALE;1000000237;AVVISO AB. CLOUD COMUNI DEL 15/04/22;Bando;B61C22000190006;B61C22000190006;Attivo;02;ACQUISTO O REALIZZAZIONE DI SERVIZI;19;APPLICATIVI E PIATTAFORME WEB;10;SERVIZI PER LA P.A. E PER LA COLLETTIVITA';01;SERVIZI E TECNOLOGIE PER L'INFORMAZIONE E LE COMUNICAZIONI;007;SISTEMI INFORMATIVI PER LA P.A.;1.2. Ab.Cloud Com Castelgrande;MIGRAZIONE AL CLOUD DEI SERVIZI DIGITALI DELL'AMMINISTRAZIONE*TERRITORIO COMUNALE*9 SERVIZI DA MIGRARE;INTERVENTO CHE NON COSTITUISCE AIUTO DI STATO;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;47427,00;0,00;0,00;47427,00;47427,00;47427,00;COMUNE DI CASTELGRANDE;80004060762;No;13/06/2023</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>PNRR;M1;Digitalizzazione, innovazione, competitività e cultura;M1C1;Digitalizzazione, innovazione e sicurezza nella PA;M1C1I1.2;M1C1I1.02;Abilitazione al cloud per le PA locali;M1C1I1.2;M1C1I1.2;M1C1I1.02.00;Abilitazione al cloud per le PA locali;PCM - DIPARTIM. TRASFORMAZIONE DIGITALE;1000000237;AVVISO AB. CLOUD COMUNI DEL 15/04/22;Bando;F31C22000020006;F31C22000020006;Attivo;02;ACQUISTO O REALIZZAZIONE DI SERVIZI;19;APPLICATIVI E PIATTAFORME WEB;10;SERVIZI PER LA P.A. E PER LA COLLETTIVITA';01;SERVIZI E TECNOLOGIE PER L'INFORMAZIONE E LE COMUNICAZIONI;007;SISTEMI INFORMATIVI PER LA P.A.;1.2. Ab.Cloud Com Ittireddu;MIGRAZIONE AL CLOUD DEI SERVIZI DIGITALI DELL'AMMINISTRAZIONE*TERRITORIO COMUNALE*N. 9 SERVIZI DA MIGRARE;INTERVENTO CHE NON COSTITUISCE AIUTO DI STATO;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;47427,00;0,00;0,00;47427,00;47427,00;47427,00;COMUNE DI ITTIREDDU;00283910909;No;13/06/2023</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>E posso usare in modo diretto strumenti di analisi, trasformazione e filtro di file CSV come lo <a href="https://miller.readthedocs.io/">straordinario <strong>Miller</strong></a>. E per continuare l’esplorazione di questo dataset, è utile ad esempio avere restituito il conteggio dei record, i valori nulli di ogni campo e anche i valori distinti.<br> Ad esempio se voglio avere un’idea dei valori nulli e dei valori distinti soltanto dei campi <code>Missione</code>, <code>Codice Univoco Misura</code> e <code>CUP Codice Natura</code>, utilizzerò il verbo <a href="https://miller.readthedocs.io/en/6.8.0/reference-verbs/index.html#cut"><code>cut</code></a> e <a href="https://miller.readthedocs.io/en/6.8.0/reference-verbs/index.html#summary"><code>summary</code></a>, applicando la procedura direttamente sul file compresso:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mlr</span> <span class="at">--csv</span> <span class="at">--ifs</span> <span class="st">";"</span> cut <span class="at">-f</span> Missione,<span class="st">"Codice Univoco Misura"</span>,<span class="st">"CUP Codice Natura"</span> then <span class="dt">\</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>summary <span class="at">-a</span> count,null_count,distinct_count PNRR_Progetti-Universo_REGIS_v2.1.csv.gz</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In output avrò:</p>
+<div class="table-responsive">
+<table class="table-striped table">
+<caption><em>Output</em> di Miller</caption>
+<thead>
+<tr class="header">
+<th>field_name</th>
+<th style="text-align: right;">count</th>
+<th style="text-align: right;">null_count</th>
+<th style="text-align: right;">distinct_count</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Missione</td>
+<td style="text-align: right;">197546</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr class="even">
+<td>Codice Univoco Misura</td>
+<td style="text-align: right;">197546</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">109</td>
+</tr>
+<tr class="odd">
+<td>CUP Codice Natura</td>
+<td style="text-align: right;">197546</td>
+<td style="text-align: right;">17683</td>
+<td style="text-align: right;">7</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>E potrò usare strumenti di analisi e trasformazione più “standard”, come una <strong><em>query</em> SQL</strong> su questo file CSV compresso. Utilizzando proprio <a href="#duckdb"><strong>DuckDB</strong></a>.</p>
+<p>Ad esempio, per avere il totale del finanziamento PNRR per ogni missione, posso usare questo comando:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> <span class="at">-csv</span> <span class="at">-c</span> <span class="st">'</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT Missione, SUM("Finanziamento PNRR") AS total_PNRR</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="st">FROM  read_csv_auto("PNRR_Progetti-Universo_REGIS_v2.1.csv.gz"</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="st">GROUP BY Missione</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="st">'</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Ma purtroppo <a href="#i-csv-sono-brutti-e-cattivi">“i CSV sono brutti e cattivi”</a> e senza conoscere il <strong>separatore dei campi</strong>, il <strong>separatore dei decimali</strong>, i <strong>tipi di campo</strong>, sapere se c’è o no la <strong>riga di intestazione</strong>, ecc., è difficile riuscire a interrogare un CSV, anche con DuckDB. Per questo motivo è molto raccomandato - oltre a descrivere i file CSV - pubblicare <a href="#csv-standard"><strong>CSV standard</strong></a>.</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p>Sono essenziali allo scopo, le operazioni di esplorazione descritte sopra.</p>
+</div></div><p>E allora bisogna aggiungere un po’ di parametri (vedi <a href="#lst-query-duckdb" class="quarto-xref">Lista&nbsp;1</a>): per fare in modo che le colonne possano essere correttamente distinte (fissando il parametro <code>delim</code>), che siano mappati i nomi dei campi (fissando il parametro <code>header</code>), che i numeri decimali siano elaboraboli come tali (fissando il parametro <code>decimal_separator</code> e specificando il tipo <code>FLOAT</code> per il campo <code>Finanziamento PNRR</code>).</p>
+<div id="lst-query-duckdb" class="listing">
+<p>Lista&nbsp;1: Query SQL tramite DuckDB su un CSV compresso</p>
+<div class="sourceCode" id="lst-query-duckdb" data-lst-cap="Query SQL tramite DuckDB su un CSV compresso"><pre class="sourceCode bash code-annotation-code code-with-copy code-annotated"><code class="sourceCode bash"><span id="lst-query-duckdb-1"><a href="#lst-query-duckdb-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> <span class="at">-csv</span> <span class="at">-c</span> <span class="st">'</span></span>
+<span id="lst-query-duckdb-2"><a href="#lst-query-duckdb-2" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT Missione, SUM("Finanziamento PNRR") AS total_PNRR</span></span>
+<span id="lst-query-duckdb-3"><a href="#lst-query-duckdb-3" aria-hidden="true" tabindex="-1"></a><span class="st">FROM  read_csv_auto(</span></span>
+<span id="lst-query-duckdb-4"><a href="#lst-query-duckdb-4" aria-hidden="true" tabindex="-1"></a><span class="st">    "PNRR_Progetti-Universo_REGIS_v2.1.csv.gz",</span></span>
+<button class="code-annotation-anchor" data-target-cell="lst-query-duckdb" data-target-annotation="1">1</button><span id="lst-query-duckdb-5" class="code-annotation-target"><a href="#lst-query-duckdb-5" aria-hidden="true" tabindex="-1"></a><span class="st">    delim=";",</span></span>
+<button class="code-annotation-anchor" data-target-cell="lst-query-duckdb" data-target-annotation="2">2</button><span id="lst-query-duckdb-6" class="code-annotation-target"><a href="#lst-query-duckdb-6" aria-hidden="true" tabindex="-1"></a><span class="st">    decimal_separator=",",</span></span>
+<button class="code-annotation-anchor" data-target-cell="lst-query-duckdb" data-target-annotation="3">3</button><span id="lst-query-duckdb-7" class="code-annotation-target"><a href="#lst-query-duckdb-7" aria-hidden="true" tabindex="-1"></a><span class="st">    header=True,</span></span>
+<button class="code-annotation-anchor" data-target-cell="lst-query-duckdb" data-target-annotation="4">4</button><span id="lst-query-duckdb-8" class="code-annotation-target"><a href="#lst-query-duckdb-8" aria-hidden="true" tabindex="-1"></a><span class="st">    types={"Finanziamento PNRR":"FLOAT"}</span></span>
+<span id="lst-query-duckdb-9"><a href="#lst-query-duckdb-9" aria-hidden="true" tabindex="-1"></a><span class="st">)</span></span>
+<span id="lst-query-duckdb-10"><a href="#lst-query-duckdb-10" aria-hidden="true" tabindex="-1"></a><span class="st">GROUP BY Missione</span></span>
+<span id="lst-query-duckdb-11"><a href="#lst-query-duckdb-11" aria-hidden="true" tabindex="-1"></a><span class="st">'</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="lst-query-duckdb" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="lst-query-duckdb" data-code-annotation="1" data-code-lines="5">imposta il separatore di campi a <code>;</code></span>
+</dd>
+<dt data-target-cell="lst-query-duckdb" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="lst-query-duckdb" data-code-annotation="2" data-code-lines="6">imposta il separatore di decimali a <code>,</code></span>
+</dd>
+<dt data-target-cell="lst-query-duckdb" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="lst-query-duckdb" data-code-annotation="3" data-code-lines="7">la prima riga è la riga di intestazione</span>
+</dd>
+<dt data-target-cell="lst-query-duckdb" data-target-annotation="4">4</dt>
+<dd>
+<span data-code-cell="lst-query-duckdb" data-code-annotation="4" data-code-lines="8">il campo <code>Finanziamento PNRR</code> è di tipo <code>FLOAT</code></span>
+</dd>
+</dl>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Il vantaggio di un CSV standard
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Con un <a href="#csv-standard"><strong>CSV standard</strong></a>, questi parametri aggiuntivi non sarebbero necessari e si potrebbe usare la prima versione della <em>query</em> SQL.</p>
+</div>
+</div>
+<p>In output, in mezzo secondo (di fatto, non per dire “in breve tempo”), queste righe di output, per un CSV di circa 200.000 righe per 50 colonne, che è pure compresso:</p>
+<div class="table-responsive">
+<table class="table-striped table">
+<caption><em>Output</em> della <em>query</em> SQL</caption>
+<thead>
+<tr class="header">
+<th>Missione</th>
+<th style="text-align: right;">total_PNRR</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>M1</td>
+<td style="text-align: right;">19245334466.82313</td>
+</tr>
+<tr class="even">
+<td>M2</td>
+<td style="text-align: right;">22688516407.240803</td>
+</tr>
+<tr class="odd">
+<td>M3</td>
+<td style="text-align: right;">22563735313.390625</td>
+</tr>
+<tr class="even">
+<td>M4</td>
+<td style="text-align: right;">20129269029.00844</td>
+</tr>
+<tr class="odd">
+<td>M5</td>
+<td style="text-align: right;">12998257338.579052</td>
+</tr>
+<tr class="even">
+<td>M6</td>
+<td style="text-align: right;">8059988416.008047</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="csv-standard" class="level2">
+<h2 class="anchored" data-anchor-id="csv-standard">CSV “standard”</h2>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+A proposito di “standard”
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>Il formato CSV <strong>non è uno standard</strong>, ma una convenzione non ufficiale che è stata ampiamente adotatta e descritta nella <a href="https://tools.ietf.org/html/rfc4180">RFC 4180</a>.</p>
+</div>
+</div>
+</div>
+<p>Qui utilizzo l’aggettivo “<strong>standard</strong>” per quelle carateristiche che rendono un CSV “<strong>subito pronto</strong>” per essere letto da applicazioni e linguaggi di scripting per l’analisi dei dati.<br> Queste sono:</p>
+<ul>
+<li><strong><code>UTF-8</code></strong> come <strong>codifica</strong> dei <strong>caratteri</strong>;</li>
+<li><strong><code>,</code></strong> come separatore di campi;</li>
+<li><strong><code>.</code></strong> come separatore dei decimali;</li>
+<li>presenza della <strong>riga di intestazione</strong>;</li>
+<li><strong>date</strong> nello standard <code>**ISO 8601**</code> (la data “8 marzo 2023” rappresentata ad esempio come “2023-03-08”);</li>
+<li>ogni colonna <strong>un solo tipo di campo</strong> (es. solo numeri, solo testo, solo date, ecc.). Questo sembra inutile evidenziarlo, ma capita spesso di trovare colonne che contengono valori di tipo diverso (es. numeri e testo) nella stessa colonna;</li>
+<li>evitare l’utilizzo di spazi, virgolette o altri caratteri speciali nei <strong>nomi dei campi</strong>.</li>
+</ul>
+</section>
+<section id="descrivere-i-csv" class="level2">
+<h2 class="anchored" data-anchor-id="descrivere-i-csv">Descrivere i CSV</h2>
+</section>
+<section id="duckdb" class="level2">
+<h2 class="anchored" data-anchor-id="duckdb">DuckDB</h2>
+<ul>
+<li>il SQL figo e comodo (group by all, exclude)</li>
+<li>json, parquet,</li>
+</ul>
+</section>
+<section id="da-svilppare" class="level2">
+<h2 class="anchored" data-anchor-id="da-svilppare">Da svilppare</h2>
+<ul class="task-list">
+<li><input type="checkbox">parquet al posto dei CSV https://www-icem7-fr.translate.goog/outils/parquet-devrait-remplacer-le-format-csv/?_x_tr_sl=auto&amp;_x_tr_tl=it&amp;_x_tr_hl=en-US</li>
+<li><input type="checkbox">allegare sempre tracciato record machine readable</li>
+<li><input type="checkbox">il SQL è standard, vecchio e diffuso</li>
+<li><input type="checkbox">comprimere i CSV</li>
+<li><input type="checkbox">dbeaver</li>
+<li><input type="checkbox">il fatto che il csv sia brutto all’inizio</li>
+<li><input type="checkbox">il fatto che non voglio che il mondo sia inondato di CSV</li>
+<li><input type="checkbox">pubblicare CSV standardizzati (utf-8, decimali, field separator, uniformità campi,date)</li>
+<li><input type="checkbox">capitolo frictionless e schema SQL</li>
+</ul>
+</section>
+<section id="dati-coesione" class="level2">
+<h2 class="anchored" data-anchor-id="dati-coesione">Dati coesione</h2>
+<ul>
+<li>le date come num</li>
+<li>per un CSV così grande, la definizione di uno schema per import</li>
+<li>i numeri sono tutti num, senza distinzione tra interi e float</li>
+<li><code>COD_TIPO_PROCED_ATTIVAZIONE</code> è dichiarato come num, ma è una stringa</li>
+<li>nelle spec di opencoesione non c’è il campo <code>OC_MACROAREA</code></li>
+<li>c’è un file con il vocabolario dei valori?</li>
+<li><code>PROGRAMMATO_INDICATORE_1</code> è dichiarato come num, e sembrano esserci numeri decimali, ma hanno come separatore decimale il punto e non la virgola. Verificare se è veramente un numero o se è una stringa</li>
+<li><code>REALIZZATO_INDICATORE_1</code> è dichiarato come num, e sembrano esserci numeri decimali, ma hanno come separatore decimale il punto e non la virgola. Verificare se è veramente un numero o se è una stringa</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copiato!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copiato!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Handle positioning of the toggle
+      window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+      const annoteTargets = window.document.querySelectorAll('.code-annotation-anchor');
+      for (let i=0; i<annoteTargets.length; i++) {
+        const annoteTarget = annoteTargets[i];
+        const targetCell = annoteTarget.getAttribute("data-target-cell");
+        const targetAnnotation = annoteTarget.getAttribute("data-target-annotation");
+        const contentFn = () => {
+          const content = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          if (content) {
+            const tipContent = content.cloneNode(true);
+            tipContent.classList.add("code-annotation-tip-content");
+            return tipContent.outerHTML;
+          }
+        }
+        const config = {
+          allowHTML: true,
+          content: contentFn,
+          onShow: (instance) => {
+            selectCodeLines(instance.reference);
+            instance.reference.classList.add('code-annotation-active');
+            window.tippy.hideAll();
+          },
+          onHide: (instance) => {
+            unselectCodeLines();
+            instance.reference.classList.remove('code-annotation-active');
+          },
+          maxWidth: 300,
+          delay: [50, 0],
+          duration: [200, 0],
+          offset: [5, 10],
+          arrow: true,
+          appendTo: function(el) {
+            return el.parentElement.parentElement.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'quarto',
+          placement: 'right',
+          popperOptions: {
+            modifiers: [
+            {
+              name: 'flip',
+              options: {
+                flipVariations: false, // true by default
+                allowedAutoPlacements: ['right'],
+                fallbackPlacements: ['right', 'top', 'top-start', 'top-end'],
+              },
+            },
+            {
+              name: 'preventOverflow',
+              options: {
+                mainAxis: false,
+                altAxis: false
+              }
+            }
+            ]        
+          }      
+        };
+        window.tippy(annoteTarget, config); 
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var filterRegex = new RegExp(".*aborruso\.github\.io\.*");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+      }
+    }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">Costruito con <a href="https://quarto.org">quarto</a> 😍 | Contenuti in <a href="https://creativecommons.org/licenses/by/4.0/deed.it">CC BY 4.0</a></div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/aborruso">
+      <i class="bi bi-twitter" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="../../blog.xml">
+      <i class="bi bi-rss" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/aborruso/aborruso.github.io">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>

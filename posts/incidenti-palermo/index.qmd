@@ -3,6 +3,7 @@ title: "Incidenti"
 description: "Palermo"
 date: "2023-07-30"
 draft: true
+search: false
 categories:
   - duckdb
   - spatial
@@ -17,3 +18,5 @@ mlr --csv --ifs ";" put '$Latitudine=sub($Latitudine,",",".");$Longitudine=sub($
 
 - calendario con i giorni hot
 - mappa con i punti hot, heatmap, esagoni, bertin.js
+
+
