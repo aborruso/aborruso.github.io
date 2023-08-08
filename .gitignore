@@ -8,3 +8,6 @@ _site/*
 /.luarc.json
 
 tmp*
+
+posts/duckdb-intro-csv/file/*
+!posts/duckdb-intro-csv/file/parco_circolante_Abruzzo.*
