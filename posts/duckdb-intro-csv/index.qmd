@@ -45,6 +45,9 @@ Questo, come nel caso del file dei progetti di OpenCoesione, è un ottimo modo p
 Scegliendo un altro formato di compressione, diverso dallo `ZIP`, si possono dare ulteriori vantaggi a chi utilizzerà il file.
 
 Il primo è quello di **renderlo subito pronto all'uso**, come se fosse già decompresso. Che è una cosa molto comoda specie nelle prime **fasi** di lavoro, quelle "**esplorative**", in cui si fa un po' di ispezione, si fanno le prime prove di analisi, di verifica qualità, di adeguatezza dei dati, ecc..
+
+### Formato GZIP
+
 Il formato di compressione ideale in tal senso è il `GZIP`, che è supportato da quasi tutti gli strumenti di analisi dati, e che è molto efficiente nella compressione dei file CSV.<br>
 È un formato introdotto nel 1992, che ha una **buona compressione** e che è **veloce** da decomprimere. È un formato **_lossless_**, cioè non perde informazioni, e **_streaming_**, cioè può essere decompresso anche senza avere l'intero file, ma solo una parte.<br>
 La gran parte delle applicazioni e linguaggi di *scripting* sono in grado di accedere nativame a un file `gz`; un po' meno con il formato `zip`. Ed è compatibile con tutti i sistemi operativi e tutte le *utility* di compressione e decompressione.
@@ -80,7 +83,8 @@ E posso usare in modo diretto strumenti di analisi, trasformazione e filtro di f
 Ad esempio se voglio avere un'idea dei valori nulli e dei valori distinti soltanto dei campi `Missione`, `Codice Univoco Misura` e `CUP Codice Natura`, utilizzerò il verbo [`cut`](https://miller.readthedocs.io/en/6.8.0/reference-verbs/index.html#cut) e [`summary`](https://miller.readthedocs.io/en/6.8.0/reference-verbs/index.html#summary), applicando la procedura direttamente sul file compresso:
 
 ```bash
-mlr --csv --ifs ";" cut -f Missione,"Codice Univoco Misura","CUP Codice Natura" then \
+mlr --csv --ifs ";" \
+cut -f Missione,"Codice Univoco Misura","CUP Codice Natura" then \
 summary -a count,null_count,distinct_count PNRR_Progetti-Universo_REGIS_v2.1.csv.gz
 ```
 
@@ -92,7 +96,7 @@ In output avrò:
 | Codice Univoco Misura | 197546 | 0 | 109 |
 | CUP Codice Natura | 197546 | 17683 | 7 |
 
-: *Output* di Miller {.striped .responsive}
+: *Output* di Miller {#tbl-mlr-output .striped .responsive}
 
 E potrò usare strumenti di analisi e trasformazione più "standard", come una ***query* SQL** su questo file CSV compresso. Utilizzando proprio [**DuckDB**](#duckdb).
 
@@ -153,21 +157,69 @@ In output, in mezzo secondo (di fatto, non per dire "in breve tempo"), queste ri
 
 : *Output* della *query* SQL {.striped .responsive}
 
+### Formato ZSTD
+
+[`ZSTD`](https://facebook.github.io/zstd/) è un formato di compressione senza perdita. La caratteristica principale è che fornisce tassi di **compressione molto elevati**, vicini a quelli di formati come `lzma`, ma con **velocità di compressione e decompressione molto superiori**.
+
+Per questa accoppiata di caratteristiche è sempre più diffuso tra le applicazioni e le librerie *software* di accesso ai dati.
+
+Per dare qualche numero di confronto, basato sul file CSV da 4 GB di [OpenCoesione](#dati-opencoesione) e sul mio *notebook* con Pentium i7 di 12esima generazione con 16 GB di RAM:
+
+- la compressione (standard) con `gzip` richiede 47 secondi, e il file compresso pesa 253 MB;
+- la compressione (standard) con `zstd` richiede 13 secondi, e il file compresso pesa 186 MB;
+- la decompressione del file `gzip` richiede 19 secondi;
+- la decompressione del file `zstd` richiede 5 secondi.
+
+L'utility a riga di comando per gestire i file `ZSTD` si chiama `zstd` e si può installare in quasi tutti i sistemi operativi. Un'applicazione *open source*, multipiattaforma, con interfaccia grafica, che supporta questa compressione è [PeaZip](https://peazip.github.io/index.html).<br>
+Molte applicazioni e librerie *software* di accesso ai dati, come DuckDB, [Apache Arrow](https://arrow.apache.org/) e [Apache Spark](https://spark.apache.org/), lo supportano nativamente.
+
+In [DuckDB](#duckdb), si può leggere un file `CSV` compresso in formato `ZSTD`, semplicemente puntando ad esso (l'estensione `.zst` fa in modo che venga interpretato come file compresso in formato `ZSTD`):
+
+```bash
+duckdb -csv -c '
+SELECT count(*) numero_righe
+FROM  read_csv_auto(
+        "PNRR_Progetti-Universo_REGIS_v2.1.csv.zst",
+        delim=";",
+        decimal_separator=",",
+        header=True,
+        types={"Finanziamento PNRR":"FLOAT"}
+)
+'
+```
+
+Lo fa in 0,4 secondi per il `CSV` (compresso `ZSTD`) di circa 200.000 righe per 50 colonne, usato nell'esempio di sopra. E in 5 secondi per il `CSV` (compresso `ZSTD`) di circa 2.000.000 di righe per 200 colonne di [OpenCoesione](#dati-opencoesione).
+
+E si può semplicemente esplorare un file `CSV` compresso `ZSTD` con l'utility `zstdcat`. Ad esempio per leggere le prime 5 righe:
+
+```bash
+zstdcat PNRR_Progetti-Universo_REGIS_v2.1.csv.zst | head -n 5
+```
+
+O sempre in accoppiata con Miller, per avere dei dati di sintesi (in 0.6 secondi) come quelli di @tbl-mlr-output:
+
+```bash
+zstdcat PNRR_Progetti-Universo_REGIS_v2.1.csv.zst | \
+mlr --csv --ifs ";" \
+cut -f Missione,"Codice Univoco Misura","CUP Codice Natura" then \
+summary -a count,null_count,distinct_count
+```
+
 ## CSV "standard"
 
 ::: {.callout-note collapse="true"}
 ## A proposito di "standard"
-Il formato CSV **non è uno standard**, ma una convenzione non ufficiale che è stata ampiamente adotatta e descritta nella [RFC 4180](https://tools.ietf.org/html/rfc4180).
+Il formato CSV **non è uno standard**, ma una convenzione non ufficiale che è stata ampiamente adotatta. È descritta nella [RFC 4180](https://tools.ietf.org/html/rfc4180).
 :::
 
-Qui utilizzo l'aggettivo "**standard**" per quelle carateristiche che rendono un CSV "**subito pronto**" per essere letto da applicazioni e linguaggi di scripting per l'analisi dei dati.<br>
-Queste sono:
+Qui utilizzo l'aggettivo "**standard**" per quelle carateristiche che rendono un CSV "**subito pronto**", per essere letto da applicazioni e linguaggi di scripting per l'analisi dei dati.<br>
+Queste sono quelle consigliate e più tipiche:
 
 -  **`UTF-8`** come **codifica** dei **caratteri**;
 -  **`,`** come separatore di campi;
--  **`.`** come separatore dei decimali;
--  presenza della **riga di intestazione**;
--  **date** nello standard `**ISO 8601**` (la data "8 marzo 2023" rappresentata ad esempio come "2023-03-08");
+-  **`.`** come separatore dei decimali. In Italia il separatore è la `,`, e ci può stare usarla, ma usando il `.` e documentandolo, si mette a disposizione un file che sarà più pronto per una lettura automatica;
+-  presenza della **riga di intestazione** (una sola);
+-  **date** nello standard **`ISO 8601`** (la data "8 marzo 2023" rappresentata ad esempio come "2023-03-08");
 -  ogni colonna **un solo tipo di campo** (es. solo numeri, solo testo, solo date, ecc.). Questo sembra inutile evidenziarlo, ma capita spesso di trovare colonne che contengono valori di tipo diverso (es. numeri e testo) nella stessa colonna;
 -  evitare l'utilizzo di spazi, virgolette o altri caratteri speciali nei **nomi dei campi**.
 
@@ -180,19 +232,7 @@ Queste sono:
 - json, parquet,
 
 
-## Da svilppare
-
-- [ ] parquet al posto dei CSV https://www-icem7-fr.translate.goog/outils/parquet-devrait-remplacer-le-format-csv/?_x_tr_sl=auto&_x_tr_tl=it&_x_tr_hl=en-US
-- [ ] allegare sempre tracciato record machine readable
-- [ ] il SQL è standard, vecchio e diffuso
-- [ ] comprimere i CSV
-- [ ] dbeaver
-- [ ] il fatto che il csv sia brutto all'inizio
-- [ ] il fatto che non voglio che il mondo sia inondato di CSV
-- [ ] pubblicare CSV standardizzati (utf-8, decimali, field separator, uniformità campi,date)
-- [ ] capitolo frictionless e schema SQL
-
-## Dati coesione
+## Dati OpenCoesione
 
 - le date come num
 - per un CSV così grande, la definizione di uno schema per import
@@ -202,3 +242,19 @@ Queste sono:
 - c'è un file con il vocabolario dei valori?
 - `PROGRAMMATO_INDICATORE_1` è dichiarato come num, e sembrano esserci numeri decimali, ma hanno come separatore decimale il punto e non la virgola. Verificare se è veramente un numero o se è una stringa
 - `REALIZZATO_INDICATORE_1` è dichiarato come num, e sembrano esserci numeri decimali, ma hanno come separatore decimale il punto e non la virgola. Verificare se è veramente un numero o se è una stringa
+- le celle con contenuti 5:::5:::5. A volte c'è così "5:::.:::.", che vuol dire? È giusto? Cosa vuol dire `.`? È il valore nullo?
+
+## Da sviluppare
+
+- [ ] parquet al posto dei CSV https://www-icem7-fr.translate.goog/outils/parquet-devrait-remplacer-le-format-csv/?_x_tr_sl=auto&_x_tr_tl=it&_x_tr_hl=en-US
+- [ ] allegare sempre tracciato record machine readable
+- [ ] il SQL è standard, vecchio e diffuso
+- [x] comprimere i CSV
+- [ ] dbeaver
+- [ ] il fatto che il csv sia brutto all'inizio
+- [ ] il fatto che non voglio che il mondo sia inondato di CSV
+- [ ] pubblicare CSV standardizzati (utf-8, decimali, field separator, uniformità campi,date)
+- [ ] capitolo frictionless e schema SQL
+- [ ] rivedere introduzione, sottolineando che non voglio diffondere l'uso del CSV
+- [x] fare cenno alla compressione ZSTD
+

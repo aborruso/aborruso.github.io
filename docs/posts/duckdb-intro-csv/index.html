@@ -137,11 +137,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <header id="quarto-header" class="headroom fixed-top">
     <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
-    <a class="navbar-brand" href="../../index.html">
-    <span class="navbar-title">aborruso’s website</span>
-    </a>
-  </div>
             <div id="quarto-search" class="" title="false"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Attiva/disattiva la navigazione" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
@@ -222,12 +217,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#tldr-una-breve-introduzione" id="toc-tldr-una-breve-introduzione" class="nav-link active" data-scroll-target="#tldr-una-breve-introduzione">TL;DR (una breve introduzione)</a></li>
   <li><a href="#i-csv-sono-brutti-e-cattivi" id="toc-i-csv-sono-brutti-e-cattivi" class="nav-link" data-scroll-target="#i-csv-sono-brutti-e-cattivi">I CSV sono brutti e cattivi</a></li>
-  <li><a href="#compressione-dei-file-csv" id="toc-compressione-dei-file-csv" class="nav-link" data-scroll-target="#compressione-dei-file-csv">Compressione dei file CSV</a></li>
+  <li><a href="#compressione-dei-file-csv" id="toc-compressione-dei-file-csv" class="nav-link" data-scroll-target="#compressione-dei-file-csv">Compressione dei file CSV</a>
+  <ul class="collapse">
+  <li><a href="#formato-gzip" id="toc-formato-gzip" class="nav-link" data-scroll-target="#formato-gzip">Formato GZIP</a></li>
+  <li><a href="#formato-zstd" id="toc-formato-zstd" class="nav-link" data-scroll-target="#formato-zstd">Formato ZSTD</a></li>
+  </ul></li>
   <li><a href="#csv-standard" id="toc-csv-standard" class="nav-link" data-scroll-target="#csv-standard">CSV “standard”</a></li>
   <li><a href="#descrivere-i-csv" id="toc-descrivere-i-csv" class="nav-link" data-scroll-target="#descrivere-i-csv">Descrivere i CSV</a></li>
   <li><a href="#duckdb" id="toc-duckdb" class="nav-link" data-scroll-target="#duckdb">DuckDB</a></li>
-  <li><a href="#da-svilppare" id="toc-da-svilppare" class="nav-link" data-scroll-target="#da-svilppare">Da svilppare</a></li>
-  <li><a href="#dati-coesione" id="toc-dati-coesione" class="nav-link" data-scroll-target="#dati-coesione">Dati coesione</a></li>
+  <li><a href="#dati-opencoesione" id="toc-dati-opencoesione" class="nav-link" data-scroll-target="#dati-opencoesione">Dati OpenCoesione</a></li>
+  <li><a href="#da-sviluppare" id="toc-da-sviluppare" class="nav-link" data-scroll-target="#da-sviluppare">Da sviluppare</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/aborruso/aborruso.github.io/edit/main/posts/duckdb-intro-csv/index.qmd" class="toc-action">Modifica questa pagina</a></p><p><a href="https://github.com/aborruso/aborruso.github.io/issues/new" class="toc-action">Segnala un problema</a></p></div></div></nav>
 </nav>
@@ -262,7 +261,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="compressione-dei-file-csv">Compressione dei file CSV</h2>
 <p>Molti siti che pubblicano file CSV - specie quando sono “grandi” - li pubblicano in formato compresso.<br> Questo, come nel caso del file dei progetti di OpenCoesione, è un ottimo modo per ridurre il tempo di <em>download</em>: il <a href="https://opencoesione.gov.it/it/opendata/progetti_esteso.zip">file</a> reso disponibile in formato compresso <code>ZIP</code> pesa circa (nella versione di aprile 2023) 240 MB, mentre il file CSV contenuto al suo interno pesa circa 4,4 GB.</p>
 <p>Scegliendo un altro formato di compressione, diverso dallo <code>ZIP</code>, si possono dare ulteriori vantaggi a chi utilizzerà il file.</p>
-<p>Il primo è quello di <strong>renderlo subito pronto all’uso</strong>, come se fosse già decompresso. Che è una cosa molto comoda specie nelle prime <strong>fasi</strong> di lavoro, quelle “<strong>esplorative</strong>”, in cui si fa un po’ di ispezione, si fanno le prime prove di analisi, di verifica qualità, di adeguatezza dei dati, ecc.. Il formato di compressione ideale in tal senso è il <code>GZIP</code>, che è supportato da quasi tutti gli strumenti di analisi dati, e che è molto efficiente nella compressione dei file CSV.<br> È un formato introdotto nel 1992, che ha una <strong>buona compressione</strong> e che è <strong>veloce</strong> da decomprimere. È un formato <strong><em>lossless</em></strong>, cioè non perde informazioni, e <strong><em>streaming</em></strong>, cioè può essere decompresso anche senza avere l’intero file, ma solo una parte.<br> La gran parte delle applicazioni e linguaggi di <em>scripting</em> sono in grado di accedere nativame a un file <code>gz</code>; un po’ meno con il formato <code>zip</code>. Ed è compatibile con tutti i sistemi operativi e tutte le <em>utility</em> di compressione e decompressione.</p>
+<p>Il primo è quello di <strong>renderlo subito pronto all’uso</strong>, come se fosse già decompresso. Che è una cosa molto comoda specie nelle prime <strong>fasi</strong> di lavoro, quelle “<strong>esplorative</strong>”, in cui si fa un po’ di ispezione, si fanno le prime prove di analisi, di verifica qualità, di adeguatezza dei dati, ecc..</p>
+<section id="formato-gzip" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="formato-gzip">Formato GZIP</h3>
+<p>Il formato di compressione ideale in tal senso è il <code>GZIP</code>, che è supportato da quasi tutti gli strumenti di analisi dati, e che è molto efficiente nella compressione dei file CSV.<br> È un formato introdotto nel 1992, che ha una <strong>buona compressione</strong> e che è <strong>veloce</strong> da decomprimere. È un formato <strong><em>lossless</em></strong>, cioè non perde informazioni, e <strong><em>streaming</em></strong>, cioè può essere decompresso anche senza avere l’intero file, ma solo una parte.<br> La gran parte delle applicazioni e linguaggi di <em>scripting</em> sono in grado di accedere nativame a un file <code>gz</code>; un po’ meno con il formato <code>zip</code>. Ed è compatibile con tutti i sistemi operativi e tutte le <em>utility</em> di compressione e decompressione.</p>
 <p>Alcuni esempi di quanto è pronto all’uso, basati sul <a href="https://www.italiadomani.gov.it/content/sogei-ng/it/it/catalogo-open-data/Universo_ReGiS_Progetti.html">CSV dei Progetti del PNRR</a>, compresso da me in <a href="file/PNRR_Progetti-Universo_REGIS_v2.1.csv.gz">formato <code>gz</code></a>.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
@@ -292,12 +294,14 @@ Ambiente di lavoro utilizzato
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>PNRR;M1;Digitalizzazione, innovazione, competitività e cultura;M1C1;Digitalizzazione, innovazione e sicurezza nella PA;M1C1I1.2;M1C1I1.02;Abilitazione al cloud per le PA locali;M1C1I1.2;M1C1I1.2;M1C1I1.02.00;Abilitazione al cloud per le PA locali;PCM - DIPARTIM. TRASFORMAZIONE DIGITALE;1000000237;AVVISO AB. CLOUD COMUNI DEL 15/04/22;Bando;B61C22000190006;B61C22000190006;Attivo;02;ACQUISTO O REALIZZAZIONE DI SERVIZI;19;APPLICATIVI E PIATTAFORME WEB;10;SERVIZI PER LA P.A. E PER LA COLLETTIVITA';01;SERVIZI E TECNOLOGIE PER L'INFORMAZIONE E LE COMUNICAZIONI;007;SISTEMI INFORMATIVI PER LA P.A.;1.2. Ab.Cloud Com Castelgrande;MIGRAZIONE AL CLOUD DEI SERVIZI DIGITALI DELL'AMMINISTRAZIONE*TERRITORIO COMUNALE*9 SERVIZI DA MIGRARE;INTERVENTO CHE NON COSTITUISCE AIUTO DI STATO;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;47427,00;0,00;0,00;47427,00;47427,00;47427,00;COMUNE DI CASTELGRANDE;80004060762;No;13/06/2023</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>PNRR;M1;Digitalizzazione, innovazione, competitività e cultura;M1C1;Digitalizzazione, innovazione e sicurezza nella PA;M1C1I1.2;M1C1I1.02;Abilitazione al cloud per le PA locali;M1C1I1.2;M1C1I1.2;M1C1I1.02.00;Abilitazione al cloud per le PA locali;PCM - DIPARTIM. TRASFORMAZIONE DIGITALE;1000000237;AVVISO AB. CLOUD COMUNI DEL 15/04/22;Bando;F31C22000020006;F31C22000020006;Attivo;02;ACQUISTO O REALIZZAZIONE DI SERVIZI;19;APPLICATIVI E PIATTAFORME WEB;10;SERVIZI PER LA P.A. E PER LA COLLETTIVITA';01;SERVIZI E TECNOLOGIE PER L'INFORMAZIONE E LE COMUNICAZIONI;007;SISTEMI INFORMATIVI PER LA P.A.;1.2. Ab.Cloud Com Ittireddu;MIGRAZIONE AL CLOUD DEI SERVIZI DIGITALI DELL'AMMINISTRAZIONE*TERRITORIO COMUNALE*N. 9 SERVIZI DA MIGRARE;INTERVENTO CHE NON COSTITUISCE AIUTO DI STATO;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;47427,00;0,00;0,00;47427,00;47427,00;47427,00;COMUNE DI ITTIREDDU;00283910909;No;13/06/2023</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>E posso usare in modo diretto strumenti di analisi, trasformazione e filtro di file CSV come lo <a href="https://miller.readthedocs.io/">straordinario <strong>Miller</strong></a>. E per continuare l’esplorazione di questo dataset, è utile ad esempio avere restituito il conteggio dei record, i valori nulli di ogni campo e anche i valori distinti.<br> Ad esempio se voglio avere un’idea dei valori nulli e dei valori distinti soltanto dei campi <code>Missione</code>, <code>Codice Univoco Misura</code> e <code>CUP Codice Natura</code>, utilizzerò il verbo <a href="https://miller.readthedocs.io/en/6.8.0/reference-verbs/index.html#cut"><code>cut</code></a> e <a href="https://miller.readthedocs.io/en/6.8.0/reference-verbs/index.html#summary"><code>summary</code></a>, applicando la procedura direttamente sul file compresso:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mlr</span> <span class="at">--csv</span> <span class="at">--ifs</span> <span class="st">";"</span> cut <span class="at">-f</span> Missione,<span class="st">"Codice Univoco Misura"</span>,<span class="st">"CUP Codice Natura"</span> then <span class="dt">\</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>summary <span class="at">-a</span> count,null_count,distinct_count PNRR_Progetti-Universo_REGIS_v2.1.csv.gz</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mlr</span> <span class="at">--csv</span> <span class="at">--ifs</span> <span class="st">";"</span> <span class="dt">\</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>cut <span class="at">-f</span> Missione,<span class="st">"Codice Univoco Misura"</span>,<span class="st">"CUP Codice Natura"</span> then <span class="dt">\</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>summary <span class="at">-a</span> count,null_count,distinct_count PNRR_Progetti-Universo_REGIS_v2.1.csv.gz</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>In output avrò:</p>
+<div id="tbl-mlr-output" class="anchored">
 <div class="table-responsive">
 <table class="table-striped table">
-<caption><em>Output</em> di Miller</caption>
+<caption>Tabella&nbsp;1: <em>Output</em> di Miller</caption>
 <thead>
 <tr class="header">
 <th>field_name</th>
@@ -328,6 +332,7 @@ Ambiente di lavoro utilizzato
 </tbody>
 </table>
 </div>
+</div>
 <p>E potrò usare strumenti di analisi e trasformazione più “standard”, come una <strong><em>query</em> SQL</strong> su questo file CSV compresso. Utilizzando proprio <a href="#duckdb"><strong>DuckDB</strong></a>.</p>
 <p>Ad esempio, per avere il totale del finanziamento PNRR per ogni missione, posso usare questo comando:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> <span class="at">-csv</span> <span class="at">-c</span> <span class="st">'</span></span>
@@ -357,19 +362,19 @@ Ambiente di lavoro utilizzato
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="lst-query-duckdb" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="lst-query-duckdb" data-code-annotation="1" data-code-lines="5">imposta il separatore di campi a <code>;</code></span>
+<span data-code-annotation="1" data-code-cell="lst-query-duckdb" data-code-lines="5">imposta il separatore di campi a <code>;</code></span>
 </dd>
 <dt data-target-cell="lst-query-duckdb" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="lst-query-duckdb" data-code-annotation="2" data-code-lines="6">imposta il separatore di decimali a <code>,</code></span>
+<span data-code-annotation="2" data-code-cell="lst-query-duckdb" data-code-lines="6">imposta il separatore di decimali a <code>,</code></span>
 </dd>
 <dt data-target-cell="lst-query-duckdb" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-cell="lst-query-duckdb" data-code-annotation="3" data-code-lines="7">la prima riga è la riga di intestazione</span>
+<span data-code-annotation="3" data-code-cell="lst-query-duckdb" data-code-lines="7">la prima riga è la riga di intestazione</span>
 </dd>
 <dt data-target-cell="lst-query-duckdb" data-target-annotation="4">4</dt>
 <dd>
-<span data-code-cell="lst-query-duckdb" data-code-annotation="4" data-code-lines="8">il campo <code>Finanziamento PNRR</code> è di tipo <code>FLOAT</code></span>
+<span data-code-annotation="4" data-code-cell="lst-query-duckdb" data-code-lines="8">il campo <code>Finanziamento PNRR</code> è di tipo <code>FLOAT</code></span>
 </dd>
 </dl>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -424,6 +429,39 @@ Il vantaggio di un CSV standard
 </table>
 </div>
 </section>
+<section id="formato-zstd" class="level3">
+<h3 class="anchored" data-anchor-id="formato-zstd">Formato ZSTD</h3>
+<p><a href="https://facebook.github.io/zstd/"><code>ZSTD</code></a> è un formato di compressione senza perdita. La caratteristica principale è che fornisce tassi di <strong>compressione molto elevati</strong>, vicini a quelli di formati come <code>lzma</code>, ma con <strong>velocità di compressione e decompressione molto superiori</strong>.</p>
+<p>Per questa accoppiata di caratteristiche è sempre più diffuso tra le applicazioni e le librerie <em>software</em> di accesso ai dati.</p>
+<p>Per dare qualche numero di confronto, basato sul file CSV da 4 GB di <a href="#dati-opencoesione">OpenCoesione</a> e sul mio <em>notebook</em> con Pentium i7 di 12esima generazione con 16 GB di RAM:</p>
+<ul>
+<li>la compressione (standard) con <code>gzip</code> richiede 47 secondi, e il file compresso pesa 253 MB;</li>
+<li>la compressione (standard) con <code>zstd</code> richiede 13 secondi, e il file compresso pesa 186 MB;</li>
+<li>la decompressione del file <code>gzip</code> richiede 19 secondi;</li>
+<li>la decompressione del file <code>zstd</code> richiede 5 secondi.</li>
+</ul>
+<p>L’utility a riga di comando per gestire i file <code>ZSTD</code> si chiama <code>zstd</code> e si può installare in quasi tutti i sistemi operativi. Un’applicazione <em>open source</em>, multipiattaforma, con interfaccia grafica, che supporta questa compressione è <a href="https://peazip.github.io/index.html">PeaZip</a>.<br> Molte applicazioni e librerie <em>software</em> di accesso ai dati, come DuckDB, <a href="https://arrow.apache.org/">Apache Arrow</a> e <a href="https://spark.apache.org/">Apache Spark</a>, lo supportano nativamente.</p>
+<p>In <a href="#duckdb">DuckDB</a>, si può leggere un file <code>CSV</code> compresso in formato <code>ZSTD</code>, semplicemente puntando ad esso (l’estensione <code>.zst</code> fa in modo che venga interpretato come file compresso in formato <code>ZSTD</code>):</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> <span class="at">-csv</span> <span class="at">-c</span> <span class="st">'</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT count(*) numero_righe</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="st">FROM  read_csv_auto(</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="st">        "PNRR_Progetti-Universo_REGIS_v2.1.csv.zst",</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="st">        delim=";",</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="st">        decimal_separator=",",</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="st">        header=True,</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="st">        types={"Finanziamento PNRR":"FLOAT"}</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="st">)</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="st">'</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Lo fa in 0,4 secondi per il <code>CSV</code> (compresso <code>ZSTD</code>) di circa 200.000 righe per 50 colonne, usato nell’esempio di sopra. E in 5 secondi per il <code>CSV</code> (compresso <code>ZSTD</code>) di circa 2.000.000 di righe per 200 colonne di <a href="#dati-opencoesione">OpenCoesione</a>.</p>
+<p>E si può semplicemente esplorare un file <code>CSV</code> compresso <code>ZSTD</code> con l’utility <code>zstdcat</code>. Ad esempio per leggere le prime 5 righe:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">zstdcat</span> PNRR_Progetti-Universo_REGIS_v2.1.csv.zst <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 5</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>O sempre in accoppiata con Miller, per avere dei dati di sintesi (in 0.6 secondi) come quelli di <a href="#tbl-mlr-output" class="quarto-xref">Tabella&nbsp;1</a>:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">zstdcat</span> PNRR_Progetti-Universo_REGIS_v2.1.csv.zst <span class="kw">|</span> <span class="dt">\</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">mlr</span> <span class="at">--csv</span> <span class="at">--ifs</span> <span class="st">";"</span> <span class="dt">\</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>cut <span class="at">-f</span> Missione,<span class="st">"Codice Univoco Misura"</span>,<span class="st">"CUP Codice Natura"</span> then <span class="dt">\</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>summary <span class="at">-a</span> count,null_count,distinct_count</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
 <section id="csv-standard" class="level2">
 <h2 class="anchored" data-anchor-id="csv-standard">CSV “standard”</h2>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -438,17 +476,17 @@ A proposito di “standard”
 </div>
 <div id="callout-3" class="callout-3-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>Il formato CSV <strong>non è uno standard</strong>, ma una convenzione non ufficiale che è stata ampiamente adotatta e descritta nella <a href="https://tools.ietf.org/html/rfc4180">RFC 4180</a>.</p>
+<p>Il formato CSV <strong>non è uno standard</strong>, ma una convenzione non ufficiale che è stata ampiamente adotatta. È descritta nella <a href="https://tools.ietf.org/html/rfc4180">RFC 4180</a>.</p>
 </div>
 </div>
 </div>
-<p>Qui utilizzo l’aggettivo “<strong>standard</strong>” per quelle carateristiche che rendono un CSV “<strong>subito pronto</strong>” per essere letto da applicazioni e linguaggi di scripting per l’analisi dei dati.<br> Queste sono:</p>
+<p>Qui utilizzo l’aggettivo “<strong>standard</strong>” per quelle carateristiche che rendono un CSV “<strong>subito pronto</strong>”, per essere letto da applicazioni e linguaggi di scripting per l’analisi dei dati.<br> Queste sono quelle consigliate e più tipiche:</p>
 <ul>
 <li><strong><code>UTF-8</code></strong> come <strong>codifica</strong> dei <strong>caratteri</strong>;</li>
 <li><strong><code>,</code></strong> come separatore di campi;</li>
-<li><strong><code>.</code></strong> come separatore dei decimali;</li>
-<li>presenza della <strong>riga di intestazione</strong>;</li>
-<li><strong>date</strong> nello standard <code>**ISO 8601**</code> (la data “8 marzo 2023” rappresentata ad esempio come “2023-03-08”);</li>
+<li><strong><code>.</code></strong> come separatore dei decimali. In Italia il separatore è la <code>,</code>, e ci può stare usarla, ma usando il <code>.</code> e documentandolo, si mette a disposizione un file che sarà più pronto per una lettura automatica;</li>
+<li>presenza della <strong>riga di intestazione</strong> (una sola);</li>
+<li><strong>date</strong> nello standard <strong><code>ISO 8601</code></strong> (la data “8 marzo 2023” rappresentata ad esempio come “2023-03-08”);</li>
 <li>ogni colonna <strong>un solo tipo di campo</strong> (es. solo numeri, solo testo, solo date, ecc.). Questo sembra inutile evidenziarlo, ma capita spesso di trovare colonne che contengono valori di tipo diverso (es. numeri e testo) nella stessa colonna;</li>
 <li>evitare l’utilizzo di spazi, virgolette o altri caratteri speciali nei <strong>nomi dei campi</strong>.</li>
 </ul>
@@ -463,22 +501,8 @@ A proposito di “standard”
 <li>json, parquet,</li>
 </ul>
 </section>
-<section id="da-svilppare" class="level2">
-<h2 class="anchored" data-anchor-id="da-svilppare">Da svilppare</h2>
-<ul class="task-list">
-<li><input type="checkbox">parquet al posto dei CSV https://www-icem7-fr.translate.goog/outils/parquet-devrait-remplacer-le-format-csv/?_x_tr_sl=auto&amp;_x_tr_tl=it&amp;_x_tr_hl=en-US</li>
-<li><input type="checkbox">allegare sempre tracciato record machine readable</li>
-<li><input type="checkbox">il SQL è standard, vecchio e diffuso</li>
-<li><input type="checkbox">comprimere i CSV</li>
-<li><input type="checkbox">dbeaver</li>
-<li><input type="checkbox">il fatto che il csv sia brutto all’inizio</li>
-<li><input type="checkbox">il fatto che non voglio che il mondo sia inondato di CSV</li>
-<li><input type="checkbox">pubblicare CSV standardizzati (utf-8, decimali, field separator, uniformità campi,date)</li>
-<li><input type="checkbox">capitolo frictionless e schema SQL</li>
-</ul>
-</section>
-<section id="dati-coesione" class="level2">
-<h2 class="anchored" data-anchor-id="dati-coesione">Dati coesione</h2>
+<section id="dati-opencoesione" class="level2">
+<h2 class="anchored" data-anchor-id="dati-opencoesione">Dati OpenCoesione</h2>
 <ul>
 <li>le date come num</li>
 <li>per un CSV così grande, la definizione di uno schema per import</li>
@@ -488,12 +512,29 @@ A proposito di “standard”
 <li>c’è un file con il vocabolario dei valori?</li>
 <li><code>PROGRAMMATO_INDICATORE_1</code> è dichiarato come num, e sembrano esserci numeri decimali, ma hanno come separatore decimale il punto e non la virgola. Verificare se è veramente un numero o se è una stringa</li>
 <li><code>REALIZZATO_INDICATORE_1</code> è dichiarato come num, e sembrano esserci numeri decimali, ma hanno come separatore decimale il punto e non la virgola. Verificare se è veramente un numero o se è una stringa</li>
+<li>le celle con contenuti 5:::5:::5. A volte c’è così “5:::.:::.”, che vuol dire? È giusto? Cosa vuol dire <code>.</code>? È il valore nullo?</li>
+</ul>
+</section>
+<section id="da-sviluppare" class="level2">
+<h2 class="anchored" data-anchor-id="da-sviluppare">Da sviluppare</h2>
+<ul class="task-list">
+<li><input type="checkbox">parquet al posto dei CSV https://www-icem7-fr.translate.goog/outils/parquet-devrait-remplacer-le-format-csv/?_x_tr_sl=auto&amp;_x_tr_tl=it&amp;_x_tr_hl=en-US</li>
+<li><input type="checkbox">allegare sempre tracciato record machine readable</li>
+<li><input type="checkbox">il SQL è standard, vecchio e diffuso</li>
+<li><input type="checkbox" checked="">comprimere i CSV</li>
+<li><input type="checkbox">dbeaver</li>
+<li><input type="checkbox">il fatto che il csv sia brutto all’inizio</li>
+<li><input type="checkbox">il fatto che non voglio che il mondo sia inondato di CSV</li>
+<li><input type="checkbox">pubblicare CSV standardizzati (utf-8, decimali, field separator, uniformità campi,date)</li>
+<li><input type="checkbox">capitolo frictionless e schema SQL</li>
+<li><input type="checkbox">rivedere introduzione, sottolineando che non voglio diffondere l’uso del CSV</li>
+<li><input type="checkbox" checked="">fare cenno alla compressione ZSTD</li>
 </ul>
 
 
 </section>
 
-</main> <!-- /main -->
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Torna in cima</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

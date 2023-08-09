@@ -41,7 +41,7 @@
 
 
 
- ]]></description>
+<a onclick="window.scrollTo(0, 0); return false;" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Torna in cima</a> ]]></description>
   <category>qsv</category>
   <category>til</category>
   <category>cli</category>
@@ -104,7 +104,7 @@ font-style: inherit;">1</span>;</span></code></pre></div>
 
 
 
- ]]></description>
+<a onclick="window.scrollTo(0, 0); return false;" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Torna in cima</a> ]]></description>
   <category>duckdb</category>
   <category>spatial</category>
   <category>cli</category>
@@ -151,7 +151,7 @@ font-style: inherit;">duckdb</span></span></code></pre></div>
 
 
 
- ]]></description>
+<a onclick="window.scrollTo(0, 0); return false;" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Torna in cima</a> ]]></description>
   <category>duckdb</category>
   <category>csv</category>
   <category>parquet</category>
@@ -223,7 +223,7 @@ font-style: inherit;">&lt;/p&gt;</span></span></code></pre></div>
 
 
 
- ]]></description>
+<a onclick="window.scrollTo(0, 0); return false;" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Torna in cima</a> ]]></description>
   <category>quarto</category>
   <category>css</category>
   <guid>https://aborruso.github.io/til/quarto-applicare-stili-span/index.html</guid>
@@ -303,7 +303,7 @@ font-style: inherit;">$in</span>.name }</span></code></pre></div>
 
 
 
- ]]></description>
+<a onclick="window.scrollTo(0, 0); return false;" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Torna in cima</a> ]]></description>
   <category>nushell</category>
   <category>til</category>
   <guid>https://aborruso.github.io/til/nushell-lista-file-piu-vecchi-di/index.html</guid>
@@ -371,7 +371,7 @@ font-style: inherit;">```</span></span></code></pre></div>
 
 
 
- ]]></description>
+<a onclick="window.scrollTo(0, 0); return false;" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Torna in cima</a> ]]></description>
   <category>quarto</category>
   <category>til</category>
   <guid>https://aborruso.github.io/til/mescolare-r-python-bash/index.html</guid>
@@ -412,7 +412,7 @@ font-style: inherit;">--all-features</span></span></code></pre></div>
 
 
 
- ]]></description>
+<a onclick="window.scrollTo(0, 0); return false;" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Torna in cima</a> ]]></description>
   <category>nushell</category>
   <category>dataframe</category>
   <category>cli</category>
@@ -459,7 +459,7 @@ Attenzione all’inferencing dei tipi di campo
 
 
 
- ]]></description>
+<a onclick="window.scrollTo(0, 0); return false;" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Torna in cima</a> ]]></description>
   <category>duckdb</category>
   <category>csv</category>
   <category>til</category>
@@ -734,7 +734,7 @@ font-style: inherit;">```</span></span></code></pre></div>
 
 
 
- ]]></description>
+<a onclick="window.scrollTo(0, 0); return false;" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Torna in cima</a> ]]></description>
   <category>quarto</category>
   <category>csv</category>
   <category>til</category>
@@ -986,7 +986,7 @@ font-style: inherit;">)</span></span>
 
 
 
- ]]></description>
+<a onclick="window.scrollTo(0, 0); return false;" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Torna in cima</a> ]]></description>
   <category>quarto</category>
   <category>altair</category>
   <category>grafici</category>
@@ -1147,7 +1147,7 @@ font-style: inherit;">()</span></span>
 
 
 
- ]]></description>
+<a onclick="window.scrollTo(0, 0); return false;" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Torna in cima</a> ]]></description>
   <category>quarto</category>
   <category>csv</category>
   <category>observable</category>
@@ -1257,7 +1257,7 @@ Nota
 
 
 
- ]]></description>
+<a onclick="window.scrollTo(0, 0); return false;" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Torna in cima</a> ]]></description>
   <category>cli</category>
   <category>til</category>
   <category>grep</category>
@@ -1356,7 +1356,7 @@ Importante
 
 
 
- ]]></description>
+<a onclick="window.scrollTo(0, 0); return false;" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Torna in cima</a> ]]></description>
   <category>quarto</category>
   <category>til</category>
   <category>github</category>
