@@ -217,11 +217,12 @@ Queste sono quelle consigliate e più tipiche:
 
 -  **`UTF-8`** come **codifica** dei **caratteri**;
 -  **`,`** come separatore di campi;
--  **`.`** come separatore dei decimali. In Italia il separatore è la `,`, e ci può stare usarla, ma usando il `.` e documentandolo, si mette a disposizione un file che sarà più pronto per una lettura automatica;
+-  **`.`** come separatore dei decimali. In Italia il separatore è la `,`, e ci può stare usarla, ma usando il `.` e documentandolo, si mette a disposizione un file che sarà più **pronto** per una **lettura automatica**;
 -  presenza della **riga di intestazione** (una sola);
 -  **date** nello standard **`ISO 8601`** (la data "8 marzo 2023" rappresentata ad esempio come "2023-03-08");
 -  ogni colonna **un solo tipo di campo** (es. solo numeri, solo testo, solo date, ecc.). Questo sembra inutile evidenziarlo, ma capita spesso di trovare colonne che contengono valori di tipo diverso (es. numeri e testo) nella stessa colonna;
--  evitare l'utilizzo di spazi, virgolette o altri caratteri speciali nei **nomi dei campi**.
+-  evitare l'utilizzo di spazi, virgolette o altri caratteri speciali nei **nomi dei campi**;
+-  **non inserire** il **separatore** delle **migliaia** nei valori delle celle dei campi numerici.
 
 
 ## Descrivere i CSV
