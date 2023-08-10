@@ -227,10 +227,27 @@ Queste sono quelle consigliate e più tipiche:
 
 ## Descrivere i CSV
 
+- lo so, con altri formati è all inclusive
+- non c'è quasi mai il tracciato record
+- se c'è nella gran parte dei casi non è machine readable
+- il SQL, frictionless, json schema, ...
+
+## Parquet
+
+- colonnare
+- compresso
+- performance
+- articolo su nuovo formato https://www-icem7-fr.translate.goog/outils/parquet-devrait-remplacer-le-format-csv/?_x_tr_sl=auto&_x_tr_tl=it&_x_tr_hl=en-US
+- può essere il futuro, ma non c'è traccia nelle nuove linee guida
+- esempi di parquet e geoparquet nel mondo
+
 ## DuckDB
 
 - il SQL figo e comodo (group by all, exclude)
-- json, parquet,
+- json, parquet
+- https
+- geo
+- integrabile con python e R, ...
 
 
 ## Dati OpenCoesione
@@ -244,6 +261,14 @@ Queste sono quelle consigliate e più tipiche:
 - `PROGRAMMATO_INDICATORE_1` è dichiarato come num, e sembrano esserci numeri decimali, ma hanno come separatore decimale il punto e non la virgola. Verificare se è veramente un numero o se è una stringa
 - `REALIZZATO_INDICATORE_1` è dichiarato come num, e sembrano esserci numeri decimali, ma hanno come separatore decimale il punto e non la virgola. Verificare se è veramente un numero o se è una stringa
 - le celle con contenuti 5:::5:::5. A volte c'è così "5:::.:::.", che vuol dire? È giusto? Cosa vuol dire `.`? È il valore nullo?
+
+## In conclusione
+
+- comprimere i file csv grande, con gzip
+- pubblicare CSV standard
+- descrivere i CSV
+- quanto è figo duckdb
+- il parquet come futuro formato open data
 
 ## Da sviluppare
 
