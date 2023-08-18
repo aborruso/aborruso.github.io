@@ -11,3 +11,6 @@ tmp*
 
 posts/duckdb-intro-csv/file/*
 !posts/duckdb-intro-csv/file/parco_circolante_Abruzzo.*
+!posts/duckdb-intro-csv/file/PNRR_Progetti-Universo_REGIS_v2.1.parquet
+
+posts/duckdb-intro-csv/rill/opencoesione/*
