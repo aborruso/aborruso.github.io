@@ -18,12 +18,22 @@ format:
 ## TL;DR (una breve introduzione)
 
 Il formato **CSV**, con tutti i suoi **difetti**, è ancora **uno dei formati più diffusi per lo scambio di dati**. Ci sono **modalità** di gestire questi file ed eccezionali **strumenti**, che possono rendere molto semplice, efficace e rapido il loro utilizzo. Anche quando sono di **grandi dimensioni**.<br>
-E per fortuna ci sono banche dati "grosse" e importanti come [OpenCoesione](https://opencoesione.gov.it) che danno l'opportunità di fare pratica con questi strumenti.
-In questo lungo post farò una carrelata della compressione dei file CSV, dell'utilizzo di duckdb per analizzarli e del formato parquet come alternativa al CSV.
+E per fortuna ci sono banche dati "grosse" e importanti come [**OpenCoesione**](https://opencoesione.gov.it) che danno l'opportunità di fare pratica con questi strumenti.
+
+In questo lungo post farò una carrelata della [**compressione** dei file **`CSV`**](#compressione-dei-file-csv), dell'[importanza di **descriverli**](#descrivere-i-csv), dell'utilizzo di [**DuckDB**](#duckdb) per analizzarli e del [**formato Parquet**](#parquet) come alternativa al CSV.
 
 ⚠️ **QUESTO POST NON È UN TUTORIAL** (ma doping omeopatico per i tuoi criceti e per chi pubblica dati).
 
 ![](images/atutorial.png)
+
+---
+
+::: {.callout-note}
+## Prima di continuare a leggere
+In questo post faccio riferimento a diversi strumenti, tra cui [**DuckDB**](https://duckdb.org/docs/archive/0.8.1/installation/), [**Miller**](https://miller.readthedocs.io/en/latest/installing-miller/) e [**VisiData**](https://www.visidata.org/install/).<br>
+Se vuoi replicare alcune delle procedere descritte, è necessario installarli.<br>
+Soprattutto **DuckDB**.
+:::
 
 ## I CSV sono brutti e cattivi
 
@@ -45,7 +55,7 @@ E si potrebbero aggiungere altre brutture sul formato e di come spesso viene res
 ## Compressione dei file CSV
 
 Molti siti che pubblicano file CSV - specie quando sono "grandi" - li pubblicano in formato compresso.<br>
-Questo, come nel caso del file dei [progetti di OpenCoesione](#dati-opencoesione), è un ottimo modo per ridurre il tempo di *download*: il [file](https://opencoesione.gov.it/it/opendata/progetti_esteso.zip) reso disponibile in formato compresso `ZIP` pesa circa (nella versione di aprile 2023) 240 MB, mentre il file CSV contenuto al suo interno pesa circa 4,4 GB.
+Questo - come nel caso del file dei [progetti di OpenCoesione](#dati-opencoesione) - è un ottimo modo per ridurre il tempo di *download*: il [file](https://opencoesione.gov.it/it/opendata/progetti_esteso.zip) reso disponibile in formato compresso `ZIP` pesa circa (nella versione di aprile 2023) 240 MB, mentre il file CSV contenuto al suo interno pesa circa 4,4 GB.
 
 Scegliendo un altro formato di compressione, diverso dallo `ZIP`, si possono dare **ulteriori vantaggi** a chi utilizzerà il file.
 
@@ -53,11 +63,10 @@ Uno è quello di **renderlo subito pronto all'uso**, come se fosse già decompre
 
 ### Formato GZIP
 
-Il formato di compressione ideale in tal senso è il `GZIP`, che è supportato da quasi tutti gli strumenti di analisi dati, e che è molto efficiente nella compressione dei file CSV.<br>
-È un formato introdotto nel 1992, che ha una **buona compressione** e che è **veloce** da decomprimere. È un formato **_lossless_**, cioè non perde informazioni, e **_streaming_**, cioè può essere decompresso anche senza avere l'intero file, ma solo una parte.<br>
+È un formato introdotto nel 1992, che ha una **buona compressione** e che è **veloce** da decomprimere. È un formato **_lossless_**, cioè non perde informazioni, e **_streaming_**, cioè può essere decompresso  man mano che i dati letti, senza dover attendere il completamento dell'estrazione dell'intero archivio.<br>
 La gran parte delle applicazioni e linguaggi di *scripting* sono in grado di accedere nativame a un file `gz`; un po' meno con il formato `zip`. Ed è compatibile con tutti i sistemi operativi e tutte le *utility* di compressione e decompressione.
 
-Alcuni esempi di quanto è pronto all'uso, basati sul [CSV dei Progetti del PNRR](https://www.italiadomani.gov.it/content/sogei-ng/it/it/catalogo-open-data/Universo_ReGiS_Progetti.html), compresso da me in [formato `gz`](file/PNRR_Progetti-Universo_REGIS_v2.1.csv.gz).
+A seguire alcuni esempi di quanto è pronto all'uso, basati sul [CSV dei Progetti del PNRR](https://www.italiadomani.gov.it/content/sogei-ng/it/it/catalogo-open-data/Universo_ReGiS_Progetti.html), compresso da me in [formato `gz`](file/PNRR_Progetti-Universo_REGIS_v2.1.csv.gz).
 
 ::: {.callout-note collapse="true"}
 ## Ambiente di lavoro utilizzato
@@ -85,7 +94,7 @@ PNRR;M1;Digitalizzazione, innovazione, competitività e cultura;M1C1;Digitalizza
 ```
 
 E posso usare in modo diretto strumenti di analisi, trasformazione e filtro di file CSV come lo [straordinario **Miller**](https://miller.readthedocs.io/).<br>
-Per continuare l'esplorazione di questo dataset, è utile ad esempio avere restituito il conteggio dei record, i valori nulli di ogni campo e anche i valori distinti.<br>
+Ad esempio avere restituito il **conteggio** dei *record*, i **valori nulli** di ogni campo e anche i valori **distinti**.<br>
 Se voglio farlo soltanto per i campi `Missione`, `Codice Univoco Misura` e `CUP Codice Natura`, utilizzerò il verbo [`cut`](https://miller.readthedocs.io/en/6.8.0/reference-verbs/index.html#cut) e [`summary`](https://miller.readthedocs.io/en/6.8.0/reference-verbs/index.html#summary), direttamente sul file compresso:
 
 ```bash
@@ -102,11 +111,10 @@ In output avrò:
 | Codice Univoco Misura | 197546 | 0 | 109 |
 | CUP Codice Natura | 197546 | 17683 | 7 |
 
-: *Output* di Miller {#tbl-mlr-output .striped .responsive .small}
+: *Output* di `summary` di Miller {#tbl-mlr-output .striped .responsive .small}
 
-E potrò usare strumenti di analisi e trasformazione più "standard", come una ***query* SQL** su questo file CSV compresso. Utilizzando proprio [**DuckDB**](#duckdb).
-
-Ad esempio, per avere il totale del finanziamento PNRR per ogni missione, posso usare questo comando:
+E con questo file compresso potrò usare anche strumenti di analisi e trasformazione che mi consentono di eseguire una più "*standard*" ***query* SQL**, come [**DuckDB**](#duckdb).<br>
+Per avere il totale del finanziamento PNRR per ogni missione, posso usare questo comando:
 
 
 ```bash
@@ -117,14 +125,25 @@ GROUP BY Missione
 '
 ```
 
-Ma purtroppo ["i CSV sono brutti e cattivi"](#i-csv-sono-brutti-e-cattivi) e senza conoscere il **separatore dei campi**, il **separatore dei decimali**, i **tipi di campo**, sapere se c'è o no la **riga di intestazione**, ecc., è difficile riuscire a interrogare un CSV, anche con DuckDB.
-Per questo motivo è molto raccomandato - oltre a [**descrivere i file CSV**](#descrivere-i-csv) - pubblicare [**CSV standard**](#csv-standard).
+::: {.callout-note}
+## Informazioni utili
+Il parametro `-csv` è per avere l'output del comando in formato `CSV`, mentre `-c` per definire la *query* `SQL`.<br>
+Il `FROM` ha come input direttamente il file `CSV` compresso, letto tramite la funzione [`read_csv_auto`](https://duckdb.org/docs/data/csv/auto_detection) di DuckDB.
+:::
+
+**Nota bene**: la *query* di sopra non ti funzionerà.
+
+Perché purtroppo ["i CSV sono brutti e cattivi"](#i-csv-sono-brutti-e-cattivi) e senza conoscere il **separatore dei campi**, il **separatore dei decimali**, i **tipi di campo**, sapere se c'è o no la **riga di intestazione**, ecc., è difficile riuscire a interrogare un CSV, anche con DuckDB.<br>
+Per questo motivo **è molto raccomandato** a chi rende disponibili file `CSV`:
+
+ - pubblicare [**CSV standard**](#csv-standard);
+ - [**descriverli**](#descrivere-i-csv).
 
 ::: {.column-margin}
 Sono essenziali allo scopo, le operazioni di esplorazione descritte sopra.
 :::
 
-E allora è meglio (a volte necessario) aggiungere un po' di parametri (vedi @lst-query-duckdb): per fare in modo che le colonne possano essere correttamente distinte (fissando il parametro `delim`), che siano mappati i nomi dei campi (fissando il parametro `header`), che i numeri decimali siano elaboraboli come tali (fissando il parametro `decimal_separator` e specificando il tipo `FLOAT` per il campo `Finanziamento PNRR`).
+E allora è meglio (a volte necessario) aggiungere un po' di parametri al comando precedente (vedi @lst-query-duckdb): per fare in modo che le colonne possano essere correttamente distinte (fissando con il parametro `delim` il separatore dei campi), che siano mappati i nomi dei campi (fissando il parametro `header`), che i numeri decimali siano elaboraboli come tali (fissando il parametro `decimal_separator` e specificando il tipo `FLOAT` per il campo `Finanziamento PNRR`).
 
 ::: {.column-margin}
 `delim` e `header` sono riconosciuti automaticamente da DuckDB. Sono inseriti a scopo didattico.
@@ -154,7 +173,7 @@ GROUP BY Missione
 Con un [**CSV standard**](#csv-standard), questi parametri aggiuntivi non sarebbero necessari e si potrebbe usare la prima versione della *query* SQL.
 :::
 
-In output, in mezzo secondo (di fatto, non per dire "in breve tempo"), queste righe di output, per un CSV di circa 200.000 righe per 50 colonne, che è pure compresso:
+In output, in mezzo secondo (di fatto, non per dire "in breve tempo"), queste righe di output (per un CSV di circa 200.000 righe per 50 colonne, che è pure compresso):
 
 | Missione | total_PNRR |
 | --- | ---: |
@@ -169,23 +188,23 @@ In output, in mezzo secondo (di fatto, non per dire "in breve tempo"), queste ri
 
 ### Formato ZSTD
 
-[`ZSTD`](https://facebook.github.io/zstd/) è un formato di compressione senza perdita. La caratteristica principale è che fornisce tassi di **compressione molto elevati**, vicini a quelli di formati come `lzma`, ma con **velocità di compressione e decompressione molto superiori**.
+Si può scegliere un algoritmo di compressione alternativo allo `ZIP`, anche per ragioni di **velocità** di **decompressione** e **compressione** e per la **percentuale** di **compressione**.<br>
 
-Per questa accoppiata di caratteristiche è sempre più diffuso tra le applicazioni e le librerie *software* di accesso ai dati.
+Per questa accoppiata di caratteristiche il formato [**`ZSTD`**](https://facebook.github.io/zstd/) è sempre più diffuso tra le applicazioni e le librerie *software* di accesso ai dati.
 
 Per dare qualche numero di confronto, basato sul file CSV da 4 GB di [OpenCoesione](#dati-opencoesione) e sul mio *notebook* con Pentium i7 di 12esima generazione con 16 GB di RAM:
 
-- la compressione (standard) con `gzip` richiede 47 secondi, e il file compresso pesa 253 MB;
-- la compressione (standard) con `zstd` richiede 13 secondi, e il file compresso pesa 186 MB;
+- la compressione (standard) con `gzip` richiede 47 secondi, e il file compresso di *output* pesa 253 MB;
+- la compressione (standard) con `zstd` richiede 13 secondi, e il file compresso di *output* pesa 186 MB;
 - la decompressione del file `gzip` richiede 19 secondi;
 - la decompressione del file `zstd` richiede 5 secondi.
 
-L'utility a riga di comando per gestire i file `ZSTD` si chiama `zstd` e si può installare in quasi tutti i sistemi operativi. Un'applicazione *open source*, multipiattaforma, con interfaccia grafica, che supporta questa compressione è [PeaZip](https://peazip.github.io/index.html).<br>
+L'*utility* a riga di comando per gestire i file `ZSTD` si chiama `zstd` e si può installare in (quasi) tutti i sistemi operativi. Un'applicazione *open source*, multipiattaforma, con interfaccia grafica, che supporta questa compressione è [PeaZip](https://peazip.github.io/index.html).<br>
 Molte applicazioni e librerie *software* di accesso ai dati, come DuckDB, [Apache Arrow](https://arrow.apache.org/) e [Apache Spark](https://spark.apache.org/), lo supportano nativamente.
 
 In [DuckDB](#duckdb), si può leggere un file `CSV` compresso in formato `ZSTD`, semplicemente puntando ad esso (l'estensione `.zst` fa in modo che venga interpretato come file compresso in formato `ZSTD`):
 
-```bash
+```{#lst-select-count lst-cap="Esempio di conteggio delle righe" .bash}
 duckdb -csv -c '
 SELECT count(*) numero_righe
 FROM  read_csv_auto(
@@ -198,9 +217,14 @@ FROM  read_csv_auto(
 '
 ```
 
-Lo fa in 0,4 secondi per il `CSV` (compresso `ZSTD`) di circa 200.000 righe per 50 colonne, usato nell'esempio di sopra. E in 5 secondi per il `CSV` (compresso `ZSTD`) di circa 2.000.000 di righe per 200 colonne di [OpenCoesione](#dati-opencoesione).
+::: {.callout-note}
+## File di esempio
+[Qui](file/PNRR_Progetti-Universo_REGIS_v2.1.csv.zst) un file compresso `ZSTD` da usare come esempio.
+:::
 
-E si può semplicemente esplorare un file `CSV` compresso `ZSTD` con l'utility `zstdcat`. Ad esempio per leggere le prime 5 righe:
+Restituisce il numero di righe in circa 0,4 secondi per il `CSV` (compresso `ZSTD`) di circa 200.000 righe per 50 colonne, usato nell'esempio di sopra. E in 5 secondi per il `CSV` (compresso `ZSTD`) di circa 2.000.000 di righe per 200 colonne di [OpenCoesione](#dati-opencoesione).
+
+Si può esplorare analogamente un file `CSV` compresso `ZSTD`, "stampandolo" a schermo, con l'utility `zstdcat`. Per leggere le prime 5 righe del file:
 
 ```bash
 zstdcat PNRR_Progetti-Universo_REGIS_v2.1.csv.zst | head -n 5
@@ -222,7 +246,7 @@ summary -a count,null_count,distinct_count
 Il formato CSV **non è uno standard**, ma una convenzione non ufficiale che è stata ampiamente adotatta. È descritta nella [RFC 4180](https://tools.ietf.org/html/rfc4180).
 :::
 
-Qui utilizzo l'aggettivo "**standard**" per quelle carateristiche che rendono un CSV "**subito pronto**", per essere letto da applicazioni e linguaggi di scripting per l'analisi dei dati.<br>
+Qui utilizzo l'aggettivo "**standard**" per alcune carateristiche che rendono (nella gran parte dei casi) un CSV "**subito pronto**", per essere letto da applicazioni e linguaggi di scripting per l'analisi dei dati.<br>
 Queste sono quelle consigliate e più tipiche:
 
 -  **`UTF-8`** come **codifica** dei **caratteri**;
@@ -241,17 +265,18 @@ Diversi di questi punti sono raccomandati anche nelle "[Linee Guida recanti rego
 
 ### Standardizzare il CSV di OpenCoesione
 
-Nella sezione sui [dati di OpenCoesione](#dati-opencoesione) (leggila prima di proseguire) ho descritto di come sia **necessario** **descrivere** il file **`CSV`** usato come esempio, per poterlo leggere al meglio con qualsiasi applicazione. Questo perché ha alcune problematiche e perché non è appunto "standard".
+Nella sezione sui [dati di OpenCoesione](#dati-opencoesione) (leggila prima di proseguire) è riportato come sia **necessario** **descrivere** il file **`CSV`** descritto (quello dei progetti), per poterlo leggere al meglio con qualsiasi applicazione.<br>
+È necessario farlo, perché ha alcune problematiche e perché non è appunto "standard".
 
-Fatto lo sforzo di descriverlo, è possibile usare **DuckDB** per **convertire** un **`CSV`** "**brutto, grosso e cattivo**", in un **`CSV`** molto più **pronto all'uso**.
+Fatto lo sforzo di descriverlo, è possibile usare [**DuckDB**](#duckdb) per **convertire** un **`CSV`** "**brutto, sporco e cattivo**", in un **`CSV`** molto più **pronto all'uso**.
 
 ::: {.callout-note}
 ## Nota bene
-Anche un CSV creato in questo modo può dare qualche problema, perché i programmi di analisi - con un file `CSV` - sono costretti a fare l'inferenza dei contenuti. E l'inferenza può essere errata.<br>
+Anche un CSV creato come descritto a seguire potrebbe dare qualche problema, perché i programmi di analisi - con un file `CSV` - sono costretti a fare l'inferenza dei contenuti. E l'inferenza può essere errata.<br>
 Qui inoltre siamo di fronte a un file particolarmente "ricco" e "variegato".
 :::
 
-Il comando da usare è in modo schematico `COPY INPUT TO OUTPUT` (documentazione [`COPY`](https://duckdb.org/docs/archive/0.8.1/sql/statements/copy)):
+Il comando DuckDB da usare è in modo schematico `COPY INPUT TO OUTPUT` (documentazione [`COPY`](https://duckdb.org/docs/archive/0.8.1/sql/statements/copy)):
 
 - l'`INPUT` è il "SELEZIONA TUTTO" del file `CSV` compresso originario, applicando le dovute operazioni di *casting* dei tipi di campo;
 - poi è necessario descrivere il `CSV` di *input* (i separatori, il formato dei campi con date, l'intestazione, i tipi di campo, ecc.);
@@ -279,33 +304,37 @@ Se non lo conosci, **leggilo**. Io qui non entrerò nei dettagli, perché non va
 
 Un altro progetto di riferimento per la descrizione di un file `CSV` è **Frictionless Data** e le sue **specifiche** per i [**dati tabellari**](https://specs.frictionlessdata.io/table-schema/#language). E ancora una volta, per le stesse ragioni non entrerò nei dettagli.
 
-Molti dati pubblicati nei **portali Open Data italiani** in questo fomato sono accompagnati **soltanto** da un **titolo** e una **descrizione**. È un **vuoto informativo** e molto spesso una **barriera** a un pieno uso dei dati.<br>
-Alle volte, come nel caso di [OpenCoesione](#dati-opencoesione), è presente un file con i nomi dei campi, la loro tipologia e tante altre note. Nella gran parte dei casi sono però file descrittivi leggibili soltanto a schermo da chi dovrà analizzare i file. Non sono leggibili da un *personal computer* o da un'applicazione, **non sono *machine readable***.<br>
+Molti dei dati pubblicati nei **portali Open Data italiani** in questo fomato, sono accompagnati **soltanto** da un **titolo** e una **descrizione**. È un **vuoto informativo** e molto spesso una **barriera** a un pieno uso dei dati.<br>
+Alle volte, come nel caso di [OpenCoesione](#dati-opencoesione), è presente un file con i nomi dei campi, la loro tipologia e altre note. Nella gran parte dei casi sono però file descrittivi leggibili soltanto a schermo da chi dovrà analizzare i file. Non sono leggibili da un *personal computer* o da un'applicazione, **non sono *machine readable***.<br>
 
 E quando si hanno dati ricchi e complessi, questa diventa un'**ulteriore barriera** all'**uso dei dati**.
 
 ::: {.callout-important}
 ## 📌 Importante
-La **pubblicazione** non si dovrebbe limitare a rendere disponibile dei file, ma essere **accompagnata da una descrizione del file stesso**.
+La **pubblicazione** non si dovrebbe limitare a rendere disponibile dei file, ma essere **accompagnata da una descrizione del file stesso**, leggibile dalle persone e dalle applicazioni.
 :::
 
-Farlo in una delle due modalità descritte sopra sarebbe perfetto. Non è inizialmente a costo zero, ma se è uno dei processi ("automatici") di un progetto di pubblicazione, è un costo che si può sostenere, e che si ripaga in termini di **usabilità** e **riusabilità** dei dati.
+Farlo in una delle due modalità descritte sopra sarebbe perfetto. Non è a costo zero, ma se è uno dei processi ("automatici") di un progetto di pubblicazione, è un costo che si può sostenere, che si ripaga in termini di **usabilità** e **riusabilità** dei dati.
 
-Una "**buona pratica**" per chi pubblica dati, basata su uno "***standard de facto***", potrebbe essere quella di accompagnare al file `CSV` anche la *query* `SQL` per la creazione della tabella.<br>
+### Associare schema SQL
+
+Una "**buona pratica**" da suggerire a chi pubblica dati, basata su uno **standard** che è sia **formale** che  ***de facto***, è quella di **accompagnare** al file `CSV` anche la ***query* `SQL`** per la **creazione** della **tabella**.<br>
 Sotto l'esempio per la creazione della tabella dei progetti di OpenCoesione descritta [qui](#dati-opencoesione).
 
 {{< include ./risorse/_callout-sql_create.qmd >}}
 
 Con una tabella così ricca, di queste dimensioni e pubblicata in questo formato, avere lo schema `SQL` di creazione renderebbe l'uso dei dati da subito molto più efficace.<br>
-Perché il **`CSV`** è principalemente un **formato di scambio**, e **poterlo** **importare** subito in un *database*** dà una marcia in più.
+Perché il **`CSV`** è principalemente un **formato di scambio**, e **poterlo** **importare** subito in un ***database*** dà una marcia in più.
 
 ## Parquet
 
-Parquet è un **formato** di file ***open source*** progettato per l'**archiviazione** e l'**analisi** di **grandi dataset**.<br>
+Il formato `CSV` - con i suoi pregi e difetti - è molto diffuso. Un **formato tabellare** degno di nota che **sta emergendo**, è il [**Parquet**](https://parquet.apache.org/).
+
+È un **formato** ***open source*** progettato per l'**archiviazione** e l'**analisi** di **grandi dataset**.<br>
 Le principali caratteristiche sono:
 
-- **Struttura a colonne**: i dati sono memorizzati per colonna e non per riga, per una migliore compressione;
-- **Compressione efficace**: supporta compressione `gzip`, `snappy` e `zstd`;
+- [**Struttura a colonne**](#formato-colonnare): i dati sono memorizzati per colonna e non per riga, per una migliore compressione;
+- **Compressione efficace**: supporta compressione `gzip`, `snappy` e [`zstd`](#formato-zstd);
 - **Prestazioni elevate**: consente analisi molto veloci grazie alla struttura a colonne;
 - **Formato descritto**: contiene metadati sullo schema;
 - **Partizionabile**: un unico dataset di dimensioni molto molto grandi, può essere suddiviso in più file e cartelle, partizionate (ad esempio per anno, per regione, per provincia, ecc.);
@@ -313,17 +342,6 @@ Le principali caratteristiche sono:
 - **Supportato** da molti ***data engine*** e da tutti i principali linguaggi di programmazione e librerie di elaborazione dati.
 
 Tra le più interessanti, specie per chi è nuovo al concetto e al formato, è la [struttura di archiviazione a colonne](#formato-colonnare).
-
-Appunti:
-
-- [x] colonnare
-- [ ] compresso
-- [ ] performance
-- [ ] articolo su nuovo formato <https://www-icem7-fr.translate.goog/outils/parquet-devrait-remplacer-le-format-csv/?_x_tr_sl=auto&_x_tr_tl=it&_x_tr_hl=en-US>
-- [ ] può essere il futuro, ma non c'è traccia nelle nuove linee guida
-- [ ] esempi di parquet e geoparquet nel mondo
-- [ ] https://www.robinlinacre.com/parquet_api/
-- [ ] https://towardsdatascience.com/a-parquet-file-is-all-you-need-962df86886bb
 
 ### Formato colonnare
 
@@ -372,40 +390,44 @@ Il formato `Parquet` è proprio un **formato** di **archiviazione** a **colonne*
 
 ![Struttura a colonne per gruppi di righe](images/row-groups.png){#fig-row-groups width=100%}
 
-Le colonne sono memorizzate sempre come unità separate, ma Parquet introduce delle strutture aggiuntive chiamate "**Row group**" (vedi @fig-row-groups).
+Le colonne sono memorizzate sempre come unità separate, ma Parquet introduce delle strutture aggiuntive chiamate "***Row group***" (vedi @fig-row-groups).
 
-Perché sono un vantaggio? Nella *query* di esempio di sopra, non solo bastano due colonne, ma il `Gruppo 2` di righe è inutile (non c'è la "Parmigiana", vedi @fig-row-groups-skip). Con questa struttura a gruppi di righe (qui semplificata per fini didattici) sarà possibile non tenere conto del "Gruppo 2" e la *query* sarà più rapida.
+Perché sono un vantaggio? Nella *query* di esempio di sopra, non solo bastano due colonne, ma il `Gruppo 2` di righe è inutile (non c'è la "Parmigiana").<br>
+Con questa struttura a gruppi di righe (qui semplificata per fini didattici) sarà possibile non tenere conto del "Gruppo 2" e la *query* sarà più rapida.
 
 ![Per la *query* di esempio, il "Gruppo 2" è inutile](images/row-groups-skip.png){#fig-row-groups-skip width=100%}
 
 ### Convertire il file di OpenCoeseione in Parquet
 
-Per convertire il [file di OpenCoesione](#dati-opencoesione) in formato `Parquet` si può usare ancora una volta DuckDB.<br>
-Il comando richiederà ancora una volta una ricca descrizione del file di *input*, e di base sarà `COPY INPUT TO OUTPUT` (documentazione [`COPY`](https://duckdb.org/docs/archive/0.8.1/sql/statements/copy)):
+Per convertire il [file di OpenCoesione](#dati-opencoesione) in formato `Parquet` si può usare ancora una volta un comando [**DuckDB**](#duckdb).<br>
+Richiederà una ricca descrizione del file di *input*, e di base sarà `COPY INPUT TO OUTPUT` (documentazione [`COPY`](https://duckdb.org/docs/archive/0.8.1/sql/statements/copy)):
 
 - l'`INPUT` è il "SELEZIONA TUTTO" del file `CSV` compresso originario, applicando le dovute operazioni di *casting* dei tipi di campo;
 - poi è necessario descrivere il `CSV` di *input* (i separatori, il formato dei campi con date, l'intestazione, i tipi di campo, ecc.);
 - infine si definisce il `TO` scegliendo un nome per il file di *output* e alcune [opzioni di formato](https://duckdb.org/docs/archive/0.8.1/sql/statements/copy#parquet-options).
 
-Con `(FORMAT 'PARQUET', CODEC 'ZSTD')` si imposta il `PARQUET` come formato di output e `ZSTD` come algoritmo di compressione.
-
 {{< include ./risorse/_callout-csv_to_parquet.qmd >}}
+
+Con `(FORMAT 'PARQUET', CODEC 'ZSTD')` si imposta il `PARQUET` come formato di output e `ZSTD` come algoritmo di compressione.
 
 ### È come avere delle API
 
 Il formato `parquet` - accopiato a *client* come [DuckDB](#duckdb) - rende **facile** e **universale** l'accesso ai dati. Questo perché, una volta che un file è pubblico sul web (in `HTTPS`, come `S3`, ecc.), si ha a disposizione un'**intefaccia `SQL`** per interrogarlo, in **modalità `streaming`**; ovvero rendendo disponibili solo le porzioni di dati necessarie per rispondere alle *query*, invece che tutto il file.
 
-È un po' come **avere delle API**, ma senza doverle creare. E da utente senza dovere studiare una nuova documentazione di API, perché basta l'"universale" `SQL` e accedere al file `parquet` dal linguaggio di *scripting* e/o *client* preferiti.
+È un po' come **avere delle API**, ma senza doverle creare. E, da utente, senza dovere studiare una nuova documentazione di API, perché basta conoscere l'"universale" `SQL` e accedere al file `parquet` dal linguaggio di *scripting* e/o *client* preferiti.
 
 Mi spiego con un esempio, basato sui [dati sui progetti del PNRR](https://www.italiadomani.gov.it/content/sogei-ng/it/it/catalogo-open-data/Universo_ReGiS_Progetti.html). È un dataset "piccolo" (200.000 righe per 50 colonne), ma mi è comodo qui a fini didattici.<br>
-Voglio sapere per ogni Missione, il numero dei progetti e il valore del finanziamento PNRR (in euro). Usando come client DuckDB, e abilitando l'estensione `httpfs` (vedi sezione [estensioni](#le-estensioni)), basta lanciare questa *query*:
+Voglio sapere per ogni Missione, il numero dei progetti e il valore del finanziamento PNRR (in euro).<br>
+Usando come client DuckDB, e abilitando l'estensione `httpfs` (vedi sezione [estensioni](#le-estensioni)), basta conoscere l'URL del file e lanciare questa *query*:
 
-```SQL
+```bash
+duckdb -c '
 SELECT "Descrizione Missione" missione,COUNT(*) numero_progetti,
 SUM("Finanziamento PNRR") finanziamento_pnrr
-FROM 'https://raw.githubusercontent.com/aborruso/aborruso.github.io//main/posts/duckdb-intro-csv/file/PNRR_Progetti-Universo_REGIS_v2.1.parquet'
+FROM "https://raw.githubusercontent.com/aborruso/aborruso.github.io//main/posts/duckdb-intro-csv/file/PNRR_Progetti-Universo_REGIS_v2.1.parquet"
 GROUP by "Descrizione Missione"
 ORDER BY finanziamento_pnrr desc;
+'
 ```
 
 E in circa 1 secondo (al primo lancio e in molto meno dal secondo in poi) ottengo:
@@ -421,7 +443,7 @@ E in circa 1 secondo (al primo lancio e in molto meno dal secondo in poi) otteng
 
 : Output della *query* {#tbl-parquet-api .striped .responsive .small}
 
-E posso farlo anche da una [pagina web](https://shell.duckdb.org/) che include DuckDb come WebAssembly (vedi @fig-duckdb-wasm).
+E posso farlo anche da una [pagina web](https://shell.duckdb.org/) che includa DuckDb come *WebAssembly* (vedi @fig-duckdb-wasm).
 
 [![Il client DuckDB come modulo WASM](images/ddb-wasm.png){#fig-duckdb-wasm width=100%}](https://shell.duckdb.org/)
 
@@ -444,8 +466,10 @@ I dati aperti sulle [corse di taxi e veicoli con conducente di New York](https:/
 
 ## DuckDB
 
-DuckDB è un database relazionale *embedded* e *open source* leggero e veloce, di facilissima installazione e gestione.<br>
-È progettato per l'[analisi rapida di dati](https://duckdb.org/why_duckdb.html#duckdbisfast) ed è basato su uno schema di archiviazione a colonne (vedi [spiegazione correlata](#formato-colonnare) per il formato `parquet`).
+**DuckDB** è lo strumento più usato in questo post, perché riesce a fare utilizzare comodamente dati `CSV` brutti, sporchi, cattivi e "grossi", e anche renderli belli (con una conversione in [formato `parquet`](#parquet)).
+
+È un **database relazionale *embedded*** e ***open source*** **leggero** e **veloce**, di facilissima installazione e gestione.<br>
+È progettato per l'[**analisi rapida di dati**](https://duckdb.org/why_duckdb.html#duckdbisfast) ed è basato su uno schema di archiviazione a colonne (vedi [spiegazione correlata](#formato-colonnare) per il formato `parquet`).
 
 È scritto in `C++`, ha un'interfaccia `SQL` standard, ed è [integrabile facilmente](https://duckdb.org/why_duckdb.html#duckdbissimple) in qualsiasi ambiente di lavoro (API per Python, R, Java, Julia, Swift, ecc.).
 
@@ -460,7 +484,7 @@ Per le sue caratteristiche e per l'uso che si fa tipicamente dei dati, ha contri
 
 DuckDB è "tanta roba" e sul [sito ufficiale](https://duckdb.org/) è tutto molto ben documentato.
 
-Qui voglio sottolineare alcune cose, che da piccolo utente mi sono piaciute molto.
+Qui voglio sottolineare alcune cose che, da piccolo utente, mi sono piaciute molto.
 
 ### Faciltà di installazione e utilizzo
 
@@ -485,7 +509,7 @@ Tre che ho trovato subito utilissime sono:
 - [`json`](https://duckdb.org/docs/extensions/json), che implementa funzioni per lavorare con dati in formato `JSON`;
 - [`spatial`](https://duckdb.org/docs/extensions/spatial), per usare DuckDB come motore di analisi spaziali/geografiche.
 
-E con l'estensione `httpfs` e con dati CSV pubblicati in [modo "standard"](#csv-standard) (come quelli sulla COVID-19 pubblicatu dalla Protezione Civile), è ad esempio possibile avere restituito comodamente e rapidamente la media mobile settimanale dei nuovi casi COVID-19 per regione, puntando semplcimente all'URL di un file statico (DuckBD supporta una sintassi `SQL`, dove il `FROM` può essere inserito all'inizio):
+E con l'estensione `httpfs` e con dati CSV pubblicati in [modo "standard"](#csv-standard) (come [quelli sulla COVID-19](https://github.com/pcm-dpc/COVID-19) pubblicatu dalla Protezione Civile), è ad esempio possibile avere restituito comodamente e rapidamente la **media mobile settimanale** dei nuovi casi **COVID-19** **per regione**, puntando semplcimente all'URL di un file statico (DuckBD supporta una sintassi `SQL`, dove il `FROM` può essere inserito all'inizio):
 
 ```{.bash .code-overflow-wrap}
 duckdb  --csv -c "FROM read_csv_auto('https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-regioni/dpc-covid19-ita-regioni.csv')
@@ -499,7 +523,9 @@ OVER (
 ORDER BY 1,2;"
 ```
 
-E per dare un'idea dell'[estensione spaziale](https://github.com/duckdblabs/duckdb_spatial), un piccolo esempio, per creare due punti, unirli in una linea, calcolare il centroide di questa ed estrarne la coordinata `X`:
+Come se [fosse un'API](#come-avere-delle-api).
+
+E per dare un'idea dell'[estensione spaziale](https://github.com/duckdblabs/duckdb_spatial), un piccolo esempio, per creare due punti, unirli in una linea, calcolare il centroide di questa ed estrarne la coordinata `x`:
 
 ```{.bash .code-overflow-wrap}
 duckdb -c 'load spatial; # <1>
@@ -518,7 +544,7 @@ A schermo si avrà `42.2471`.
 
 ### Un SQL più comodo
 
-Alcuni esempi che mi hanno fatto contento mentre scrivevo `query`.
+DuckDB supporta un `SQL` che mette di buon umore. Alcuni esempi.
 
 Se ho una tabella con 199 colonne, come quella dei [progetti di OpenCoesione](#dati-opencoesione), e voglio selezionarle tutte tranne due, dovrei scrivere per esteso le 196 che voglio. Qui posso usare `EXCLUDE` e scrivere soltanto le due che non voglio:
 
@@ -642,20 +668,6 @@ Il codice Observable di esempio di sopra è eseguito al caricamento di questa pa
 Nel codice per generare la tabella, `locale: "it-IT"` è per avere i numeri all'"italiana", con il `.` come separatore delle migliaia e la `,` come separatore dei decimali.
 :::
 
-
-
-- [x] il SQL figo e comodo (group by all, exclude)
-- [ ] json, parquet
-- [x] https
-- [x] geo
-- [ ] integrabile con python e R, ...
-- [ ] legge sqlite, csv, postgis, ...
-- [ ] spunti
-  - https://duckdb.org/docs/data/csv/overview.html
-  - https://motherduck.com/blog/exploring-stackoverflow-with-duckdb-on-motherduck-1/
-  - https://duckdb.org/docs/data/parquet/tips.html#tips-for-writing-parquet-files
-
-
 ## Dati OpenCoesione
 
 > [**OpenCoesione**](https://opencoesione.gov.it/) è l'iniziativa nazionale di governo aperto (_open government_) sulle **politiche di coesione**[^politichecoesione], coordinata dal **Dipartimento per le Politiche di Coesione** della Presidenza del Consiglio dei Ministri. Nasce, nel 2012, per favorire un **migliore uso** delle **risorse pubbliche** attraverso la **diffusione** e il **riutilizzo** di **dati** e informazioni sugli **interventi finanziati** con risorse nazionali ed europee, che vengono pubblicati sul portale.
@@ -671,7 +683,7 @@ Lo useremo come dataset di esempio, per mostrare come sia possibile lavorare com
 
 ### Esplorare il dataset
 
-Il dataset **Progetti con tracciato esteso** è un file `CSV` compresso in formato `ZIP` che pesa circa 200 MB; decompresso circa 4 GB e mezzo.
+Il dataset [**Progetti con tracciato esteso**](https://opencoesione.gov.it/it/opendata/progetti_esteso.zip) (quello aggiornato al 30 Aprile 2023) è un file `CSV` compresso in formato `ZIP` che pesa circa 200 MB; decompresso circa 4 GB e mezzo.
 
 Lanciando `unzip -l progetti_esteso_20230430.zip` ottengo:
 
@@ -685,7 +697,7 @@ Archive:  progetti_esteso_20230430.zip
 ```
 
 È molto utile leggere qualche riga del `CSV`. Per farlo posso lanciare il comando di sotto, che invia il contenuto del file compresso all'*utility* `head`: mostra le prime 10 righe del file e si ferma.<br>
-Lo fa in 0.003 secondi - instantaneamente - perché il file non viene decompresso per intero, ma solo la parte che serve per mostrare le prime 10 righe.
+Lo fa in 0.003 secondi - instantaneamente - perché **il file non viene decompresso per intero**, ma **solo la parte che serve** per mostrare le prime 10 righe.
 
 
 ```bash
@@ -700,14 +712,14 @@ Facendolo riesco a leggere che:
 
 Con qualche sforzo in più di scorrimento a schermo, riesco a vedere che il separatore dei decimali è la `,` e che i campi con le date sono in un formato che sembra un numero intero, ma in realtà è `YYYYMMDD` (`23 agosto 2021` è espresso come `20210823`).
 
-E modificando di poco il comando di sopra, con  `unzip -p progetti_esteso_20230430.zip | wc -l`, ho contezza che il file è composto da 1.936.840 righe.
+Modificando un po' il comando di sopra, con  `unzip -p progetti_esteso_20230430.zip | wc -l`, leggo che il file è composto da 1.936.840 righe.
 
-Fatta questa prima esplorazione grezza, di solito voglio "guardare" in modo più "comodo" la tabella dei dati. Potrei salvare le prime 10 righe in un file, aggiungendo `> prime_dieci_righe.csv` al comando di sopra, e infine aprirlo con un foglio elettronico, ma io preferisco usare lo [straordinario **VisiData**](https://ondata.github.io/guidaVisiData/) per farlo.<br>
-Con `unzip -p progetti_esteso_20230430.zip | head | vd -f csv --csv-delimiter=";"` ad esempio visualizzo le 10 righe di *output* e tutte le colonne (constato che sono 199), ma soprattutto mi faccio una prima idea dei contenuti.
+Fatta questa prima esplorazione grezza, di solito voglio "guardare" in modo più "comodo" la tabella dei dati. Potrei salvare le prime 10 righe in un file, aggiungendo al comando di sopra `> prime_dieci_righe.csv`, e infine aprirlo con un foglio elettronico; io preferisco usare lo [straordinario **VisiData**](https://ondata.github.io/guidaVisiData/) per farlo.<br>
+Con `unzip -p progetti_esteso_20230430.zip | head | vd -f csv --csv-delimiter=";"` ad esempio visualizzo le 10 righe di *output* e tutte le colonne (constatando che sono 199), ma soprattutto mi faccio una prima idea dei contenuti.
 
 ![Esempio visualizzazione con VisiData](./images/visidata_explore.png){#fig-duckdb-preview-vd}
 
-Ci sono tantissimi altri strumenti e modalità con cui potrei fare queste ed altre operazioni di esplorazione e analisi, ma questo è un *post* dedicato in modo particolare a DuckDB e alla sua applicazione a riga di comando. Quindi **da qui in poi**, utilizzerò **soprattutto** **DuckDB** e la sua **`cli`**.<br>
+Ci sono tantissimi altri strumenti e modalità con cui potrei fare queste ed altre operazioni di esplorazione e analisi, ma questo è un *post* dedicato in modo particolare a [DuckDB](#duckdb) e alla sua applicazione a riga di comando. Quindi **da qui in poi**, utilizzerò **soprattutto** **DuckDB** e la sua **`cli`**.<br>
 Per replicare con DuckDB quanto visto sopra in @fig-duckdb-preview-vd, il comando è (metto qualche "a capo" per renderlo più leggibile):
 
 ```bash
@@ -741,7 +753,7 @@ In output ho un'anteprima ben leggibile a schermo, in cui vedo 10 righe, alcuni 
 ![DuckDb standard output](images/duck-standard-output.png){#fig-duckdb-standard-output}
 
 
-Per vedere tutti i campi posso forzare l'output in `CSV`, aggiungendo `--csv` e infine leggerlo con VisiData:
+Per vedere tutti i campi posso forzare l'**output in `CSV`**, aggiungendo `--csv` e infine leggerlo con VisiData:
 
 ```bash
 duckdb --csv -c '
@@ -749,7 +761,7 @@ SELECT * from read_csv_auto("progetti_esteso_20230430.csv.gz") LIMIT 10
 ' | vd -f csv
 ```
 
-Un comando comodissimo di DuckDB è [**`SUMMARIZE`**](https://duckdb.org/docs/guides/meta/summarize), che restituisce una tabella esplorativa di sintesi che è una piccola gemma.<br>
+Un comando comodissimo di DuckDB è [**`SUMMARIZE`**](https://duckdb.org/docs/guides/meta/summarize), che restituisce una **tabella esplorativa di sintesi** che è una piccola gemma.<br>
 Per ogni campo restituisce:
 
 - tipo di campo;
@@ -762,7 +774,7 @@ Per ogni campo restituisce:
 - conteggio dei valori.
 
 Qui sotto in @tbl-summarize-output un esempio di output per alcune delle colonne del dataset di OpenCoesione.<br>
-È una tabella di gran valore, perché consente già di prendere delle scelte di analisi e di trasformazione dei dati e avere restituito degli elementi di qualità dei dati.
+È una tabella di gran valore, perché consente di fare delle prime scelte di analisi e di trasformazione dei dati e avere restituito degli elementi di qualità dei dati.
 
 | column_name | column_type | min | max | approx_unique | avg | std | q25 | q50 | q75 | count | null_percentage |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -789,7 +801,7 @@ Error: Invalid Input Error: Could not convert string 'a.001'
 to INT64 in column "OC_COD_ARTICOLAZ_PROGRAMMA", at line 25439.
 ```
 
-Questo avviene per un problema legato all'inferenza automatica del campo `OC_COD_ARTICOLAZ_PROGRAMMA` che nelle prime righe contiene valori numerici, ma che in realtà contiene anche caratteri non numerici, con una struttura molto variabile.<br>
+Questo avviene per un **problema** legato all'**inferenza automatica** del campo `OC_COD_ARTICOLAZ_PROGRAMMA` che nelle prime righe contiene valori numerici, ma che in realtà contiene anche caratteri non numerici, con una struttura molto variabile.<br>
 Ecco alcuni valori di esempio di questo campo: `01` ; `08` ; `III` ; `04` ; `02` ; `1` ; `03` ; `a` ; `2` ; `I` ; `05` ; `POCMOLISE` ; `VIII`.<br>
 Nel [file dei metadati](https://opencoesione.gov.it/media/opendata/metadati_progetti_tracciato_esteso.xls) questo campo è dichiarato coerentemente come `char`.
 
@@ -802,17 +814,17 @@ SUMMARIZE SELECT * from read_csv_auto("progetti_esteso_20230430.csv.gz",sample_s
 '
 ```
 
-Anche con 50.000 righe, ho errori di inferenza. Stavolta è per il campo `COD_TIPO_PROCED_ATTIVAZIONE`, che di base sembra contenere numeri, ma alle volte contiene il carattere `.`.<br>
+Anche se aumento l'inferenza a 50.000 righe, ho errori. Stavolta però per il campo `COD_TIPO_PROCED_ATTIVAZIONE`, che di base sembra contenere numeri, ma alle volte contiene il carattere `.`.<br>
 Nel [file dei metadati](https://opencoesione.gov.it/media/opendata/metadati_progetti_tracciato_esteso.xls) questo campo è dichiarato come `num`. È un **errore**, dovrebbe essere `char`.
 
-Portando il numero di righe da leggere a 100.000, non ho più errori. Ed è molto comodo - per un file "grande", non ottimizzato per le *performance* e compresso - ottenere l'*output* di `SUMMARIZE` in circa 10 secondi.<br>
+Portando il numero di righe a 100.000, non ho più errori. Ed è molto comodo - per un file "grande", non ottimizzato per le *performance* e compresso - ottenere l'*output* di `SUMMARIZE` in circa 10 secondi.<br>
 Ma la **velocità è niente senza qualità**: tanti dei campi sono associati a un tipo di campo non corretto. Queste le ragioni principali:
 
 - il **separatore** dei **decimali** è la `,` e non il `.` (che è un po' uno [standard](#csv-standard)). Quindi, campi che contengono valori come `5234,14` vengono interpretati come stringhe. Sono le decine di campi con suffisso `OC_FINANZ_`. Si mappano correttamente se si aggiunge il parametro `decimal_separator=","` alla funzione `read_csv_auto`, e se si definiscono tutti i campi numerici come tali.
-- C'è una **difformità** nell'uso dei **separatori** dei **decimali**. Per la grandissima parte dei campi numerici è la `,`, ma in campi come `PROGRAMMATO_INDICATORE_1` è il `.`. Quindi se si aggiunge `decimal_separator=","` (è una dichiarazione globale), si dovrà per campi come `PROGRAMMATO_INDICATORE_1` definirli prima come campi di testo e fare poi il *casting* a `FLOAT`.
-- I campi con le **date** vengono mappati **come numeri interi**. Questo in realtà non è un problema ed è coerente con i metadati ufficiali. Il `23 agosto 2021` è espresso come `20210823`. Per potere però usare funzioni correlate alle date, è meglio definire i campi come `date` e non come `int`. Si fa definindo il formato dei valori delle date, aggiungendo il parametro `dateformat='%Y%m%d'` alla funzione `read_csv_auto` e dichiarando i campi come `DATE`.
+- C'è però una **difformità** nell'uso dei **separatori** dei **decimali**. Per la grandissima parte dei campi numerici è la `,`, ma in campi come `PROGRAMMATO_INDICATORE_1` è il `.`. Quindi se si aggiunge `decimal_separator=","` (è una dichiarazione globale), si dovrà per campi come `PROGRAMMATO_INDICATORE_1` definirli prima come campi di testo e fare poi il *casting* a `FLOAT`.
+- I campi con le **date** vengono mappati **come numeri interi**. Questo in realtà non è un problema ed è coerente con i metadati ufficiali. Il `23 agosto 2021` è espresso come `20210823`. Per potere però usare funzioni correlate alle date, è meglio definire i campi come `date` e non come `int`. Si fa definendo il formato dei valori delle date, aggiungendo il parametro `dateformat='%Y%m%d'` alla funzione `read_csv_auto` e dichiarando i relativi campi come `DATE`.
 
-OpenCoesione pubblica un [**file dei metadati**](https://opencoesione.gov.it/it/opendata/metadati/): oltre a contenere **alcuni errori**, non è disponibile anche in un formato che possa essere letto automaticamente da applicazioni e librerie *software*, **non è** in formato ***machine readable*** (vedi sezione sulla [descrizione di un `CSV`](#descrivere-i-csv)).<br>
+OpenCoesione pubblica un [**file dei metadati**](https://opencoesione.gov.it/it/opendata/metadati/): oltre a contenere **piccoli errori**, non è disponibile anche in un formato che possa essere letto automaticamente da applicazioni e librerie *software*, **non è** in formato ***machine readable*** (vedi sezione sulla [descrizione di un `CSV`](#descrivere-i-csv)).<br>
 Questa mancanza rende l'**uso** di questo CSV **non immediato** e **non scevro da errori**.
 
 Per avere un *output* del comando `SUMMARIZE` corretto, in presenza di un `CSV` non standard (in [questo senso](#csv-standard)) e con alcuni problemi, è necessario scrivere un comando molto "verboso", come quello sottostante.
@@ -841,7 +853,7 @@ O che in alcuni campi con le **date** ci sono **valori** (di minimo o di massimo
 
 Ma soprattutto è possibile constatare quali siano **i campi "categorici"**, quelli con un **numero limitato di valori univoci**, che possono essere usati per raggruppare e aggregare i dati e fare emergere elementi interessanti.
 
-Tra i campi categorici `OC_MACROAREA`, che definisce le macro aree geografiche italiane. E per sapere ad esempio qual è il finanziamento pubblico totale per ciascuna, si può usare la query `SQL`
+Tra i campi categorici `OC_MACROAREA`, che definisce le macro aree geografiche italiane. E per sapere ad esempio qual è il finanziamento pubblico totale per ciascuna, si può usare la query `SQL`:
 
 ```{#lst-query-macroarea .sql lst-cap="Query SQL: totale dei finanziamenti pubblici per macro aree"}
 SELECT OC_MACROAREA,
@@ -850,7 +862,7 @@ GROUP BY OC_MACROAREA
 ORDER BY FINANZ_TOTALE_PUBBLICO DESC
 ```
 
-che restituirà qualcosa come in @tbl-aree-sum
+Restituirà qualcosa come in @tbl-aree-sum.
 
 ```{python}
 #| echo: false
@@ -957,51 +969,51 @@ Ma sarebbe molto scomodo e poco pratico.
 
 ### Note sul dataset progetti
 
-- le date come num e
-- per un CSV così grande, la definizione di uno schema per import
-- i numeri sono tutti num, senza distinzione tra interi e float
-- `COD_TIPO_PROCED_ATTIVAZIONE` è dichiarato come num, ma è una stringa, perché contiene.
-- nelle spec di  opencoesione non c'è il campo `OC_MACROAREA`
-- c'è un file con il vocabolario dei valori?
-- `PROGRAMMATO_INDICATORE_1` è dichiarato come num, e sembrano esserci numeri decimali, ma hanno come separatore decimale il punto e non la virgola. Verificare se è veramente un numero o se è una stringa
-- `REALIZZATO_INDICATORE_1` è dichiarato come num, e sembrano esserci numeri decimali, ma hanno come separatore decimale il punto e non la virgola. Verificare se è veramente un numero o se è una stringa
-- le celle con contenuti 5:::5:::5. A volte c'è così "5:::.:::.", che vuol dire? È giusto? Cosa vuol dire `.`? È il valore nullo?
-- encoding, caratteri errati
-- qual è lo schema di definizione dei campi? Perché solo num e nessuna distinzione tra interi e float?
+::: {.callout-tip}
+## Su OpenCoesione
+Prima di scrivere alcune note sul dataset, voglio sottolineare alcuni punti su [**OpenCoesione**](https://opencoesione.gov.it/it/):
+
+1. **se non ci fossero questi dati**, se non fossero dei dati aperti, se non fossero di grande interesse, se non fossero "grandi", **non avrei probabilmente scritto questo *post***;
+2. Sono poche le banche dati aperte - come questa - che hanno portato a **tanti casi di riuso**, e da tanto tempo;
+3. Sono **pochi i gruppi di lavoro** in questo contesto che **rispondono** a **richieste** di **chiarimento** e **supporto**, a **suggerimenti** **implementativi** e a **progetti di collaborazione**;
+4. Sono **pochi** i **dataset** pubblicati in Italia, **corredati** da **metadati**;
+5. Apri il [sito](https://opencoesione.gov.it/it/), OpenCoesione è **molto di più di un singolo dataset**.
+:::
+
+A seguire alcune **note** e **proposte/suggerimenti** sul **dataset** dei progetti con tracciato esteso di OpenCoesione (nella versione di aprile 2023):
+
+- nel [file dei metadati](https://opencoesione.gov.it/media/opendata/metadati_progetti_tracciato_esteso.xls), non si fa riferimento al campo `OC_MACROAREA`, che è però presente nel dataset. È da aggiungere;
+- il `COD_TIPO_PROCED_ATTIVAZIONE` è dichiarato come `num`, ma contiene anche stringhe. È da correggere la dichiarazione del tipo di campo;
+- c'è una **difformità** nell'**uso** dei **separatori** dei **decimali**. Per la grandissima parte dei campi numerici è la `,`, ma in campi come `PROGRAMMATO_INDICATORE_1` è il `.`;
+- ci sono alcune celle con **problemi** di ***encoding*** dei **caratteri**. OpenCoesione ci ha già scritto che su questo punto stanno lavorando e che con la prossima release del dataset, il problema sarà risolto e/o ridotto;
+- **tutti** i **campi** **numerici** sono dichiarati come **`num`**, indipendentemente dal fatto che siano interi o decimali. Sarebbe preferibile avere una distinzione tra `int` e `float`.
+
+Metto a parte infine delle proposte/suggerimenti a cui tengo particolarmente:
+
+- **usare** come formato di compressione non lo `ZIP`, ma **`GZIP`**. Rende il dataset più pronto all'uso;
+- **associare** ai metadati in formato `XLS` anche **una descrizione *machine readable***. O in uno dei formati [standard descritti sopra](#descrivere-i-csv), o anche semplicemente come [schema `SQL` di creazione della tabella](#schema-sql). Rende l'operativa sui dati molto più immediata e potenzialmente efficiente;
+- **affiancare** al formato `CSV` il **formato `PARQUET`**. È di per sè ben compresso, rende possibile eseguire analisi complesse in modo quasi immediato da "normali" PC e *laptop* ed è un formato intrinsecamente ben descritto;
+- produrre dei **`CSV`** che siano il più ["**standard**"](#csv-standard) possibile.
 
 ## In conclusione
 
-- comprimere i file csv grande, con gzip
-- pubblicare CSV standard
-- descrivere i CSV
-- quanto è figo duckdb
-- il parquet come futuro formato open data
-- usare SQL
-- non voglio che vinca il CSV, ma è comodo e finché dura
+Con questo lungo post **non voglio** contribuire a rendere il mondo brutto e **fare in modo che il formato `CSV` sia utilizzato ancora di più**.<br>
+A parte gli scherzi, è certamente un formato con alcune problematicità, ma è ancora molto utilizzato come formato di scambio di dati in forma di testo strutturato.<br>
 
-## Da sviluppare
+Con le dovute preucauzioni, con gli **strumenti giusti**, con un corredo informativo adeguato e per dimensioni non eccessive, può essere un formato comodo e pratico.<br>
+[**Descrivendolo**](#descrivere-i-csv), ["**standardizzandolo**"](#csv-standard) e [**comprimendolo**](#compressione-dei-file-csv), diventa molto più usabile.<br>
+E questo è un invito a chiunque rende disponibili online dati in formato `CSV`.<br>
+Finché dura, usiamolo bene.
 
-- [ ] verificare data di pubblicazione di questo post quarto
-- [ ] rivedere introduzione, sottolineando che non voglio diffondere l'uso del CSV
-- [x] parquet al posto dei CSV https://www-icem7-fr.translate.goog/outils/parquet-devrait-remplacer-le-format-csv/?_x_tr_sl=auto&_x_tr_tl=it&_x_tr_hl=en-US
-- [x] allegare sempre tracciato record machine readable
-- [x] il SQL è standard, vecchio e diffuso
-- [x] comprimere i CSV
-- [x] il fatto che il csv sia brutto all'inizio
-- [x] il fatto che non voglio che il mondo sia inondato di CSV
-- [x] pubblicare CSV standardizzati (utf-8, decimali, field separator, uniformità campi,date)
-- [x] capitolo frictionless e schema SQL
-- [x] fare cenno alla compressione ZSTD
-- [x] le estensioni di duckdb
+Un altro suggerimento (a me per primo) è quello di **usare `SQL`** per costruire **processi** di **analisi** e di **trasformazione** dei dati. È un vecchio e diffuso linguaggio, utilizzabile da quasi qualsiasi applicazione e/o linguaggio di programmazione, correlati ai dati. È super documentato, ci sono migliaia di tutorial, messaggi sui forum, libri, ecc.
 
-## Spunti
+E ci sono strumenti come **DuckDB**. Ok, non è vero che i "I Big Data" sono morti, ma con strumenti come questo, è possibile **lavorare** in modo **comodo** e **rapido** con **dati** di **dimensioni** **importanti**, **senza** dover **ricorrere** a **infrastrutture** **complesse** e **costose**.
 
-- [x] dati spaziali download https://github.com/OvertureMaps/data/blob/main/README.md#3-duckdb-sql
-- [ ] tldr
-- [ ] https://kestra.io/blogs/2023-08-11-dataframes
-- [ ] dbeaver
-- [ ] spunti https://medium.com/walmartglobaltech/duckdb-vs-the-titans-spark-elasticsearch-mongodb-a-comparative-study-in-performance-and-cost-5366b27d5aaa
+Ho voluto suggerire l'opportunità di **utilizzare** il **formato** **`Parquet`** come uno dei **formati** **principali** di **scambio** e di **lavoro** con i **dati**.
 
+E infine voglio sottolineare ancora una volta, che **senza** **dataset** come quelli di **OpenCoesione**, **non avrei pensato di scrivere questo post** e non sarei riuscito a dargli questo sviluppo.
+
+---
 
 ## Buone letture e fonti di ispirazione
 
@@ -1009,3 +1021,5 @@ Ma sarebbe molto scomodo e poco pratico.
 - [Why parquet files are my preferred API for bulk open data](https://www.robinlinacre.com/parquet_api/)
 - [A Parquet File Is All You Need](https://towardsdatascience.com/a-parquet-file-is-all-you-need-962df86886bb)
 - [Performance Explorations of GeoParquet (and DuckDB)](https://cloudnativegeo.org/blog/2023/08/performance-explorations-of-geoparquet-and-duckdb/)
+- [Parquet file format – everything you need to know!](https://data-mozart.com/parquet-file-format-everything-you-need-to-know/)
+- [CSV Loading](https://duckdb.org/docs/data/csv/overview.html)
