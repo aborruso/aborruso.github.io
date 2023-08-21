@@ -1,1 +1,28 @@
 /* css styles */
+
+/* didascalie tabelle a sinistra */
+table > caption {
+  text-align: left;
+}
+
+
+.striped-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.striped-table th,
+.striped-table td {
+  padding: 8px;
+  border: 1px solid #ddd;
+}
+
+.striped-table tr th:nth-child(odd),
+.striped-table tr td:nth-child(odd) {
+  background-color: #f2f2f2; /* Alternate color for odd columns */
+}
+
+.striped-table tr th:nth-child(even),
+.striped-table tr td:nth-child(even) {
+  background-color: #ffffff; /* Alternate color for even columns */
+}

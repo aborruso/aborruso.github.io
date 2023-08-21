@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Andrea Borruso">
-<meta name="description" content="Suggerimenti e tips &amp; tricks, ispirati da duckdb e OpenCoesione">
+<meta name="description" content="Tips &amp; tricks, ispirati da DuckDB, file Parquet e OpenCoesione">
 
 <title>aborruso’s website - Gestire file CSV grandi, brutti e cattivi</title>
 <style>
@@ -112,23 +112,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       }
 </style>
 <link rel="alternate" type="application/rss+xml" title="Il blog del sito di Andrea Borruso" href="https://aborruso.github.io/blog.xml">
+<script type="module" src="../../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="../../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
 
 <link rel="stylesheet" href="../../styles.css">
 <meta property="og:title" content="aborruso’s website - Gestire file CSV grandi, brutti e cattivi">
-<meta property="og:description" content="Suggerimenti e tips &amp; tricks, ispirati da duckdb e OpenCoesione">
-<meta property="og:image" content="https://aborruso.github.io/risorse/opengraph.png">
+<meta property="og:description" content="Tips &amp; tricks, ispirati da DuckDB, file Parquet e OpenCoesione">
+<meta property="og:image" content="https://aborruso.github.io/posts/duckdb-intro-csv/atutorial.png">
 <meta property="og:site-name" content="aborruso's website">
 <meta property="og:locale" content="it_IT">
-<meta property="og:image:height" content="630">
-<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="730">
+<meta property="og:image:width" content="1080">
 <meta name="twitter:title" content="aborruso’s website - Gestire file CSV grandi, brutti e cattivi">
-<meta name="twitter:description" content="Suggerimenti e tips &amp; tricks, ispirati da duckdb e OpenCoesione">
-<meta name="twitter:image" content="https://aborruso.github.io/risorse/twitter-card.png">
+<meta name="twitter:description" content="Tips &amp; tricks, ispirati da DuckDB, file Parquet e OpenCoesione">
+<meta name="twitter:image" content="https://aborruso.github.io/posts/duckdb-intro-csv/atutorial.png">
 <meta name="twitter:creator" content="@aborruso">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image-height" content="512">
-<meta name="twitter:image-width" content="1024">
+<meta name="twitter:image-height" content="730">
+<meta name="twitter:image-width" content="1080">
 </head>
 
 <body class="floating nav-fixed slimcontent">
@@ -169,11 +174,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <h1 class="title">Gestire file CSV grandi, brutti e cattivi</h1>
                   <div>
         <div class="description">
-          Suggerimenti e <em>tips &amp; tricks</em>, ispirati da duckdb e OpenCoesione
+          <em>Tips &amp; tricks</em>, ispirati da DuckDB, file Parquet e OpenCoesione
         </div>
       </div>
                           <div class="quarto-categories">
                 <div class="quarto-category">duckdb</div>
+                <div class="quarto-category">csv</div>
+                <div class="quarto-category">parquet</div>
               </div>
                   </div>
   </div>
@@ -200,7 +207,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Data di Pubblicazione</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">30 luglio 2023</p>
+        <p class="date">21 agosto 2023</p>
       </div>
     </div>
     
@@ -222,13 +229,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#formato-gzip" id="toc-formato-gzip" class="nav-link" data-scroll-target="#formato-gzip">Formato GZIP</a></li>
   <li><a href="#formato-zstd" id="toc-formato-zstd" class="nav-link" data-scroll-target="#formato-zstd">Formato ZSTD</a></li>
   </ul></li>
-  <li><a href="#csv-standard" id="toc-csv-standard" class="nav-link" data-scroll-target="#csv-standard">CSV “standard”</a></li>
-  <li><a href="#descrivere-i-csv" id="toc-descrivere-i-csv" class="nav-link" data-scroll-target="#descrivere-i-csv">Descrivere i CSV</a></li>
-  <li><a href="#parquet" id="toc-parquet" class="nav-link" data-scroll-target="#parquet">Parquet</a></li>
-  <li><a href="#duckdb" id="toc-duckdb" class="nav-link" data-scroll-target="#duckdb">DuckDB</a></li>
-  <li><a href="#dati-opencoesione" id="toc-dati-opencoesione" class="nav-link" data-scroll-target="#dati-opencoesione">Dati OpenCoesione</a></li>
+  <li><a href="#csv-standard" id="toc-csv-standard" class="nav-link" data-scroll-target="#csv-standard">CSV “standard”</a>
+  <ul class="collapse">
+  <li><a href="#standardizzare-il-csv-di-opencoesione" id="toc-standardizzare-il-csv-di-opencoesione" class="nav-link" data-scroll-target="#standardizzare-il-csv-di-opencoesione">Standardizzare il CSV di OpenCoesione</a></li>
+  </ul></li>
+  <li><a href="#descrivere-i-csv" id="toc-descrivere-i-csv" class="nav-link" data-scroll-target="#descrivere-i-csv">Descrivere i CSV</a>
+  <ul class="collapse">
+  <li><a href="#associare-schema-sql" id="toc-associare-schema-sql" class="nav-link" data-scroll-target="#associare-schema-sql">Associare schema SQL</a></li>
+  </ul></li>
+  <li><a href="#parquet" id="toc-parquet" class="nav-link" data-scroll-target="#parquet">Parquet</a>
+  <ul class="collapse">
+  <li><a href="#formato-colonnare" id="toc-formato-colonnare" class="nav-link" data-scroll-target="#formato-colonnare">Formato colonnare</a></li>
+  <li><a href="#convertire-il-file-di-opencoesione-in-parquet" id="toc-convertire-il-file-di-opencoesione-in-parquet" class="nav-link" data-scroll-target="#convertire-il-file-di-opencoesione-in-parquet">Convertire il file di OpenCoesione in Parquet</a></li>
+  <li><a href="#è-come-avere-delle-api" id="toc-è-come-avere-delle-api" class="nav-link" data-scroll-target="#è-come-avere-delle-api">È come avere delle API</a></li>
+  <li><a href="#affiancarlo-ai-file-csv" id="toc-affiancarlo-ai-file-csv" class="nav-link" data-scroll-target="#affiancarlo-ai-file-csv">Affiancarlo ai file CSV</a></li>
+  </ul></li>
+  <li><a href="#duckdb" id="toc-duckdb" class="nav-link" data-scroll-target="#duckdb">DuckDB</a>
+  <ul class="collapse">
+  <li><a href="#facilità-di-installazione-e-utilizzo" id="toc-facilità-di-installazione-e-utilizzo" class="nav-link" data-scroll-target="#facilità-di-installazione-e-utilizzo">Facilità di installazione e utilizzo</a></li>
+  <li><a href="#le-estensioni" id="toc-le-estensioni" class="nav-link" data-scroll-target="#le-estensioni">Le estensioni</a></li>
+  <li><a href="#un-sql-più-comodo" id="toc-un-sql-più-comodo" class="nav-link" data-scroll-target="#un-sql-più-comodo">Un SQL più comodo</a></li>
+  <li><a href="#integrazione-con-altri-ambienti" id="toc-integrazione-con-altri-ambienti" class="nav-link" data-scroll-target="#integrazione-con-altri-ambienti">Integrazione con altri ambienti</a></li>
+  <li><a href="#duckdb-e-observable" id="toc-duckdb-e-observable" class="nav-link" data-scroll-target="#duckdb-e-observable">DuckDB e Observable</a></li>
+  </ul></li>
+  <li><a href="#dati-opencoesione" id="toc-dati-opencoesione" class="nav-link" data-scroll-target="#dati-opencoesione">Dati OpenCoesione</a>
+  <ul class="collapse">
+  <li><a href="#esplorare-il-dataset" id="toc-esplorare-il-dataset" class="nav-link" data-scroll-target="#esplorare-il-dataset">Esplorare il dataset</a></li>
+  <li><a href="#note-sul-dataset-progetti" id="toc-note-sul-dataset-progetti" class="nav-link" data-scroll-target="#note-sul-dataset-progetti">Note sul dataset progetti</a></li>
+  </ul></li>
   <li><a href="#in-conclusione" id="toc-in-conclusione" class="nav-link" data-scroll-target="#in-conclusione">In conclusione</a></li>
-  <li><a href="#da-sviluppare" id="toc-da-sviluppare" class="nav-link" data-scroll-target="#da-sviluppare">Da sviluppare</a></li>
+  <li><a href="#buone-letture-e-fonti-di-ispirazione" id="toc-buone-letture-e-fonti-di-ispirazione" class="nav-link" data-scroll-target="#buone-letture-e-fonti-di-ispirazione">Buone letture e fonti di ispirazione</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/aborruso/aborruso.github.io/edit/main/posts/duckdb-intro-csv/index.qmd" class="toc-action">Modifica questa pagina</a></p><p><a href="https://github.com/aborruso/aborruso.github.io/issues/new" class="toc-action">Segnala un problema</a></p></div></div></nav>
 </nav>
@@ -244,7 +274,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="tldr-una-breve-introduzione" class="level2">
 <h2 class="anchored" data-anchor-id="tldr-una-breve-introduzione">TL;DR (una breve introduzione)</h2>
-<p>Il formato <strong>CSV</strong>, con tutti i suoi <strong>difetti</strong>, è ancora <strong>uno dei formati più diffusi per lo scambio di dati</strong>. Ci sono <strong>modalità</strong> di gestire questi file ed eccezionali <strong>strumenti</strong>, che possono rendere molto semplice, efficace e rapido il loro utilizzo. Anche quando sono di <strong>grandi dimensioni</strong>.<br> E per fortuna ci sono banche dati “grosse” e importanti come <a href="https://opencoesione.gov.it">OpenCoesione</a> che danno l’opportunità di fare pratica con questi strumenti. In questo lungo post farò una carrelata della compressione dei file CSV, dell’utilizzo di duckdb per analizzarli e del formato parquet come alternativa al CSV.</p>
+<p>Il formato <strong>CSV</strong>, con tutti i suoi <strong>difetti</strong>, è ancora <strong>uno dei formati più diffusi per lo scambio di dati</strong>. Ci sono <strong>modalità</strong> di gestire questi file ed eccezionali <strong>strumenti</strong>, che possono rendere molto semplice, efficace e rapido il loro utilizzo. Anche quando sono di <strong>grandi dimensioni</strong>.<br> E per fortuna ci sono banche dati “grosse” e importanti come <a href="https://opencoesione.gov.it"><strong>OpenCoesione</strong></a> che danno l’opportunità di fare pratica con questi strumenti.</p>
+<p>In questo lungo post farò una carrelata della <a href="#compressione-dei-file-csv"><strong>compressione</strong> dei file <strong><code>CSV</code></strong></a>, dell’<a href="#descrivere-i-csv">importanza di <strong>descriverli</strong></a>, dell’utilizzo di <a href="#duckdb"><strong>DuckDB</strong></a> per analizzarli e del <a href="#parquet"><strong>formato Parquet</strong></a> come alternativa al CSV.</p>
+<p>⚠️ <strong>QUESTO POST NON È UN TUTORIAL</strong> (ma <em>doping</em> omeopatico per i tuoi criceti e per chi pubblica dati).</p>
+<p><img src="images/atutorial.png" class="img-fluid"></p>
+<hr>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Prima di continuare a leggere
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In questo post faccio riferimento a diversi strumenti, tra cui <a href="https://duckdb.org/docs/archive/0.8.1/installation/"><strong>DuckDB</strong></a>, <a href="https://miller.readthedocs.io/en/latest/installing-miller/"><strong>Miller</strong></a> e <a href="https://www.visidata.org/install/"><strong>VisiData</strong></a>.<br> Se vuoi replicare alcune delle procedere descritte, è necessario installarli.<br> Soprattutto <strong>DuckDB</strong>.</p>
+</div>
+</div>
 </section>
 <section id="i-csv-sono-brutti-e-cattivi" class="level2">
 <h2 class="anchored" data-anchor-id="i-csv-sono-brutti-e-cattivi">I CSV sono brutti e cattivi</h2>
@@ -252,24 +299,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Un file CSV è “brutto e cattivo” ad esempio per queste ragioni:</p>
 <ul>
 <li>non consente di definire il <strong>tipo di campo</strong> (stringa, numero, data, ecc.). Tipicamente si è costretti a fare l’<strong>inferenza</strong>, che può essere <strong>errata</strong>;</li>
-<li>non consente di definire il <strong>separatore di campo</strong> (virgola, punto e virgola, tabulazione, ecc.). Si può fare l’inferenza e/o si può leggere (e si possono fare errrori);</li>
-<li>non consente di definire il <strong>separatore dei decimali</strong> (virgola, punto, ecc.). Si può fare l’inferenza e/o si può leggere (e si possono fare errrori);</li>
-<li>non consente di definire l’<strong>encoding</strong> (UTF-8, ISO-8859-1, ecc.). Tipicamente si è costretti a fare l’<strong>inferenza</strong>, che può essere <strong>errata</strong>.</li>
+<li>non consente di definire il <strong>separatore di campo</strong> (virgola, punto e virgola, tabulazione, ecc.). Si può fare l’inferenza e/o si può leggere (e si possono fare errori);</li>
+<li>non consente di definire il <strong>separatore dei decimali</strong> (virgola, punto, ecc.). Si può fare l’inferenza e/o si può leggere (e si possono fare errori);</li>
+<li>non consente di definire l’<strong><em>encoding</em></strong> (UTF-8, ISO-8859-1, ecc.). Tipicamente si è costretti a fare l’<strong>inferenza</strong>, che può essere <strong>errata</strong>.</li>
 </ul>
-<p>E per questo chi pubblica dati in questo formato, <strong>dovrebbe</strong> a maggior forza <a href="#descrivere-i-csv"><strong>descriverli</strong></a> con dei <strong>metadati</strong>. Ma putroppo nella gran parte dei casi, non ci resta che “morire di inferenza”.<br></p>
+<p>E per questo chi pubblica dati in questo formato, <strong>dovrebbe</strong> a maggior forza <a href="#descrivere-i-csv"><strong>descriverli</strong></a> con dei <strong>metadati</strong>. Ma purtroppo nella gran parte dei casi, non ci resta che “morire di inferenza”.<br></p>
 <p>E si potrebbero aggiungere altre brutture sul formato e di come spesso viene reso disponibile. Ma non è il tema del post.</p>
 </section>
 <section id="compressione-dei-file-csv" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="compressione-dei-file-csv">Compressione dei file CSV</h2>
-<p>Molti siti che pubblicano file CSV - specie quando sono “grandi” - li pubblicano in formato compresso.<br> Questo, come nel caso del file dei progetti di OpenCoesione, è un ottimo modo per ridurre il tempo di <em>download</em>: il <a href="https://opencoesione.gov.it/it/opendata/progetti_esteso.zip">file</a> reso disponibile in formato compresso <code>ZIP</code> pesa circa (nella versione di aprile 2023) 240 MB, mentre il file CSV contenuto al suo interno pesa circa 4,4 GB.</p>
-<p>Scegliendo un altro formato di compressione, diverso dallo <code>ZIP</code>, si possono dare ulteriori vantaggi a chi utilizzerà il file.</p>
-<p>Il primo è quello di <strong>renderlo subito pronto all’uso</strong>, come se fosse già decompresso. Che è una cosa molto comoda specie nelle prime <strong>fasi</strong> di lavoro, quelle “<strong>esplorative</strong>”, in cui si fa un po’ di ispezione, si fanno le prime prove di analisi, di verifica qualità, di adeguatezza dei dati, ecc..</p>
+<p>Molti siti che pubblicano file CSV - specie quando sono “grandi” - li pubblicano in formato compresso.<br> Questo - come nel caso del file dei <a href="#dati-opencoesione">progetti di OpenCoesione</a> - è un ottimo modo per ridurre il tempo di <em>download</em>: il <a href="https://opencoesione.gov.it/it/opendata/progetti_esteso.zip">file</a> reso disponibile in formato compresso <code>ZIP</code> pesa circa (nella versione di aprile 2023) 240 MB, mentre il file CSV contenuto al suo interno pesa circa 4,4 GB.</p>
+<p>Scegliendo un altro formato di compressione, diverso dallo <code>ZIP</code>, si possono dare <strong>ulteriori vantaggi</strong> a chi utilizzerà il file.</p>
+<p>Uno è quello di <strong>renderlo subito pronto all’uso</strong>, come se fosse già decompresso. Che è una cosa molto comoda specie nelle prime <strong>fasi</strong> di lavoro “<strong>esplorative</strong>”, in cui si fanno un po’ di “ispeziono”, le prime prove di analisi, di verifica qualità, di adeguatezza dei dati, ecc..</p>
 <section id="formato-gzip" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="formato-gzip">Formato GZIP</h3>
-<p>Il formato di compressione ideale in tal senso è il <code>GZIP</code>, che è supportato da quasi tutti gli strumenti di analisi dati, e che è molto efficiente nella compressione dei file CSV.<br> È un formato introdotto nel 1992, che ha una <strong>buona compressione</strong> e che è <strong>veloce</strong> da decomprimere. È un formato <strong><em>lossless</em></strong>, cioè non perde informazioni, e <strong><em>streaming</em></strong>, cioè può essere decompresso anche senza avere l’intero file, ma solo una parte.<br> La gran parte delle applicazioni e linguaggi di <em>scripting</em> sono in grado di accedere nativame a un file <code>gz</code>; un po’ meno con il formato <code>zip</code>. Ed è compatibile con tutti i sistemi operativi e tutte le <em>utility</em> di compressione e decompressione.</p>
-<p>Alcuni esempi di quanto è pronto all’uso, basati sul <a href="https://www.italiadomani.gov.it/content/sogei-ng/it/it/catalogo-open-data/Universo_ReGiS_Progetti.html">CSV dei Progetti del PNRR</a>, compresso da me in <a href="file/PNRR_Progetti-Universo_REGIS_v2.1.csv.gz">formato <code>gz</code></a>.</p>
+<p>È un formato introdotto nel 1992, che ha una <strong>buona compressione</strong> e che è <strong>veloce</strong> da decomprimere. È un formato <strong><em>lossless</em></strong>, non perde informazioni, e <strong><em>streaming</em></strong>, può essere decompresso man mano che i dati sono letti, senza dover attendere il completamento dell’estrazione dell’intero archivio.<br> La gran parte delle applicazioni e linguaggi di <em>scripting</em> sono in grado di accedere nativamente a un file <code>gz</code>; un po’ meno con il formato <code>zip</code>. Ed è compatibile con tutti i sistemi operativi e tutte le <em>utility</em> di compressione e decompressione.</p>
+<p>A seguire alcuni esempi di quanto è pronto all’uso, basati sul <a href="https://www.italiadomani.gov.it/content/sogei-ng/it/it/catalogo-open-data/Universo_ReGiS_Progetti.html">CSV dei Progetti del PNRR</a>, compresso da me in <a href="file/PNRR_Progetti-Universo_REGIS_v2.1.csv.gz">formato <code>gz</code></a>.</p>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -278,7 +325,7 @@ Ambiente di lavoro utilizzato
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>La gran parte degli esempi di comandi e di codice inseriti in questo articolo, sono pensati per essere eseguiti in <strong>ambiente Linux</strong>. Sono replicabili quindi in quasi tutti i sistemi operativi - compresi Mac e Windows - perché Linux o è disponibile “nativamente”, o lo è installando applicativi (su Windows ad esempio Windows Subsystem for Linux, WSL).</p>
 </div>
@@ -289,21 +336,24 @@ Ambiente di lavoro utilizzato
 
 <div class="no-row-height column-margin column-container"><div class="">
 <p><code>head</code> estrae le prime 5 righe.</p>
-</div></div><p>Mi verrà restituito l’<em>output</em> sottostante, e potrò subito constatare che c’è una <strong>riga di intestazione</strong> (non è obbligatoria nei <code>CSV</code>), che il <strong>separatore di campo</strong> è il <code>;</code>, che il <strong>separatore dei decimali</strong> è la <code>,</code> e soprattutto farmi un’idea dei contenuti.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>Programma;Missione;Descrizione Missione;Componente;Descrizione Componente;ID Misura;Codice Univoco Misura;Descrizione Misura;ID Submisura;Codice CID;Codice Univoco Submisura;Descrizione Submisura;Amministrazione Titolare;Codice Identificativo Procedura di Attivazione;Titolo Procedura;Tipologia Procedura di Attivazione;CUP;Codice Locale Progetto;Stato CUP;CUP Codice Natura;CUP Descrizione Natura;CUP Codice Tipologia;CUP Descrizione Tipologia;CUP Codice Settore;CUP Descrizione Settore;CUP Codice Sottosettore;CUP Descrizione Sottosettore;CUP Codice Categoria;CUP Descrizione Categoria;Titolo Progetto;Sintesi Progetto;Descrizione Tipo Aiuto;Finanziamento - Stato;Finanziamento Stato - FOI;Finanziamento UE (Diverso da PNRR);Finanziamento Regione;Finanziamento Provincia;Finanziamento Comune;Finanziamento Altro Pubblico;Finanziamento Privato;Finanziamento Da Reperire;Finanziamento PNRR;Finanziamento PNC;Altri Fondi;Finanziamento Totale;Finanziamento Totale Pubblico;Finanziamento Totale Pubblico Netto;Soggetto Attuatore;Codice Fiscale Soggetto Attuatore;Flag Progetti in Essere;Data di Estrazione</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>PNRR;M1;Digitalizzazione, innovazione, competitività e cultura;M1C1;Digitalizzazione, innovazione e sicurezza nella PA;M1C1I1.2;M1C1I1.02;Abilitazione al cloud per le PA locali;M1C1I1.2;M1C1I1.2;M1C1I1.02.00;Abilitazione al cloud per le PA locali;PCM - DIPARTIM. TRASFORMAZIONE DIGITALE;1000000237;AVVISO AB. CLOUD COMUNI DEL 15/04/22;Bando;G61C22000240006;G61C22000240006;Attivo;02;ACQUISTO O REALIZZAZIONE DI SERVIZI;19;APPLICATIVI E PIATTAFORME WEB;10;SERVIZI PER LA P.A. E PER LA COLLETTIVITA';01;SERVIZI E TECNOLOGIE PER L'INFORMAZIONE E LE COMUNICAZIONI;007;SISTEMI INFORMATIVI PER LA P.A.;1.2. Ab.Cloud Com Cosoleto;MIGRAZIONE AL CLOUD DEI SERVIZI DIGITALI DELL'AMMINISTRAZIONE*TERRITORIO COMUNALE*N. 9 SERVIZI;INTERVENTO CHE NON COSTITUISCE AIUTO DI STATO;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;47427,00;0,00;0,00;47427,00;47427,00;47427,00;COMUNE DI COSOLETO;01234470803;No;13/06/2023</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>PNRR;M1;Digitalizzazione, innovazione, competitività e cultura;M1C1;Digitalizzazione, innovazione e sicurezza nella PA;M1C1I1.2;M1C1I1.02;Abilitazione al cloud per le PA locali;M1C1I1.2;M1C1I1.2;M1C1I1.02.00;Abilitazione al cloud per le PA locali;PCM - DIPARTIM. TRASFORMAZIONE DIGITALE;1000000237;AVVISO AB. CLOUD COMUNI DEL 15/04/22;Bando;F71C22000160006;F71C22000160006;Attivo;02;ACQUISTO O REALIZZAZIONE DI SERVIZI;19;APPLICATIVI E PIATTAFORME WEB;10;SERVIZI PER LA P.A. E PER LA COLLETTIVITA';01;SERVIZI E TECNOLOGIE PER L'INFORMAZIONE E LE COMUNICAZIONI;007;SISTEMI INFORMATIVI PER LA P.A.;1.2. Ab.Cloud Com Bompensiere;MIGRAZIONE AL CLOUD DEI SERVIZI DIGITALI DELL'AMMINISTRAZIONE*TERRITORIO COMUNALE*N. 9 SERVIZI DA MIGRARE;INTERVENTO CHE NON COSTITUISCE AIUTO DI STATO;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;47427,00;0,00;0,00;47427,00;47427,00;47427,00;COMUNE DI BOMPENSIERE;80005060852;No;13/06/2023</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>PNRR;M1;Digitalizzazione, innovazione, competitività e cultura;M1C1;Digitalizzazione, innovazione e sicurezza nella PA;M1C1I1.2;M1C1I1.02;Abilitazione al cloud per le PA locali;M1C1I1.2;M1C1I1.2;M1C1I1.02.00;Abilitazione al cloud per le PA locali;PCM - DIPARTIM. TRASFORMAZIONE DIGITALE;1000000237;AVVISO AB. CLOUD COMUNI DEL 15/04/22;Bando;B61C22000190006;B61C22000190006;Attivo;02;ACQUISTO O REALIZZAZIONE DI SERVIZI;19;APPLICATIVI E PIATTAFORME WEB;10;SERVIZI PER LA P.A. E PER LA COLLETTIVITA';01;SERVIZI E TECNOLOGIE PER L'INFORMAZIONE E LE COMUNICAZIONI;007;SISTEMI INFORMATIVI PER LA P.A.;1.2. Ab.Cloud Com Castelgrande;MIGRAZIONE AL CLOUD DEI SERVIZI DIGITALI DELL'AMMINISTRAZIONE*TERRITORIO COMUNALE*9 SERVIZI DA MIGRARE;INTERVENTO CHE NON COSTITUISCE AIUTO DI STATO;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;47427,00;0,00;0,00;47427,00;47427,00;47427,00;COMUNE DI CASTELGRANDE;80004060762;No;13/06/2023</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>PNRR;M1;Digitalizzazione, innovazione, competitività e cultura;M1C1;Digitalizzazione, innovazione e sicurezza nella PA;M1C1I1.2;M1C1I1.02;Abilitazione al cloud per le PA locali;M1C1I1.2;M1C1I1.2;M1C1I1.02.00;Abilitazione al cloud per le PA locali;PCM - DIPARTIM. TRASFORMAZIONE DIGITALE;1000000237;AVVISO AB. CLOUD COMUNI DEL 15/04/22;Bando;F31C22000020006;F31C22000020006;Attivo;02;ACQUISTO O REALIZZAZIONE DI SERVIZI;19;APPLICATIVI E PIATTAFORME WEB;10;SERVIZI PER LA P.A. E PER LA COLLETTIVITA';01;SERVIZI E TECNOLOGIE PER L'INFORMAZIONE E LE COMUNICAZIONI;007;SISTEMI INFORMATIVI PER LA P.A.;1.2. Ab.Cloud Com Ittireddu;MIGRAZIONE AL CLOUD DEI SERVIZI DIGITALI DELL'AMMINISTRAZIONE*TERRITORIO COMUNALE*N. 9 SERVIZI DA MIGRARE;INTERVENTO CHE NON COSTITUISCE AIUTO DI STATO;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;47427,00;0,00;0,00;47427,00;47427,00;47427,00;COMUNE DI ITTIREDDU;00283910909;No;13/06/2023</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>E posso usare in modo diretto strumenti di analisi, trasformazione e filtro di file CSV come lo <a href="https://miller.readthedocs.io/">straordinario <strong>Miller</strong></a>. E per continuare l’esplorazione di questo dataset, è utile ad esempio avere restituito il conteggio dei record, i valori nulli di ogni campo e anche i valori distinti.<br> Ad esempio se voglio avere un’idea dei valori nulli e dei valori distinti soltanto dei campi <code>Missione</code>, <code>Codice Univoco Misura</code> e <code>CUP Codice Natura</code>, utilizzerò il verbo <a href="https://miller.readthedocs.io/en/6.8.0/reference-verbs/index.html#cut"><code>cut</code></a> e <a href="https://miller.readthedocs.io/en/6.8.0/reference-verbs/index.html#summary"><code>summary</code></a>, applicando la procedura direttamente sul file compresso:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mlr</span> <span class="at">--csv</span> <span class="at">--ifs</span> <span class="st">";"</span> <span class="dt">\</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>cut <span class="at">-f</span> Missione,<span class="st">"Codice Univoco Misura"</span>,<span class="st">"CUP Codice Natura"</span> then <span class="dt">\</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>summary <span class="at">-a</span> count,null_count,distinct_count PNRR_Progetti-Universo_REGIS_v2.1.csv.gz</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></div><p>Mi verrà restituito l’<em>output</em> di <a href="#lst-zcat-head" class="quarto-xref">Lista&nbsp;1</a>, e potrò constatare che c’è una <strong>riga di intestazione</strong> (non è obbligatoria nei <code>CSV</code>), che il <strong>separatore di campo</strong> è il <code>;</code>, che il <strong>separatore dei decimali</strong> è la <code>,</code> e soprattutto farmi un’idea dei contenuti.</p>
+<div id="lst-zcat-head" class="listing">
+<p>Lista&nbsp;1: Prime righe del file</p>
+<div class="sourceCode" id="lst-zcat-head" data-lst-cap="Prime righe del file"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="lst-zcat-head-1"><a href="#lst-zcat-head-1" aria-hidden="true" tabindex="-1"></a>Programma;Missione;Descrizione Missione;Componente;Descrizione Componente;ID Misura;Codice Univoco Misura;Descrizione Misura;ID Submisura;Codice CID;Codice Univoco Submisura;Descrizione Submisura;Amministrazione Titolare;Codice Identificativo Procedura di Attivazione;Titolo Procedura;Tipologia Procedura di Attivazione;CUP;Codice Locale Progetto;Stato CUP;CUP Codice Natura;CUP Descrizione Natura;CUP Codice Tipologia;CUP Descrizione Tipologia;CUP Codice Settore;CUP Descrizione Settore;CUP Codice Sottosettore;CUP Descrizione Sottosettore;CUP Codice Categoria;CUP Descrizione Categoria;Titolo Progetto;Sintesi Progetto;Descrizione Tipo Aiuto;Finanziamento - Stato;Finanziamento Stato - FOI;Finanziamento UE (Diverso da PNRR);Finanziamento Regione;Finanziamento Provincia;Finanziamento Comune;Finanziamento Altro Pubblico;Finanziamento Privato;Finanziamento Da Reperire;Finanziamento PNRR;Finanziamento PNC;Altri Fondi;Finanziamento Totale;Finanziamento Totale Pubblico;Finanziamento Totale Pubblico Netto;Soggetto Attuatore;Codice Fiscale Soggetto Attuatore;Flag Progetti in Essere;Data di Estrazione</span>
+<span id="lst-zcat-head-2"><a href="#lst-zcat-head-2" aria-hidden="true" tabindex="-1"></a>PNRR;M1;Digitalizzazione, innovazione, competitività e cultura;M1C1;Digitalizzazione, innovazione e sicurezza nella PA;M1C1I1.2;M1C1I1.02;Abilitazione al cloud per le PA locali;M1C1I1.2;M1C1I1.2;M1C1I1.02.00;Abilitazione al cloud per le PA locali;PCM - DIPARTIM. TRASFORMAZIONE DIGITALE;1000000237;AVVISO AB. CLOUD COMUNI DEL 15/04/22;Bando;G61C22000240006;G61C22000240006;Attivo;02;ACQUISTO O REALIZZAZIONE DI SERVIZI;19;APPLICATIVI E PIATTAFORME WEB;10;SERVIZI PER LA P.A. E PER LA COLLETTIVITA';01;SERVIZI E TECNOLOGIE PER L'INFORMAZIONE E LE COMUNICAZIONI;007;SISTEMI INFORMATIVI PER LA P.A.;1.2. Ab.Cloud Com Cosoleto;MIGRAZIONE AL CLOUD DEI SERVIZI DIGITALI DELL'AMMINISTRAZIONE*TERRITORIO COMUNALE*N. 9 SERVIZI;INTERVENTO CHE NON COSTITUISCE AIUTO DI STATO;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;47427,00;0,00;0,00;47427,00;47427,00;47427,00;COMUNE DI COSOLETO;01234470803;No;13/06/2023</span>
+<span id="lst-zcat-head-3"><a href="#lst-zcat-head-3" aria-hidden="true" tabindex="-1"></a>PNRR;M1;Digitalizzazione, innovazione, competitività e cultura;M1C1;Digitalizzazione, innovazione e sicurezza nella PA;M1C1I1.2;M1C1I1.02;Abilitazione al cloud per le PA locali;M1C1I1.2;M1C1I1.2;M1C1I1.02.00;Abilitazione al cloud per le PA locali;PCM - DIPARTIM. TRASFORMAZIONE DIGITALE;1000000237;AVVISO AB. CLOUD COMUNI DEL 15/04/22;Bando;F71C22000160006;F71C22000160006;Attivo;02;ACQUISTO O REALIZZAZIONE DI SERVIZI;19;APPLICATIVI E PIATTAFORME WEB;10;SERVIZI PER LA P.A. E PER LA COLLETTIVITA';01;SERVIZI E TECNOLOGIE PER L'INFORMAZIONE E LE COMUNICAZIONI;007;SISTEMI INFORMATIVI PER LA P.A.;1.2. Ab.Cloud Com Bompensiere;MIGRAZIONE AL CLOUD DEI SERVIZI DIGITALI DELL'AMMINISTRAZIONE*TERRITORIO COMUNALE*N. 9 SERVIZI DA MIGRARE;INTERVENTO CHE NON COSTITUISCE AIUTO DI STATO;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;47427,00;0,00;0,00;47427,00;47427,00;47427,00;COMUNE DI BOMPENSIERE;80005060852;No;13/06/2023</span>
+<span id="lst-zcat-head-4"><a href="#lst-zcat-head-4" aria-hidden="true" tabindex="-1"></a>PNRR;M1;Digitalizzazione, innovazione, competitività e cultura;M1C1;Digitalizzazione, innovazione e sicurezza nella PA;M1C1I1.2;M1C1I1.02;Abilitazione al cloud per le PA locali;M1C1I1.2;M1C1I1.2;M1C1I1.02.00;Abilitazione al cloud per le PA locali;PCM - DIPARTIM. TRASFORMAZIONE DIGITALE;1000000237;AVVISO AB. CLOUD COMUNI DEL 15/04/22;Bando;B61C22000190006;B61C22000190006;Attivo;02;ACQUISTO O REALIZZAZIONE DI SERVIZI;19;APPLICATIVI E PIATTAFORME WEB;10;SERVIZI PER LA P.A. E PER LA COLLETTIVITA';01;SERVIZI E TECNOLOGIE PER L'INFORMAZIONE E LE COMUNICAZIONI;007;SISTEMI INFORMATIVI PER LA P.A.;1.2. Ab.Cloud Com Castelgrande;MIGRAZIONE AL CLOUD DEI SERVIZI DIGITALI DELL'AMMINISTRAZIONE*TERRITORIO COMUNALE*9 SERVIZI DA MIGRARE;INTERVENTO CHE NON COSTITUISCE AIUTO DI STATO;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;47427,00;0,00;0,00;47427,00;47427,00;47427,00;COMUNE DI CASTELGRANDE;80004060762;No;13/06/2023</span>
+<span id="lst-zcat-head-5"><a href="#lst-zcat-head-5" aria-hidden="true" tabindex="-1"></a>PNRR;M1;Digitalizzazione, innovazione, competitività e cultura;M1C1;Digitalizzazione, innovazione e sicurezza nella PA;M1C1I1.2;M1C1I1.02;Abilitazione al cloud per le PA locali;M1C1I1.2;M1C1I1.2;M1C1I1.02.00;Abilitazione al cloud per le PA locali;PCM - DIPARTIM. TRASFORMAZIONE DIGITALE;1000000237;AVVISO AB. CLOUD COMUNI DEL 15/04/22;Bando;F31C22000020006;F31C22000020006;Attivo;02;ACQUISTO O REALIZZAZIONE DI SERVIZI;19;APPLICATIVI E PIATTAFORME WEB;10;SERVIZI PER LA P.A. E PER LA COLLETTIVITA';01;SERVIZI E TECNOLOGIE PER L'INFORMAZIONE E LE COMUNICAZIONI;007;SISTEMI INFORMATIVI PER LA P.A.;1.2. Ab.Cloud Com Ittireddu;MIGRAZIONE AL CLOUD DEI SERVIZI DIGITALI DELL'AMMINISTRAZIONE*TERRITORIO COMUNALE*N. 9 SERVIZI DA MIGRARE;INTERVENTO CHE NON COSTITUISCE AIUTO DI STATO;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;47427,00;0,00;0,00;47427,00;47427,00;47427,00;COMUNE DI ITTIREDDU;00283910909;No;13/06/2023</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>E posso usare in modo diretto strumenti di analisi, trasformazione e filtro di file CSV come lo <a href="https://miller.readthedocs.io/">straordinario <strong>Miller</strong></a>.<br> Ad esempio avere restituito il <strong>conteggio</strong> dei <em>record</em>, i <strong>valori nulli</strong> di ogni campo e anche i valori <strong>distinti</strong>.<br> Se voglio farlo soltanto per i campi <code>Missione</code>, <code>Codice Univoco Misura</code> e <code>CUP Codice Natura</code>, utilizzerò il verbo <a href="https://miller.readthedocs.io/en/6.8.0/reference-verbs/index.html#cut"><code>cut</code></a> e <a href="https://miller.readthedocs.io/en/6.8.0/reference-verbs/index.html#summary"><code>summary</code></a>, direttamente sul file compresso:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mlr</span> <span class="at">--csv</span> <span class="at">--ifs</span> <span class="st">";"</span> <span class="dt">\</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>cut <span class="at">-f</span> Missione,<span class="st">"Codice Univoco Misura"</span>,<span class="st">"CUP Codice Natura"</span> then <span class="dt">\</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>summary <span class="at">-a</span> count,null_count,distinct_count PNRR_Progetti-Universo_REGIS_v2.1.csv.gz</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>In output avrò:</p>
 <div id="tbl-mlr-output" class="anchored">
 <div class="table-responsive">
-<table class="table-striped table">
-<caption>Tabella&nbsp;1: <em>Output</em> di Miller</caption>
+<table class="table-striped small table-sm table">
+<caption>Tabella&nbsp;1: <em>Output</em> di <code>summary</code> di Miller</caption>
 <thead>
 <tr class="header">
 <th>field_name</th>
@@ -335,20 +385,40 @@ Ambiente di lavoro utilizzato
 </table>
 </div>
 </div>
-<p>E potrò usare strumenti di analisi e trasformazione più “standard”, come una <strong><em>query</em> SQL</strong> su questo file CSV compresso. Utilizzando proprio <a href="#duckdb"><strong>DuckDB</strong></a>.</p>
-<p>Ad esempio, per avere il totale del finanziamento PNRR per ogni missione, posso usare questo comando:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> <span class="at">-csv</span> <span class="at">-c</span> <span class="st">'</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT Missione, SUM("Finanziamento PNRR") AS total_PNRR</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="st">FROM  read_csv_auto("PNRR_Progetti-Universo_REGIS_v2.1.csv.gz"</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="st">GROUP BY Missione</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="st">'</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Ma purtroppo <a href="#i-csv-sono-brutti-e-cattivi">“i CSV sono brutti e cattivi”</a> e senza conoscere il <strong>separatore dei campi</strong>, il <strong>separatore dei decimali</strong>, i <strong>tipi di campo</strong>, sapere se c’è o no la <strong>riga di intestazione</strong>, ecc., è difficile riuscire a interrogare un CSV, anche con DuckDB. Per questo motivo è molto raccomandato - oltre a descrivere i file CSV - pubblicare <a href="#csv-standard"><strong>CSV standard</strong></a>.</p>
+<p>E con questo file compresso potrò usare anche strumenti di analisi e trasformazione che mi consentono di eseguire una più “<em>standard</em>” <strong><em>query</em> SQL</strong>, come <a href="#duckdb"><strong>DuckDB</strong></a>.<br> Per avere il totale del finanziamento PNRR per ogni missione, posso usare questo comando:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> <span class="at">-csv</span> <span class="at">-c</span> <span class="st">'</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT Missione, SUM("Finanziamento PNRR") AS total_PNRR</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="st">FROM  read_csv_auto("PNRR_Progetti-Universo_REGIS_v2.1.csv.gz"</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="st">GROUP BY Missione</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="st">'</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Informazioni utili
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Il parametro <code>-csv</code> è per avere l’output del comando in formato <code>CSV</code>, mentre <code>-c</code> per definire la <em>query</em> <code>SQL</code>.<br> Il <code>FROM</code> ha come input direttamente il file <code>CSV</code> compresso, letto tramite la funzione <a href="https://duckdb.org/docs/data/csv/auto_detection"><code>read_csv_auto</code></a> di DuckDB.</p>
+</div>
+</div>
+<p><strong>Nota bene</strong>: la <em>query</em> di sopra non ti funzionerà.</p>
+<p>Perché purtroppo <a href="#i-csv-sono-brutti-e-cattivi">“i CSV sono brutti e cattivi”</a> e senza conoscere il <strong>separatore dei campi</strong>, il <strong>separatore dei decimali</strong>, i <strong>tipi di campo</strong>, sapere se c’è o no la <strong>riga di intestazione</strong>, ecc., è difficile riuscire a interrogare un CSV, anche con DuckDB.<br> Per questo motivo <strong>è molto raccomandato</strong> a chi rende disponibili file <code>CSV</code>:</p>
+<ul>
+<li>pubblicare <a href="#csv-standard"><strong>CSV standard</strong></a>;</li>
+<li><a href="#descrivere-i-csv"><strong>descriverli</strong></a>.</li>
+</ul>
 
 <div class="no-row-height column-margin column-container"><div class="">
 <p>Sono essenziali allo scopo, le operazioni di esplorazione descritte sopra.</p>
-</div></div><p>E allora bisogna aggiungere un po’ di parametri (vedi <a href="#lst-query-duckdb" class="quarto-xref">Lista&nbsp;1</a>): per fare in modo che le colonne possano essere correttamente distinte (fissando il parametro <code>delim</code>), che siano mappati i nomi dei campi (fissando il parametro <code>header</code>), che i numeri decimali siano elaboraboli come tali (fissando il parametro <code>decimal_separator</code> e specificando il tipo <code>FLOAT</code> per il campo <code>Finanziamento PNRR</code>).</p>
-<div id="lst-query-duckdb" class="listing">
-<p>Lista&nbsp;1: Query SQL tramite DuckDB su un CSV compresso</p>
+</div></div><p>E allora è meglio (a volte necessario) aggiungere un po’ di parametri al comando precedente (vedi <a href="#lst-query-duckdb" class="quarto-xref">Lista&nbsp;2</a>): per fare in modo che le colonne possano essere correttamente distinte (fissando con il parametro <code>delim</code> il separatore dei campi), che siano mappati i nomi dei campi (fissando il parametro <code>header</code>), che i numeri decimali siano elaborabili come tali (fissando il parametro <code>decimal_separator</code> e specificando il tipo <code>FLOAT</code> per il campo <code>Finanziamento PNRR</code>).</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p><code>delim</code> e <code>header</code> sono riconosciuti automaticamente da DuckDB. Sono inseriti a scopo didattico.</p>
+</div></div><div id="lst-query-duckdb" class="listing">
+<p>Lista&nbsp;2: Query SQL tramite DuckDB su un CSV compresso</p>
 <div class="sourceCode" id="lst-query-duckdb" data-lst-cap="Query SQL tramite DuckDB su un CSV compresso"><pre class="sourceCode bash code-annotation-code code-with-copy code-annotated"><code class="sourceCode bash"><span id="lst-query-duckdb-1"><a href="#lst-query-duckdb-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> <span class="at">-csv</span> <span class="at">-c</span> <span class="st">'</span></span>
 <span id="lst-query-duckdb-2"><a href="#lst-query-duckdb-2" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT Missione, SUM("Finanziamento PNRR") AS total_PNRR</span></span>
 <span id="lst-query-duckdb-3"><a href="#lst-query-duckdb-3" aria-hidden="true" tabindex="-1"></a><span class="st">FROM  read_csv_auto(</span></span>
@@ -364,19 +434,19 @@ Ambiente di lavoro utilizzato
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="lst-query-duckdb" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="lst-query-duckdb" data-code-annotation="1" data-code-lines="5">imposta il separatore di campi a <code>;</code></span>
+<span data-code-cell="lst-query-duckdb" data-code-lines="5" data-code-annotation="1">imposta il separatore di campi a <code>;</code></span>
 </dd>
 <dt data-target-cell="lst-query-duckdb" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="lst-query-duckdb" data-code-annotation="2" data-code-lines="6">imposta il separatore di decimali a <code>,</code></span>
+<span data-code-cell="lst-query-duckdb" data-code-lines="6" data-code-annotation="2">imposta il separatore di decimali a <code>,</code></span>
 </dd>
 <dt data-target-cell="lst-query-duckdb" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-cell="lst-query-duckdb" data-code-annotation="3" data-code-lines="7">la prima riga è la riga di intestazione</span>
+<span data-code-cell="lst-query-duckdb" data-code-lines="7" data-code-annotation="3">la prima riga è la riga di intestazione</span>
 </dd>
 <dt data-target-cell="lst-query-duckdb" data-target-annotation="4">4</dt>
 <dd>
-<span data-code-cell="lst-query-duckdb" data-code-annotation="4" data-code-lines="8">il campo <code>Finanziamento PNRR</code> è di tipo <code>FLOAT</code></span>
+<span data-code-cell="lst-query-duckdb" data-code-lines="8" data-code-annotation="4">il campo <code>Finanziamento PNRR</code> è di tipo <code>FLOAT</code></span>
 </dd>
 </dl>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -392,9 +462,9 @@ Il vantaggio di un CSV standard
 <p>Con un <a href="#csv-standard"><strong>CSV standard</strong></a>, questi parametri aggiuntivi non sarebbero necessari e si potrebbe usare la prima versione della <em>query</em> SQL.</p>
 </div>
 </div>
-<p>In output, in mezzo secondo (di fatto, non per dire “in breve tempo”), queste righe di output, per un CSV di circa 200.000 righe per 50 colonne, che è pure compresso:</p>
+<p>In output, in mezzo secondo (di fatto, non per dire “in breve tempo”), queste righe di output (per un CSV di circa 200.000 righe per 50 colonne, che è pure compresso):</p>
 <div class="table-responsive">
-<table class="table-striped table">
+<table class="table-striped small table-sm table">
 <caption><em>Output</em> della <em>query</em> SQL</caption>
 <thead>
 <tr class="header">
@@ -433,41 +503,57 @@ Il vantaggio di un CSV standard
 </section>
 <section id="formato-zstd" class="level3">
 <h3 class="anchored" data-anchor-id="formato-zstd">Formato ZSTD</h3>
-<p><a href="https://facebook.github.io/zstd/"><code>ZSTD</code></a> è un formato di compressione senza perdita. La caratteristica principale è che fornisce tassi di <strong>compressione molto elevati</strong>, vicini a quelli di formati come <code>lzma</code>, ma con <strong>velocità di compressione e decompressione molto superiori</strong>.</p>
-<p>Per questa accoppiata di caratteristiche è sempre più diffuso tra le applicazioni e le librerie <em>software</em> di accesso ai dati.</p>
+<p>Si può scegliere un algoritmo di compressione alternativo allo <code>ZIP</code>, anche per ragioni di <strong>velocità</strong> di <strong>decompressione</strong> e <strong>compressione</strong> e per la <strong>percentuale</strong> di <strong>compressione</strong>.<br></p>
+<p>Per questa accoppiata di caratteristiche il formato <a href="https://facebook.github.io/zstd/"><strong><code>ZSTD</code></strong></a> è sempre più diffuso tra le applicazioni e le librerie <em>software</em> di accesso ai dati.</p>
 <p>Per dare qualche numero di confronto, basato sul file CSV da 4 GB di <a href="#dati-opencoesione">OpenCoesione</a> e sul mio <em>notebook</em> con Pentium i7 di 12esima generazione con 16 GB di RAM:</p>
 <ul>
-<li>la compressione (standard) con <code>gzip</code> richiede 47 secondi, e il file compresso pesa 253 MB;</li>
-<li>la compressione (standard) con <code>zstd</code> richiede 13 secondi, e il file compresso pesa 186 MB;</li>
+<li>la compressione (standard) con <code>gzip</code> richiede 47 secondi, e il file compresso di <em>output</em> pesa 253 MB;</li>
+<li>la compressione (standard) con <code>zstd</code> richiede 13 secondi, e il file compresso di <em>output</em> pesa 186 MB;</li>
 <li>la decompressione del file <code>gzip</code> richiede 19 secondi;</li>
 <li>la decompressione del file <code>zstd</code> richiede 5 secondi.</li>
 </ul>
-<p>L’utility a riga di comando per gestire i file <code>ZSTD</code> si chiama <code>zstd</code> e si può installare in quasi tutti i sistemi operativi. Un’applicazione <em>open source</em>, multipiattaforma, con interfaccia grafica, che supporta questa compressione è <a href="https://peazip.github.io/index.html">PeaZip</a>.<br> Molte applicazioni e librerie <em>software</em> di accesso ai dati, come DuckDB, <a href="https://arrow.apache.org/">Apache Arrow</a> e <a href="https://spark.apache.org/">Apache Spark</a>, lo supportano nativamente.</p>
+<p>L’<em>utility</em> a riga di comando per gestire i file <code>ZSTD</code> si chiama <code>zstd</code> e si può installare in (quasi) tutti i sistemi operativi. Un’applicazione <em>open source</em>, multipiattaforma, con interfaccia grafica, che supporta questa compressione è <a href="https://peazip.github.io/index.html">PeaZip</a>.<br> Molte applicazioni e librerie <em>software</em> di accesso ai dati, come DuckDB, <a href="https://arrow.apache.org/">Apache Arrow</a> e <a href="https://spark.apache.org/">Apache Spark</a>, lo supportano nativamente.</p>
 <p>In <a href="#duckdb">DuckDB</a>, si può leggere un file <code>CSV</code> compresso in formato <code>ZSTD</code>, semplicemente puntando ad esso (l’estensione <code>.zst</code> fa in modo che venga interpretato come file compresso in formato <code>ZSTD</code>):</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> <span class="at">-csv</span> <span class="at">-c</span> <span class="st">'</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT count(*) numero_righe</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="st">FROM  read_csv_auto(</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="st">        "PNRR_Progetti-Universo_REGIS_v2.1.csv.zst",</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="st">        delim=";",</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="st">        decimal_separator=",",</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="st">        header=True,</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="st">        types={"Finanziamento PNRR":"FLOAT"}</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="st">)</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="st">'</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Lo fa in 0,4 secondi per il <code>CSV</code> (compresso <code>ZSTD</code>) di circa 200.000 righe per 50 colonne, usato nell’esempio di sopra. E in 5 secondi per il <code>CSV</code> (compresso <code>ZSTD</code>) di circa 2.000.000 di righe per 200 colonne di <a href="#dati-opencoesione">OpenCoesione</a>.</p>
-<p>E si può semplicemente esplorare un file <code>CSV</code> compresso <code>ZSTD</code> con l’utility <code>zstdcat</code>. Ad esempio per leggere le prime 5 righe:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">zstdcat</span> PNRR_Progetti-Universo_REGIS_v2.1.csv.zst <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 5</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="lst-select-count" class="listing">
+<p>Lista&nbsp;3: Esempio di conteggio delle righe</p>
+<div class="sourceCode" id="lst-select-count" data-lst-cap="Esempio di conteggio delle righe"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="lst-select-count-1"><a href="#lst-select-count-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> <span class="at">-csv</span> <span class="at">-c</span> <span class="st">'</span></span>
+<span id="lst-select-count-2"><a href="#lst-select-count-2" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT count(*) numero_righe</span></span>
+<span id="lst-select-count-3"><a href="#lst-select-count-3" aria-hidden="true" tabindex="-1"></a><span class="st">FROM  read_csv_auto(</span></span>
+<span id="lst-select-count-4"><a href="#lst-select-count-4" aria-hidden="true" tabindex="-1"></a><span class="st">        "PNRR_Progetti-Universo_REGIS_v2.1.csv.zst",</span></span>
+<span id="lst-select-count-5"><a href="#lst-select-count-5" aria-hidden="true" tabindex="-1"></a><span class="st">        delim=";",</span></span>
+<span id="lst-select-count-6"><a href="#lst-select-count-6" aria-hidden="true" tabindex="-1"></a><span class="st">        decimal_separator=",",</span></span>
+<span id="lst-select-count-7"><a href="#lst-select-count-7" aria-hidden="true" tabindex="-1"></a><span class="st">        header=True,</span></span>
+<span id="lst-select-count-8"><a href="#lst-select-count-8" aria-hidden="true" tabindex="-1"></a><span class="st">        types={"Finanziamento PNRR":"FLOAT"}</span></span>
+<span id="lst-select-count-9"><a href="#lst-select-count-9" aria-hidden="true" tabindex="-1"></a><span class="st">)</span></span>
+<span id="lst-select-count-10"><a href="#lst-select-count-10" aria-hidden="true" tabindex="-1"></a><span class="st">'</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+File di esempio
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><a href="file/PNRR_Progetti-Universo_REGIS_v2.1.csv.zst">Qui</a> un file compresso <code>ZSTD</code> da usare come esempio.</p>
+</div>
+</div>
+<p>Restituisce il numero di righe in circa 0,4 secondi per il <code>CSV</code> (compresso <code>ZSTD</code>) di circa 200.000 righe per 50 colonne, usato nell’esempio di sopra. E in 5 secondi per il <code>CSV</code> (compresso <code>ZSTD</code>) di circa 2.000.000 di righe per 200 colonne di <a href="#dati-opencoesione">OpenCoesione</a>.</p>
+<p>Si può esplorare analogamente un file <code>CSV</code> compresso <code>ZSTD</code>, “stampandolo” a schermo, con l’utility <code>zstdcat</code>. Per leggere le prime 5 righe del file:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">zstdcat</span> PNRR_Progetti-Universo_REGIS_v2.1.csv.zst <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 5</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>O sempre in accoppiata con Miller, per avere dei dati di sintesi (in 0.6 secondi) come quelli di <a href="#tbl-mlr-output" class="quarto-xref">Tabella&nbsp;1</a>:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">zstdcat</span> PNRR_Progetti-Universo_REGIS_v2.1.csv.zst <span class="kw">|</span> <span class="dt">\</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ex">mlr</span> <span class="at">--csv</span> <span class="at">--ifs</span> <span class="st">";"</span> <span class="dt">\</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>cut <span class="at">-f</span> Missione,<span class="st">"Codice Univoco Misura"</span>,<span class="st">"CUP Codice Natura"</span> then <span class="dt">\</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>summary <span class="at">-a</span> count,null_count,distinct_count</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">zstdcat</span> PNRR_Progetti-Universo_REGIS_v2.1.csv.zst <span class="kw">|</span> <span class="dt">\</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">mlr</span> <span class="at">--csv</span> <span class="at">--ifs</span> <span class="st">";"</span> <span class="dt">\</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>cut <span class="at">-f</span> Missione,<span class="st">"Codice Univoco Misura"</span>,<span class="st">"CUP Codice Natura"</span> then <span class="dt">\</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>summary <span class="at">-a</span> count,null_count,distinct_count</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
 <section id="csv-standard" class="level2">
 <h2 class="anchored" data-anchor-id="csv-standard">CSV “standard”</h2>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
@@ -476,98 +562,1105 @@ A proposito di “standard”
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>Il formato CSV <strong>non è uno standard</strong>, ma una convenzione non ufficiale che è stata ampiamente adotatta. È descritta nella <a href="https://tools.ietf.org/html/rfc4180">RFC 4180</a>.</p>
 </div>
 </div>
 </div>
-<p>Qui utilizzo l’aggettivo “<strong>standard</strong>” per quelle carateristiche che rendono un CSV “<strong>subito pronto</strong>”, per essere letto da applicazioni e linguaggi di scripting per l’analisi dei dati.<br> Queste sono quelle consigliate e più tipiche:</p>
+<p>Qui utilizzo l’aggettivo “<strong>standard</strong>” per alcune caratteristiche che rendono (nella gran parte dei casi) un CSV “<strong>subito pronto</strong>”, per essere letto da applicazioni e linguaggi di scripting per l’analisi dei dati.<br> Queste sono quelle consigliate e più tipiche:</p>
 <ul>
 <li><strong><code>UTF-8</code></strong> come <strong>codifica</strong> dei <strong>caratteri</strong>;</li>
 <li><strong><code>,</code></strong> come separatore di campi;</li>
 <li><strong><code>.</code></strong> come separatore dei decimali. In Italia il separatore è la <code>,</code>, e ci può stare usarla, ma usando il <code>.</code> e documentandolo, si mette a disposizione un file che sarà più <strong>pronto</strong> per una <strong>lettura automatica</strong>;</li>
 <li>presenza della <strong>riga di intestazione</strong> (una sola);</li>
-<li><strong>date</strong> nello standard <strong><code>ISO 8601</code></strong> (la data “8 marzo 2023” rappresentata ad esempio come “2023-03-08”);</li>
+<li><strong>date</strong> nello standard <a href="https://www.wikiwand.com/it/ISO_8601"><strong><code>ISO 8601</code></strong></a> (ad esempio la data “8 marzo 2023” rappresentata come “2023-03-08”);</li>
 <li>ogni colonna <strong>un solo tipo di campo</strong> (es. solo numeri, solo testo, solo date, ecc.). Questo sembra inutile evidenziarlo, ma capita spesso di trovare colonne che contengono valori di tipo diverso (es. numeri e testo) nella stessa colonna;</li>
 <li>evitare l’utilizzo di spazi, virgolette o altri caratteri speciali nei <strong>nomi dei campi</strong>;</li>
 <li><strong>non inserire</strong> il <strong>separatore</strong> delle <strong>migliaia</strong> nei valori delle celle dei campi numerici.</li>
 </ul>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Linee Guida open data
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Diversi di questi punti sono raccomandati anche nelle “<a href="https://www.agid.gov.it/sites/default/files/repository_files/lg-open-data_v.1.0_1.pdf">Linee Guida recanti regole tecniche per l’apertura dei dati e il riutilizzo dell’informazione del settore pubblico</a>”, purtroppo al momento leggibili soltanto in PDF.</p>
+</div>
+</div>
+<section id="standardizzare-il-csv-di-opencoesione" class="level3">
+<h3 class="anchored" data-anchor-id="standardizzare-il-csv-di-opencoesione">Standardizzare il CSV di OpenCoesione</h3>
+<p>Nella sezione sui <a href="#dati-opencoesione">dati di OpenCoesione</a> (leggila prima di proseguire) è riportato come sia <strong>necessario</strong> <strong>descrivere</strong> il file <strong><code>CSV</code></strong> descritto (quello dei progetti), per poterlo leggere al meglio con qualsiasi applicazione.<br> È necessario farlo, perché ha alcune problematiche e perché non è appunto “standard”.</p>
+<p>Fatto lo sforzo di descriverlo, è possibile usare <a href="#duckdb"><strong>DuckDB</strong></a> per <strong>convertire</strong> un <strong><code>CSV</code></strong> “<strong>brutto, sporco e cattivo</strong>”, in un <strong><code>CSV</code></strong> molto più <strong>pronto all’uso</strong>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Nota bene
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Anche un CSV creato come descritto a seguire potrebbe dare qualche problema, perché i programmi di analisi - con un file <code>CSV</code> - sono costretti a fare l’inferenza dei contenuti. E l’inferenza può essere errata.<br> Qui inoltre siamo di fronte a un file particolarmente “ricco” e “variegato”.</p>
+</div>
+</div>
+<p>Il comando DuckDB da usare è in modo schematico <code>COPY INPUT TO OUTPUT</code> (documentazione <a href="https://duckdb.org/docs/archive/0.8.1/sql/statements/copy"><code>COPY</code></a>):</p>
+<ul>
+<li>l’<code>INPUT</code> è il “SELEZIONA TUTTO” del file <code>CSV</code> compresso originario, applicando le dovute operazioni di <em>casting</em> dei tipi di campo;</li>
+<li>poi è necessario descrivere il <code>CSV</code> di <em>input</em> (i separatori, il formato dei campi con date, l’intestazione, i tipi di campo, ecc.);</li>
+<li>infine, si definisce il <code>TO</code> scegliendo un nome per il file di <em>output</em> e alcune <a href="https://duckdb.org/docs/archive/0.8.1/sql/statements/copy#csv-options">opzioni di formato</a>.</li>
+</ul>
+<p>Dando al file di <em>output</em> l’estensione <code>.csv.gz</code> il formato sarà appunto un <code>CSV</code> e sarà compresso con algoritmo <code>GZIP</code>.<br> Con <code>(HEADER, timestampformat '%Y-%m-%d')</code> si fa in modo che l’output contenga la riga di intestazione e che le date siano rappresentate nel formato <code>ISO 8601</code> (<code>YYYY-MM-DD</code>).</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Comando da usare per la conversione
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"COPY (SELECT *</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="st">REPLACE(</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="st">CAST(PROGRAMMATO_INDICATORE_1 AS FLOAT) AS PROGRAMMATO_INDICATORE_1,</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="st">CAST(PROGRAMMATO_INDICATORE_2 AS FLOAT) AS PROGRAMMATO_INDICATORE_2,</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="st">CAST(PROGRAMMATO_INDICATORE_3 AS FLOAT) AS PROGRAMMATO_INDICATORE_3,</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="st">CAST(PROGRAMMATO_INDICATORE_4 AS FLOAT) AS PROGRAMMATO_INDICATORE_4,</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="st">CAST(REALIZZATO_INDICATORE_1 AS FLOAT) AS REALIZZATO_INDICATORE_1,</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="st">CAST(REALIZZATO_INDICATORE_2 AS FLOAT) AS REALIZZATO_INDICATORE_2,</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="st">CAST(REALIZZATO_INDICATORE_3 AS FLOAT) AS REALIZZATO_INDICATORE_3,</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="st">CAST(REALIZZATO_INDICATORE_4 AS FLOAT) AS REALIZZATO_INDICATORE_4,</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="st">)</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="st">from read_csv_auto(</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="st">'progetti_esteso_20230430.csv.gz',SEP=';',dateformat='%Y%m%d',decimal_separator=',',sample_size=100000,</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="st">types={'OC_COD_ARTICOLAZ_PROGRAMMA':'VARCHAR','FINANZ_UE':'FLOAT','FINANZ_UE_FESR':'FLOAT','FINANZ_UE_FSE':'FLOAT','FINANZ_UE_FEASR':'FLOAT','FINANZ_UE_FEAMP':'FLOAT','FINANZ_UE_IOG':'FLOAT','FINANZ_STATO_FONDO_DI_ROTAZIONE':'FLOAT','FINANZ_STATO_FSC':'FLOAT','FINANZ_STATO_PAC':'FLOAT','FINANZ_STATO_COMPLETAMENTI':'FLOAT','FINANZ_STATO_ALTRI_PROVVEDIMENTI':'FLOAT','FINANZ_REGIONE':'FLOAT','FINANZ_PROVINCIA':'FLOAT','FINANZ_COMUNE':'FLOAT','FINANZ_RISORSE_LIBERATE':'FLOAT','FINANZ_ALTRO_PUBBLICO':'FLOAT','FINANZ_STATO_ESTERO':'FLOAT','FINANZ_PRIVATO':'FLOAT','FINANZ_DA_REPERIRE':'FLOAT','FINANZ_TOTALE_PUBBLICO':'FLOAT','ECONOMIE_TOTALI':'FLOAT','ECONOMIE_TOTALI_PUBBLICHE':'FLOAT','OC_FINANZ_UE_NETTO':'FLOAT','OC_FINANZ_UE_FESR_NETTO':'FLOAT','OC_FINANZ_UE_FSE_NETTO':'FLOAT','OC_FINANZ_UE_FEASR_NETTO':'FLOAT','OC_FINANZ_UE_FEAMP_NETTO':'FLOAT','OC_FINANZ_UE_IOG_NETTO':'FLOAT','OC_FINANZ_STATO_FONDO_ROT_NETTO':'FLOAT','OC_FINANZ_STATO_FSC_NETTO':'FLOAT','OC_FINANZ_STATO_PAC_NETTO':'FLOAT','OC_FINANZ_STATO_COMPL_NETTO':'FLOAT','OC_FINANZ_STATO_ALTRI_PROV_NETTO':'FLOAT','OC_FINANZ_REGIONE_NETTO':'FLOAT','OC_FINANZ_PROVINCIA_NETTO':'FLOAT','OC_FINANZ_COMUNE_NETTO':'FLOAT','OC_FINANZ_RISORSE_LIBERATE_NETTO':'FLOAT','OC_FINANZ_ALTRO_PUBBLICO_NETTO':'FLOAT','OC_FINANZ_STATO_ESTERO_NETTO':'FLOAT','OC_FINANZ_PRIVATO_NETTO':'FLOAT','OC_FINANZ_TOT_PUB_NETTO':'FLOAT','OC_COSTO_COESIONE':'FLOAT','IMPEGNI':'FLOAT','OC_IMPEGNI_GIURID_VINCOLANTI':'FLOAT','OC_IMPEGNI_TRASFERIMENTI':'FLOAT','OC_IMPEGNI_COESIONE':'FLOAT','TOT_PAGAMENTI':'FLOAT','OC_TOT_PAGAMENTI_BENEFICIARI':'FLOAT','OC_TOT_PAGAMENTI_TRASFERIMENTI':'FLOAT','COSTO_REALIZZATO':'FLOAT','COSTO_RENDICONTABILE_UE':'FLOAT','OC_TOT_PAGAMENTI_RENDICONTAB_UE':'FLOAT','OC_TOT_PAGAMENTI_FSC':'FLOAT','OC_TOT_PAGAMENTI_PAC':'FLOAT','OC_PAGAMENTI_COESIONE':'FLOAT','OC_DATA_INIZIO_PROGETTO':'DATE','OC_DATA_FINE_PROGETTO_PREVISTA':'DATE','OC_DATA_FINE_PROGETTO_EFFETTIVA':'DATE','DATA_INIZIO_PREV_STUDIO_FATT':'DATE','DATA_INIZIO_EFF_STUDIO_FATT':'DATE','DATA_FINE_PREV_STUDIO_FATT':'DATE','DATA_FINE_EFF_STUDIO_FATT':'DATE','DATA_INIZIO_PREV_PROG_PREL':'DATE','DATA_INIZIO_EFF_PROG_PREL':'DATE','DATA_FINE_PREV_PROG_PREL':'DATE','DATA_FINE_EFF_PROG_PREL':'DATE','DATA_INIZIO_PREV_PROG_DEF':'DATE','DATA_INIZIO_EFF_PROG_DEF':'DATE','DATA_FINE_PREV_PROG_DEF':'DATE','DATA_FINE_EFF_PROG_DEF':'DATE','DATA_INIZIO_PREV_PROG_ESEC':'DATE','DATA_INIZIO_EFF_PROG_ESEC':'DATE','DATA_FINE_PREV_PROG_ESEC':'DATE','DATA_FINE_EFF_PROG_ESEC':'DATE','DATA_INIZIO_PREV_AGG_BANDO':'DATE','DATA_INIZIO_EFF_AGG_BANDO':'DATE','DATA_FINE_PREV_AGG_BANDO':'DATE','DATA_FINE_EFF_AGG_BANDO':'DATE','DATA_INIZIO_PREV_STIP_ATTRIB':'DATE','DATA_INIZIO_EFF_STIP_ATTRIB':'DATE','DATA_FINE_PREV_STIP_ATTRIB':'DATE','DATA_FINE_EFF_STIP_ATTRIB':'DATE','DATA_INIZIO_PREV_ESECUZIONE':'DATE','DATA_INIZIO_EFF_ESECUZIONE':'DATE','DATA_FINE_PREV_ESECUZIONE':'DATE','DATA_FINE_EFF_ESECUZIONE':'DATE','DATA_INIZIO_PREV_COLLAUDO':'DATE','DATA_INIZIO_EFF_COLLAUDO':'DATE','DATA_FINE_PREV_COLLAUDO':'DATE','DATA_FINE_EFF_COLLAUDO':'DATE','COD_TIPO_PROCED_ATTIVAZIONE':'VARCHAR','OC_FLAG_REGIONE_UNICA':'INT','DATA_AGGIORNAMENTO':'DATE','OC_FLAG_CUP':'INT','PROGRAMMATO_INDICATORE_1':'VARCHAR','REALIZZATO_INDICATORE_1':'VARCHAR','PROGRAMMATO_INDICATORE_2':'VARCHAR','REALIZZATO_INDICATORE_2':'VARCHAR','PROGRAMMATO_INDICATORE_3':'VARCHAR','REALIZZATO_INDICATORE_3':'VARCHAR','PROGRAMMATO_INDICATORE_4':'VARCHAR','REALIZZATO_INDICATORE_4':'VARCHAR'}</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="st">)) TO 'progetti_esteso_20230430_standard.csv.gz' (HEADER, timestampformat '%Y-%m-%d');"</span> <span class="kw">|</span>  <span class="ex">duckdb</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+<p>Così facendo, il <code>CSV</code> di output avrà queste caratteristiche:</p>
+<ul>
+<li>nei campi con le date, ci saranno delle stringhe nel formato <code>ISO 8601</code> (<code>YYYY-MM-DD</code>) e non numeri interi;</li>
+<li>i campi numerici avranno il <code>.</code> come separatore dei decimali e non ci sarà difformità nel modo di rappresentarlo;</li>
+<li>il separatore di campo sarà la <code>,</code>.</li>
+</ul>
+</section>
 </section>
 <section id="descrivere-i-csv" class="level2">
 <h2 class="anchored" data-anchor-id="descrivere-i-csv">Descrivere i CSV</h2>
-<ul>
-<li>lo so, con altri formati è all inclusive</li>
-<li>non c’è quasi mai il tracciato record</li>
-<li>se c’è nella gran parte dei casi non è machine readable</li>
-<li>il SQL, frictionless, json schema, …</li>
-</ul>
+<blockquote class="blockquote">
+<p><em>CSV is one of the most popular formats for publishing data on the web. It is concise, easy to understand by both humans and computers, and aligns nicely to the tabular nature of most data.</em></p>
+<p><em>But <strong>CSV</strong> is also a <strong>poor format for data</strong>. There is <strong>no mechanism</strong> within CSV to indicate the <strong>type of data</strong> in a particular <strong>column</strong>, or whether values in a particular column must be unique. It is therefore <strong>hard</strong> to <strong>validate</strong> and <strong>prone</strong> to <strong>errors</strong> such as missing values or differing data types within a column.</em></p>
+</blockquote>
+<p>Queste frasi sono presenti all’inizio di un lavoro di riferimento, per comprendere come si potrebbe descrivere un file in questo formato, in modo che sia utile, efficace e leggibile da umani, <em>personal computer</em> e applicazioni: <a href="https://www.w3.org/TR/tabular-data-primer/"><strong>CSV on the Web: A Primer</strong></a>.<br> Se non lo conosci, <strong>leggilo</strong>. Io qui non entrerò nei dettagli, perché non vale la pena ripetere quello che è già stato scritto molto bene.</p>
+<p>Un altro progetto di riferimento per la descrizione di un file <code>CSV</code> è <strong>Frictionless Data</strong> e le sue <strong>specifiche</strong> per i <a href="https://specs.frictionlessdata.io/table-schema/#language"><strong>dati tabellari</strong></a>. E ancora una volta, per le stesse ragioni non entrerò nei dettagli.</p>
+<p>Molti dei dati pubblicati nei <strong>portali Open Data italiani</strong> in questo formato, sono accompagnati <strong>soltanto</strong> da un <strong>titolo</strong> e una <strong>descrizione</strong>. È un <strong>vuoto informativo</strong> e molto spesso una <strong>barriera</strong> a un pieno uso dei dati.<br> Alle volte, come nel caso di <a href="#dati-opencoesione">OpenCoesione</a>, è presente un file con i nomi dei campi, la loro tipologia e altre note. Nella gran parte dei casi sono però file descrittivi leggibili soltanto a schermo da chi dovrà analizzare i file. Non sono leggibili da un <em>personal computer</em> o da un’applicazione, <strong>non sono <em>machine readable</em></strong>.<br></p>
+<p>E quando si hanno dati ricchi e complessi, questa diventa un’<strong>ulteriore barriera</strong> all’<strong>uso dei dati</strong>.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+📌 Importante
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La <strong>pubblicazione</strong> non si dovrebbe limitare a rendere disponibile dei file, ma essere <strong>accompagnata da una descrizione del file stesso</strong>, leggibile dalle persone e dalle applicazioni.</p>
+</div>
+</div>
+<p>Farlo in una delle due modalità descritte sopra sarebbe perfetto. Non è a costo zero, ma se è uno dei processi (“automatici”) di un progetto di pubblicazione, è un costo che si può sostenere, che si ripaga in termini di <strong>usabilità</strong> e <strong>riusabilità</strong> dei dati.</p>
+<section id="associare-schema-sql" class="level3">
+<h3 class="anchored" data-anchor-id="associare-schema-sql">Associare schema SQL</h3>
+<p>Una “<strong>buona pratica</strong>” da suggerire a chi pubblica dati, basata su uno <strong>standard</strong> che è sia <strong>formale</strong> che <strong><em>de facto</em></strong>, è quella di <strong>accompagnare</strong> al file <code>CSV</code> anche la <strong><em>query</em> <code>SQL</code></strong> per la <strong>creazione</strong> della <strong>tabella</strong>.<br> Sotto l’esempio per la creazione della tabella dei progetti di OpenCoesione descritta <a href="#dati-opencoesione">qui</a>.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-11-contents" aria-controls="callout-11" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Schema <code>SQL</code> tabella progetti di OpenCoesione
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-11" class="callout-11-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb7"><pre class="sourceCode sql code-overflow-wrap code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">CREATE</span> <span class="kw">TABLE</span> progetti(COD_LOCALE_PROGETTO <span class="dt">VARCHAR</span>, CUP <span class="dt">VARCHAR</span>, OC_TITOLO_PROGETTO <span class="dt">VARCHAR</span>, OC_SINTESI_PROGETTO <span class="dt">VARCHAR</span>, OC_LINK <span class="dt">VARCHAR</span>, OC_COD_CICLO BIGINT, OC_DESCR_CICLO <span class="dt">VARCHAR</span>, OC_COD_TEMA_SINTETICO <span class="dt">VARCHAR</span>, OC_TEMA_SINTETICO <span class="dt">VARCHAR</span>, COD_GRANDE_PROGETTO <span class="dt">VARCHAR</span>, DESCRIZIONE_GRANDE_PROGETTO <span class="dt">VARCHAR</span>, OC_COD_FONTE <span class="dt">VARCHAR</span>, OC_DESCR_FONTE <span class="dt">VARCHAR</span>, FONDO_COMUNITARIO <span class="dt">VARCHAR</span>, OC_CODICE_PROGRAMMA <span class="dt">VARCHAR</span>, OC_DESCRIZIONE_PROGRAMMA <span class="dt">VARCHAR</span>, COD_OB_TEMATICO <span class="dt">VARCHAR</span>, DESCR_OB_TEMATICO <span class="dt">VARCHAR</span>, COD_PRIORITA_INVEST <span class="dt">VARCHAR</span>, DESCR_PRIORITA_INVEST <span class="dt">VARCHAR</span>, OC_COD_CATEGORIA_SPESA <span class="dt">VARCHAR</span>, OC_DESCR_CATEGORIA_SPESA <span class="dt">VARCHAR</span>, OC_ARTICOLAZIONE_PROGRAMMA <span class="dt">VARCHAR</span>, OC_SUBARTICOLAZIONE_PROGRAMMA <span class="dt">VARCHAR</span>, OC_COD_ARTICOLAZ_PROGRAMMA <span class="dt">VARCHAR</span>, OC_DESCR_ARTICOLAZ_PROGRAMMA <span class="dt">VARCHAR</span>, OC_COD_SUBARTICOLAZ_PROGRAMMA <span class="dt">VARCHAR</span>, OC_DESCR_SUBARTICOLAZ_PROGRAMMA <span class="dt">VARCHAR</span>, COD_STRUMENTO <span class="dt">VARCHAR</span>, DESCR_STRUMENTO <span class="dt">VARCHAR</span>, DESCR_TIPO_STRUMENTO <span class="dt">VARCHAR</span>, CUP_COD_NATURA <span class="dt">VARCHAR</span>, CUP_DESCR_NATURA <span class="dt">VARCHAR</span>, CUP_COD_TIPOLOGIA <span class="dt">VARCHAR</span>, CUP_DESCR_TIPOLOGIA <span class="dt">VARCHAR</span>, CUP_COD_SETTORE <span class="dt">VARCHAR</span>, CUP_DESCR_SETTORE <span class="dt">VARCHAR</span>, CUP_COD_SOTTOSETTORE <span class="dt">VARCHAR</span>, CUP_DESCR_SOTTOSETTORE <span class="dt">VARCHAR</span>, CUP_COD_CATEGORIA <span class="dt">VARCHAR</span>, CUP_DESCR_CATEGORIA <span class="dt">VARCHAR</span>, COD_ATECO <span class="dt">VARCHAR</span>, DESCRIZIONE_ATECO <span class="dt">VARCHAR</span>, OC_COD_TIPO_AIUTO <span class="dt">VARCHAR</span>, OC_DESCR_TIPO_AIUTO <span class="dt">VARCHAR</span>, COD_REGIONE <span class="dt">VARCHAR</span>, DEN_REGIONE <span class="dt">VARCHAR</span>, COD_PROVINCIA <span class="dt">VARCHAR</span>, DEN_PROVINCIA <span class="dt">VARCHAR</span>, COD_COMUNE <span class="dt">VARCHAR</span>, DEN_COMUNE <span class="dt">VARCHAR</span>, OC_MACROAREA <span class="dt">VARCHAR</span>, OC_COD_SLL BIGINT, OC_DENOMINAZIONE_SLL <span class="dt">VARCHAR</span>, FINANZ_UE <span class="dt">FLOAT</span>, FINANZ_UE_FESR <span class="dt">FLOAT</span>, FINANZ_UE_FSE <span class="dt">FLOAT</span>, FINANZ_UE_FEASR <span class="dt">FLOAT</span>, FINANZ_UE_FEAMP <span class="dt">FLOAT</span>, FINANZ_UE_IOG <span class="dt">FLOAT</span>, FINANZ_STATO_FONDO_DI_ROTAZIONE <span class="dt">FLOAT</span>, FINANZ_STATO_FSC <span class="dt">FLOAT</span>, FINANZ_STATO_PAC <span class="dt">FLOAT</span>, FINANZ_STATO_COMPLETAMENTI <span class="dt">FLOAT</span>, FINANZ_STATO_ALTRI_PROVVEDIMENTI <span class="dt">FLOAT</span>, FINANZ_REGIONE <span class="dt">FLOAT</span>, FINANZ_PROVINCIA <span class="dt">FLOAT</span>, FINANZ_COMUNE <span class="dt">FLOAT</span>, FINANZ_RISORSE_LIBERATE <span class="dt">FLOAT</span>, FINANZ_ALTRO_PUBBLICO <span class="dt">FLOAT</span>, FINANZ_STATO_ESTERO <span class="dt">FLOAT</span>, FINANZ_PRIVATO <span class="dt">FLOAT</span>, FINANZ_DA_REPERIRE <span class="dt">FLOAT</span>, FINANZ_TOTALE_PUBBLICO <span class="dt">FLOAT</span>, ECONOMIE_TOTALI <span class="dt">FLOAT</span>, ECONOMIE_TOTALI_PUBBLICHE <span class="dt">FLOAT</span>, OC_FINANZ_UE_NETTO <span class="dt">FLOAT</span>, OC_FINANZ_UE_FESR_NETTO <span class="dt">FLOAT</span>, OC_FINANZ_UE_FSE_NETTO <span class="dt">FLOAT</span>, OC_FINANZ_UE_FEASR_NETTO <span class="dt">FLOAT</span>, OC_FINANZ_UE_FEAMP_NETTO <span class="dt">FLOAT</span>, OC_FINANZ_UE_IOG_NETTO <span class="dt">FLOAT</span>, OC_FINANZ_STATO_FONDO_ROT_NETTO <span class="dt">FLOAT</span>, OC_FINANZ_STATO_FSC_NETTO <span class="dt">FLOAT</span>, OC_FINANZ_STATO_PAC_NETTO <span class="dt">FLOAT</span>, OC_FINANZ_STATO_COMPL_NETTO <span class="dt">FLOAT</span>, OC_FINANZ_STATO_ALTRI_PROV_NETTO <span class="dt">FLOAT</span>, OC_FINANZ_REGIONE_NETTO <span class="dt">FLOAT</span>, OC_FINANZ_PROVINCIA_NETTO <span class="dt">FLOAT</span>, OC_FINANZ_COMUNE_NETTO <span class="dt">FLOAT</span>, OC_FINANZ_RISORSE_LIBERATE_NETTO <span class="dt">FLOAT</span>, OC_FINANZ_ALTRO_PUBBLICO_NETTO <span class="dt">FLOAT</span>, OC_FINANZ_STATO_ESTERO_NETTO <span class="dt">FLOAT</span>, OC_FINANZ_PRIVATO_NETTO <span class="dt">FLOAT</span>, OC_FINANZ_TOT_PUB_NETTO <span class="dt">FLOAT</span>, OC_COSTO_COESIONE <span class="dt">FLOAT</span>, IMPEGNI <span class="dt">FLOAT</span>, OC_IMPEGNI_GIURID_VINCOLANTI <span class="dt">FLOAT</span>, OC_IMPEGNI_TRASFERIMENTI <span class="dt">FLOAT</span>, OC_IMPEGNI_COESIONE <span class="dt">FLOAT</span>, TOT_PAGAMENTI <span class="dt">FLOAT</span>, OC_TOT_PAGAMENTI_BENEFICIARI <span class="dt">FLOAT</span>, OC_TOT_PAGAMENTI_TRASFERIMENTI <span class="dt">FLOAT</span>, COSTO_REALIZZATO <span class="dt">FLOAT</span>, COSTO_RENDICONTABILE_UE <span class="dt">FLOAT</span>, OC_TOT_PAGAMENTI_RENDICONTAB_UE <span class="dt">FLOAT</span>, OC_TOT_PAGAMENTI_FSC <span class="dt">FLOAT</span>, OC_TOT_PAGAMENTI_PAC <span class="dt">FLOAT</span>, OC_PAGAMENTI_COESIONE <span class="dt">FLOAT</span>, OC_DATA_INIZIO_PROGETTO <span class="dt">DATE</span>, OC_DATA_FINE_PROGETTO_PREVISTA <span class="dt">DATE</span>, OC_DATA_FINE_PROGETTO_EFFETTIVA <span class="dt">DATE</span>, DATA_INIZIO_PREV_STUDIO_FATT <span class="dt">DATE</span>, DATA_INIZIO_EFF_STUDIO_FATT <span class="dt">DATE</span>, DATA_FINE_PREV_STUDIO_FATT <span class="dt">DATE</span>, DATA_FINE_EFF_STUDIO_FATT <span class="dt">DATE</span>, DATA_INIZIO_PREV_PROG_PREL <span class="dt">DATE</span>, DATA_INIZIO_EFF_PROG_PREL <span class="dt">DATE</span>, DATA_FINE_PREV_PROG_PREL <span class="dt">DATE</span>, DATA_FINE_EFF_PROG_PREL <span class="dt">DATE</span>, DATA_INIZIO_PREV_PROG_DEF <span class="dt">DATE</span>, DATA_INIZIO_EFF_PROG_DEF <span class="dt">DATE</span>, DATA_FINE_PREV_PROG_DEF <span class="dt">DATE</span>, DATA_FINE_EFF_PROG_DEF <span class="dt">DATE</span>, DATA_INIZIO_PREV_PROG_ESEC <span class="dt">DATE</span>, DATA_INIZIO_EFF_PROG_ESEC <span class="dt">DATE</span>, DATA_FINE_PREV_PROG_ESEC <span class="dt">DATE</span>, DATA_FINE_EFF_PROG_ESEC <span class="dt">DATE</span>, DATA_INIZIO_PREV_AGG_BANDO <span class="dt">DATE</span>, DATA_INIZIO_EFF_AGG_BANDO <span class="dt">DATE</span>, DATA_FINE_PREV_AGG_BANDO <span class="dt">DATE</span>, DATA_FINE_EFF_AGG_BANDO <span class="dt">DATE</span>, DATA_INIZIO_PREV_STIP_ATTRIB <span class="dt">DATE</span>, DATA_INIZIO_EFF_STIP_ATTRIB <span class="dt">DATE</span>, DATA_FINE_PREV_STIP_ATTRIB <span class="dt">DATE</span>, DATA_FINE_EFF_STIP_ATTRIB <span class="dt">DATE</span>, DATA_INIZIO_PREV_ESECUZIONE <span class="dt">DATE</span>, DATA_INIZIO_EFF_ESECUZIONE <span class="dt">DATE</span>, DATA_FINE_PREV_ESECUZIONE <span class="dt">DATE</span>, DATA_FINE_EFF_ESECUZIONE <span class="dt">DATE</span>, DATA_INIZIO_PREV_COLLAUDO <span class="dt">DATE</span>, DATA_INIZIO_EFF_COLLAUDO <span class="dt">DATE</span>, DATA_FINE_PREV_COLLAUDO <span class="dt">DATE</span>, DATA_FINE_EFF_COLLAUDO <span class="dt">DATE</span>, OC_STATO_FINANZIARIO <span class="dt">VARCHAR</span>, OC_STATO_PROGETTO <span class="dt">VARCHAR</span>, OC_STATO_PROCEDURALE <span class="dt">VARCHAR</span>, OC_COD_FASE_CORRENTE <span class="dt">VARCHAR</span>, OC_DESCR_FASE_CORRENTE <span class="dt">VARCHAR</span>, COD_PROCED_ATTIVAZIONE <span class="dt">VARCHAR</span>, DESCR_PROCED_ATTIVAZIONE <span class="dt">VARCHAR</span>, COD_TIPO_PROCED_ATTIVAZIONE <span class="dt">VARCHAR</span>, DESCR_TIPO_PROCED_ATTIVAZIONE <span class="dt">VARCHAR</span>, OC_CODFISC_PROGRAMMATORE <span class="dt">VARCHAR</span>, OC_DENOM_PROGRAMMATORE <span class="dt">VARCHAR</span>, OC_COD_FORMA_GIU_PROGRAMMATORE <span class="dt">VARCHAR</span>, OC_DESCR_FORMA_GIU_PROGRAMMATORE <span class="dt">VARCHAR</span>, OC_TOTALE_PROGRAMMATORI BIGINT, OC_CODFISC_ATTUATORE <span class="dt">VARCHAR</span>, OC_DENOM_ATTUATORE <span class="dt">VARCHAR</span>, OC_COD_FORMA_GIU_ATTUATORE <span class="dt">VARCHAR</span>, OC_DESCR_FORMA_GIU_ATTUATORE <span class="dt">VARCHAR</span>, OC_TOTALE_ATTUATORI BIGINT, OC_CODFISC_BENEFICIARIO <span class="dt">VARCHAR</span>, OC_DENOM_BENEFICIARIO <span class="dt">VARCHAR</span>, OC_COD_FORMA_GIU_BENEFICIARIO <span class="dt">VARCHAR</span>, OC_DESCR_FORMA_GIU_BENEFICIARIO <span class="dt">VARCHAR</span>, OC_TOTALE_BENEFICIARI BIGINT, OC_CODFISC_REALIZZATORE <span class="dt">VARCHAR</span>, OC_DENOM_REALIZZATORE <span class="dt">VARCHAR</span>, OC_COD_FORMA_GIU_REALIZZATORE <span class="dt">VARCHAR</span>, OC_DESCR_FORMA_GIU_REALIZZATORE <span class="dt">VARCHAR</span>, OC_TOTALE_REALIZZATORI BIGINT, OC_TOTALE_INDICATORI BIGINT, COD_INDICATORE_1 <span class="dt">VARCHAR</span>, DESCR_INDICATORE_1 <span class="dt">VARCHAR</span>, UNITA_MISURA_INDICATORE_1 <span class="dt">VARCHAR</span>, PROGRAMMATO_INDICATORE_1 <span class="dt">FLOAT</span>, REALIZZATO_INDICATORE_1 <span class="dt">FLOAT</span>, COD_INDICATORE_2 <span class="dt">VARCHAR</span>, DESCR_INDICATORE_2 <span class="dt">VARCHAR</span>, UNITA_MISURA_INDICATORE_2 <span class="dt">VARCHAR</span>, PROGRAMMATO_INDICATORE_2 <span class="dt">FLOAT</span>, REALIZZATO_INDICATORE_2 <span class="dt">FLOAT</span>, COD_INDICATORE_3 <span class="dt">VARCHAR</span>, DESCR_INDICATORE_3 <span class="dt">VARCHAR</span>, UNITA_MISURA_INDICATORE_3 <span class="dt">VARCHAR</span>, PROGRAMMATO_INDICATORE_3 <span class="dt">FLOAT</span>, REALIZZATO_INDICATORE_3 <span class="dt">FLOAT</span>, COD_INDICATORE_4 <span class="dt">VARCHAR</span>, DESCR_INDICATORE_4 <span class="dt">VARCHAR</span>, UNITA_MISURA_INDICATORE_4 <span class="dt">VARCHAR</span>, PROGRAMMATO_INDICATORE_4 <span class="dt">FLOAT</span>, REALIZZATO_INDICATORE_4 <span class="dt">FLOAT</span>, OC_FLAG_REGIONE_UNICA <span class="dt">INTEGER</span>, OC_FLAG_VISUALIZZAZIONE BIGINT, OC_FLAG_PAC BIGINT, DATA_AGGIORNAMENTO <span class="dt">DATE</span>, OC_FLAG_CUP <span class="dt">INTEGER</span>);</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+<p>Con una tabella così ricca, di queste dimensioni e pubblicata in questo formato, avere lo schema <code>SQL</code> di creazione renderebbe l’uso dei dati da subito molto più efficace.<br> Perché il <strong><code>CSV</code></strong> è principalmente un <strong>formato di scambio</strong>, e <strong>poterlo</strong> <strong>importare</strong> subito in un <strong><em>database</em></strong> dà una marcia in più.</p>
+</section>
 </section>
 <section id="parquet" class="level2">
 <h2 class="anchored" data-anchor-id="parquet">Parquet</h2>
+<p>Il formato <code>CSV</code> - con i suoi pregi e difetti - è molto diffuso. Un <strong>formato tabellare</strong> degno di nota che <strong>sta emergendo</strong>, è il <a href="https://parquet.apache.org/"><strong>Parquet</strong></a>.</p>
+<p>È un <strong>formato</strong> <strong><em>open source</em></strong> progettato per l’<strong>archiviazione</strong> e l’<strong>analisi</strong> di <strong>grandi dataset</strong>.<br> Le principali caratteristiche sono:</p>
 <ul>
-<li>colonnare</li>
-<li>compresso</li>
-<li>performance</li>
-<li>articolo su nuovo formato https://www-icem7-fr.translate.goog/outils/parquet-devrait-remplacer-le-format-csv/?_x_tr_sl=auto&amp;_x_tr_tl=it&amp;_x_tr_hl=en-US</li>
-<li>può essere il futuro, ma non c’è traccia nelle nuove linee guida</li>
-<li>esempi di parquet e geoparquet nel mondo</li>
+<li><a href="#formato-colonnare"><strong>Struttura a colonne</strong></a>: i dati sono memorizzati per colonna e non per riga, per una migliore compressione;</li>
+<li><strong>Compressione efficace</strong>: supporta compressione <code>gzip</code>, <code>snappy</code> e <a href="#formato-zstd"><code>zstd</code></a>;</li>
+<li><strong>Prestazioni elevate</strong>: consente analisi molto veloci grazie alla struttura a colonne;</li>
+<li><strong>Formato descritto</strong>: contiene metadati sullo schema;</li>
+<li><strong>Partizionabile</strong>: un unico dataset di dimensioni molto molto grandi, può essere suddiviso in più file e cartelle, partizionate (ad esempio per anno, per regione, per provincia, ecc.);</li>
+<li><strong>Accessibile in <em>stream</em></strong>: invece di leggere o scrivere l’intero file in una volta sola, consente di lavorare con il file suddividendo i dati in pacchetti più piccoli;</li>
+<li><strong>Supportato</strong> da molti <strong><em>data engine</em></strong> e da tutti i principali linguaggi di programmazione e librerie di elaborazione dati.</li>
 </ul>
+<p>Tra le più interessanti, specie per chi è nuovo al concetto e al formato, è la <a href="#formato-colonnare">struttura di archiviazione a colonne</a>.</p>
+<section id="formato-colonnare" class="level3">
+<h3 class="anchored" data-anchor-id="formato-colonnare">Formato colonnare</h3>
+<p>In molti dei formati tabellari più noti e comuni, i dati sono archiviati come sequenze di righe. Avviene per i <code>CSV</code>, ma anche per importanti database relazionali come <code>PostgreSQL</code> e <code>MySQL</code>.</p>
+<div id="tbl-parquet_colonne_start" class="anchored">
+<div class="table-responsive">
+<table class="table-striped small table-sm table">
+<caption>Tabella&nbsp;2: Tabella dati di esempio</caption>
+<thead>
+<tr class="header">
+<th>Pizza</th>
+<th>Cliente</th>
+<th>Regione</th>
+<th>Data</th>
+<th>Costo</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Margherita</td>
+<td>Marco Stretto</td>
+<td>Sicilia</td>
+<td>2023-01-01</td>
+<td>5</td>
+</tr>
+<tr class="even">
+<td>Parmigiana</td>
+<td>Marco Stretto</td>
+<td>Sicilia</td>
+<td>2023-01-02</td>
+<td>9</td>
+</tr>
+<tr class="odd">
+<td>Romana</td>
+<td>Guido La Vespa</td>
+<td>Calabria</td>
+<td>2023-01-01</td>
+<td>7</td>
+</tr>
+<tr class="even">
+<td>Romana</td>
+<td>Chiara Mente</td>
+<td>Sicilia</td>
+<td>2023-01-03</td>
+<td>7</td>
+</tr>
+<tr class="odd">
+<td>Parmigiana</td>
+<td>Guido La Vespa</td>
+<td>Calabria</td>
+<td>2023-01-02</td>
+<td>9</td>
+</tr>
+<tr class="even">
+<td>Romana</td>
+<td>Marco Stretto</td>
+<td>Sicilia</td>
+<td>2023-01-05</td>
+<td>7</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>A partire da una tabella con dei dati sulle vendite di una pizzeria, come <a href="#tbl-parquet_colonne_start" class="quarto-xref">Tabella&nbsp;2</a>, le domande che si potrebbero fare sono:</p>
+<ul>
+<li>quante pizze Margherita sono state vendute?</li>
+<li>quanti utenti che vengono dalla Sicilia hanno ordinato una pizza Parmigiana?</li>
+<li>quanto ha speso in totale Guido La Vespa?</li>
+<li>quante vendite sono state fatte il 2 gennaio 2023?</li>
+</ul>
+<p>Per rispondere a queste domande, un motore di “tabelle” basato su righe, dovrà leggere tutte le righe della tabella, dall’inizio alla fine. Per sapere quanti utenti che vengono dalla Sicilia hanno ordinato una pizza Parmigiana, si dovrà scorrere la tabella come in <a href="#fig-row-based" class="quarto-xref">Figura&nbsp;1</a>.</p>
+<div id="fig-row-based" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="images/row-based.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption class="figure-caption">Figura&nbsp;1: Flusso lettura dati, in archivi basati su righe</figcaption>
+</figure>
+</div>
+<p>Basterebbe leggere soltanto i valori delle colonne <code>Pizza</code> e <code>Regione</code>, ma in uno schema di archiviazione basato su righe vengono lette anche le altre colonne.</p>
+<p>Per rispondere a questa <em>query</em> è molto più efficiente un’<strong>archiviazione a colonne</strong>.<br> In questo caso, ogni colonna è un’entità, il che significa che ogni colonna è fisicamente separata dalle altre. <br> Tornando alla nostra precedente domanda: in uno schema a colonne il motore di analisi può leggere soltanto le colonne necessarie per la <em>query</em> (<code>Pizza</code> e <code>Regione</code>). E, nella maggior parte dei casi, questo migliorerà le prestazioni delle <em>query</em> analitiche.</p>
+<table class="striped-table small table-sm table">
+<caption></caption>
+<thead>
+<tr class="header">
+<th>Pizza</th>
+<th>Cliente</th>
+<th>Regione</th>
+<th>Data</th>
+<th>Costo</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Margherita</td>
+<td>Marco Stretto</td>
+<td>Sicilia</td>
+<td>2023-01-01</td>
+<td>5</td>
+</tr>
+<tr class="even">
+<td>Parmigiana</td>
+<td>Marco Stretto</td>
+<td>Sicilia</td>
+<td>2023-01-02</td>
+<td>9</td>
+</tr>
+<tr class="odd">
+<td>Romana</td>
+<td>Guido La Vespa</td>
+<td>Calabria</td>
+<td>2023-01-01</td>
+<td>7</td>
+</tr>
+<tr class="even">
+<td>Romana</td>
+<td>Chiara Mente</td>
+<td>Sicilia</td>
+<td>2023-01-03</td>
+<td>7</td>
+</tr>
+<tr class="odd">
+<td>Parmigiana</td>
+<td>Guido La Vespa</td>
+<td>Calabria</td>
+<td>2023-01-02</td>
+<td>9</td>
+</tr>
+<tr class="even">
+<td>Romana</td>
+<td>Marco Stretto</td>
+<td>Sicilia</td>
+<td>2023-01-05</td>
+<td>7</td>
+</tr>
+</tbody>
+</table>
+<p>Il formato <code>Parquet</code> è proprio un <strong>formato</strong> di <strong>archiviazione</strong> a <strong>colonne</strong>, anzi è più correttamente un formato di archiviazione <strong>a colonne</strong>, <strong>per gruppi di righe</strong>.<br></p>
+<div id="fig-row-groups" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="images/row-groups.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption class="figure-caption">Figura&nbsp;2: Struttura a colonne per gruppi di righe</figcaption>
+</figure>
+</div>
+<p>Le colonne sono memorizzate sempre come unità separate, ma Parquet introduce delle strutture aggiuntive chiamate “<strong><em>Row group</em></strong>” (vedi <a href="#fig-row-groups" class="quarto-xref">Figura&nbsp;2</a>).</p>
+<p>Perché sono un vantaggio? Nella <em>query</em> di esempio di sopra, non solo bastano due colonne, ma il <code>Gruppo 2</code> di righe è inutile (non c’è la “Parmigiana”).<br> Con questa struttura a gruppi di righe (qui semplificata per fini didattici) sarà possibile non tenere conto del “Gruppo 2” e la <em>query</em> sarà più rapida.</p>
+<div id="fig-row-groups-skip" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="images/row-groups-skip.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption class="figure-caption">Figura&nbsp;3: Per la <em>query</em> di esempio, il “Gruppo 2” è inutile</figcaption>
+</figure>
+</div>
+</section>
+<section id="convertire-il-file-di-opencoesione-in-parquet" class="level3">
+<h3 class="anchored" data-anchor-id="convertire-il-file-di-opencoesione-in-parquet">Convertire il file di OpenCoesione in Parquet</h3>
+<p>Per convertire il <a href="#dati-opencoesione">file di OpenCoesione</a> in formato <code>Parquet</code> si può usare ancora una volta un comando <a href="#duckdb"><strong>DuckDB</strong></a>.<br> Richiederà una ricca descrizione del file di <em>input</em>, e di base sarà <code>COPY INPUT TO OUTPUT</code> (documentazione <a href="https://duckdb.org/docs/archive/0.8.1/sql/statements/copy"><code>COPY</code></a>):</p>
+<ul>
+<li>l’<code>INPUT</code> è il “SELEZIONA TUTTO” del file <code>CSV</code> compresso originario, applicando le dovute operazioni di <em>casting</em> dei tipi di campo;</li>
+<li>poi è necessario descrivere il <code>CSV</code> di <em>input</em> (i separatori, il formato dei campi con date, l’intestazione, i tipi di campo, ecc.);</li>
+<li>infine, si definisce il <code>TO</code> scegliendo un nome per il file di <em>output</em> e alcune <a href="https://duckdb.org/docs/archive/0.8.1/sql/statements/copy#parquet-options">opzioni di formato</a>.</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-12-contents" aria-controls="callout-12" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Comando da usare per la conversione da CSV a Parquet
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-12" class="callout-12-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">"COPY (SELECT *</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="st">REPLACE(</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="st">CAST(PROGRAMMATO_INDICATORE_1 AS FLOAT) AS PROGRAMMATO_INDICATORE_1,</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="st">CAST(PROGRAMMATO_INDICATORE_2 AS FLOAT) AS PROGRAMMATO_INDICATORE_2,</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="st">CAST(PROGRAMMATO_INDICATORE_3 AS FLOAT) AS PROGRAMMATO_INDICATORE_3,</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="st">CAST(PROGRAMMATO_INDICATORE_4 AS FLOAT) AS PROGRAMMATO_INDICATORE_4,</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="st">CAST(REALIZZATO_INDICATORE_1 AS FLOAT) AS REALIZZATO_INDICATORE_1,</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="st">CAST(REALIZZATO_INDICATORE_2 AS FLOAT) AS REALIZZATO_INDICATORE_2,</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="st">CAST(REALIZZATO_INDICATORE_3 AS FLOAT) AS REALIZZATO_INDICATORE_3,</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="st">CAST(REALIZZATO_INDICATORE_4 AS FLOAT) AS REALIZZATO_INDICATORE_4,</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="st">)</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="st">from read_csv_auto(</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="st">'progetti_esteso_20230430.csv.gz',SEP=';',dateformat='%Y%m%d',decimal_separator=',',sample_size=100000,</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="st">types={'OC_COD_ARTICOLAZ_PROGRAMMA':'VARCHAR','FINANZ_UE':'FLOAT','FINANZ_UE_FESR':'FLOAT','FINANZ_UE_FSE':'FLOAT','FINANZ_UE_FEASR':'FLOAT','FINANZ_UE_FEAMP':'FLOAT','FINANZ_UE_IOG':'FLOAT','FINANZ_STATO_FONDO_DI_ROTAZIONE':'FLOAT','FINANZ_STATO_FSC':'FLOAT','FINANZ_STATO_PAC':'FLOAT','FINANZ_STATO_COMPLETAMENTI':'FLOAT','FINANZ_STATO_ALTRI_PROVVEDIMENTI':'FLOAT','FINANZ_REGIONE':'FLOAT','FINANZ_PROVINCIA':'FLOAT','FINANZ_COMUNE':'FLOAT','FINANZ_RISORSE_LIBERATE':'FLOAT','FINANZ_ALTRO_PUBBLICO':'FLOAT','FINANZ_STATO_ESTERO':'FLOAT','FINANZ_PRIVATO':'FLOAT','FINANZ_DA_REPERIRE':'FLOAT','FINANZ_TOTALE_PUBBLICO':'FLOAT','ECONOMIE_TOTALI':'FLOAT','ECONOMIE_TOTALI_PUBBLICHE':'FLOAT','OC_FINANZ_UE_NETTO':'FLOAT','OC_FINANZ_UE_FESR_NETTO':'FLOAT','OC_FINANZ_UE_FSE_NETTO':'FLOAT','OC_FINANZ_UE_FEASR_NETTO':'FLOAT','OC_FINANZ_UE_FEAMP_NETTO':'FLOAT','OC_FINANZ_UE_IOG_NETTO':'FLOAT','OC_FINANZ_STATO_FONDO_ROT_NETTO':'FLOAT','OC_FINANZ_STATO_FSC_NETTO':'FLOAT','OC_FINANZ_STATO_PAC_NETTO':'FLOAT','OC_FINANZ_STATO_COMPL_NETTO':'FLOAT','OC_FINANZ_STATO_ALTRI_PROV_NETTO':'FLOAT','OC_FINANZ_REGIONE_NETTO':'FLOAT','OC_FINANZ_PROVINCIA_NETTO':'FLOAT','OC_FINANZ_COMUNE_NETTO':'FLOAT','OC_FINANZ_RISORSE_LIBERATE_NETTO':'FLOAT','OC_FINANZ_ALTRO_PUBBLICO_NETTO':'FLOAT','OC_FINANZ_STATO_ESTERO_NETTO':'FLOAT','OC_FINANZ_PRIVATO_NETTO':'FLOAT','OC_FINANZ_TOT_PUB_NETTO':'FLOAT','OC_COSTO_COESIONE':'FLOAT','IMPEGNI':'FLOAT','OC_IMPEGNI_GIURID_VINCOLANTI':'FLOAT','OC_IMPEGNI_TRASFERIMENTI':'FLOAT','OC_IMPEGNI_COESIONE':'FLOAT','TOT_PAGAMENTI':'FLOAT','OC_TOT_PAGAMENTI_BENEFICIARI':'FLOAT','OC_TOT_PAGAMENTI_TRASFERIMENTI':'FLOAT','COSTO_REALIZZATO':'FLOAT','COSTO_RENDICONTABILE_UE':'FLOAT','OC_TOT_PAGAMENTI_RENDICONTAB_UE':'FLOAT','OC_TOT_PAGAMENTI_FSC':'FLOAT','OC_TOT_PAGAMENTI_PAC':'FLOAT','OC_PAGAMENTI_COESIONE':'FLOAT','OC_DATA_INIZIO_PROGETTO':'DATE','OC_DATA_FINE_PROGETTO_PREVISTA':'DATE','OC_DATA_FINE_PROGETTO_EFFETTIVA':'DATE','DATA_INIZIO_PREV_STUDIO_FATT':'DATE','DATA_INIZIO_EFF_STUDIO_FATT':'DATE','DATA_FINE_PREV_STUDIO_FATT':'DATE','DATA_FINE_EFF_STUDIO_FATT':'DATE','DATA_INIZIO_PREV_PROG_PREL':'DATE','DATA_INIZIO_EFF_PROG_PREL':'DATE','DATA_FINE_PREV_PROG_PREL':'DATE','DATA_FINE_EFF_PROG_PREL':'DATE','DATA_INIZIO_PREV_PROG_DEF':'DATE','DATA_INIZIO_EFF_PROG_DEF':'DATE','DATA_FINE_PREV_PROG_DEF':'DATE','DATA_FINE_EFF_PROG_DEF':'DATE','DATA_INIZIO_PREV_PROG_ESEC':'DATE','DATA_INIZIO_EFF_PROG_ESEC':'DATE','DATA_FINE_PREV_PROG_ESEC':'DATE','DATA_FINE_EFF_PROG_ESEC':'DATE','DATA_INIZIO_PREV_AGG_BANDO':'DATE','DATA_INIZIO_EFF_AGG_BANDO':'DATE','DATA_FINE_PREV_AGG_BANDO':'DATE','DATA_FINE_EFF_AGG_BANDO':'DATE','DATA_INIZIO_PREV_STIP_ATTRIB':'DATE','DATA_INIZIO_EFF_STIP_ATTRIB':'DATE','DATA_FINE_PREV_STIP_ATTRIB':'DATE','DATA_FINE_EFF_STIP_ATTRIB':'DATE','DATA_INIZIO_PREV_ESECUZIONE':'DATE','DATA_INIZIO_EFF_ESECUZIONE':'DATE','DATA_FINE_PREV_ESECUZIONE':'DATE','DATA_FINE_EFF_ESECUZIONE':'DATE','DATA_INIZIO_PREV_COLLAUDO':'DATE','DATA_INIZIO_EFF_COLLAUDO':'DATE','DATA_FINE_PREV_COLLAUDO':'DATE','DATA_FINE_EFF_COLLAUDO':'DATE','COD_TIPO_PROCED_ATTIVAZIONE':'VARCHAR','OC_FLAG_REGIONE_UNICA':'INT','DATA_AGGIORNAMENTO':'DATE','OC_FLAG_CUP':'INT','PROGRAMMATO_INDICATORE_1':'VARCHAR','REALIZZATO_INDICATORE_1':'VARCHAR','PROGRAMMATO_INDICATORE_2':'VARCHAR','REALIZZATO_INDICATORE_2':'VARCHAR','PROGRAMMATO_INDICATORE_3':'VARCHAR','REALIZZATO_INDICATORE_3':'VARCHAR','PROGRAMMATO_INDICATORE_4':'VARCHAR','REALIZZATO_INDICATORE_4':'VARCHAR'}</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="st">)) TO 'progetti_esteso_20230430.parquet' (FORMAT 'PARQUET', CODEC 'ZSTD');"</span> <span class="kw">|</span>  <span class="ex">duckdb</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+<p>Con <code>(FORMAT 'PARQUET', CODEC 'ZSTD')</code> si imposta il <code>PARQUET</code> come formato di output e <code>ZSTD</code> come algoritmo di compressione.</p>
+</section>
+<section id="è-come-avere-delle-api" class="level3">
+<h3 class="anchored" data-anchor-id="è-come-avere-delle-api">È come avere delle API</h3>
+<p>Il formato <code>parquet</code> - accoppiato a <em>client</em> come <a href="#duckdb">DuckDB</a> - rende <strong>facile</strong> e <strong>universale</strong> l’accesso ai dati. Questo perché, una volta che un file è pubblico sul web (in <code>HTTPS</code>, come <code>S3</code>, ecc.), si ha a disposizione un’<strong>interfaccia <code>SQL</code></strong> per interrogarlo, in <strong>modalità <code>streaming</code></strong>, ovvero rendendo disponibili solo le porzioni di dati necessarie per rispondere alle <em>query</em>, invece che tutto il file.</p>
+<p>È un po’ come <strong>avere delle API</strong>, ma senza doverle creare. E, da utente, senza dovere studiare una nuova documentazione di API, perché basta conoscere l’“universale” <code>SQL</code> e accedere al file <code>parquet</code> dal linguaggio di <em>scripting</em> e/o <em>client</em> preferiti.</p>
+<p>Mi spiego con un esempio, basato sui <a href="https://www.italiadomani.gov.it/content/sogei-ng/it/it/catalogo-open-data/Universo_ReGiS_Progetti.html">dati sui progetti del PNRR</a>. È un dataset “piccolo” (200.000 righe per 50 colonne), ma mi è comodo qui a fini didattici.<br> Voglio sapere per ogni Missione, il numero dei progetti e il valore del finanziamento PNRR (in euro).<br> Usando come client DuckDB, e abilitando l’estensione <code>httpfs</code> (vedi sezione <a href="#le-estensioni">estensioni</a>), basta conoscere l’URL del file e lanciare questa <em>query</em>:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> <span class="at">-c</span> <span class="st">'</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT "Descrizione Missione" missione,COUNT(*) numero_progetti,</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="st">SUM("Finanziamento PNRR") finanziamento_pnrr</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="st">FROM "https://raw.githubusercontent.com/aborruso/aborruso.github.io//main/posts/duckdb-intro-csv/file/PNRR_Progetti-Universo_REGIS_v2.1.parquet"</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="st">GROUP by "Descrizione Missione"</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="st">ORDER BY finanziamento_pnrr desc;</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="st">'</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>E in circa 1 secondo (al primo lancio e in molto meno dal secondo in poi) ottengo:</p>
+<div id="tbl-parquet-api" class="anchored">
+<div class="table-responsive">
+<table class="table-striped small table-sm table">
+<caption>Tabella&nbsp;3: Output della <em>query</em></caption>
+<colgroup>
+<col style="width: 27%">
+<col style="width: 36%">
+<col style="width: 36%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>missione</th>
+<th style="text-align: right;">numero_progetti</th>
+<th style="text-align: right;">finanziamento_pnrr</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Rivoluzione verde e transizione ecologica</td>
+<td style="text-align: right;">49621</td>
+<td style="text-align: right;">22688516407.240803</td>
+</tr>
+<tr class="even">
+<td>Infrastrutture per una mobilità sostenibile</td>
+<td style="text-align: right;">206</td>
+<td style="text-align: right;">22563735313.390625</td>
+</tr>
+<tr class="odd">
+<td>Istruzione e ricerca</td>
+<td style="text-align: right;">65403</td>
+<td style="text-align: right;">20129269029.008453</td>
+</tr>
+<tr class="even">
+<td>Digitalizzazione, innovazione, competitività e cultura</td>
+<td style="text-align: right;">63025</td>
+<td style="text-align: right;">19245334466.823135</td>
+</tr>
+<tr class="odd">
+<td>Inclusione e coesione</td>
+<td style="text-align: right;">11764</td>
+<td style="text-align: right;">12998257338.579054</td>
+</tr>
+<tr class="even">
+<td>Salute</td>
+<td style="text-align: right;">7527</td>
+<td style="text-align: right;">8059988416.008047</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>E posso farlo anche da una <a href="https://shell.duckdb.org/">pagina web</a> che includa DuckDb come <em>WebAssembly</em> (vedi <a href="#fig-duckdb-wasm" class="quarto-xref">Figura&nbsp;4</a>).</p>
+<div id="fig-duckdb-wasm" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><a href="https://shell.duckdb.org/"><img src="images/ddb-wasm.png" class="img-fluid figure-img" style="width:100.0%"></a></p>
+<figcaption class="figure-caption">Figura&nbsp;4: Il client DuckDB come modulo WASM</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Non è la soluzione definitiva
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Questa dei file statici in formato <code>parquet</code> non è la soluzione definitiva per abilitare l’accesso ai dati in modo programmatico, in applicazioni web. Fino ad alcuni milioni di righe ha delle <em>performance</em> buone, poi diventa un po’ lento. E ci sono modalità più ottimizzate per richieste transazionali o atomiche, per dati relazionali con schemi complessi, per dataset “privati” con controllo granulare degli accessi, e per dati in rapido cambiamento.</p>
+</div>
+</div>
+</section>
+<section id="affiancarlo-ai-file-csv" class="level3">
+<h3 class="anchored" data-anchor-id="affiancarlo-ai-file-csv">Affiancarlo ai file CSV</h3>
+<p>Il formato <code>parquet</code> - per alcune delle sue caratteristiche - <strong>potrebbe</strong> <strong>affiancare</strong> (e alla lunga <strong>rimpiazzare</strong>?) il <strong><code>CSV</code></strong>, come formato di <strong>pubblicazione</strong> di <strong>dati aperti</strong>.<br></p>
+<p>In contesti applicativi in cui le <em>performance</em>, lo spazio di archiviazione, le modalità di accesso sono parametri da tenere in alta considerazione, è già molto usato.<br> Un esempio per tutti è quello dei dataset di <a href="https://huggingface.co/datasets">Hugging Face</a>.</p>
+<p>I dati aperti globali sugli edifici del progetto <a href="https://github.com/microsoft/GlobalMLBuildingFootprints/">GlobalMLBuildingFootprints</a> (1.2 miliardi di edifici), sono in formato parquet, nella sua estensione spaziale.<br> Anche i dataset geografici del progetto <a href="https://overturemaps.org/download/">Overture Maps Foundation</a>, sono in formato parquet.<br> I dati aperti sulle <a href="https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page">corse di taxi e veicoli con conducente di New York</a>, sono anch’essi in questo formato.</p>
+</section>
 </section>
 <section id="duckdb" class="level2">
 <h2 class="anchored" data-anchor-id="duckdb">DuckDB</h2>
+<p><strong>DuckDB</strong> è lo strumento più usato in questo post, perché riesce a fare utilizzare comodamente dati <code>CSV</code> brutti, sporchi, cattivi e “grossi”, e anche renderli belli (con una conversione in <a href="#parquet">formato <code>parquet</code></a>).</p>
+<p>È un <strong>database relazionale <em>embedded</em></strong> e <strong><em>open source</em></strong> <strong>leggero</strong> e <strong>veloce</strong>, di facilissima installazione e gestione.<br> È progettato per l’<a href="https://duckdb.org/why_duckdb.html#duckdbisfast"><strong>analisi rapida di dati</strong></a> ed è basato su uno schema di archiviazione a colonne (vedi <a href="#formato-colonnare">spiegazione correlata</a> per il formato <code>parquet</code>).</p>
+<p>È scritto in <code>C++</code>, ha un’interfaccia <code>SQL</code> standard, ed è <a href="https://duckdb.org/why_duckdb.html#duckdbissimple">integrabile facilmente</a> in qualsiasi ambiente di lavoro (API per Python, R, Java, Julia, Swift, ecc.).</p>
+<p>Per le sue caratteristiche e per l’uso che si fa tipicamente dei dati, ha contribuito a far emergere la frase “<a href="https://motherduck.com/blog/big-data-is-dead/"><strong>Big data is dead</strong></a>” (leggilo è molto interessante):</p>
 <ul>
-<li>il SQL figo e comodo (group by all, exclude)</li>
-<li>json, parquet</li>
-<li>https</li>
-<li>geo</li>
-<li>integrabile con python e R, …</li>
+<li>I sistemi moderni possono gestire anche dati molto grandi in modo efficace ed economico.</li>
+<li>La maggior parte delle aziende ha pochi GB/TB di dati, non i PB prospettati dal marketing di alcune soluzioni.</li>
+<li><em>Storage</em> e <em>computing</em> sono separati, ma lo <em>storage</em> tende ad aumentare più velocemente del <em>computing</em> richiesto.</li>
+<li>Le query analitiche usano di solito solo una piccola parte dei dataset, i record più recenti.</li>
+<li>Alcuni dati invecchiano velocemente, dopo poco tempo sono interrogati raramente e possono diventare un onere.</li>
+<li>Bisognerebbe dimostrare che i dataset rimangono realmente rilevanti anziché accumularli senza motivo.</li>
 </ul>
+<p>DuckDB è “tanta roba” e sul <a href="https://duckdb.org/">sito ufficiale</a> è tutto molto ben documentato.</p>
+<p>Qui voglio sottolineare alcune cose che, da piccolo utente, mi sono piaciute molto.</p>
+<section id="facilità-di-installazione-e-utilizzo" class="level3">
+<h3 class="anchored" data-anchor-id="facilità-di-installazione-e-utilizzo">Facilità di installazione e utilizzo</h3>
+<p>La <a href="https://duckdb.org/docs/installation/index">pagina dedicata</a> è molto comoda:</p>
+<ol type="1">
+<li>si sceglie la versione;</li>
+<li>l’ambiente e le modalità di lavoro (io lo utilizzo soprattutto a riga di comando, come <code>CLI</code>);</li>
+<li>la piattaforma;</li>
+<li>vengono restituite le istruzioni per l’installazione.</li>
+</ol>
+<p>E in pochissimi tempo si è pronti all’uso.</p>
+<div id="fig-duckdb-install" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><a href="https://duckdb.org/docs/installation/index"><img src="images/duckdb_install.png" class="img-fluid figure-img" style="width:100.0%"></a></p>
+<figcaption class="figure-caption">Figura&nbsp;5: Pagina di installazione di DuckDB</figcaption>
+</figure>
+</div>
+</section>
+<section id="le-estensioni" class="level3">
+<h3 class="anchored" data-anchor-id="le-estensioni">Le estensioni</h3>
+<p>DuckBD ha delle <a href="https://duckdb.org/docs/archive/0.8.1/extensions/overview"><strong>estensioni</strong></a> che ne estendono in modo molto interessante l’utilizzo.</p>
+<p>Tre che ho trovato subito utilissime sono:</p>
+<ul>
+<li><a href="https://duckdb.org/docs/extensions/httpfs"><code>httpfs</code></a>, per leggere file <code>CSV</code> e <code>parquet</code> direttamente da indirizzi <code>HTTP(S)</code> (è <a href="#come-avere-delle-api">come avere delle API</a>) o tramite <code>S3</code>;</li>
+<li><a href="https://duckdb.org/docs/extensions/json"><code>json</code></a>, che implementa funzioni per lavorare con dati in formato <code>JSON</code>;</li>
+<li><a href="https://duckdb.org/docs/extensions/spatial"><code>spatial</code></a>, per usare DuckDB come motore di analisi spaziali/geografiche.</li>
+</ul>
+<p>E con l’estensione <code>httpfs</code> e con dati CSV pubblicati in <a href="#csv-standard">modo “standard”</a> (come <a href="https://github.com/pcm-dpc/COVID-19">quelli sulla COVID-19</a> pubblicati dalla Protezione Civile), è ad esempio possibile avere restituito comodamente e rapidamente la <strong>media mobile settimanale</strong> dei nuovi casi <strong>COVID-19</strong> <strong>per regione</strong>, puntando semplicemente all’URL di un file statico (DuckBD supporta una sintassi <code>SQL</code>, dove il <code>FROM</code> può essere inserito all’inizio):</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span>  <span class="at">--csv</span> <span class="at">-c</span> <span class="st">"FROM read_csv_auto('https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-regioni/dpc-covid19-ita-regioni.csv')</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT denominazione_regione,data,nuovi_positivi,AVG(nuovi_positivi)</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="st">OVER (</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="st">  PARTITION BY denominazione_regione</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="st">  ORDER BY data</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="st">  RANGE BETWEEN INTERVAL 7 DAYS PRECEDING</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="st">  AND INTERVAL 0 DAYS FOLLOWING</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="st">  ) AS media_mobile</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="st">ORDER BY 1,2;"</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Come se <a href="#come-avere-delle-api">fosse un’API</a>.</p>
+<p>E per dare un’idea dell’<a href="https://github.com/duckdblabs/duckdb_spatial">estensione spaziale</a>, un piccolo esempio, per creare due punti, unirli in una linea, calcolare il centroide di questa ed estrarne la coordinata <code>x</code>:</p>
+<div class="sourceCode" id="annotated-cell-8"><pre class="sourceCode bash code-overflow-wrap code-annotation-code code-with-copy code-annotated"><code class="sourceCode bash"><button class="code-annotation-anchor" data-target-cell="annotated-cell-8" data-target-annotation="1">1</button><span id="annotated-cell-8-1" class="code-annotation-target"><a href="#annotated-cell-8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> <span class="at">-c</span> <span class="st">'load spatial;</span></span>
+<span id="annotated-cell-8-2"><a href="#annotated-cell-8-2" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT ST_X(</span></span>
+<span id="annotated-cell-8-3"><a href="#annotated-cell-8-3" aria-hidden="true" tabindex="-1"></a><span class="st">  ST_Centroid(</span></span>
+<span id="annotated-cell-8-4"><a href="#annotated-cell-8-4" aria-hidden="true" tabindex="-1"></a><span class="st">    ST_MakeLine(</span></span>
+<span id="annotated-cell-8-5"><a href="#annotated-cell-8-5" aria-hidden="true" tabindex="-1"></a><span class="st">      ST_POINT(42.3471, 14.8454),ST_POINT(42.1471, 13.8454)</span></span>
+<span id="annotated-cell-8-6"><a href="#annotated-cell-8-6" aria-hidden="true" tabindex="-1"></a><span class="st">      )</span></span>
+<span id="annotated-cell-8-7"><a href="#annotated-cell-8-7" aria-hidden="true" tabindex="-1"></a><span class="st">    )</span></span>
+<span id="annotated-cell-8-8"><a href="#annotated-cell-8-8" aria-hidden="true" tabindex="-1"></a><span class="st">) test;'</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-8" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-8" data-code-lines="1" data-code-annotation="1">carica l’estensione spaziale</span>
+</dd>
+</dl>
+<p>A schermo si avrà <code>42.2471</code>.</p>
+</section>
+<section id="un-sql-più-comodo" class="level3">
+<h3 class="anchored" data-anchor-id="un-sql-più-comodo">Un SQL più comodo</h3>
+<p>DuckDB supporta un <code>SQL</code> che mette di buon umore. Alcuni esempi.</p>
+<p>Se ho una tabella con 199 colonne, come quella dei <a href="#dati-opencoesione">progetti di OpenCoesione</a>, e voglio selezionarle tutte tranne due, dovrei scrivere per esteso le 196 che voglio. Qui posso usare <code>EXCLUDE</code> e scrivere soltanto le due che non voglio:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sql code-overflow-wrap code-with-copy"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> EXCLUDE (codice_progetto, codice_progetto_originale) <span class="kw">FROM</span> progetti;</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Lo stesso avviene nel comune <code>SQL</code>, quando devo applicare delle modifiche soltanto a una parte dei campi di una tabella. Qui ho <code>REPLACE</code>:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sql code-overflow-wrap code-with-copy"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">REPLACE</span> (FINANZ_TOTALE_PUBBLICO<span class="op">/</span><span class="dv">100</span> <span class="kw">AS</span> FINANZ_NORM) <span class="kw">FROM</span> miatabella;</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Ma il <code>SQL</code> “speciale” di DuckDB che mi ha fatto più piacere usare è il <code>GROUP BY ALL</code>. Normalmente, infatti specificare le colonne sia nella clausola <code>SELECT</code> che nella clausola <code>GROUP BY</code>. Qui, con <code>GROUP BY ALL</code>, il raggruppamento viene fatto per tutte le colonne nella clausola SELECT che non sono incluse in una funzione di aggregazione.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode sql code-overflow-wrap code-with-copy"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> missione,regione, <span class="fu">COUNT</span>(<span class="op">*</span>) numero_progetti</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="kw">FROM</span> progetti</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> <span class="kw">ALL</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>E in modo simile funziona l’<code>ORDER BY ALL</code>.</p>
+<p>In molti dialetti <code>SQL</code>, non è possibile utilizzare un alias definito nella clausola <code>SELECT</code> in nessun altro punto, tranne che nella clausola <code>ORDER BY</code> di quella stessa <em>query</em>. Questo spesso porta a lunghe <em>subquery</em>.<br>In DuckDB, un alias non di aggregazione nella clausola <code>SELECT</code> può essere immediatamente utilizzato nelle clausole <code>WHERE</code> e <code>GROUP BY</code>, mentre gli alias di aggregazione possono essere utilizzati nella clausola <code>HAVING</code>. Nessuna <em>subquery</em> necessaria!</p>
+<p>È possibile fare lo <em>slicing</em> delle stringhe in modo simile ai linguaggi di scripting, senza necessariamente usare <code>SUBSTRING</code>:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sql code-overflow-wrap code-with-copy"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="st">'Quanto è bello DuckDB'</span>[:<span class="op">-</span><span class="dv">7</span>] <span class="kw">as</span> slice;</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>┌────────────────┐</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>│     slice      │</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>├────────────────┤</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>│ Quanto è bello │</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>└────────────────┘</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>E si potrebbero fare tanti altri esempi.</p>
+</section>
+<section id="integrazione-con-altri-ambienti" class="level3">
+<h3 class="anchored" data-anchor-id="integrazione-con-altri-ambienti">Integrazione con altri ambienti</h3>
+<p>Con l’estensione <code>sqlite</code>, legge un in modo diretto un <em>database</em> <code>sqlite</code>:<br></p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sql code-overflow-wrap code-with-copy"><code class="sourceCode sql"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> sqlite_scan(<span class="st">'test.db'</span>, <span class="st">'tbl_name'</span>);</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Con l’estensione spaziale legge file in formato <code>EXCEL</code>:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode sql code-overflow-wrap code-with-copy"><code class="sourceCode sql"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> st_read(<span class="st">'test_excel.xlsx'</span>, <span class="kw">layer</span><span class="op">=</span><span class="st">'Sheet1'</span>);</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Con l’<a href="https://duckdb.org/docs/extensions/postgres_scanner">estensione <code>postgres</code></a>, legge un <em>database</em> <code>PostgreSQL</code>:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode sql code-overflow-wrap code-with-copy"><code class="sourceCode sql"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- usando la stringa di connessione vuota, di default</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> postgres_scan(<span class="st">''</span>, <span class="st">'public'</span>, <span class="st">'mytable'</span>);</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Le <a href="https://duckdb.org/docs/api/python/overview">API Python</a> portano la potenza di fuoco di DuckDB in modo molto comodo ed efficace dentro questo ambiente di lavoro.<br> E DuckBD può nativamente interrogare Pandas DataFrames, Polars DataFrames e tabelle Arrow.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode python code-overflow-wrap code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> duckdb</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co"># directly query a Pandas DataFrame</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>pandas_df <span class="op">=</span> pd.DataFrame({<span class="st">'a'</span>: [<span class="dv">42</span>]})</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>duckdb.sql(<span class="st">'SELECT * FROM pandas_df'</span>)</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="co"># directly query a Polars DataFrame</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>polars_df <span class="op">=</span> pl.DataFrame({<span class="st">'a'</span>: [<span class="dv">42</span>]})</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>duckdb.sql(<span class="st">'SELECT * FROM polars_df'</span>)</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="co"># directly query a pyarrow table</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pyarrow <span class="im">as</span> pa</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>arrow_table <span class="op">=</span> pa.Table.from_pydict({<span class="st">'a'</span>:[<span class="dv">42</span>]})</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>duckdb.sql(<span class="st">'SELECT * FROM arrow_table'</span>)</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Ed è possibile usare DuckDB in <a href="https://duckdb.org/docs/api/r">R</a>, <a href="https://duckdb.org/docs/api/julia">Julia</a>, tramite <a href="https://duckdb.org/docs/api/odbc/overview">ODBC</a> e con tanti altri <a href="https://duckdb.org/docs/api/overview"><em>client</em></a>.</p>
+</section>
+<section id="duckdb-e-observable" class="level3">
+<h3 class="anchored" data-anchor-id="duckdb-e-observable">DuckDB e Observable</h3>
+<p>DuckDb è <a href="https://observablehq.com/@observablehq/duckdb">nativamente <strong>integrato</strong> in <strong>Observable</strong></a>. E questo gli consente di leggere in modo diretto file in formato CSV, JSON, Apache Arrow e Apache Parquet, e di sfruttare un potente motore di query SQL.</p>
+<p>Prima si attiva il client, puntando alla risorsa di interesse:</p>
+<div class="sourceCode" id="lst-duckdb-oservable"><pre class="sourceCode javascript code-with-copy"><code class="sourceCode javascript"><span id="lst-duckdb-oservable-1"><a href="#lst-duckdb-oservable-1" aria-hidden="true" tabindex="-1"></a>pnrrdb <span class="op">=</span> DuckDBClient<span class="op">.</span><span class="fu">of</span>({</span>
+<span id="lst-duckdb-oservable-2"><a href="#lst-duckdb-oservable-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">progetti</span><span class="op">:</span> <span class="fu">FileAttachment</span>(<span class="st">"PNRR_Progetti-Universo_REGIS_v2.1.parquet"</span>)</span>
+<span id="lst-duckdb-oservable-3"><a href="#lst-duckdb-oservable-3" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb20" data-startfrom="658" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 657;"><span id="cb20-658"><a href="#cb20-658" aria-hidden="true" tabindex="-1"></a>pnrrdb <span class="op">=</span> DuckDBClient<span class="op">.</span><span class="fu">of</span>({</span>
+<span id="cb20-659"><a href="#cb20-659" aria-hidden="true" tabindex="-1"></a>  <span class="dt">progetti</span><span class="op">:</span> <span class="fu">FileAttachment</span>(<span class="st">"file/PNRR_Progetti-Universo_REGIS_v2.1.parquet"</span>)</span>
+<span id="cb20-660"><a href="#cb20-660" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<p>E poi si può usare il <em>client</em> Javascript DuckDB per fare una query <code>SQL</code>, da integrare ad esempio in una <a href="https://observablehq.com/@observablehq/input-table">tabella Observable</a>:</p>
+<div class="cell responsive small">
+<div class="sourceCode cell-code" id="cb21" data-startfrom="667" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 666;"><span id="cb21-667"><a href="#cb21-667" aria-hidden="true" tabindex="-1"></a>Inputs<span class="op">.</span><span class="fu">table</span>(</span>
+<span id="cb21-668"><a href="#cb21-668" aria-hidden="true" tabindex="-1"></a>  pnrrdb<span class="op">.</span><span class="fu">sql</span><span class="vs">`SELECT Missione, SUM("Finanziamento PNRR") AS total_PNRR</span></span>
+<span id="cb21-669"><a href="#cb21-669" aria-hidden="true" tabindex="-1"></a><span class="vs">  FROM progetti</span></span>
+<span id="cb21-670"><a href="#cb21-670" aria-hidden="true" tabindex="-1"></a><span class="vs">  GROUP BY ALL`</span><span class="op">,</span> {<span class="dt">locale</span><span class="op">:</span> <span class="st">"it-IT"</span>}</span>
+<span id="cb21-671"><a href="#cb21-671" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-2" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Questa tabella
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Il codice Observable di esempio di sopra è eseguito al caricamento di questa pagina. E la tabella è proprio un esempio di <em>output live</em> (grazie al fatto che questo sito è basato su <a href="https://quarto.org/docs/interactive/ojs/">Quarto</a>). Questo per mostrarti quanto sia facile e diretto l’uso di DuckDB in Observable.<br> Nel codice per generare la tabella, <code>locale: "it-IT"</code> è per avere i numeri all’“italiana”, con il <code>.</code> come separatore delle migliaia e la <code>,</code> come separatore dei decimali.</p>
+</div>
+</div>
+</section>
 </section>
 <section id="dati-opencoesione" class="level2">
 <h2 class="anchored" data-anchor-id="dati-opencoesione">Dati OpenCoesione</h2>
+<blockquote class="blockquote">
+<p><a href="https://opencoesione.gov.it/"><strong>OpenCoesione</strong></a> è l’iniziativa nazionale di governo aperto (<em>open government</em>) sulle <strong>politiche di coesione</strong><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, coordinata dal <strong>Dipartimento per le Politiche di Coesione</strong> della Presidenza del Consiglio dei Ministri. Nasce, nel 2012, per favorire un <strong>migliore uso</strong> delle <strong>risorse pubbliche</strong> attraverso la <strong>diffusione</strong> e il <strong>riutilizzo</strong> di <strong>dati</strong> e informazioni sugli <strong>interventi finanziati</strong> con risorse nazionali ed europee, che vengono pubblicati sul portale.</p>
+</blockquote>
+<p>Il portale contiene i dati “a partire dal ciclo 2000-2006 limitatamente ai programmi FSC (Fondo per lo Sviluppo e la Coesione) a titolarità regionale e dal ciclo 2007-2013 per quanto riguarda tutti i programmi nazionali ed europei, aggiornati con cadenza bimestrale”.</p>
+<p>👏 È un progetto che <strong>ha fatto</strong> e <strong>fa scuola</strong>. E a proposito di “scuola”, non si può non citare il progetto “<a href="http://www.ascuoladiopencoesione.it/"><strong>A Scuola di OpenCoesione</strong></a>”, che ha coinvolto migliaia di scuole di tutta Italia, portando nelle classi, tra studenti e studentesse, insegnanti e famiglie, il tema della trasparenza e della partecipazione.</p>
+<p>Nel portale è presente la <a href="https://opencoesione.gov.it/it/opendata/#!progetti_sie_section"><strong>sezione dei dati aperti</strong></a>, in cui il dataset più importante è quello dei <a href="https://opencoesione.gov.it/it/opendata/progetti_esteso.zip"><strong>Progetti con tracciato esteso</strong></a>.<br> Lo useremo come dataset di esempio, per mostrare come sia possibile lavorare comodamente con un file <code>CSV</code> di dimensioni “importanti” e di una certa complessità e ricchezza.</p>
+<section id="esplorare-il-dataset" class="level3">
+<h3 class="anchored" data-anchor-id="esplorare-il-dataset">Esplorare il dataset</h3>
+<p>Il dataset <a href="https://opencoesione.gov.it/it/opendata/progetti_esteso.zip"><strong>Progetti con tracciato esteso</strong></a> (quello aggiornato al 30 aprile 2023) è un file <code>CSV</code> compresso in formato <code>ZIP</code> che pesa circa 200 MB; decompresso circa 4 GB e mezzo.</p>
+<p>Lanciando <code>unzip -l progetti_esteso_20230430.zip</code> ottengo:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="an">Archive:</span><span class="co">  progetti_esteso_20230430.zip</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  Length      Date    Time    Name</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>---------  ---------- -----   ----</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>4541980767  2023-07-05 23:34   progetti_esteso_20230430.csv</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>---------                     -------</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>4541980767                     1 file</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>È molto utile leggere qualche riga del <code>CSV</code>. Per farlo posso lanciare il comando di sotto, che invia il contenuto del file compresso all’<em>utility</em> <code>head</code>: mostra le prime 10 righe del file e si ferma.<br> Lo fa in 0.003 secondi - istantaneamente - perché <strong>il file non viene decompresso per intero</strong>, ma <strong>solo la parte che serve</strong> per mostrare le prime 10 righe.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span> <span class="at">-p</span> progetti_esteso_20230430.zip <span class="kw">|</span> <span class="fu">head</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Facendolo riesco a leggere che:</p>
 <ul>
-<li>le date come num</li>
-<li>per un CSV così grande, la definizione di uno schema per import</li>
-<li>i numeri sono tutti num, senza distinzione tra interi e float</li>
-<li><code>COD_TIPO_PROCED_ATTIVAZIONE</code> è dichiarato come num, ma è una stringa</li>
-<li>nelle spec di opencoesione non c’è il campo <code>OC_MACROAREA</code></li>
-<li>c’è un file con il vocabolario dei valori?</li>
-<li><code>PROGRAMMATO_INDICATORE_1</code> è dichiarato come num, e sembrano esserci numeri decimali, ma hanno come separatore decimale il punto e non la virgola. Verificare se è veramente un numero o se è una stringa</li>
-<li><code>REALIZZATO_INDICATORE_1</code> è dichiarato come num, e sembrano esserci numeri decimali, ma hanno come separatore decimale il punto e non la virgola. Verificare se è veramente un numero o se è una stringa</li>
-<li>le celle con contenuti 5:::5:::5. A volte c’è così “5:::.:::.”, che vuol dire? È giusto? Cosa vuol dire <code>.</code>? È il valore nullo?</li>
+<li>il separatore di campo è il <code>;</code>;</li>
+<li>la prima riga è una riga di intestazione;</li>
+<li>che ci sono decine di campi (questo lo si può leggere anche dal <a href="https://opencoesione.gov.it/media/opendata/metadati_progetti_tracciato_esteso.xls">file dei metadati</a>).</li>
 </ul>
+<p>Con qualche sforzo in più di scorrimento a schermo, riesco a vedere che il separatore dei decimali è la <code>,</code> e che i campi con le date sono in un formato che sembra un numero intero, ma in realtà è <code>YYYYMMDD</code> (<code>23 agosto 2021</code> è espresso come <code>20210823</code>).</p>
+<p>Modificando un po’ il comando di sopra, con <code>unzip -p progetti_esteso_20230430.zip | wc -l</code>, leggo che il file è composto da 1.936.840 righe.</p>
+<p>Fatta questa prima esplorazione grezza, di solito voglio “guardare” in modo più “comodo” la tabella dei dati. Potrei salvare le prime 10 righe in un file, aggiungendo al comando di sopra <code>&gt; prime_dieci_righe.csv</code>, e infine aprirlo con un foglio elettronico; io preferisco usare lo <a href="https://ondata.github.io/guidaVisiData/">straordinario <strong>VisiData</strong></a> per farlo.<br> Con <code>unzip -p progetti_esteso_20230430.zip | head | vd -f csv --csv-delimiter=";"</code> ad esempio visualizzo le 10 righe di <em>output</em> e tutte le colonne (constatando che sono 199), ma soprattutto mi faccio una prima idea dei contenuti.</p>
+<div id="fig-duckdb-preview-vd" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="./images/visidata_explore.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figura&nbsp;6: Esempio visualizzazione con VisiData</figcaption>
+</figure>
+</div>
+<p>Ci sono tantissimi altri strumenti e modalità con cui potrei fare queste ed altre operazioni di esplorazione e analisi, ma questo è un <em>post</em> dedicato in modo particolare a <a href="#duckdb">DuckDB</a> e alla sua applicazione a riga di comando. Quindi <strong>da qui in poi</strong>, utilizzerò <strong>soprattutto</strong> <strong>DuckDB</strong> e la sua <strong><code>cli</code></strong>.<br> Per replicare con DuckDB quanto visto sopra in <a href="#fig-duckdb-preview-vd" class="quarto-xref">Figura&nbsp;6</a>, il comando è (metto qualche “a capo” per renderlo più leggibile):</p>
+<div class="sourceCode" id="annotated-cell-22"><pre class="sourceCode bash code-annotation-code code-with-copy code-annotated"><code class="sourceCode bash"><span id="annotated-cell-22-1"><a href="#annotated-cell-22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span> <span class="at">-p</span> progetti_esteso_20230430.zip <span class="kw">|</span> <span class="fu">head</span> <span class="kw">|</span> <span class="dt">\</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-22" data-target-annotation="1">1</button><span id="annotated-cell-22-2" class="code-annotation-target"><a href="#annotated-cell-22-2" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> <span class="at">-cmd</span> <span class="st">'.mode box'</span> <span class="at">-c</span> <span class="st">'</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-22" data-target-annotation="2">2</button><span id="annotated-cell-22-3" class="code-annotation-target"><a href="#annotated-cell-22-3" aria-hidden="true" tabindex="-1"></a><span class="st">select * from read_csv_auto("/dev/stdin");</span></span>
+<button class="code-annotation-anchor" data-target-cell="annotated-cell-22" data-target-annotation="3">3</button><span id="annotated-cell-22-4" class="code-annotation-target"><a href="#annotated-cell-22-4" aria-hidden="true" tabindex="-1"></a><span class="st">'</span> <span class="kw">|</span> <span class="fu">less</span> <span class="at">-S</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<dl class="code-annotation-container-hidden code-annotation-container-grid">
+<dt data-target-cell="annotated-cell-22" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="annotated-cell-22" data-code-lines="2" data-code-annotation="1"><code>-cmd '.mode box'</code> abilita la vista “box”</span>
+</dd>
+<dt data-target-cell="annotated-cell-22" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="annotated-cell-22" data-code-lines="3" data-code-annotation="2">L’<em>input</em> è lo <code>stdin</code></span>
+</dd>
+<dt data-target-cell="annotated-cell-22" data-target-annotation="3">3</dt>
+<dd>
+<span data-code-cell="annotated-cell-22" data-code-lines="4" data-code-annotation="3">L’<em>output</em> a <code>less</code> in modo che sia leggibile</span>
+</dd>
+</dl>
+<p>A schermo ho un’anteprima leggibile e navigabile, come questa di <a href="#fig-duckdb-preview-box" class="quarto-xref">Figura&nbsp;7</a>.</p>
+<div id="fig-duckdb-preview-box" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="images/duckdb-preview-box.gif" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figura&nbsp;7: Output in modalità <code>box</code> di DuckDB</figcaption>
+</figure>
+</div>
+<p>Come detto <a href="#compressione-dei-file-csv">sopra</a> DuckDB può <strong>leggere nativamente</strong> file <strong>compressi</strong> in formato <strong><code>GZIP</code></strong> (e <code>ZSTD</code>).<br> Allora per comodità, ho creato la versione <code>GZIP</code> del file <code>Progetti con tracciato esteso</code> di OpenCoesione.</p>
+<p>La posso interrogare in modo diretto, applicando la funzione <code>read_csv_auto</code>, che prova a fare l’inferenza della presenza (o no) della linea di intestazione, del separatore dei campi, del separatore dei decimali, del tipo di campo, ecc.:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> <span class="at">-c</span> <span class="st">'</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT * from read_csv_auto("progetti_esteso_20230430.csv.gz") LIMIT 10</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="st">'</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In output ho un’anteprima ben leggibile a schermo, in cui vedo 10 righe, alcuni dei campi e il loro tipo e il numero di colonne.</p>
+<div id="fig-duckdb-standard-output" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="images/duck-standard-output.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Figura&nbsp;8: DuckDb standard output</figcaption>
+</figure>
+</div>
+<p>Per vedere tutti i campi posso forzare l’<strong>output in <code>CSV</code></strong>, aggiungendo <code>--csv</code> e infine leggerlo con VisiData:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> <span class="at">--csv</span> <span class="at">-c</span> <span class="st">'</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT * from read_csv_auto("progetti_esteso_20230430.csv.gz") LIMIT 10</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="st">'</span> <span class="kw">|</span> <span class="ex">vd</span> <span class="at">-f</span> csv</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Un comando comodissimo di DuckDB è <a href="https://duckdb.org/docs/guides/meta/summarize"><strong><code>SUMMARIZE</code></strong></a>, che restituisce una <strong>tabella esplorativa di sintesi</strong> che è una piccola gemma.<br> Per ogni campo restituisce:</p>
+<ul>
+<li>tipo di campo;</li>
+<li>valore minimo;</li>
+<li>valore massimo;</li>
+<li>numero di valori univoci approssimato;</li>
+<li>valore medio;</li>
+<li>deviazione standard;</li>
+<li>valore al 25°, 50° e 75° percentile;</li>
+<li>conteggio dei valori.</li>
+</ul>
+<p>Qui sotto in <a href="#tbl-summarize-output" class="quarto-xref">Tabella&nbsp;4</a> un esempio di output per alcune delle colonne del dataset di OpenCoesione.<br> È una tabella di gran valore, perché consente di fare delle prime scelte di analisi e di trasformazione dei dati e avere restituito degli elementi di qualità dei dati.</p>
+<div id="tbl-summarize-output" class="anchored">
+<div class="table-responsive">
+<table class="table-striped small table-sm table">
+<caption>Tabella&nbsp;4: <em>Output</em> di esempio di SUMMARIZE</caption>
+<colgroup>
+<col style="width: 6%">
+<col style="width: 6%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 8%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>column_name</th>
+<th>column_type</th>
+<th style="text-align: right;">min</th>
+<th style="text-align: right;">max</th>
+<th style="text-align: right;">approx_unique</th>
+<th style="text-align: right;">avg</th>
+<th style="text-align: right;">std</th>
+<th style="text-align: right;">q25</th>
+<th style="text-align: right;">q50</th>
+<th style="text-align: right;">q75</th>
+<th style="text-align: right;">count</th>
+<th style="text-align: right;">null_percentage</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>OC_TOT_PAGAMENTI_RENDICONTAB_UE</td>
+<td>FLOAT</td>
+<td style="text-align: right;">-450519.72</td>
+<td style="text-align: right;">1433693200.0</td>
+<td style="text-align: right;">449379</td>
+<td style="text-align: right;">48410.75611172828</td>
+<td style="text-align: right;">1908955.4857718376</td>
+<td style="text-align: right;">455.01105803437605</td>
+<td style="text-align: right;">1815.3021594409709</td>
+<td style="text-align: right;">9166.19804364237</td>
+<td style="text-align: right;">1936839</td>
+<td style="text-align: right;">8.22%</td>
+</tr>
+<tr class="even">
+<td>CUP_DESCR_SETTORE</td>
+<td>VARCHAR</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">SERVIZI PER LA P.A. E PER LA COLLETTIVITA’</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">1936839</td>
+<td style="text-align: right;">0.0%</td>
+</tr>
+<tr class="odd">
+<td>DESCR_INDICATORE_2</td>
+<td>VARCHAR</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">tematiche oggetto di approfondimento a favore dei beneficiari potenziale ed effettivi</td>
+<td style="text-align: right;">600</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">1936839</td>
+<td style="text-align: right;">0.0%</td>
+</tr>
+<tr class="even">
+<td>FINANZ_DA_REPERIRE</td>
+<td>FLOAT</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">929000000.0</td>
+<td style="text-align: right;">241</td>
+<td style="text-align: right;">19124433.744656816</td>
+<td style="text-align: right;">79954584.61051819</td>
+<td style="text-align: right;">42872.88574218749</td>
+<td style="text-align: right;">408335.86328125</td>
+<td style="text-align: right;">4609128.875</td>
+<td style="text-align: right;">1936839</td>
+<td style="text-align: right;">99.99%</td>
+</tr>
+<tr class="odd">
+<td>OC_FINANZ_UE_FESR_NETTO</td>
+<td>FLOAT</td>
+<td style="text-align: right;">-209719.28</td>
+<td style="text-align: right;">1024941760.0</td>
+<td style="text-align: right;">155171</td>
+<td style="text-align: right;">48779.41458696303</td>
+<td style="text-align: right;">2049515.9863344613</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">0.0</td>
+<td style="text-align: right;">180.9459324096726</td>
+<td style="text-align: right;">1936839</td>
+<td style="text-align: right;">42.73%</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><br>Il comando si lancia anteponendolo alla lista di record di cui si vuole ottenere una preziosa sintesi:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> <span class="at">--csv</span> <span class="at">-c</span> <span class="st">'</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="st">SUMMARIZE SELECT * from read_csv_auto("progetti_esteso_20230430.csv.gz")</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="st">'</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Ma se lo faccio, ottengo un errore:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="an">Error:</span><span class="co"> Invalid Input Error: Could not convert string 'a.001'</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>to INT64 in column "OC_COD_ARTICOLAZ_PROGRAMMA", at line 25439.</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Questo avviene per un <strong>problema</strong> legato all’<strong>inferenza automatica</strong> del campo <code>OC_COD_ARTICOLAZ_PROGRAMMA</code> che nelle prime righe contiene valori numerici, ma che in realtà contiene anche caratteri non numerici, con una struttura molto variabile.<br> Ecco alcuni valori di esempio di questo campo: <code>01</code> ; <code>08</code> ; <code>III</code> ; <code>04</code> ; <code>02</code> ; <code>1</code> ; <code>03</code> ; <code>a</code> ; <code>2</code> ; <code>I</code> ; <code>05</code> ; <code>POCMOLISE</code> ; <code>VIII</code>.<br> Nel <a href="https://opencoesione.gov.it/media/opendata/metadati_progetti_tracciato_esteso.xls">file dei metadati</a> questo campo è dichiarato coerentemente come <code>char</code>.</p>
+<p>L’<a href="https://duckdb.org/docs/data/csv/auto_detection">inferenza automatica</a> di un <code>CSV</code> in di DuckDB lavora di <em>default</em> su 20.480 righe. Quando viene fatto su un file compresso, vengono lette le prime 20.480 righe a partire dall’inizio del file.<br> È possibile aumentare il numero di righe da leggere, con il parametro <code>sample_size</code>:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> <span class="at">--csv</span> <span class="at">-c</span> <span class="st">'</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="st">SUMMARIZE SELECT * from read_csv_auto("progetti_esteso_20230430.csv.gz",sample_size=50000)</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="st">'</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Anche se aumento l’inferenza a 50.000 righe, ho errori. Stavolta però per il campo <code>COD_TIPO_PROCED_ATTIVAZIONE</code>, che di base sembra contenere numeri, ma alle volte contiene il carattere <code>.</code>.<br> Nel <a href="https://opencoesione.gov.it/media/opendata/metadati_progetti_tracciato_esteso.xls">file dei metadati</a> questo campo è dichiarato come <code>num</code>. È un <strong>errore</strong>, dovrebbe essere <code>char</code>.</p>
+<p>Portando il numero di righe a 100.000, non ho più errori. Ed è molto comodo - per un file “grande”, non ottimizzato per le <em>performance</em> e compresso - ottenere l’<em>output</em> di <code>SUMMARIZE</code> in circa 10 secondi.<br> Ma la <strong>velocità è niente senza qualità</strong>: tanti dei campi sono associati a un tipo di campo non corretto. Queste le ragioni principali:</p>
+<ul>
+<li>il <strong>separatore</strong> dei <strong>decimali</strong> è la <code>,</code> e non il <code>.</code> (che è un po’ uno <a href="#csv-standard">standard</a>). Quindi, campi che contengono valori come <code>5234,14</code> vengono interpretati come stringhe. Sono le decine di campi con suffisso <code>OC_FINANZ_</code>. Si mappano correttamente se si aggiunge il parametro <code>decimal_separator=","</code> alla funzione <code>read_csv_auto</code>, e se si definiscono tutti i campi numerici come tali.</li>
+<li>C’è però una <strong>difformità</strong> nell’uso dei <strong>separatori</strong> dei <strong>decimali</strong>. Per la grandissima parte dei campi numerici è la <code>,</code>, ma in campi come <code>PROGRAMMATO_INDICATORE_1</code> è il <code>.</code>. Quindi se si aggiunge <code>decimal_separator=","</code> (è una dichiarazione globale), si dovrà per campi come <code>PROGRAMMATO_INDICATORE_1</code> definirli prima come campi di testo e fare poi il <em>casting</em> a <code>FLOAT</code>.</li>
+<li>I campi con le <strong>date</strong> vengono mappati <strong>come numeri interi</strong>. Questo in realtà non è un problema ed è coerente con i metadati ufficiali. Il <code>23 agosto 2021</code> è espresso come <code>20210823</code>. Per potere però usare funzioni correlate alle date, è meglio definire i campi come <code>date</code> e non come <code>int</code>. Si fa definendo il formato dei valori delle date, aggiungendo il parametro <code>dateformat='%Y%m%d'</code> alla funzione <code>read_csv_auto</code> e dichiarando i relativi campi come <code>DATE</code>.</li>
+</ul>
+<p>OpenCoesione pubblica un <a href="https://opencoesione.gov.it/it/opendata/metadati/"><strong>file dei metadati</strong></a>: oltre a contenere <strong>piccoli errori</strong>, non è disponibile anche in un formato che possa essere letto automaticamente da applicazioni e librerie <em>software</em>, <strong>non è</strong> in formato <strong><em>machine readable</em></strong> (vedi sezione sulla <a href="#descrivere-i-csv">descrizione di un <code>CSV</code></a>).<br> Questa mancanza rende l’<strong>uso</strong> di questo CSV <strong>non immediato</strong> e <strong>non scevro da errori</strong>.</p>
+<p>Per avere un <em>output</em> del comando <code>SUMMARIZE</code> corretto, in presenza di un <code>CSV</code> non standard (in <a href="#csv-standard">questo senso</a>) e con alcuni problemi, è necessario scrivere un comando molto “verboso”, come quello sottostante.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-15-contents" aria-controls="callout-15" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Procedura corretta per <code>SUMMARIZE</code>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-15" class="callout-15-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb29"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> <span class="at">--csv</span> <span class="at">-c</span> <span class="st">"</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="st">SUMMARIZE SELECT *</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="st">REPLACE(</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="st">CAST(PROGRAMMATO_INDICATORE_1 AS FLOAT) AS PROGRAMMATO_INDICATORE_1,</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="st">CAST(PROGRAMMATO_INDICATORE_2 AS FLOAT) AS PROGRAMMATO_INDICATORE_2,</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="st">CAST(PROGRAMMATO_INDICATORE_3 AS FLOAT) AS PROGRAMMATO_INDICATORE_3,</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="st">CAST(PROGRAMMATO_INDICATORE_4 AS FLOAT) AS PROGRAMMATO_INDICATORE_4,</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="st">CAST(REALIZZATO_INDICATORE_1 AS FLOAT) AS REALIZZATO_INDICATORE_1,</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a><span class="st">CAST(REALIZZATO_INDICATORE_2 AS FLOAT) AS REALIZZATO_INDICATORE_2,</span></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="st">CAST(REALIZZATO_INDICATORE_3 AS FLOAT) AS REALIZZATO_INDICATORE_3,</span></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a><span class="st">CAST(REALIZZATO_INDICATORE_4 AS FLOAT) AS REALIZZATO_INDICATORE_4,</span></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a><span class="st">)</span></span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a><span class="st">from read_csv_auto(</span></span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a><span class="st">'progetti_esteso_20230430.csv.gz',SEP=';',dateformat='%Y%m%d',decimal_separator=',',sample_size=100000,</span></span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a><span class="st">types={'OC_COD_ARTICOLAZ_PROGRAMMA':'VARCHAR','FINANZ_UE':'FLOAT','FINANZ_UE_FESR':'FLOAT','FINANZ_UE_FSE':'FLOAT','FINANZ_UE_FEASR':'FLOAT','FINANZ_UE_FEAMP':'FLOAT','FINANZ_UE_IOG':'FLOAT','FINANZ_STATO_FONDO_DI_ROTAZIONE':'FLOAT','FINANZ_STATO_FSC':'FLOAT','FINANZ_STATO_PAC':'FLOAT','FINANZ_STATO_COMPLETAMENTI':'FLOAT','FINANZ_STATO_ALTRI_PROVVEDIMENTI':'FLOAT','FINANZ_REGIONE':'FLOAT','FINANZ_PROVINCIA':'FLOAT','FINANZ_COMUNE':'FLOAT','FINANZ_RISORSE_LIBERATE':'FLOAT','FINANZ_ALTRO_PUBBLICO':'FLOAT','FINANZ_STATO_ESTERO':'FLOAT','FINANZ_PRIVATO':'FLOAT','FINANZ_DA_REPERIRE':'FLOAT','FINANZ_TOTALE_PUBBLICO':'FLOAT','ECONOMIE_TOTALI':'FLOAT','ECONOMIE_TOTALI_PUBBLICHE':'FLOAT','OC_FINANZ_UE_NETTO':'FLOAT','OC_FINANZ_UE_FESR_NETTO':'FLOAT','OC_FINANZ_UE_FSE_NETTO':'FLOAT','OC_FINANZ_UE_FEASR_NETTO':'FLOAT','OC_FINANZ_UE_FEAMP_NETTO':'FLOAT','OC_FINANZ_UE_IOG_NETTO':'FLOAT','OC_FINANZ_STATO_FONDO_ROT_NETTO':'FLOAT','OC_FINANZ_STATO_FSC_NETTO':'FLOAT','OC_FINANZ_STATO_PAC_NETTO':'FLOAT','OC_FINANZ_STATO_COMPL_NETTO':'FLOAT','OC_FINANZ_STATO_ALTRI_PROV_NETTO':'FLOAT','OC_FINANZ_REGIONE_NETTO':'FLOAT','OC_FINANZ_PROVINCIA_NETTO':'FLOAT','OC_FINANZ_COMUNE_NETTO':'FLOAT','OC_FINANZ_RISORSE_LIBERATE_NETTO':'FLOAT','OC_FINANZ_ALTRO_PUBBLICO_NETTO':'FLOAT','OC_FINANZ_STATO_ESTERO_NETTO':'FLOAT','OC_FINANZ_PRIVATO_NETTO':'FLOAT','OC_FINANZ_TOT_PUB_NETTO':'FLOAT','OC_COSTO_COESIONE':'FLOAT','IMPEGNI':'FLOAT','OC_IMPEGNI_GIURID_VINCOLANTI':'FLOAT','OC_IMPEGNI_TRASFERIMENTI':'FLOAT','OC_IMPEGNI_COESIONE':'FLOAT','TOT_PAGAMENTI':'FLOAT','OC_TOT_PAGAMENTI_BENEFICIARI':'FLOAT','OC_TOT_PAGAMENTI_TRASFERIMENTI':'FLOAT','COSTO_REALIZZATO':'FLOAT','COSTO_RENDICONTABILE_UE':'FLOAT','OC_TOT_PAGAMENTI_RENDICONTAB_UE':'FLOAT','OC_TOT_PAGAMENTI_FSC':'FLOAT','OC_TOT_PAGAMENTI_PAC':'FLOAT','OC_PAGAMENTI_COESIONE':'FLOAT','OC_DATA_INIZIO_PROGETTO':'DATE','OC_DATA_FINE_PROGETTO_PREVISTA':'DATE','OC_DATA_FINE_PROGETTO_EFFETTIVA':'DATE','DATA_INIZIO_PREV_STUDIO_FATT':'DATE','DATA_INIZIO_EFF_STUDIO_FATT':'DATE','DATA_FINE_PREV_STUDIO_FATT':'DATE','DATA_FINE_EFF_STUDIO_FATT':'DATE','DATA_INIZIO_PREV_PROG_PREL':'DATE','DATA_INIZIO_EFF_PROG_PREL':'DATE','DATA_FINE_PREV_PROG_PREL':'DATE','DATA_FINE_EFF_PROG_PREL':'DATE','DATA_INIZIO_PREV_PROG_DEF':'DATE','DATA_INIZIO_EFF_PROG_DEF':'DATE','DATA_FINE_PREV_PROG_DEF':'DATE','DATA_FINE_EFF_PROG_DEF':'DATE','DATA_INIZIO_PREV_PROG_ESEC':'DATE','DATA_INIZIO_EFF_PROG_ESEC':'DATE','DATA_FINE_PREV_PROG_ESEC':'DATE','DATA_FINE_EFF_PROG_ESEC':'DATE','DATA_INIZIO_PREV_AGG_BANDO':'DATE','DATA_INIZIO_EFF_AGG_BANDO':'DATE','DATA_FINE_PREV_AGG_BANDO':'DATE','DATA_FINE_EFF_AGG_BANDO':'DATE','DATA_INIZIO_PREV_STIP_ATTRIB':'DATE','DATA_INIZIO_EFF_STIP_ATTRIB':'DATE','DATA_FINE_PREV_STIP_ATTRIB':'DATE','DATA_FINE_EFF_STIP_ATTRIB':'DATE','DATA_INIZIO_PREV_ESECUZIONE':'DATE','DATA_INIZIO_EFF_ESECUZIONE':'DATE','DATA_FINE_PREV_ESECUZIONE':'DATE','DATA_FINE_EFF_ESECUZIONE':'DATE','DATA_INIZIO_PREV_COLLAUDO':'DATE','DATA_INIZIO_EFF_COLLAUDO':'DATE','DATA_FINE_PREV_COLLAUDO':'DATE','DATA_FINE_EFF_COLLAUDO':'DATE','COD_TIPO_PROCED_ATTIVAZIONE':'VARCHAR','OC_FLAG_REGIONE_UNICA':'INT','DATA_AGGIORNAMENTO':'DATE','OC_FLAG_CUP':'INT','PROGRAMMATO_INDICATORE_1':'VARCHAR','REALIZZATO_INDICATORE_1':'VARCHAR','PROGRAMMATO_INDICATORE_2':'VARCHAR','REALIZZATO_INDICATORE_2':'VARCHAR','PROGRAMMATO_INDICATORE_3':'VARCHAR','REALIZZATO_INDICATORE_3':'VARCHAR','PROGRAMMATO_INDICATORE_4':'VARCHAR','REALIZZATO_INDICATORE_4':'VARCHAR'}</span></span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a><span class="st">)</span></span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a><span class="st">"</span> <span class="op">&gt;</span>summarize.csv</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+<p>Con questi dati di sintesi emerge ad esempio che circa 36 campi hanno almeno il 90% dei <strong>valori nulli</strong>.<br> O che in alcuni campi con le <strong>date</strong> ci sono <strong>valori</strong> (di minimo o di massimo) <strong>strani</strong> e probabilmente errati, come quelli in <a href="#tbl-strange-date" class="quarto-xref">Tabella&nbsp;5</a>.</p>
+<div id="tbl-strange-date" class="anchored">
+<div class="table-responsive">
+<table class="table-striped small table-sm table">
+<caption>Tabella&nbsp;5: Campi con valori di date “strani”</caption>
+<thead>
+<tr class="header">
+<th>column_name</th>
+<th>min</th>
+<th>max</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>OC_DATA_INIZIO_PROGETTO</td>
+<td>1899-12-30</td>
+<td>2024-02-01</td>
+</tr>
+<tr class="even">
+<td>DATA_INIZIO_EFF_STIP_ATTRIB</td>
+<td>1899-12-30</td>
+<td>2025-12-31</td>
+</tr>
+<tr class="odd">
+<td>DATA_INIZIO_EFF_AGG_BANDO</td>
+<td>1900-01-01</td>
+<td>2030-03-03</td>
+</tr>
+<tr class="even">
+<td>DATA_FINE_PREV_STUDIO_FATT</td>
+<td>1987-07-28</td>
+<td>2103-06-30</td>
+</tr>
+<tr class="odd">
+<td>DATA_FINE_EFF_STUDIO_FATT</td>
+<td>1987-07-28</td>
+<td>2103-06-30</td>
+</tr>
+<tr class="even">
+<td>OC_DATA_FINE_PROGETTO_PREVISTA</td>
+<td>1899-12-30</td>
+<td>2103-12-31</td>
+</tr>
+<tr class="odd">
+<td>DATA_FINE_PREV_ESECUZIONE</td>
+<td>1899-12-30</td>
+<td>2103-12-31</td>
+</tr>
+<tr class="even">
+<td>DATA_INIZIO_EFF_ESECUZIONE</td>
+<td>1899-12-30</td>
+<td>2211-01-20</td>
+</tr>
+<tr class="odd">
+<td>OC_DATA_FINE_PROGETTO_EFFETTIVA</td>
+<td>1899-12-30</td>
+<td>2211-08-31</td>
+</tr>
+<tr class="even">
+<td>DATA_FINE_EFF_ESECUZIONE</td>
+<td>1899-12-30</td>
+<td>2211-08-31</td>
+</tr>
+<tr class="odd">
+<td>DATA_FINE_EFF_STIP_ATTRIB</td>
+<td>1899-12-30</td>
+<td>4014-03-07</td>
+</tr>
+<tr class="even">
+<td>DATA_FINE_PREV_AGG_BANDO</td>
+<td>1991-12-05</td>
+<td>8012-10-08</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Ma soprattutto è possibile constatare quali siano <strong>i campi “categorici”</strong>, quelli con un <strong>numero limitato di valori univoci</strong>, che possono essere usati per raggruppare e aggregare i dati e fare emergere elementi interessanti.</p>
+<p>Tra i campi categorici <code>OC_MACROAREA</code>, che definisce le macroaree geografiche italiane. E per sapere ad esempio qual è il finanziamento pubblico totale per ciascuna, si può usare la query <code>SQL</code>:</p>
+<div id="lst-query-macroarea" class="listing">
+<p>Lista&nbsp;4: Query SQL: totale dei finanziamenti pubblici per macroaree</p>
+<div class="sourceCode" id="lst-query-macroarea" data-lst-cap="Query SQL: totale dei finanziamenti pubblici per macroaree"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="lst-query-macroarea-1"><a href="#lst-query-macroarea-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> OC_MACROAREA,</span>
+<span id="lst-query-macroarea-2"><a href="#lst-query-macroarea-2" aria-hidden="true" tabindex="-1"></a><span class="fu">CAST</span>(<span class="fu">SUM</span>(FINANZ_TOTALE_PUBBLICO) <span class="kw">AS</span> BIGINT) FINANZ_TOTALE_PUBBLICO</span>
+<span id="lst-query-macroarea-3"><a href="#lst-query-macroarea-3" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> OC_MACROAREA</span>
+<span id="lst-query-macroarea-4"><a href="#lst-query-macroarea-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> FINANZ_TOTALE_PUBBLICO <span class="kw">DESC</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Restituirà qualcosa come in <a href="#tbl-aree-sum" class="quarto-xref">Tabella&nbsp;6</a>.</p>
+<div class="cell" data-execution_count="2">
+<div class="cell-output cell-output-display" data-execution_count="2">
+<style type="text/css">
+#T_f650a th:nth-child(1) {
+  text-align: left;
+}
+#T_f650a th:nth-child(2) {
+  text-align: right;
+}
+#T_f650a_row0_col0, #T_f650a_row1_col0, #T_f650a_row2_col0, #T_f650a_row3_col0, #T_f650a_row4_col0 {
+  text-align: left;
+}
+#T_f650a_row0_col1, #T_f650a_row1_col1, #T_f650a_row2_col1, #T_f650a_row3_col1, #T_f650a_row4_col1 {
+  text-align: right;
+}
+</style>
+
+<div id="tbl-aree-sum" class="anchored">
+<div class="table-responsive">
+<table id="T_f650a" class="table-bordered striped small table table-sm table-striped" data-quarto-postprocess="true">
+<caption>Tabella&nbsp;6: Finanziamento pubblico per macro aree</caption>
+<thead>
+<tr class="header">
+<th id="T_f650a_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Macro area</th>
+<th id="T_f650a_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Finanziamento totale pubblico (€)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td id="T_f650a_row0_col0" class="data row0 col0">Mezzogiorno</td>
+<td id="T_f650a_row0_col1" class="data row0 col1">182.919.710.550</td>
+</tr>
+<tr class="even">
+<td id="T_f650a_row1_col0" class="data row1 col0">Centro-Nord</td>
+<td id="T_f650a_row1_col1" class="data row1 col1">61.964.843.697</td>
+</tr>
+<tr class="odd">
+<td id="T_f650a_row2_col0" class="data row2 col0">Ambito Nazionale</td>
+<td id="T_f650a_row2_col1" class="data row2 col1">8.808.650.456</td>
+</tr>
+<tr class="even">
+<td id="T_f650a_row3_col0" class="data row3 col0">Altro</td>
+<td id="T_f650a_row3_col1" class="data row3 col1">3.684.521.639</td>
+</tr>
+<tr class="odd">
+<td id="T_f650a_row4_col0" class="data row4 col0">Estero</td>
+<td id="T_f650a_row4_col1" class="data row4 col1">287.153.594</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="cell dataframe table-bordered striped responsive small">
+<div class="sourceCode cell-code hidden" id="cb30" data-startfrom="966" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 965;"><span id="cb30-966"><a href="#cb30-966" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> <span class="fu">FileAttachment</span>(<span class="st">"./risorse/sum-by-region.csv"</span>)<span class="op">.</span><span class="fu">csv</span>({ <span class="dt">typed</span><span class="op">:</span> <span class="kw">true</span> })</span>
+<span id="cb30-967"><a href="#cb30-967" aria-hidden="true" tabindex="-1"></a>Inputs<span class="op">.</span><span class="fu">table</span>(data<span class="op">,</span> {<span class="dt">locale</span><span class="op">:</span> <span class="st">"it-IT"</span>})</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-3-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-3-2" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</div>
+<p>➡️ Purtroppo però non è possibile usare in modo comodo una query come quella di <a href="#lst-query-macroarea" class="quarto-xref">Lista&nbsp;4</a>.<br> Perché, come scritto sopra, il <code>CSV</code> ha alcuni problemi e non è “<a href="#csv-standard">standard</a>”.<br> Per eseguirla allora sarebbe necessario inserire la lunghissima lista di parametri per la funzione <code>read_csv_auto</code> e definire i tipi di campo, così come nel caso di <code>SUMMARIZE</code>. Ma sarebbe molto scomodo e poco pratico.</p>
+<p><strong>Due modi</strong> per <strong>risolvere</strong> il <strong>problema</strong>:</p>
+<ul>
+<li><a href="#standardizzare-il-csv-di-opencoesione"><strong>creare</strong> un <strong><code>CSV</code></strong> “<strong>pulito</strong>” e <strong>standard</strong></a>, con i tipi di campo corretti, e lavorare su questo;</li>
+<li><a href="#convertire-il-file-di-opencoesione-in-parquet"><strong>trasformare</strong> il file <strong><code>CSV</code></strong> di input in un file <strong><code>PARQUET</code></strong></a> e lavorare su questo.</li>
+</ul>
+</section>
+<section id="note-sul-dataset-progetti" class="level3">
+<h3 class="anchored" data-anchor-id="note-sul-dataset-progetti">Note sul dataset progetti</h3>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Su OpenCoesione
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Prima di scrivere alcune note sul dataset, voglio sottolineare alcuni punti su <a href="https://opencoesione.gov.it/it/"><strong>OpenCoesione</strong></a>:</p>
+<ol type="1">
+<li><strong>se non ci fossero questi dati</strong>, se non fossero dei dati aperti, se non fossero di grande interesse, se non fossero “grandi”, <strong>non avrei probabilmente scritto questo <em>post</em></strong>;</li>
+<li>Sono poche le banche dati aperte - come questa - che hanno portato a <strong>tanti casi di riuso</strong>, e da tanto tempo;</li>
+<li>Sono <strong>pochi i gruppi di lavoro</strong> in questo contesto che <strong>rispondono</strong> a <strong>richieste</strong> di <strong>chiarimento</strong> e <strong>supporto</strong>, a <strong>suggerimenti</strong> <strong>implementativi</strong> e a <strong>progetti di collaborazione</strong>;</li>
+<li>Sono <strong>pochi</strong> i <strong>dataset</strong> pubblicati in Italia, <strong>corredati</strong> da <strong>metadati</strong>;</li>
+<li>Apri il <a href="https://opencoesione.gov.it/it/">sito</a>, OpenCoesione è <strong>molto di più di un singolo dataset</strong>.</li>
+</ol>
+</div>
+</div>
+<p>A seguire alcune <strong>note</strong> e <strong>proposte/suggerimenti</strong> sul <strong>dataset</strong> dei progetti con tracciato esteso di OpenCoesione (nella versione di aprile 2023):</p>
+<ul>
+<li>nel <a href="https://opencoesione.gov.it/media/opendata/metadati_progetti_tracciato_esteso.xls">file dei metadati</a>, non si fa riferimento al campo <code>OC_MACROAREA</code>, che è però presente nel dataset. È da aggiungere;</li>
+<li>il <code>COD_TIPO_PROCED_ATTIVAZIONE</code> è dichiarato come <code>num</code>, ma contiene anche stringhe. È da correggere la dichiarazione del tipo di campo;</li>
+<li>c’è una <strong>difformità</strong> nell’<strong>uso</strong> dei <strong>separatori</strong> dei <strong>decimali</strong>. Per la grandissima parte dei campi numerici è la <code>,</code>, ma in campi come <code>PROGRAMMATO_INDICATORE_1</code> è il <code>.</code>;</li>
+<li>ci sono alcune celle con <strong>problemi</strong> di <strong><em>encoding</em></strong> dei <strong>caratteri</strong>. OpenCoesione ci ha già scritto che su questo punto stanno lavorando e che con la prossima release del dataset, il problema sarà risolto e/o ridotto;</li>
+<li><strong>tutti</strong> i <strong>campi</strong> <strong>numerici</strong> sono dichiarati come <strong><code>num</code></strong>, indipendentemente dal fatto che siano interi o decimali. Sarebbe preferibile avere una distinzione tra <code>int</code> e <code>float</code>.</li>
+</ul>
+<p>Metto a parte, infine, delle proposte/suggerimenti a cui tengo particolarmente:</p>
+<ul>
+<li><strong>usare</strong> come formato di compressione non lo <code>ZIP</code>, ma <strong><code>GZIP</code></strong>. Rende il dataset più pronto all’uso;</li>
+<li><strong>associare</strong> ai metadati in formato <code>XLS</code> anche <strong>una descrizione <em>machine readable</em></strong>. O in uno dei formati <a href="#descrivere-i-csv">standard descritti sopra</a>, o anche semplicemente come <a href="#schema-sql">schema <code>SQL</code> di creazione della tabella</a>. Rende l’operativa sui dati molto più immediata e potenzialmente efficiente;</li>
+<li><strong>affiancare</strong> al formato <code>CSV</code> il <strong>formato <code>PARQUET</code></strong>. È di per sé ben compresso, rende possibile eseguire analisi complesse in modo quasi immediato da “normali” PC e <em>laptop</em> ed è un formato intrinsecamente ben descritto;</li>
+<li>produrre dei <strong><code>CSV</code></strong> che siano il più <a href="#csv-standard">“<strong>standard</strong>”</a> possibile.</li>
+</ul>
+</section>
 </section>
 <section id="in-conclusione" class="level2">
 <h2 class="anchored" data-anchor-id="in-conclusione">In conclusione</h2>
+<p>Con questo lungo post <strong>non voglio</strong> contribuire a rendere il mondo brutto e <strong>fare in modo che il formato <code>CSV</code> sia utilizzato ancora di più</strong>.<br> A parte gli scherzi, è certamente un formato con alcune problematicità, ma è ancora molto utilizzato come formato di scambio di dati in forma di testo strutturato.<br></p>
+<p>Con le dovute precauzioni, con gli <strong>strumenti giusti</strong>, con un corredo informativo adeguato e per dimensioni non eccessive, può essere un formato comodo e pratico.<br> <a href="#descrivere-i-csv"><strong>Descrivendolo</strong></a>, <a href="#csv-standard">“<strong>standardizzandolo</strong>”</a> e <a href="#compressione-dei-file-csv"><strong>comprimendolo</strong></a>, diventa molto più usabile.<br> E questo è un invito a chiunque rende disponibili online dati in formato <code>CSV</code>.<br> Finché dura, usiamolo bene.</p>
+<p>Un altro suggerimento (a me per primo) è quello di <strong>usare <code>SQL</code></strong> per costruire <strong>processi</strong> di <strong>analisi</strong> e di <strong>trasformazione</strong> dei dati. È un vecchio e diffuso linguaggio, utilizzabile da quasi qualsiasi applicazione e/o linguaggio di programmazione, correlati ai dati. È super documentato, ci sono migliaia di tutorial, messaggi sui forum, libri, ecc.</p>
+<p>E ci sono strumenti come <strong>DuckDB</strong>. Ok, non è vero che i “I Big Data” sono morti, ma con strumenti come questo, è possibile <strong>lavorare</strong> in modo <strong>comodo</strong> e <strong>rapido</strong> con <strong>dati</strong> di <strong>dimensioni</strong> <strong>importanti</strong>, <strong>senza</strong> dover <strong>ricorrere</strong> a <strong>infrastrutture</strong> <strong>complesse</strong> e <strong>costose</strong>.</p>
+<p>Ho voluto suggerire l’opportunità di <strong>utilizzare</strong> il <strong>formato</strong> <strong><code>Parquet</code></strong> come uno dei <strong>formati</strong> <strong>principali</strong> di <strong>scambio</strong> e di <strong>lavoro</strong> con i <strong>dati</strong>.</p>
+<p>E infine voglio sottolineare ancora una volta, che <strong>senza</strong> <strong>dataset</strong> come quelli di <strong>OpenCoesione</strong>, <strong>non avrei pensato di scrivere questo post</strong> e non sarei riuscito a dargli questo sviluppo.</p>
+<hr>
+</section>
+<section id="buone-letture-e-fonti-di-ispirazione" class="level2">
+<h2 class="anchored" data-anchor-id="buone-letture-e-fonti-di-ispirazione">Buone letture e fonti di ispirazione</h2>
 <ul>
-<li>comprimere i file csv grande, con gzip</li>
-<li>pubblicare CSV standard</li>
-<li>descrivere i CSV</li>
-<li>quanto è figo duckdb</li>
-<li>il parquet come futuro formato open data</li>
-</ul>
-</section>
-<section id="da-sviluppare" class="level2">
-<h2 class="anchored" data-anchor-id="da-sviluppare">Da sviluppare</h2>
-<ul class="task-list">
-<li><input type="checkbox">parquet al posto dei CSV https://www-icem7-fr.translate.goog/outils/parquet-devrait-remplacer-le-format-csv/?_x_tr_sl=auto&amp;_x_tr_tl=it&amp;_x_tr_hl=en-US</li>
-<li><input type="checkbox">allegare sempre tracciato record machine readable</li>
-<li><input type="checkbox">il SQL è standard, vecchio e diffuso</li>
-<li><input type="checkbox" checked="">comprimere i CSV</li>
-<li><input type="checkbox">dbeaver</li>
-<li><input type="checkbox">il fatto che il csv sia brutto all’inizio</li>
-<li><input type="checkbox">il fatto che non voglio che il mondo sia inondato di CSV</li>
-<li><input type="checkbox">pubblicare CSV standardizzati (utf-8, decimali, field separator, uniformità campi,date)</li>
-<li><input type="checkbox">capitolo frictionless e schema SQL</li>
-<li><input type="checkbox">rivedere introduzione, sottolineando che non voglio diffondere l’uso del CSV</li>
-<li><input type="checkbox" checked="">fare cenno alla compressione ZSTD</li>
+<li><a href="https://motherduck.com/blog/big-data-is-dead/">Big data is dead</a></li>
+<li><a href="https://www.robinlinacre.com/parquet_api/">Why parquet files are my preferred API for bulk open data</a></li>
+<li><a href="https://towardsdatascience.com/a-parquet-file-is-all-you-need-962df86886bb">A Parquet File Is All You Need</a></li>
+<li><a href="https://cloudnativegeo.org/blog/2023/08/performance-explorations-of-geoparquet-and-duckdb/">Performance Explorations of GeoParquet (and DuckDB)</a></li>
+<li><a href="https://data-mozart.com/parquet-file-format-everything-you-need-to-know/">Parquet file format – everything you need to know!</a></li>
+<li><a href="https://duckdb.org/docs/data/csv/overview.html">CSV Loading</a></li>
 </ul>
 
 
 </section>
+<aside id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>Le politiche di coesione sono un insieme di iniziative e azioni messe in atto dall’Unione Europea per ridurre le disparità economiche, sociali e territoriali tra le diverse regioni e Stati membri.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</aside>
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Torna in cima</a></main> <!-- /main -->
+
+<script type="ojs-module-contents">
+{"contents":[{"methodName":"interpret","cellName":"ojs-cell-1","inline":false,"source":"pnrrdb = DuckDBClient.of({\n  progetti: FileAttachment(\"file/PNRR_Progetti-Universo_REGIS_v2.1.parquet\")\n})\n"},{"methodName":"interpret","cellName":"ojs-cell-2","inline":false,"source":"Inputs.table(\n  pnrrdb.sql`SELECT Missione, SUM(\"Finanziamento PNRR\") AS total_PNRR\n  FROM progetti\n  GROUP BY ALL`, {locale: \"it-IT\"}\n)\n"},{"methodName":"interpret","cellName":"ojs-cell-3","inline":false,"source":"data = FileAttachment(\"./risorse/sum-by-region.csv\").csv({ typed: true })\nInputs.table(data, {locale: \"it-IT\"})\n"}]}
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../../posts/duckdb-intro-csv";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "../..";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

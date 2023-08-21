@@ -2,19 +2,7 @@
   {
     "listing": "/blog.html",
     "items": [
-      "/til/compilare-qsv/index.html",
-      "/til/installare-duckdb-spatial/index.html",
-      "/til/duckdb-ottimizzazione-performance-import-csv-jsonl-creazione-parquet/index.html",
-      "/til/quarto-applicare-stili-span/index.html",
-      "/til/nushell-lista-file-piu-vecchi-di/index.html",
-      "/til/mescolare-r-python-bash/index.html",
-      "/til/nushell-installare-supporto-dataframe/index.html",
-      "/til/duckdb-creare-parquet-csv/index.html",
-      "/til/quarto-renderizzare-tabelle-r/index.html",
-      "/til/quarto-mescolare-observable-altair/index.html",
-      "/til/renderizzare-csv-quarto-observable/index.html",
-      "/til/filtrare-file-elenco-file-esterno/index.html",
-      "/til/un-sito-in-quarto/index.html"
+      "/posts/duckdb-intro-csv/index.html"
     ]
   },
   {
