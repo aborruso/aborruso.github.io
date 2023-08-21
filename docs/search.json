@@ -88,7 +88,7 @@
     "href": "posts/duckdb-intro-csv/index.html#buone-letture-e-fonti-di-ispirazione",
     "title": "Gestire file CSV grandi, brutti e cattivi",
     "section": "Buone letture e fonti di ispirazione",
-    "text": "Buone letture e fonti di ispirazione\n\nBig data is dead\nWhy parquet files are my preferred API for bulk open data\nA Parquet File Is All You Need\nPerformance Explorations of GeoParquet (and DuckDB)\nParquet file format – everything you need to know!\nCSV Loading"
+    "text": "Buone letture e fonti di ispirazione\n\nBig data is dead\nWhy parquet files are my preferred API for bulk open data\nA Parquet File Is All You Need\nPerformance Explorations of GeoParquet (and DuckDB)\nParquet file format – everything you need to know!\nCSV Loading\nCSV on the Web: A Primer"
   },
   {
     "objectID": "til.html",
