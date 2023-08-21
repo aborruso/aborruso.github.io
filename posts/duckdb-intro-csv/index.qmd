@@ -996,7 +996,7 @@ A seguire alcune **note** e **proposte/suggerimenti** sul **dataset** dei proget
 - il `COD_TIPO_PROCED_ATTIVAZIONE` è dichiarato come `num`, ma contiene anche stringhe. È da correggere la dichiarazione del tipo di campo;
 - c'è una **difformità** nell'**uso** dei **separatori** dei **decimali**. Per la grandissima parte dei campi numerici è la `,`, ma in campi come `PROGRAMMATO_INDICATORE_1` è il `.`;
 - ci sono alcune celle con **problemi** di ***encoding*** dei **caratteri**. OpenCoesione ci ha già scritto che su questo punto stanno lavorando e che con la prossima release del dataset, il problema sarà risolto e/o ridotto;
-- nei campi con le **date** ci sono a volte **valori "strani"**, troppo indietro nel passato o troppo avanti nel futuro (vedi @#tbl-strange-date);
+- nei campi con le **date** ci sono a volte **valori "strani"**, troppo indietro nel passato o troppo avanti nel futuro (vedi @tbl-strange-date);
 - **tutti** i **campi** **numerici** sono dichiarati come **`num`**, indipendentemente dal fatto che siano interi o decimali. Sarebbe preferibile avere una distinzione tra `int` e `float`.
 
 Metto a parte, infine, delle proposte/suggerimenti a cui tengo particolarmente:
