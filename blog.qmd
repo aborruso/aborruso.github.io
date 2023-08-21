@@ -3,7 +3,6 @@ title: "Blog"
 listing:
   contents:
     - posts
-    - til
   sort: "date desc"
   type: default
   categories: true
@@ -12,11 +11,4 @@ listing:
   feed: true
 page-layout: full
 title-block-banner: true
----
-
-::: {.callout-note}
-**Non ho ancora scritto dei veri blog post**, ma soltanto un po' di [TIL](./til.qmd), appunti brevi su cose imparate/scoperte.<br>
-Questi di sotto quindi al momento sono soltanto una copia dei post che trovi in TIL.
-:::
-
 ---
