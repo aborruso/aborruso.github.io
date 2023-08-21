@@ -1004,7 +1004,7 @@ Metto a parte, infine, delle proposte/suggerimenti a cui tengo particolarmente:
 - **usare** come formato di compressione non lo `ZIP`, ma **`GZIP`**. Rende il dataset più pronto all'uso;
 - **associare** ai metadati in formato `XLS` anche **una descrizione *machine readable***. O in uno dei formati [standard descritti sopra](#descrivere-i-csv), o anche semplicemente come [schema `SQL` di creazione della tabella](#schema-sql). Rende l'operativa sui dati molto più immediata e potenzialmente efficiente;
 - **affiancare** al formato `CSV` il **formato `PARQUET`**. È di per sé ben compresso, rende possibile eseguire analisi complesse in modo quasi immediato da "normali" PC e *laptop* ed è un formato intrinsecamente ben descritto;
-- produrre dei **`CSV`** che siano il più ["**standard**"](#csv-standard) possibile.
+- produrre dei **`CSV`** che siano il più "[**standard**](#csv-standard)" possibile.
 
 ## In conclusione
 
