@@ -254,19 +254,19 @@ font-style: inherit;">'</span></span><div class="code-annotation-gutter-bg"></di
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="lst-query-duckdb" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="lst-query-duckdb" data-code-annotation="1" data-code-lines="5">imposta il separatore di campi a <code>;</code></span>
+<span data-code-annotation="1" data-code-lines="5" data-code-cell="lst-query-duckdb">imposta il separatore di campi a <code>;</code></span>
 </dd>
 <dt data-target-cell="lst-query-duckdb" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="lst-query-duckdb" data-code-annotation="2" data-code-lines="6">imposta il separatore di decimali a <code>,</code></span>
+<span data-code-annotation="2" data-code-lines="6" data-code-cell="lst-query-duckdb">imposta il separatore di decimali a <code>,</code></span>
 </dd>
 <dt data-target-cell="lst-query-duckdb" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-cell="lst-query-duckdb" data-code-annotation="3" data-code-lines="7">la prima riga è la riga di intestazione</span>
+<span data-code-annotation="3" data-code-lines="7" data-code-cell="lst-query-duckdb">la prima riga è la riga di intestazione</span>
 </dd>
 <dt data-target-cell="lst-query-duckdb" data-target-annotation="4">4</dt>
 <dd>
-<span data-code-cell="lst-query-duckdb" data-code-annotation="4" data-code-lines="8">il campo <code>Finanziamento PNRR</code> è di tipo <code>FLOAT</code></span>
+<span data-code-annotation="4" data-code-lines="8" data-code-cell="lst-query-duckdb">il campo <code>Finanziamento PNRR</code> è di tipo <code>FLOAT</code></span>
 </dd>
 </dl>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -1460,7 +1460,7 @@ font-style: inherit;">) test;'</span></span><div class="code-annotation-gutter-b
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-8" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-8" data-code-annotation="1" data-code-lines="1">carica l’estensione spaziale</span>
+<span data-code-annotation="1" data-code-lines="1" data-code-cell="annotated-cell-8">carica l’estensione spaziale</span>
 </dd>
 </dl>
 <p>A schermo si avrà <code>42.2471</code>.</p>
@@ -1823,15 +1823,15 @@ font-style: inherit;">-S</span></span><div class="code-annotation-gutter-bg"></d
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-22" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-cell="annotated-cell-22" data-code-annotation="1" data-code-lines="2"><code>-cmd '.mode box'</code> abilita la vista “box”</span>
+<span data-code-annotation="1" data-code-lines="2" data-code-cell="annotated-cell-22"><code>-cmd '.mode box'</code> abilita la vista “box”</span>
 </dd>
 <dt data-target-cell="annotated-cell-22" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="annotated-cell-22" data-code-annotation="2" data-code-lines="3">L’<em>input</em> è lo <code>stdin</code></span>
+<span data-code-annotation="2" data-code-lines="3" data-code-cell="annotated-cell-22">L’<em>input</em> è lo <code>stdin</code></span>
 </dd>
 <dt data-target-cell="annotated-cell-22" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-cell="annotated-cell-22" data-code-annotation="3" data-code-lines="4">L’<em>output</em> a <code>less</code> in modo che sia leggibile</span>
+<span data-code-annotation="3" data-code-lines="4" data-code-cell="annotated-cell-22">L’<em>output</em> a <code>less</code> in modo che sia leggibile</span>
 </dd>
 </dl>
 <p>A schermo ho un’anteprima leggibile e navigabile, come questa di Figura&nbsp;7.</p>

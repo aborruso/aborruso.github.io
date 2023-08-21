@@ -15,7 +15,7 @@ title-block-banner: true
 
 ## Che vuol dire TIL?
 
-Mi piacciono molto le persone che usano il loro sito web, per appuntarsi alcune delle cose che imparano. Come fa il mitico [Simon Willison](https://til.simonwillison.net/).<br>
+Mi piace quando le persone usano il loro sito web, per prendere appunti su alcune delle cose che imparano/scoprono. Come fa il mitico [Simon Willison](https://til.simonwillison.net/).<br>
 E Simon lo fa in modalità **TIL**, ovvero *Today I Learned*.
 
 I miei post qui saranno spesso "piccoli", dei `TIL` in forma di appunti, con qualche possibile lacuna e/o bruttura.
