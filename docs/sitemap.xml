@@ -2,70 +2,70 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://aborruso.github.io/blog.html</loc>
-    <lastmod>2023-08-22T13:01:16.099Z</lastmod>
+    <lastmod>2023-08-22T13:27:36.669Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/index.html</loc>
-    <lastmod>2023-08-22T13:01:16.279Z</lastmod>
+    <lastmod>2023-08-22T13:27:36.829Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/posts/duckdb-intro-csv/index.html</loc>
-    <lastmod>2023-08-22T13:01:17.749Z</lastmod>
+    <lastmod>2023-08-22T13:27:40.519Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/til.html</loc>
-    <lastmod>2023-08-22T13:01:18.189Z</lastmod>
+    <lastmod>2023-08-22T13:27:41.079Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/til/compilare-qsv/index.html</loc>
-    <lastmod>2023-08-22T13:01:18.359Z</lastmod>
+    <lastmod>2023-08-22T13:27:41.279Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/til/duckdb-creare-parquet-csv/index.html</loc>
-    <lastmod>2023-08-22T13:01:18.539Z</lastmod>
+    <lastmod>2023-08-22T13:27:41.459Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/til/duckdb-ottimizzazione-performance-import-csv-jsonl-creazione-parquet/index.html</loc>
-    <lastmod>2023-08-22T13:01:18.719Z</lastmod>
+    <lastmod>2023-08-22T13:27:41.639Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/til/filtrare-file-elenco-file-esterno/index.html</loc>
-    <lastmod>2023-08-22T13:01:19.089Z</lastmod>
+    <lastmod>2023-08-22T13:27:41.989Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/til/installare-duckdb-spatial/index.html</loc>
-    <lastmod>2023-08-22T13:01:19.269Z</lastmod>
+    <lastmod>2023-08-22T13:27:42.159Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/til/mescolare-r-python-bash/index.html</loc>
-    <lastmod>2023-08-22T13:01:19.459Z</lastmod>
+    <lastmod>2023-08-22T13:27:42.349Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/til/nushell-installare-supporto-dataframe/index.html</loc>
-    <lastmod>2023-08-22T13:01:19.619Z</lastmod>
+    <lastmod>2023-08-22T13:27:42.509Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/til/nushell-lista-file-piu-vecchi-di/index.html</loc>
-    <lastmod>2023-08-22T13:01:19.799Z</lastmod>
+    <lastmod>2023-08-22T13:27:42.689Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/til/quarto-applicare-stili-span/index.html</loc>
-    <lastmod>2023-08-22T13:01:19.969Z</lastmod>
+    <lastmod>2023-08-22T13:27:42.849Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/til/quarto-mescolare-observable-altair/index.html</loc>
-    <lastmod>2023-08-22T13:01:20.299Z</lastmod>
+    <lastmod>2023-08-22T13:27:43.189Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/til/quarto-renderizzare-tabelle-r/index.html</loc>
-    <lastmod>2023-08-22T13:01:20.499Z</lastmod>
+    <lastmod>2023-08-22T13:27:43.389Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/til/renderizzare-csv-quarto-observable/index.html</loc>
-    <lastmod>2023-08-22T13:01:20.809Z</lastmod>
+    <lastmod>2023-08-22T13:27:43.709Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/til/un-sito-in-quarto/index.html</loc>
-    <lastmod>2023-08-22T13:01:20.989Z</lastmod>
+    <lastmod>2023-08-22T13:27:43.909Z</lastmod>
   </url>
 </urlset>

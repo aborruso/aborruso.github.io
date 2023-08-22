@@ -985,7 +985,7 @@ Prima di scrivere alcune note sul dataset, voglio sottolineare alcuni punti su [
 
 1. **se non ci fossero questi dati**, se non fossero dei dati aperti, se non fossero di grande interesse, se non fossero "grandi", **non avrei probabilmente scritto questo *post***;
 2. Sono poche le banche dati aperte - come questa - che hanno portato a **tanti casi di riuso**, e da tanto tempo;
-3. Sono **pochi i gruppi di lavoro** in questo contesto che **rispondono** a **richieste** di **chiarimento** e **supporto**, a **suggerimenti** **implementativi** e a **progetti di collaborazione**;
+3. Sono **pochi i gruppi di lavoro** in questo contesto che **rispondono** a **richieste** di **chiarimento** e **supporto**, a **suggerimenti** **implementativi** e a **progetti di collaborazione**. Il gruppo di OpenCoesione lo fa;
 4. Sono **pochi** i **dataset** pubblicati in Italia, **corredati** da **metadati**;
 5. Apri il [sito](https://opencoesione.gov.it/it/), OpenCoesione è **molto di più di un singolo dataset**.
 :::
