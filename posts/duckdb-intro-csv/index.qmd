@@ -329,7 +329,7 @@ Farlo in una delle due modalità descritte sopra sarebbe perfetto. Non è a cost
 ### Associare schema SQL
 
 Una "**buona pratica**" da suggerire a chi pubblica dati, basata su uno **standard** che è sia **formale** che  ***de facto***, è quella di **accompagnare** al file `CSV` anche la ***query* `SQL`** per la **creazione** della **tabella**.<br>
-Sotto l'esempio per la creazione della tabella dei progetti di OpenCoesione descritta [qui](#dati-opencoesione).
+Sotto l'esempio per la creazione della tabella dei progetti di OpenCoesione descritta [qui](#dati-opencoesione) (qui il [file `SQL`](risorse/progetti.sql) da prendere soltanto come spunto).
 
 {{< include ./risorse/_callout-sql_create.qmd >}}
 
