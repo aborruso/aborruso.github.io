@@ -505,7 +505,7 @@ La [pagina dedicata](https://duckdb.org/docs/installation/index) è molto comoda
 3. la piattaforma;
 4. vengono restituite le istruzioni per l'installazione.
 
-E in pochissimi tempo si è pronti all'uso.
+E in pochissimo tempo si è pronti all'uso.
 
 [![Pagina di installazione di DuckDB](images/duckdb_install.png){#fig-duckdb-install width=100%}](https://duckdb.org/docs/installation/index)
 
