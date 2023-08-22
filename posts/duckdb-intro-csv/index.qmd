@@ -69,7 +69,7 @@ Questo - come nel caso del file dei [progetti di OpenCoesione](#dati-opencoesion
 
 Scegliendo un altro formato di compressione, diverso dallo `ZIP`, si possono dare **ulteriori vantaggi** a chi utilizzerà il file.
 
-Uno è quello di **renderlo subito pronto all'uso**, come se fosse già decompresso. Che è una cosa molto comoda specie nelle prime **fasi** di lavoro "**esplorative**", in cui si fanno un po' di "ispeziono", le prime prove di analisi, di verifica qualità, di adeguatezza dei dati, ecc..
+Uno è quello di **renderlo subito pronto all'uso**, come se fosse già decompresso. Che è una cosa molto comoda specie nelle prime **fasi** di lavoro "**esplorative**", in cui si fanno un po' di "ispezioni", le prime prove di analisi, di verifica qualità, di adeguatezza dei dati, ecc..
 
 ### Formato GZIP
 
