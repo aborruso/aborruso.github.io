@@ -1035,3 +1035,4 @@ E infine voglio sottolineare ancora una volta, che **senza** **dataset** come qu
 - [Parquet file format – everything you need to know!](https://data-mozart.com/parquet-file-format-everything-you-need-to-know/)
 - [CSV Loading](https://duckdb.org/docs/data/csv/overview.html)
 - [CSV on the Web: A Primer](https://www.w3.org/TR/tabular-data-primer/)
+- [Parquet devrait remplacer le format CSV](https://www.icem7.fr/outils/parquet-devrait-remplacer-le-format-csv/)
