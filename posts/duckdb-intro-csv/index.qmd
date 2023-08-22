@@ -515,7 +515,7 @@ DuckBD ha delle [**estensioni**](https://duckdb.org/docs/archive/0.8.1/extension
 
 Tre che ho trovato subito utilissime sono:
 
-- [`httpfs`](https://duckdb.org/docs/extensions/httpfs), per leggere file `CSV` e `parquet` direttamente da indirizzi `HTTP(S)` (è [come avere delle API](#come-avere-delle-api)) o tramite `S3`;
+- [`httpfs`](https://duckdb.org/docs/extensions/httpfs), per leggere file `CSV` e `parquet` direttamente da indirizzi `HTTP(S)` (è [come avere delle API](#è-come-avere-delle-api)) o tramite `S3`;
 - [`json`](https://duckdb.org/docs/extensions/json), che implementa funzioni per lavorare con dati in formato `JSON`;
 - [`spatial`](https://duckdb.org/docs/extensions/spatial), per usare DuckDB come motore di analisi spaziali/geografiche.
 
@@ -533,7 +533,7 @@ OVER (
 ORDER BY 1,2;"
 ```
 
-Come se [fosse un'API](#come-avere-delle-api).
+Come se [fosse un'API](#è-come-avere-delle-api).
 
 E per dare un'idea dell'[estensione spaziale](https://github.com/duckdblabs/duckdb_spatial), un piccolo esempio, per creare due punti, unirli in una linea, calcolare il centroide di questa ed estrarne la coordinata `x`:
 
