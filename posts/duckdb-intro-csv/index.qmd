@@ -511,7 +511,7 @@ E in pochissimo tempo si è pronti all'uso.
 
 ### Le estensioni
 
-DuckBD ha delle [**estensioni**](https://duckdb.org/docs/archive/0.8.1/extensions/overview) che ne estendono in modo molto interessante l'utilizzo.
+DuckDB ha delle [**estensioni**](https://duckdb.org/docs/archive/0.8.1/extensions/overview) che ne estendono in modo molto interessante l'utilizzo.
 
 Tre che ho trovato subito utilissime sono:
 
@@ -519,7 +519,7 @@ Tre che ho trovato subito utilissime sono:
 - [`json`](https://duckdb.org/docs/extensions/json), che implementa funzioni per lavorare con dati in formato `JSON`;
 - [`spatial`](https://duckdb.org/docs/extensions/spatial), per usare DuckDB come motore di analisi spaziali/geografiche.
 
-E con l'estensione `httpfs` e con dati CSV pubblicati in [modo "standard"](#csv-standard) (come [quelli sulla COVID-19](https://github.com/pcm-dpc/COVID-19) pubblicati dalla Protezione Civile), è ad esempio possibile avere restituito comodamente e rapidamente la **media mobile settimanale** dei nuovi casi **COVID-19** **per regione**, puntando semplicemente all'URL di un file statico (DuckBD supporta una sintassi `SQL`, dove il `FROM` può essere inserito all'inizio):
+E con l'estensione `httpfs` e con dati CSV pubblicati in [modo "standard"](#csv-standard) (come [quelli sulla COVID-19](https://github.com/pcm-dpc/COVID-19) pubblicati dalla Protezione Civile), è ad esempio possibile avere restituito comodamente e rapidamente la **media mobile settimanale** dei nuovi casi **COVID-19** **per regione**, puntando semplicemente all'URL di un file statico (DuckDB supporta una sintassi `SQL`, dove il `FROM` può essere inserito all'inizio):
 
 ```{.bash .code-overflow-wrap}
 duckdb  --csv -c "FROM read_csv_auto('https://raw.githubusercontent.com/pcm-dpc/COVID-19/master/dati-regioni/dpc-covid19-ita-regioni.csv')
@@ -618,7 +618,7 @@ SELECT * FROM postgres_scan('', 'public', 'mytable');
 ```
 
 Le [API Python](https://duckdb.org/docs/api/python/overview) portano la potenza di fuoco di DuckDB in modo molto comodo ed efficace dentro questo ambiente di lavoro.<br>
-E DuckBD può nativamente interrogare Pandas DataFrames, Polars DataFrames e tabelle Arrow.
+E DuckDB può nativamente interrogare Pandas DataFrames, Polars DataFrames e tabelle Arrow.
 
 ```{.python .code-overflow-wrap}
 import duckdb
