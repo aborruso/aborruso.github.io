@@ -254,19 +254,19 @@ font-style: inherit;">'</span></span><div class="code-annotation-gutter-bg"></di
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="lst-query-duckdb" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-lines="5" data-code-cell="lst-query-duckdb" data-code-annotation="1">imposta il separatore di campi a <code>;</code></span>
+<span data-code-lines="5" data-code-annotation="1" data-code-cell="lst-query-duckdb">imposta il separatore di campi a <code>;</code></span>
 </dd>
 <dt data-target-cell="lst-query-duckdb" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-lines="6" data-code-cell="lst-query-duckdb" data-code-annotation="2">imposta il separatore di decimali a <code>,</code></span>
+<span data-code-lines="6" data-code-annotation="2" data-code-cell="lst-query-duckdb">imposta il separatore di decimali a <code>,</code></span>
 </dd>
 <dt data-target-cell="lst-query-duckdb" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-lines="7" data-code-cell="lst-query-duckdb" data-code-annotation="3">la prima riga è la riga di intestazione</span>
+<span data-code-lines="7" data-code-annotation="3" data-code-cell="lst-query-duckdb">la prima riga è la riga di intestazione</span>
 </dd>
 <dt data-target-cell="lst-query-duckdb" data-target-annotation="4">4</dt>
 <dd>
-<span data-code-lines="8" data-code-cell="lst-query-duckdb" data-code-annotation="4">il campo <code>Finanziamento PNRR</code> è di tipo <code>FLOAT</code></span>
+<span data-code-lines="8" data-code-annotation="4" data-code-cell="lst-query-duckdb">il campo <code>Finanziamento PNRR</code> è di tipo <code>FLOAT</code></span>
 </dd>
 </dl>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -1386,14 +1386,14 @@ Non è la soluzione definitiva
 </section>
 <section id="le-estensioni" class="level3">
 <h3 class="anchored" data-anchor-id="le-estensioni">Le estensioni</h3>
-<p>DuckBD ha delle <a href="https://duckdb.org/docs/archive/0.8.1/extensions/overview"><strong>estensioni</strong></a> che ne estendono in modo molto interessante l’utilizzo.</p>
+<p>DuckDB ha delle <a href="https://duckdb.org/docs/archive/0.8.1/extensions/overview"><strong>estensioni</strong></a> che ne estendono in modo molto interessante l’utilizzo.</p>
 <p>Tre che ho trovato subito utilissime sono:</p>
 <ul>
 <li><a href="https://duckdb.org/docs/extensions/httpfs"><code>httpfs</code></a>, per leggere file <code>CSV</code> e <code>parquet</code> direttamente da indirizzi <code>HTTP(S)</code> (è come avere delle API) o tramite <code>S3</code>;</li>
 <li><a href="https://duckdb.org/docs/extensions/json"><code>json</code></a>, che implementa funzioni per lavorare con dati in formato <code>JSON</code>;</li>
 <li><a href="https://duckdb.org/docs/extensions/spatial"><code>spatial</code></a>, per usare DuckDB come motore di analisi spaziali/geografiche.</li>
 </ul>
-<p>E con l’estensione <code>httpfs</code> e con dati CSV pubblicati in modo “standard” (come <a href="https://github.com/pcm-dpc/COVID-19">quelli sulla COVID-19</a> pubblicati dalla Protezione Civile), è ad esempio possibile avere restituito comodamente e rapidamente la <strong>media mobile settimanale</strong> dei nuovi casi <strong>COVID-19</strong> <strong>per regione</strong>, puntando semplicemente all’URL di un file statico (DuckBD supporta una sintassi <code>SQL</code>, dove il <code>FROM</code> può essere inserito all’inizio):</p>
+<p>E con l’estensione <code>httpfs</code> e con dati CSV pubblicati in modo “standard” (come <a href="https://github.com/pcm-dpc/COVID-19">quelli sulla COVID-19</a> pubblicati dalla Protezione Civile), è ad esempio possibile avere restituito comodamente e rapidamente la <strong>media mobile settimanale</strong> dei nuovi casi <strong>COVID-19</strong> <strong>per regione</strong>, puntando semplicemente all’URL di un file statico (DuckDB supporta una sintassi <code>SQL</code>, dove il <code>FROM</code> può essere inserito all’inizio):</p>
 <div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">duckdb</span>  <span class="at" style="color: #657422;
@@ -1460,7 +1460,7 @@ font-style: inherit;">) test;'</span></span><div class="code-annotation-gutter-b
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-8" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-lines="1" data-code-cell="annotated-cell-8" data-code-annotation="1">carica l’estensione spaziale</span>
+<span data-code-lines="1" data-code-annotation="1" data-code-cell="annotated-cell-8">carica l’estensione spaziale</span>
 </dd>
 </dl>
 <p>A schermo si avrà <code>42.2471</code>.</p>
@@ -1578,7 +1578,7 @@ background-color: null;
 font-style: inherit;">'public'</span>, <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'mytable'</span>);</span></code></pre></div>
-<p>Le <a href="https://duckdb.org/docs/api/python/overview">API Python</a> portano la potenza di fuoco di DuckDB in modo molto comodo ed efficace dentro questo ambiente di lavoro.<br> E DuckBD può nativamente interrogare Pandas DataFrames, Polars DataFrames e tabelle Arrow.</p>
+<p>Le <a href="https://duckdb.org/docs/api/python/overview">API Python</a> portano la potenza di fuoco di DuckDB in modo molto comodo ed efficace dentro questo ambiente di lavoro.<br> E DuckDB può nativamente interrogare Pandas DataFrames, Polars DataFrames e tabelle Arrow.</p>
 <div class="sourceCode" id="cb19" style="background: #f1f3f5;"><pre class="sourceCode python code-overflow-wrap code-with-copy"><code class="sourceCode python"><span id="cb19-1"><span class="im" style="color: #00769E;
 background-color: null;
 font-style: inherit;">import</span> duckdb</span>
@@ -1823,15 +1823,15 @@ font-style: inherit;">-S</span></span><div class="code-annotation-gutter-bg"></d
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-22" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-lines="2" data-code-cell="annotated-cell-22" data-code-annotation="1"><code>-cmd '.mode box'</code> abilita la vista “box”</span>
+<span data-code-lines="2" data-code-annotation="1" data-code-cell="annotated-cell-22"><code>-cmd '.mode box'</code> abilita la vista “box”</span>
 </dd>
 <dt data-target-cell="annotated-cell-22" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-lines="3" data-code-cell="annotated-cell-22" data-code-annotation="2">L’<em>input</em> è lo <code>stdin</code></span>
+<span data-code-lines="3" data-code-annotation="2" data-code-cell="annotated-cell-22">L’<em>input</em> è lo <code>stdin</code></span>
 </dd>
 <dt data-target-cell="annotated-cell-22" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-lines="4" data-code-cell="annotated-cell-22" data-code-annotation="3">L’<em>output</em> a <code>less</code> in modo che sia leggibile</span>
+<span data-code-lines="4" data-code-annotation="3" data-code-cell="annotated-cell-22">L’<em>output</em> a <code>less</code> in modo che sia leggibile</span>
 </dd>
 </dl>
 <p>A schermo ho un’anteprima leggibile e navigabile, come questa di Figura&nbsp;7.</p>
@@ -2237,50 +2237,50 @@ font-style: inherit;">DESC</span></span></code></pre></div>
 <div class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display" data-execution_count="2">
 <style type="text/css">
-#T_4292a th:nth-child(1) {
+#T_440e2 th:nth-child(1) {
   text-align: left;
 }
-#T_4292a th:nth-child(2) {
+#T_440e2 th:nth-child(2) {
   text-align: right;
 }
-#T_4292a_row0_col0, #T_4292a_row1_col0, #T_4292a_row2_col0, #T_4292a_row3_col0, #T_4292a_row4_col0 {
+#T_440e2_row0_col0, #T_440e2_row1_col0, #T_440e2_row2_col0, #T_440e2_row3_col0, #T_440e2_row4_col0 {
   text-align: left;
 }
-#T_4292a_row0_col1, #T_4292a_row1_col1, #T_4292a_row2_col1, #T_4292a_row3_col1, #T_4292a_row4_col1 {
+#T_440e2_row0_col1, #T_440e2_row1_col1, #T_440e2_row2_col1, #T_440e2_row3_col1, #T_440e2_row4_col1 {
   text-align: right;
 }
 </style>
 
 <div id="tbl-aree-sum" class="anchored">
 <div class="table-responsive">
-<table id="T_4292a" class="table-bordered striped small table table-sm table-striped" data-quarto-postprocess="true">
+<table id="T_440e2" class="table-bordered striped small table table-sm table-striped" data-quarto-postprocess="true">
 <caption>Tabella&nbsp;6: Finanziamento pubblico per macro aree</caption>
 <thead>
 <tr class="header">
-<th id="T_4292a_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Macro area</th>
-<th id="T_4292a_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Finanziamento totale pubblico (€)</th>
+<th id="T_440e2_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Macro area</th>
+<th id="T_440e2_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Finanziamento totale pubblico (€)</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_4292a_row0_col0" class="data row0 col0">Mezzogiorno</td>
-<td id="T_4292a_row0_col1" class="data row0 col1">182.919.710.550</td>
+<td id="T_440e2_row0_col0" class="data row0 col0">Mezzogiorno</td>
+<td id="T_440e2_row0_col1" class="data row0 col1">182.919.710.550</td>
 </tr>
 <tr class="even">
-<td id="T_4292a_row1_col0" class="data row1 col0">Centro-Nord</td>
-<td id="T_4292a_row1_col1" class="data row1 col1">61.964.843.697</td>
+<td id="T_440e2_row1_col0" class="data row1 col0">Centro-Nord</td>
+<td id="T_440e2_row1_col1" class="data row1 col1">61.964.843.697</td>
 </tr>
 <tr class="odd">
-<td id="T_4292a_row2_col0" class="data row2 col0">Ambito Nazionale</td>
-<td id="T_4292a_row2_col1" class="data row2 col1">8.808.650.456</td>
+<td id="T_440e2_row2_col0" class="data row2 col0">Ambito Nazionale</td>
+<td id="T_440e2_row2_col1" class="data row2 col1">8.808.650.456</td>
 </tr>
 <tr class="even">
-<td id="T_4292a_row3_col0" class="data row3 col0">Altro</td>
-<td id="T_4292a_row3_col1" class="data row3 col1">3.684.521.639</td>
+<td id="T_440e2_row3_col0" class="data row3 col0">Altro</td>
+<td id="T_440e2_row3_col1" class="data row3 col1">3.684.521.639</td>
 </tr>
 <tr class="odd">
-<td id="T_4292a_row4_col0" class="data row4 col0">Estero</td>
-<td id="T_4292a_row4_col1" class="data row4 col1">287.153.594</td>
+<td id="T_440e2_row4_col0" class="data row4 col0">Estero</td>
+<td id="T_440e2_row4_col1" class="data row4 col1">287.153.594</td>
 </tr>
 </tbody>
 </table>
