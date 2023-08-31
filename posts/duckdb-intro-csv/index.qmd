@@ -1037,3 +1037,4 @@ E infine voglio sottolineare ancora una volta, che **senza** **dataset** come qu
 - [CSV on the Web: A Primer](https://www.w3.org/TR/tabular-data-primer/)
 - [Parquet devrait remplacer le format CSV](https://www.icem7.fr/outils/parquet-devrait-remplacer-le-format-csv/)
 - [Geospatial DuckDB](https://tech.marksblogg.com/duckdb-geospatial-gis.html)
+- [Even Friendlier SQL with DuckDB](https://duckdb.org/2023/08/23/even-friendlier-sql.html)
