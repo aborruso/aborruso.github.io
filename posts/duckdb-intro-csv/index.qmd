@@ -130,7 +130,7 @@ Per avere il totale del finanziamento PNRR per ogni missione, posso usare questo
 ```bash
 duckdb -csv -c '
 SELECT Missione, SUM("Finanziamento PNRR") AS total_PNRR
-FROM  read_csv_auto("PNRR_Progetti-Universo_REGIS_v2.1.csv.gz"
+FROM  read_csv_auto("PNRR_Progetti-Universo_REGIS_v2.1.csv.gz")
 GROUP BY Missione
 '
 ```
