@@ -254,19 +254,19 @@ font-style: inherit;">'</span></span><div class="code-annotation-gutter-bg"></di
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="lst-query-duckdb" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-lines="5" data-code-annotation="1" data-code-cell="lst-query-duckdb">imposta il separatore di campi a <code>;</code></span>
+<span data-code-lines="5" data-code-cell="lst-query-duckdb" data-code-annotation="1">imposta il separatore di campi a <code>;</code></span>
 </dd>
 <dt data-target-cell="lst-query-duckdb" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-lines="6" data-code-annotation="2" data-code-cell="lst-query-duckdb">imposta il separatore di decimali a <code>,</code></span>
+<span data-code-lines="6" data-code-cell="lst-query-duckdb" data-code-annotation="2">imposta il separatore di decimali a <code>,</code></span>
 </dd>
 <dt data-target-cell="lst-query-duckdb" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-lines="7" data-code-annotation="3" data-code-cell="lst-query-duckdb">la prima riga è la riga di intestazione</span>
+<span data-code-lines="7" data-code-cell="lst-query-duckdb" data-code-annotation="3">la prima riga è la riga di intestazione</span>
 </dd>
 <dt data-target-cell="lst-query-duckdb" data-target-annotation="4">4</dt>
 <dd>
-<span data-code-lines="8" data-code-annotation="4" data-code-cell="lst-query-duckdb">il campo <code>Finanziamento PNRR</code> è di tipo <code>FLOAT</code></span>
+<span data-code-lines="8" data-code-cell="lst-query-duckdb" data-code-annotation="4">il campo <code>Finanziamento PNRR</code> è di tipo <code>FLOAT</code></span>
 </dd>
 </dl>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -1349,6 +1349,39 @@ Non è la soluzione definitiva
 <p>Il formato <code>parquet</code> - per alcune delle sue caratteristiche - <strong>potrebbe</strong> <strong>affiancare</strong> (e alla lunga <strong>rimpiazzare</strong>?) il <strong><code>CSV</code></strong>, come formato di <strong>pubblicazione</strong> di <strong>dati aperti</strong>.<br></p>
 <p>In contesti applicativi in cui le <em>performance</em>, lo spazio di archiviazione, le modalità di accesso sono parametri da tenere in alta considerazione, è già molto usato.<br> Un esempio per tutti è quello dei dataset di <a href="https://huggingface.co/datasets">Hugging Face</a>.</p>
 <p>I dati aperti globali sugli edifici del progetto <a href="https://github.com/microsoft/GlobalMLBuildingFootprints/">GlobalMLBuildingFootprints</a> (1.2 miliardi di edifici), sono in formato parquet, nella sua estensione spaziale.<br> Anche i dataset geografici del progetto <a href="https://overturemaps.org/download/">Overture Maps Foundation</a>, sono in formato parquet.<br> I dati aperti sulle <a href="https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page">corse di taxi e veicoli con conducente di New York</a>, sono anch’essi in questo formato.</p>
+<p>L’ultimo esempio, per chiudere in bellezza, è quello dell’impareggiabile <a href="https://www.data.gouv.fr/"><strong>portale Open Data della Francia</strong></a>.<br> Pubblica già dati in formato <code>parquet</code>, sono disponibili gli URL statici dei file, ed è possibile fare <em>query</em> in modo comodissimo, come se fossero disponibili delle API.<br> Ad esempio posso interrogare il <a href="https://www.data.gouv.fr/fr/datasets/bureaux-de-vote-et-adresses-de-leurs-electeurs/">file da 470 MB degli indirizzi</a>, di 15 milioni di righe, per avere il numero di indirizzi per comune con questa semplicità (vedi Lista&nbsp;4):</p>
+<div id="lst-query-francia" class="listing">
+<p>Lista&nbsp;4: Esempio di <em>query</em> da shell</p>
+<div class="sourceCode" id="lst-query-francia" data-lst-cap="Esempio di *query* da shell" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="lst-query-francia-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">duckdb</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-c</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span></span>
+<span id="lst-query-francia-2"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">load httpfs;</span></span>
+<span id="lst-query-francia-3"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">SELECT code_commune_ref, sum(nb_adresses) sum</span></span>
+<span id="lst-query-francia-4"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">FROM "https://static.data.gouv.fr/resources/bureaux-de-vote-et-adresses-de-leurs-electeurs/20230626-135723/table-adresses-reu.parquet"</span></span>
+<span id="lst-query-francia-5"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">GROUP BY ALL ORDER by 2 DESC LIMIT 10;</span></span>
+<span id="lst-query-francia-6"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'</span></span></code></pre></div>
+</div>
+<p>E in pochi secondi si ha restituito il risultato (vedi Figura&nbsp;5).</p>
+<div id="fig-portale-opendata-francia" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="https://aborruso.github.io/posts/duckdb-intro-csv/images/portale-opendata-francia.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption class="figure-caption">Figura&nbsp;5: Output da shell</figcaption>
+</figure>
+</div>
 </section>
 </section>
 <section id="duckdb" class="level2">
@@ -1380,7 +1413,7 @@ Non è la soluzione definitiva
 <div id="fig-duckdb-install" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
 <p><a href="https://duckdb.org/docs/installation/index"><img src="https://aborruso.github.io/posts/duckdb-intro-csv/images/duckdb_install.png" class="img-fluid figure-img" style="width:100.0%"></a></p>
-<figcaption class="figure-caption">Figura&nbsp;5: Pagina di installazione di DuckDB</figcaption>
+<figcaption class="figure-caption">Figura&nbsp;6: Pagina di installazione di DuckDB</figcaption>
 </figure>
 </div>
 </section>
@@ -1460,7 +1493,7 @@ font-style: inherit;">) test;'</span></span><div class="code-annotation-gutter-b
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-8" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-lines="1" data-code-annotation="1" data-code-cell="annotated-cell-8">carica l’estensione spaziale</span>
+<span data-code-lines="1" data-code-cell="annotated-cell-8" data-code-annotation="1">carica l’estensione spaziale</span>
 </dd>
 </dl>
 <p>A schermo si avrà <code>42.2471</code>.</p>
@@ -1663,14 +1696,14 @@ background-color: null;
 font-style: inherit;">"PNRR_Progetti-Universo_REGIS_v2.1.parquet"</span>)</span>
 <span id="lst-duckdb-oservable-3">})</span></code></pre></div>
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb20" data-startfrom="658" data-source-offset="0" style="background: #f1f3f5;"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 657;"><span id="cb20-658">pnrrdb <span class="op" style="color: #5E5E5E;
+<div class="sourceCode cell-code hidden" id="cb20" data-startfrom="675" data-source-offset="0" style="background: #f1f3f5;"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 674;"><span id="cb20-675">pnrrdb <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> DuckDBClient<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">of</span>({</span>
-<span id="cb20-659">  <span class="dt" style="color: #AD0000;
+<span id="cb20-676">  <span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">progetti</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1679,7 +1712,7 @@ background-color: null;
 font-style: inherit;">FileAttachment</span>(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"file/PNRR_Progetti-Universo_REGIS_v2.1.parquet"</span>)</span>
-<span id="cb20-660">})</span></code></pre></div>
+<span id="cb20-677">})</span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-1" data-nodetype="declaration">
 
@@ -1688,22 +1721,22 @@ font-style: inherit;">"file/PNRR_Progetti-Universo_REGIS_v2.1.parquet"</span>)</
 </div>
 <p>E poi si può usare il <em>client</em> Javascript DuckDB per fare una query <code>SQL</code>, da integrare ad esempio in una <a href="https://observablehq.com/@observablehq/input-table">tabella Observable</a>:</p>
 <div class="cell responsive small">
-<div class="sourceCode cell-code" id="cb21" data-startfrom="667" data-source-offset="0" style="background: #f1f3f5;"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 666;"><span id="cb21-667">Inputs<span class="op" style="color: #5E5E5E;
+<div class="sourceCode cell-code" id="cb21" data-startfrom="684" data-source-offset="0" style="background: #f1f3f5;"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 683;"><span id="cb21-684">Inputs<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">table</span>(</span>
-<span id="cb21-668">  pnrrdb<span class="op" style="color: #5E5E5E;
+<span id="cb21-685">  pnrrdb<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">sql</span><span class="vs" style="color: #20794D;
 background-color: null;
 font-style: inherit;">`SELECT Missione, SUM("Finanziamento PNRR") AS total_PNRR</span></span>
-<span id="cb21-669"><span class="vs" style="color: #20794D;
+<span id="cb21-686"><span class="vs" style="color: #20794D;
 background-color: null;
 font-style: inherit;">  FROM progetti</span></span>
-<span id="cb21-670"><span class="vs" style="color: #20794D;
+<span id="cb21-687"><span class="vs" style="color: #20794D;
 background-color: null;
 font-style: inherit;">  GROUP BY ALL`</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1714,7 +1747,7 @@ background-color: null;
 font-style: inherit;">:</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"it-IT"</span>}</span>
-<span id="cb21-671">)</span></code></pre></div>
+<span id="cb21-688">)</span></code></pre></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-2" data-nodetype="expression">
 
@@ -1780,10 +1813,10 @@ font-style: inherit;">head</span></span></code></pre></div>
 <div id="fig-duckdb-preview-vd" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
 <p><img src="https://aborruso.github.io/posts/duckdb-intro-csv/images/visidata_explore.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figura&nbsp;6: Esempio visualizzazione con VisiData</figcaption>
+<figcaption class="figure-caption">Figura&nbsp;7: Esempio visualizzazione con VisiData</figcaption>
 </figure>
 </div>
-<p>Ci sono tantissimi altri strumenti e modalità con cui potrei fare queste ed altre operazioni di esplorazione e analisi, ma questo è un <em>post</em> dedicato in modo particolare a DuckDB e alla sua applicazione a riga di comando. Quindi <strong>da qui in poi</strong>, utilizzerò <strong>soprattutto</strong> <strong>DuckDB</strong> e la sua <strong><code>cli</code></strong>.<br> Per replicare con DuckDB quanto visto sopra in Figura&nbsp;6, il comando è (metto qualche “a capo” per renderlo più leggibile):</p>
+<p>Ci sono tantissimi altri strumenti e modalità con cui potrei fare queste ed altre operazioni di esplorazione e analisi, ma questo è un <em>post</em> dedicato in modo particolare a DuckDB e alla sua applicazione a riga di comando. Quindi <strong>da qui in poi</strong>, utilizzerò <strong>soprattutto</strong> <strong>DuckDB</strong> e la sua <strong><code>cli</code></strong>.<br> Per replicare con DuckDB quanto visto sopra in Figura&nbsp;7, il comando è (metto qualche “a capo” per renderlo più leggibile):</p>
 <div class="sourceCode" id="annotated-cell-22" style="background: #f1f3f5;"><pre class="sourceCode bash code-annotation-code code-with-copy code-annotated"><code class="sourceCode bash"><span id="annotated-cell-22-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">unzip</span> <span class="at" style="color: #657422;
@@ -1823,22 +1856,22 @@ font-style: inherit;">-S</span></span><div class="code-annotation-gutter-bg"></d
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-22" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-lines="2" data-code-annotation="1" data-code-cell="annotated-cell-22"><code>-cmd '.mode box'</code> abilita la vista “box”</span>
+<span data-code-lines="2" data-code-cell="annotated-cell-22" data-code-annotation="1"><code>-cmd '.mode box'</code> abilita la vista “box”</span>
 </dd>
 <dt data-target-cell="annotated-cell-22" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-lines="3" data-code-annotation="2" data-code-cell="annotated-cell-22">L’<em>input</em> è lo <code>stdin</code></span>
+<span data-code-lines="3" data-code-cell="annotated-cell-22" data-code-annotation="2">L’<em>input</em> è lo <code>stdin</code></span>
 </dd>
 <dt data-target-cell="annotated-cell-22" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-lines="4" data-code-annotation="3" data-code-cell="annotated-cell-22">L’<em>output</em> a <code>less</code> in modo che sia leggibile</span>
+<span data-code-lines="4" data-code-cell="annotated-cell-22" data-code-annotation="3">L’<em>output</em> a <code>less</code> in modo che sia leggibile</span>
 </dd>
 </dl>
-<p>A schermo ho un’anteprima leggibile e navigabile, come questa di Figura&nbsp;7.</p>
+<p>A schermo ho un’anteprima leggibile e navigabile, come questa di Figura&nbsp;8.</p>
 <div id="fig-duckdb-preview-box" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
 <p><img src="https://aborruso.github.io/posts/duckdb-intro-csv/images/duckdb-preview-box.gif" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figura&nbsp;7: Output in modalità <code>box</code> di DuckDB</figcaption>
+<figcaption class="figure-caption">Figura&nbsp;8: Output in modalità <code>box</code> di DuckDB</figcaption>
 </figure>
 </div>
 <p>Come detto sopra DuckDB può <strong>leggere nativamente</strong> file <strong>compressi</strong> in formato <strong><code>GZIP</code></strong> (e <code>ZSTD</code>).<br> Allora per comodità, ho creato la versione <code>GZIP</code> del file <code>Progetti con tracciato esteso</code> di OpenCoesione.</p>
@@ -1860,7 +1893,7 @@ font-style: inherit;">'</span></span></code></pre></div>
 <div id="fig-duckdb-standard-output" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
 <p><img src="https://aborruso.github.io/posts/duckdb-intro-csv/images/duck-standard-output.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figura&nbsp;8: DuckDb standard output</figcaption>
+<figcaption class="figure-caption">Figura&nbsp;9: DuckDb standard output</figcaption>
 </figure>
 </div>
 <p>Per vedere tutti i campi posso forzare l’<strong>output in <code>CSV</code></strong>, aggiungendo <code>--csv</code> e infine leggerlo con VisiData:</p>
@@ -2209,7 +2242,7 @@ font-style: inherit;">&gt;</span>summarize.csv</span></code></pre></div>
 <p>Ma soprattutto è possibile constatare quali siano <strong>i campi “categorici”</strong>, quelli con un <strong>numero limitato di valori univoci</strong>, che possono essere usati per raggruppare e aggregare i dati e fare emergere elementi interessanti.</p>
 <p>Tra i campi categorici <code>OC_MACROAREA</code>, che definisce le macroaree geografiche italiane. E per sapere ad esempio qual è il finanziamento pubblico totale per ciascuna, si può usare la query <code>SQL</code>:</p>
 <div id="lst-query-macroarea" class="listing">
-<p>Lista&nbsp;4: Query SQL: totale dei finanziamenti pubblici per macroaree</p>
+<p>Lista&nbsp;5: Query SQL: totale dei finanziamenti pubblici per macroaree</p>
 <div class="sourceCode" id="lst-query-macroarea" data-lst-cap="Query SQL: totale dei finanziamenti pubblici per macroaree" style="background: #f1f3f5;"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="lst-query-macroarea-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">SELECT</span> OC_MACROAREA,</span>
@@ -2237,50 +2270,50 @@ font-style: inherit;">DESC</span></span></code></pre></div>
 <div class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display" data-execution_count="2">
 <style type="text/css">
-#T_b9e6d th:nth-child(1) {
+#T_37014 th:nth-child(1) {
   text-align: left;
 }
-#T_b9e6d th:nth-child(2) {
+#T_37014 th:nth-child(2) {
   text-align: right;
 }
-#T_b9e6d_row0_col0, #T_b9e6d_row1_col0, #T_b9e6d_row2_col0, #T_b9e6d_row3_col0, #T_b9e6d_row4_col0 {
+#T_37014_row0_col0, #T_37014_row1_col0, #T_37014_row2_col0, #T_37014_row3_col0, #T_37014_row4_col0 {
   text-align: left;
 }
-#T_b9e6d_row0_col1, #T_b9e6d_row1_col1, #T_b9e6d_row2_col1, #T_b9e6d_row3_col1, #T_b9e6d_row4_col1 {
+#T_37014_row0_col1, #T_37014_row1_col1, #T_37014_row2_col1, #T_37014_row3_col1, #T_37014_row4_col1 {
   text-align: right;
 }
 </style>
 
 <div id="tbl-aree-sum" class="anchored">
 <div class="table-responsive">
-<table id="T_b9e6d" class="table-bordered striped small table table-sm table-striped" data-quarto-postprocess="true">
+<table id="T_37014" class="table-bordered striped small table table-sm table-striped" data-quarto-postprocess="true">
 <caption>Tabella&nbsp;6: Finanziamento pubblico per macro aree</caption>
 <thead>
 <tr class="header">
-<th id="T_b9e6d_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Macro area</th>
-<th id="T_b9e6d_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Finanziamento totale pubblico (€)</th>
+<th id="T_37014_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Macro area</th>
+<th id="T_37014_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Finanziamento totale pubblico (€)</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_b9e6d_row0_col0" class="data row0 col0">Mezzogiorno</td>
-<td id="T_b9e6d_row0_col1" class="data row0 col1">182.919.710.550</td>
+<td id="T_37014_row0_col0" class="data row0 col0">Mezzogiorno</td>
+<td id="T_37014_row0_col1" class="data row0 col1">182.919.710.550</td>
 </tr>
 <tr class="even">
-<td id="T_b9e6d_row1_col0" class="data row1 col0">Centro-Nord</td>
-<td id="T_b9e6d_row1_col1" class="data row1 col1">61.964.843.697</td>
+<td id="T_37014_row1_col0" class="data row1 col0">Centro-Nord</td>
+<td id="T_37014_row1_col1" class="data row1 col1">61.964.843.697</td>
 </tr>
 <tr class="odd">
-<td id="T_b9e6d_row2_col0" class="data row2 col0">Ambito Nazionale</td>
-<td id="T_b9e6d_row2_col1" class="data row2 col1">8.808.650.456</td>
+<td id="T_37014_row2_col0" class="data row2 col0">Ambito Nazionale</td>
+<td id="T_37014_row2_col1" class="data row2 col1">8.808.650.456</td>
 </tr>
 <tr class="even">
-<td id="T_b9e6d_row3_col0" class="data row3 col0">Altro</td>
-<td id="T_b9e6d_row3_col1" class="data row3 col1">3.684.521.639</td>
+<td id="T_37014_row3_col0" class="data row3 col0">Altro</td>
+<td id="T_37014_row3_col1" class="data row3 col1">3.684.521.639</td>
 </tr>
 <tr class="odd">
-<td id="T_b9e6d_row4_col0" class="data row4 col0">Estero</td>
-<td id="T_b9e6d_row4_col1" class="data row4 col1">287.153.594</td>
+<td id="T_37014_row4_col0" class="data row4 col0">Estero</td>
+<td id="T_37014_row4_col1" class="data row4 col1">287.153.594</td>
 </tr>
 </tbody>
 </table>
@@ -2289,7 +2322,7 @@ font-style: inherit;">DESC</span></span></code></pre></div>
 </div>
 </div>
 <div class="cell dataframe table-bordered striped responsive small">
-<div class="sourceCode cell-code hidden" id="cb30" data-startfrom="966" data-source-offset="-0" style="background: #f1f3f5;"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 965;"><span id="cb30-966">data <span class="op" style="color: #5E5E5E;
+<div class="sourceCode cell-code hidden" id="cb30" data-startfrom="983" data-source-offset="-0" style="background: #f1f3f5;"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 982;"><span id="cb30-983">data <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -2306,7 +2339,7 @@ background-color: null;
 font-style: inherit;">:</span> <span class="kw" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">true</span> })</span>
-<span id="cb30-967">Inputs<span class="op" style="color: #5E5E5E;
+<span id="cb30-984">Inputs<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
 background-color: null;
@@ -2334,7 +2367,7 @@ font-style: inherit;">"it-IT"</span>})</span></code></pre></div>
 </div>
 </div>
 </div>
-<p>➡️ Purtroppo però non è possibile usare in modo comodo una query come quella di Lista&nbsp;4.<br> Perché, come scritto sopra, il <code>CSV</code> ha alcuni problemi e non è “standard”.<br> Per eseguirla allora sarebbe necessario inserire la lunghissima lista di parametri per la funzione <code>read_csv_auto</code> e definire i tipi di campo, così come nel caso di <code>SUMMARIZE</code>. Ma sarebbe molto scomodo e poco pratico.</p>
+<p>➡️ Purtroppo però non è possibile usare in modo comodo una query come quella di Lista&nbsp;5.<br> Perché, come scritto sopra, il <code>CSV</code> ha alcuni problemi e non è “standard”.<br> Per eseguirla allora sarebbe necessario inserire la lunghissima lista di parametri per la funzione <code>read_csv_auto</code> e definire i tipi di campo, così come nel caso di <code>SUMMARIZE</code>. Ma sarebbe molto scomodo e poco pratico.</p>
 <p><strong>Due modi</strong> per <strong>risolvere</strong> il <strong>problema</strong>:</p>
 <ul>
 <li><strong>creare</strong> un <strong><code>CSV</code></strong> “<strong>pulito</strong>” e <strong>standard</strong>, con i tipi di campo corretti, e lavorare su questo;</li>
