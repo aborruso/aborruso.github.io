@@ -23,7 +23,7 @@
 <section id="tldr-una-breve-introduzione" class="level2">
 <h2 class="anchored" data-anchor-id="tldr-una-breve-introduzione">TL;DR (una breve introduzione)</h2>
 <p>Il formato <strong>CSV</strong>, con tutti i suoi <strong>difetti</strong>, è ancora <strong>uno dei formati più diffusi per lo scambio di dati</strong>. Ci sono <strong>modalità</strong> di gestire questi file ed eccezionali <strong>strumenti</strong>, che possono rendere molto semplice, efficace e rapido il loro utilizzo. Anche quando sono di <strong>grandi dimensioni</strong>.<br> E per fortuna ci sono banche dati “grosse” e importanti come <a href="https://opencoesione.gov.it"><strong>OpenCoesione</strong></a> che danno l’opportunità di fare pratica con questi strumenti.</p>
-<p>In questo lungo post farò una carrelata della <strong>compressione</strong> dei file <strong><code>CSV</code></strong>, dell’importanza di <strong>descriverli</strong>, dell’utilizzo di <strong>DuckDB</strong> per analizzarli e del <strong>formato Parquet</strong> come alternativa al CSV.</p>
+<p>In questo lungo post farò una carrellata della <strong>compressione</strong> dei file <strong><code>CSV</code></strong>, dell’importanza di <strong>descriverli</strong>, dell’utilizzo di <strong>DuckDB</strong> per analizzarli e del <strong>formato Parquet</strong> come alternativa al CSV.</p>
 <p>⚠️ <strong>QUESTO POST NON È UN TUTORIAL</strong> (ma <em>doping</em> omeopatico per i tuoi criceti e per chi pubblica dati).</p>
 <p><img src="https://aborruso.github.io/posts/duckdb-intro-csv/images/atutorial.png" class="img-fluid"></p>
 <hr>
@@ -254,19 +254,19 @@ font-style: inherit;">'</span></span><div class="code-annotation-gutter-bg"></di
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="lst-query-duckdb" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-lines="5" data-code-annotation="1" data-code-cell="lst-query-duckdb">imposta il separatore di campi a <code>;</code></span>
+<span data-code-lines="5" data-code-cell="lst-query-duckdb" data-code-annotation="1">imposta il separatore di campi a <code>;</code></span>
 </dd>
 <dt data-target-cell="lst-query-duckdb" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-lines="6" data-code-annotation="2" data-code-cell="lst-query-duckdb">imposta il separatore di decimali a <code>,</code></span>
+<span data-code-lines="6" data-code-cell="lst-query-duckdb" data-code-annotation="2">imposta il separatore di decimali a <code>,</code></span>
 </dd>
 <dt data-target-cell="lst-query-duckdb" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-lines="7" data-code-annotation="3" data-code-cell="lst-query-duckdb">la prima riga è la riga di intestazione</span>
+<span data-code-lines="7" data-code-cell="lst-query-duckdb" data-code-annotation="3">la prima riga è la riga di intestazione</span>
 </dd>
 <dt data-target-cell="lst-query-duckdb" data-target-annotation="4">4</dt>
 <dd>
-<span data-code-lines="8" data-code-annotation="4" data-code-cell="lst-query-duckdb">il campo <code>Finanziamento PNRR</code> è di tipo <code>FLOAT</code></span>
+<span data-code-lines="8" data-code-cell="lst-query-duckdb" data-code-annotation="4">il campo <code>Finanziamento PNRR</code> è di tipo <code>FLOAT</code></span>
 </dd>
 </dl>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -1493,7 +1493,7 @@ font-style: inherit;">) test;'</span></span><div class="code-annotation-gutter-b
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-8" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-lines="1" data-code-annotation="1" data-code-cell="annotated-cell-8">carica l’estensione spaziale</span>
+<span data-code-lines="1" data-code-cell="annotated-cell-8" data-code-annotation="1">carica l’estensione spaziale</span>
 </dd>
 </dl>
 <p>A schermo si avrà <code>42.2471</code>.</p>
@@ -1856,15 +1856,15 @@ font-style: inherit;">-S</span></span><div class="code-annotation-gutter-bg"></d
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-22" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-lines="2" data-code-annotation="1" data-code-cell="annotated-cell-22"><code>-cmd '.mode box'</code> abilita la vista “box”</span>
+<span data-code-lines="2" data-code-cell="annotated-cell-22" data-code-annotation="1"><code>-cmd '.mode box'</code> abilita la vista “box”</span>
 </dd>
 <dt data-target-cell="annotated-cell-22" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-lines="3" data-code-annotation="2" data-code-cell="annotated-cell-22">L’<em>input</em> è lo <code>stdin</code></span>
+<span data-code-lines="3" data-code-cell="annotated-cell-22" data-code-annotation="2">L’<em>input</em> è lo <code>stdin</code></span>
 </dd>
 <dt data-target-cell="annotated-cell-22" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-lines="4" data-code-annotation="3" data-code-cell="annotated-cell-22">L’<em>output</em> a <code>less</code> in modo che sia leggibile</span>
+<span data-code-lines="4" data-code-cell="annotated-cell-22" data-code-annotation="3">L’<em>output</em> a <code>less</code> in modo che sia leggibile</span>
 </dd>
 </dl>
 <p>A schermo ho un’anteprima leggibile e navigabile, come questa di Figura&nbsp;8.</p>
@@ -2270,50 +2270,50 @@ font-style: inherit;">DESC</span></span></code></pre></div>
 <div class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display" data-execution_count="2">
 <style type="text/css">
-#T_2d067 th:nth-child(1) {
+#T_6386e th:nth-child(1) {
   text-align: left;
 }
-#T_2d067 th:nth-child(2) {
+#T_6386e th:nth-child(2) {
   text-align: right;
 }
-#T_2d067_row0_col0, #T_2d067_row1_col0, #T_2d067_row2_col0, #T_2d067_row3_col0, #T_2d067_row4_col0 {
+#T_6386e_row0_col0, #T_6386e_row1_col0, #T_6386e_row2_col0, #T_6386e_row3_col0, #T_6386e_row4_col0 {
   text-align: left;
 }
-#T_2d067_row0_col1, #T_2d067_row1_col1, #T_2d067_row2_col1, #T_2d067_row3_col1, #T_2d067_row4_col1 {
+#T_6386e_row0_col1, #T_6386e_row1_col1, #T_6386e_row2_col1, #T_6386e_row3_col1, #T_6386e_row4_col1 {
   text-align: right;
 }
 </style>
 
 <div id="tbl-aree-sum" class="anchored">
 <div class="table-responsive">
-<table id="T_2d067" class="table-bordered striped small table table-sm table-striped" data-quarto-postprocess="true">
+<table id="T_6386e" class="table-bordered striped small table table-sm table-striped" data-quarto-postprocess="true">
 <caption>Tabella&nbsp;6: Finanziamento pubblico per macro aree</caption>
 <thead>
 <tr class="header">
-<th id="T_2d067_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Macro area</th>
-<th id="T_2d067_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Finanziamento totale pubblico (€)</th>
+<th id="T_6386e_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Macro area</th>
+<th id="T_6386e_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Finanziamento totale pubblico (€)</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_2d067_row0_col0" class="data row0 col0">Mezzogiorno</td>
-<td id="T_2d067_row0_col1" class="data row0 col1">182.919.710.550</td>
+<td id="T_6386e_row0_col0" class="data row0 col0">Mezzogiorno</td>
+<td id="T_6386e_row0_col1" class="data row0 col1">182.919.710.550</td>
 </tr>
 <tr class="even">
-<td id="T_2d067_row1_col0" class="data row1 col0">Centro-Nord</td>
-<td id="T_2d067_row1_col1" class="data row1 col1">61.964.843.697</td>
+<td id="T_6386e_row1_col0" class="data row1 col0">Centro-Nord</td>
+<td id="T_6386e_row1_col1" class="data row1 col1">61.964.843.697</td>
 </tr>
 <tr class="odd">
-<td id="T_2d067_row2_col0" class="data row2 col0">Ambito Nazionale</td>
-<td id="T_2d067_row2_col1" class="data row2 col1">8.808.650.456</td>
+<td id="T_6386e_row2_col0" class="data row2 col0">Ambito Nazionale</td>
+<td id="T_6386e_row2_col1" class="data row2 col1">8.808.650.456</td>
 </tr>
 <tr class="even">
-<td id="T_2d067_row3_col0" class="data row3 col0">Altro</td>
-<td id="T_2d067_row3_col1" class="data row3 col1">3.684.521.639</td>
+<td id="T_6386e_row3_col0" class="data row3 col0">Altro</td>
+<td id="T_6386e_row3_col1" class="data row3 col1">3.684.521.639</td>
 </tr>
 <tr class="odd">
-<td id="T_2d067_row4_col0" class="data row4 col0">Estero</td>
-<td id="T_2d067_row4_col1" class="data row4 col1">287.153.594</td>
+<td id="T_6386e_row4_col0" class="data row4 col0">Estero</td>
+<td id="T_6386e_row4_col1" class="data row4 col1">287.153.594</td>
 </tr>
 </tbody>
 </table>
