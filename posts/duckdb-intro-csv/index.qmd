@@ -474,7 +474,7 @@ Anche i dataset geografici del progetto [Overture Maps Foundation](https://overt
 I dati aperti sulle [corse di taxi e veicoli con conducente di New York](https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page), sono anch'essi in questo formato.
 
 L'ultimo esempio, per chiudere in bellezza, è quello dell'impareggiabile [**portale Open Data della Francia**](https://www.data.gouv.fr/).<br>
-Pubblica già dati in formato `parquet`, sono disponibili gli URL statici dei file, ed è possibile fare *query* in modo comodissimo, come se fossero [disponibili delle API](#come-avere-delle-api).<br>
+Pubblica un dataset in formato `parquet`, sono disponibili gli URL statici dei file, ed è possibile fare *query* in modo comodissimo, come se fossero [disponibili delle API](#come-avere-delle-api).<br>
 Ad esempio posso interrogare il [file da 470 MB degli indirizzi](https://www.data.gouv.fr/fr/datasets/bureaux-de-vote-et-adresses-de-leurs-electeurs/), di 15 milioni di righe, per avere il numero di indirizzi per comune con questa semplicità (vedi @lst-query-francia):
 
 ```{#lst-query-francia .bash lst-cap="Esempio di *query* da *shell*"}
