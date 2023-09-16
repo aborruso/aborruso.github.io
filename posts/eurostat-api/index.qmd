@@ -14,3 +14,6 @@ Bla
 ```
 duckdb  -c 'select * from read_csv_auto("https://ec.europa.eu/eurostat/api/dissemination/sdmx/2.1/data/BOP_EU6_M?format=TSV&compressed=true",compression=gzip,delim="\t",header=True,nullstr=": ")'
 ```
+
+
+https://wikis.ec.europa.eu/display/EUROSTATHELP/Which+are+the+available+formats#:~:text=TSV%20stands%20for%20Tab%20Separated,reports%20one%20observation%20per%20line.
