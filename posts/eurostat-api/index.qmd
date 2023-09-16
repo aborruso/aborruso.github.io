@@ -1,0 +1,16 @@
+---
+title: "Eurostat"
+description: "Palermo"
+date: "2023-07-30"
+draft: true
+search: false
+categories:
+  - duckdb
+  - spatial
+---
+
+Bla
+
+```
+duckdb  -c 'select * from read_csv_auto("https://ec.europa.eu/eurostat/api/dissemination/sdmx/2.1/data/BOP_EU6_M?format=TSV&compressed=true",compression=gzip,delim="\t",header=True,nullstr=": ")'
+```
