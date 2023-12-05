@@ -1,0 +1,67 @@
+---
+title: "Usare postgis da docker"
+description: "Un, due, tre, via"
+date: "2023-12-05"
+draft: true
+categories:
+  - postgis
+  - docker
+  - PostgreSQL
+---
+
+
+È possibile usare postgis da docker, usando le immagini ufficiali:
+<https://github.com/postgis/docker-postgis>
+
+Il primo step è fare il `pull` dell'immagine:
+
+```{bash}
+docker pull postgis/postgis:16-master
+```
+
+Poi si può dare il primo avvio del *container*, impostando un *setup* di base:
+
+```{bash}
+docker run --name postgis16 \
+-p 5432:5432 \
+-v /home/user/folder:/directory_docker \
+-e POSTGRES_PASSWORD=thePassword \
+-d postgis/postgis:16-master
+```
+
+Alcune spiegazioni:
+
+- `--name postgis16`: assegna il nome `postgis16` al container. È utile per identificare e gestire il container in seguito.
+- `-p 5432:5432`: mappa la porta 5432 del *container* (a destra) sulla porta 5432 del tuo *host* (a sinistra). Ciò permette la connessione al database PostGIS all'interno del *container* dalla tua macchina *host* sulla stessa porta. Questo è fondamentale per conntersi al database da QGIS, PGAdmin o altri software.
+- `-v /home/user/folder:/directory_docker`: monta un volume, collegando la directory `/home/user/folder` del tuo *host* alla directory `/directory_docker` dentro il container. Questo è utile per la persistenza dei dati o per condividere file tra il container e l'*host*.
+- `-e POSTGRES_PASSWORD=thePassword`: imposta la variabile d'ambiente `POSTGRES_PASSWORD` con il valore `thePassword`. Questo è utilizzato per impostare la password dell'utente `postgres` di postgres.
+- `-d`: esegue il container in *background* (modalità *detached*), così non blocca il terminale.
+- `postgis/postgis:16-master`: specifica quale immagine Docker usare, in questo caso l'immagine `postgis/postgis` con il tag `16-master`.
+
+Una volta che il container è in esecuzione si può entrare nella `cli` di questa immagine con il comando:
+
+```{bash}
+docker exec -it postgis16 bash
+```
+
+Alcune note:
+
+- `-it`: questa opzione è una combinazione di due *flag*:
+  - `-i` o `--interactive` mantiene aperto lo *standard input* (`STDIN`) per il comando che stai eseguendo. Ciò permette di interagire con il comando eseguito nel *container*.
+  - `-t` o `--tty` alloca un terminale *pseudo-TTY*, che è essenzialmente un modo per avere un'interfaccia a riga di comando all'interno del container.
+
+Una volta dentro la cli, si può accedere al database con il comando:
+
+```{bash}
+psql -U postgres -d postgres
+```
+
+Alcune note:
+
+- in questa immagine pre esiste l'utente `postgres` e un db `postgres`
+- il db `postgres` è un db con l'estensione `postgis` già installata
+- per abilitate l'utilizzo delle funzioni raster di postgis, è necessario installare l'estensione `postgis_raster` con il comando:
+
+```{sql}
+CREATE EXTENSION postgis_raster;
+```
