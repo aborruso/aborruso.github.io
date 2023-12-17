@@ -9,13 +9,682 @@
 <link>https://aborruso.github.io/blog.html</link>
 <atom:link href="https://aborruso.github.io/blog.xml" rel="self" type="application/rss+xml"/>
 <description></description>
-<generator>quarto-1.4.43</generator>
-<lastBuildDate>Sun, 20 Aug 2023 22:00:00 GMT</lastBuildDate>
+<generator>quarto-1.4.525</generator>
+<lastBuildDate>Sat, 16 Dec 2023 23:00:00 GMT</lastBuildDate>
+<item>
+  <title>Usare la nuova intelligenza artificiale di Google</title>
+  <dc:creator>Andrea Borruso</dc:creator>
+  <link>https://aborruso.github.io/posts/accedere-google-ai-riga-di-comando/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>😉 Questo post è per <a href="https://twitter.com/CesareGerbino/status/1735723196270199040">Cesare Gerbino</a>.</p>
+<section id="introduzione" class="level2">
+<h2 class="anchored" data-anchor-id="introduzione">Introduzione</h2>
+<p>Google <a href="https://blog.google/technology/ai/google-gemini-ai/">ha lanciato</a> a inizio dicembre del 2023 <strong>Gemini</strong>, il suo modello di intelligenza artificiale migliore. Può comprendere e combinare diversi tipi di informazioni, come testo, codice, audio, immagini e video.</p>
+<p>Da poco sono disponibili le <a href="https://makersuite.google.com/app/apikey"><strong>API</strong></a> e ho voluto fare qualche test di base, usando la riga di comando.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Nota
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Al momento le API sono <strong>accessibili soltanto dagli Stati Uniti</strong>, quindi bisogna usare un VPN. Io ho usato quella gratuita di <a href="https://protonvpn.com/">Proton VPN</a> (grazie a Francesco Passantino per il suggerimento di anni fa).</p>
+</div>
+</div>
+<p>A seguire una mini guida per testarle</p>
+</section>
+<section id="connessione-alla-vpn" class="level2">
+<h2 class="anchored" data-anchor-id="connessione-alla-vpn">Connessione alla VPN</h2>
+<p>Per prima cosa bisogna connettersi alla VPN e scegliere come paese di <strong>connessione</strong> gli <strong>Stati Uniti</strong>.</p>
+<div class="img-fluid quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://aborruso.github.io/posts/accedere-google-ai-riga-di-comando/images/Proton_VPN_USA.png" class="img-fluid figure-img"></p>
+<figcaption>Esempio connessione usando Proton VPN</figcaption>
+</figure>
+</div>
+</section>
+<section id="generare-una-chiave-api" class="level2">
+<h2 class="anchored" data-anchor-id="generare-una-chiave-api">Generare una chiave API</h2>
+<p>Una volta connessi dagli Stati Uniti è necessario <strong>generare</strong> una <strong>chiave API</strong>, per autenticarsi. Si può fare da questa pagina: <a href="https://makersuite.google.com/app/apikey" class="uri">https://makersuite.google.com/app/apikey</a>.</p>
+<p>Una volta generata - è una lunga stringa - è da archiviare da qualche parte.</p>
+</section>
+<section id="accesso-alle-api-in-rest-via-curl" class="level2">
+<h2 class="anchored" data-anchor-id="accesso-alle-api-in-rest-via-curl">Accesso alle API in REST, via cURL</h2>
+<p>È il modo più immediato e diretto. Si apre la <code>shell</code> e si manda una richiesta come questa, in cui si definisce prima una variabile con la chiave API e poi si lancia la chiamata.</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Una variabile dove inserire la chiave API</span></span>
+<span id="cb1-2"><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">API_KEY</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"AIxxSyCnBOUyPuDLtjWY11HOwxxxxxxx"</span></span>
+<span id="cb1-3"></span>
+<span id="cb1-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Lanciare la chiamata</span></span>
+<span id="cb1-5"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">curl</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-s</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$API_KEY</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\</span></span>
+<span id="cb1-6">-H <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Content-Type: application/json'</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\</span></span>
+<span id="cb1-7">-X POST <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-d</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'{"contents": [{"parts":[{"text": "Creami tre nomi buffi per un gatto siamese con le orecchie molto grandi"}]}]}'</span></span></code></pre></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Qui ssempio di output JSON
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode json code-overflow-wrap code-with-copy"><code class="sourceCode json"><span id="cb2-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb2-2">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"candidates"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">[</span></span>
+<span id="cb2-3">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb2-4">      <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"content"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb2-5">        <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"parts"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">[</span></span>
+<span id="cb2-6">          <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb2-7">            <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"text"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"1. Dumbo</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\n</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">2. Flitzer</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\n</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">3. Elicottero"</span></span>
+<span id="cb2-8">          <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb2-9">        <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">]</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-10">        <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"role"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"model"</span></span>
+<span id="cb2-11">      <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">},</span></span>
+<span id="cb2-12">      <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"finishReason"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"STOP"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-13">      <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"index"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-14">      <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"safetyRatings"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">[</span></span>
+<span id="cb2-15">        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb2-16">          <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"category"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"HARM_CATEGORY_SEXUALLY_EXPLICIT"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-17">          <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"probability"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"NEGLIGIBLE"</span></span>
+<span id="cb2-18">        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">}</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-19">        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb2-20">          <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"category"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"HARM_CATEGORY_HATE_SPEECH"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-21">          <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"probability"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"NEGLIGIBLE"</span></span>
+<span id="cb2-22">        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">}</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-23">        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb2-24">          <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"category"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"HARM_CATEGORY_HARASSMENT"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-25">          <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"probability"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"NEGLIGIBLE"</span></span>
+<span id="cb2-26">        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">}</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-27">        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb2-28">          <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"category"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"HARM_CATEGORY_DANGEROUS_CONTENT"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-29">          <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"probability"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"NEGLIGIBLE"</span></span>
+<span id="cb2-30">        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb2-31">      <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">]</span></span>
+<span id="cb2-32">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb2-33">  <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">]</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-34">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"promptFeedback"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb2-35">    <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"safetyRatings"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">[</span></span>
+<span id="cb2-36">      <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb2-37">        <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"category"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"HARM_CATEGORY_SEXUALLY_EXPLICIT"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-38">        <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"probability"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"NEGLIGIBLE"</span></span>
+<span id="cb2-39">      <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">}</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-40">      <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb2-41">        <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"category"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"HARM_CATEGORY_HATE_SPEECH"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-42">        <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"probability"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"NEGLIGIBLE"</span></span>
+<span id="cb2-43">      <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">}</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-44">      <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb2-45">        <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"category"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"HARM_CATEGORY_HARASSMENT"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-46">        <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"probability"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"NEGLIGIBLE"</span></span>
+<span id="cb2-47">      <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">}</span><span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-48">      <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb2-49">        <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"category"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"HARM_CATEGORY_DANGEROUS_CONTENT"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-50">        <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"probability"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"NEGLIGIBLE"</span></span>
+<span id="cb2-51">      <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb2-52">    <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">]</span></span>
+<span id="cb2-53">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb2-54"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">}</span></span></code></pre></div>
+</div>
+</div>
+</div>
+<p>Se si espande l’esempio di JSON qui sopra, la parte con la risposta alla chiamata è quella contenuta in <code>.candidates[0].content.parts[0].text</code>.<br> Si può modifcare il comando di sopra e usare <a href="https://jqlang.github.io/jq/"><code>jq</code></a> per estrarla:</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">curl</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-s</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$API_KEY</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\</span></span>
+<span id="cb3-2">-H <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Content-Type: application/json'</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\</span></span>
+<span id="cb3-3">-X POST <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-d</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'{"contents": [{"parts":[{"text": "Creami tre nomi buffi per un gatto siamese con le orecchie molto grandi"}]}]}'</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">|</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\</span></span>
+<span id="cb3-4"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">jq</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'.candidates[0].content.parts[0].text'</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-r</span></span></code></pre></div>
+<p>In output si avrà qualcosa come:</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">1. </span>Dumbo</span>
+<span id="cb4-2"><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">2. </span>Flitzer</span>
+<span id="cb4-3"><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">3. </span>Elicottero</span></code></pre></div>
+<p>Non vi resta che testare e divertirvi, con esempi migliori del mio. La cosa interessante è che è un’<code>API REST</code>, quindi si può usare da qualsiasi linguaggio di programmazione.</p>
+<p><img src="https://aborruso.github.io/posts/accedere-google-ai-riga-di-comando/gemini_via_cli.png" class="img-fluid"></p>
+</section>
+<section id="utilizzare-leccezionale-llm-via-cli" class="level2">
+<h2 class="anchored" data-anchor-id="utilizzare-leccezionale-llm-via-cli">Utilizzare l’eccezionale <code>LLM</code> via cli</h2>
+<p><a href="https://llm.datasette.io/en/stable/index.html#"><strong><code>LLM</code></strong></a> è un’<em>utility</em> a riga di comando e una libreria Python per interagire con <em>Large Language Models</em> (LLM), ovvero modelli di linguaggio avanzati.<br> Permette di utilizzare sia API remote per accedere a modelli ospitati su server esterni, sia modelli installati e eseguiti localmente sul proprio <em>computer</em>.</p>
+<p>Ed è possibile quindi usarlo per connettersi con il <em>Large Language Models</em> di Google Gemini.</p>
+<p>🙏 L’autore della cli <code>LLM</code> è quel genio di <a href="https://simonwillison.net/"><strong>Simon Willison</strong></a>.</p>
+<section id="installazione" class="level3">
+<h3 class="anchored" data-anchor-id="installazione">Installazione</h3>
+<p>Per installarlo è sufficiente usare <code>pip</code>:</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pip3</span> install llm</span></code></pre></div>
+<p>Per usare Gemini, è necessario instalare il plug-in dedicato, <a href="https://github.com/simonw/llm-gemini"><code>llm-gemini</code></a>:</p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">llm</span> install llm-gemini</span></code></pre></div>
+<p>O anche</p>
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">pip3</span> install llm-gemini</span></code></pre></div>
+</section>
+<section id="utilizzo" class="level3">
+<h3 class="anchored" data-anchor-id="utilizzo">Utilizzo</h3>
+<p>La prima cosa da fare è impostare la propria chiave API (quella richiesta sopra). Si apre la shell:</p>
+<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">llm</span> keys set gemini</span></code></pre></div>
+<p>Si incolla la chiave API e si preme <code>Invio</code>.</p>
+<p>Una volta fatto, si può testare il funzionamento con un esempio:</p>
+<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">llm</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-m</span> gemini-pro <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Creami tre nomi buffi per un gatto siamese con le orecchie molto grandi"</span></span></code></pre></div>
+<p>In output si avrà qualcosa come:</p>
+<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb10-1"><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">- </span>Dumbo</span>
+<span id="cb10-2"><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">- </span>Elio</span>
+<span id="cb10-3"><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">- </span>Pipistrello</span></code></pre></div>
+<p>La cosa bella è che <code>llm</code>, come tutte le buone <code>cli</code>, può ricevere input dallo <code>stdin</code> e quindi può utilizzare l’output di altri comandi.</p>
+<p>Ad esempio l’output di <code>echo</code>:</p>
+<div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">echo</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'Dieci nomi per un blog che parla della riga di comando'</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">|</span> <span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">llm</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-m</span> gemini-pro</span></code></pre></div>
+<p>E avrò in output qualcosa come:</p>
+<div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb12-1"><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">1. </span>Il Comando Centrale</span>
+<span id="cb12-2"><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">2. </span>Padronanza del Terminale</span>
+<span id="cb12-3"><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">3. </span>Il Mago della Riga di Comando</span>
+<span id="cb12-4"><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">4. </span>Il Domatore di Terminale</span>
+<span id="cb12-5"><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">5. </span>Il Maestro del Prompt</span>
+<span id="cb12-6"><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">6. </span>La Guida alla Riga di Comando</span>
+<span id="cb12-7"><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">7. </span>Il Tutorial del Terminale</span>
+<span id="cb12-8"><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">8. </span>Il Manuale del Terminale</span>
+<span id="cb12-9"><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">9. </span>Le Avventure di un SysAdmin</span>
+<span id="cb12-10"><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">10. </span>La Linea di Comando per Tutti</span></code></pre></div>
+<p>Un esempio più carino, che mostra le info sul sistema operativo che sto usando adesso per testare Gemini. Il comando da cui parto è <code>uname -a</code>, che mi restituisce:</p>
+<div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode markdown code-overflow-wrap code-with-copy"><code class="sourceCode markdown"><span id="cb13-1">Linux MSI 5.15.133.1-microsoft-standard-WSL2 #1 SMP Thu Oct 5 21:02:42 UTC 2023 x86_64 GNU/Linux</span></code></pre></div>
+<p>Voglio creare un’informazione più leggile, e la voglio in formato <code>markdown</code>, per scriverla qui (il markdown è il formato in cui è scritto questo sito), e lo chiedo a Gemini, via <code>llm</code>:</p>
+<div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="cb14-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">llm</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-m</span> gemini-pro <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Questo è il mio sistema operativo: </span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$(</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">uname</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-a</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">)</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">. Dimmi qualcosa di più, e dimmelo in markdown."</span></span></code></pre></div>
+<p>In output avrò qualcosa come:</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs"><li class="nav-item"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" aria-controls="tabset-1-1" aria-selected="true">Output del comando</a></li><li class="nav-item"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" aria-controls="tabset-1-2" aria-selected="false">Output in HTML</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" aria-labelledby="tabset-1-1-tab">
+<div class="sourceCode" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb15-1"><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">* </span>**Kernel**: Linux 5.15.133.1-microsoft-standard-WSL2</span>
+<span id="cb15-2"><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    * </span>Questo è il kernel Linux utilizzato per eseguire WSL2. È una versione modificata del kernel Linux 5.15 che è stato ottimizzato per l'esecuzione in un ambiente Windows.</span>
+<span id="cb15-3"><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">* </span>**Nome Host**: MSI</span>
+<span id="cb15-4"><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    * </span>Questo è il nome del computer WSL2.</span>
+<span id="cb15-5"><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">* </span>**Versione**: #1 SMP Thu Oct 5 21:02:42 UTC 2023</span>
+<span id="cb15-6"><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    * </span>Questa è la versione della build del kernel Linux utilizzata per eseguire WSL2.</span>
+<span id="cb15-7"><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">* </span>**Architettura**: x86_64</span>
+<span id="cb15-8"><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    * </span>Questa è l'architettura del processore del computer WSL2.</span>
+<span id="cb15-9"><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">* </span>**Sistema Operativo**: GNU/Linux</span>
+<span id="cb15-10"><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    * </span>Questo è il sistema operativo utilizzato per eseguire WSL2. GNU/Linux è una distribuzione Linux basata sul kernel Linux.</span></code></pre></div>
+</div>
+<div id="tabset-1-2" class="tab-pane" aria-labelledby="tabset-1-2-tab">
+<ul>
+<li><strong>Kernel</strong>: Linux 5.15.133.1-microsoft-standard-WSL2
+<ul>
+<li>Questo è il kernel Linux utilizzato per eseguire WSL2. È una versione modificata del kernel Linux 5.15 che è stato ottimizzato per l’esecuzione in un ambiente Windows.</li>
+</ul></li>
+<li><strong>Nome Host</strong>: MSI
+<ul>
+<li>Questo è il nome del computer WSL2.</li>
+</ul></li>
+<li><strong>Versione</strong>: #1 SMP Thu Oct 5 21:02:42 UTC 2023
+<ul>
+<li>Questa è la versione della build del kernel Linux utilizzata per eseguire WSL2.</li>
+</ul></li>
+<li><strong>Architettura</strong>: x86_64
+<ul>
+<li>Questa è l’architettura del processore del computer WSL2.</li>
+</ul></li>
+<li><strong>Sistema Operativo</strong>: GNU/Linux
+<ul>
+<li>Questo è il sistema operativo utilizzato per eseguire WSL2. GNU/Linux è una distribuzione Linux basata sul kernel Linux.</li>
+</ul></li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="chattare-in-modo-interattivo" class="level3">
+<h3 class="anchored" data-anchor-id="chattare-in-modo-interattivo">Chattare in modo interattivo</h3>
+<p>Per attivare una modalità interattiva, domande e risposte, come una chat, il comando è:</p>
+<div class="sourceCode" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="cb16-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">llm</span> chat <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-m</span> gemini-pro</span></code></pre></div>
+<p>Una volta attivato, si potrà attivare il dialogo in modalità <em>chat</em> (vedi Figura&nbsp;1).</p>
+<div id="fig-llm-chat" class="quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-llm-chat-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://aborruso.github.io/posts/accedere-google-ai-riga-di-comando/images/linux_date.gif" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-llm-chat-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;1: <code>llm</code> in modalità <em>chat</em>
+</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="conclusioni" class="level2">
+<h2 class="anchored" data-anchor-id="conclusioni">Conclusioni</h2>
+<p>Il bello di questo tipo di accesso, è quello di poter creare in modo diretto e semplici, un utilizzo programmatico di questi strumenti. E la cosa è applicabile alla gran parte dei “Large Language Model” (LLM), ovvero questi tipi di AI che si concentrano sulla comprensione e generazione del linguaggio naturale umano.</p>
+<p>Questo <em>post</em> ha lo scopo soltanto di farvi <strong>due passi</strong> - non di più - nel nuovo motore di AI di Google, Gemini.<br> L’<em>utility</em> <strong><code>llm</code></strong> è un gioiellino e consente di <strong>fare</strong> molto, ma molto <strong>di più</strong>.</p>
+<p>😉 Su entrambi lascio a chi legge tutti i necessari e divertenti approfondimenti del caso.</p>
+
+
+</section>
+
+<a onclick="window.scrollTo(0, 0); return false;" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Torna in cima</a> ]]></description>
+  <category>ai</category>
+  <category>google</category>
+  <category>cli</category>
+  <guid>https://aborruso.github.io/posts/accedere-google-ai-riga-di-comando/</guid>
+  <pubDate>Sat, 16 Dec 2023 23:00:00 GMT</pubDate>
+  <media:content url="https://aborruso.github.io/posts/accedere-google-ai-riga-di-comando/gemini_via_cli.png" medium="image" type="image/png" height="97" width="144"/>
+</item>
 <item>
   <title>Gestire file CSV grandi, brutti e cattivi</title>
   <dc:creator>Andrea Borruso</dc:creator>
-  <link>https://aborruso.github.io/posts/duckdb-intro-csv/index.html</link>
+  <link>https://aborruso.github.io/posts/duckdb-intro-csv/</link>
   <description><![CDATA[ 
+
 
 
 
@@ -93,13 +762,19 @@ font-style: inherit;">-n</span> 5</span></code></pre></div>
 <div class="no-row-height column-margin column-container"><div class="">
 <p><code>head</code> estrae le prime 5 righe.</p>
 </div></div><p>Mi verrà restituito l’<em>output</em> di Lista&nbsp;1, e potrò constatare che c’è una <strong>riga di intestazione</strong> (non è obbligatoria nei <code>CSV</code>), che il <strong>separatore di campo</strong> è il <code>;</code>, che il <strong>separatore dei decimali</strong> è la <code>,</code> e soprattutto farmi un’idea dei contenuti.</p>
-<div id="lst-zcat-head" class="listing">
-<p>Lista&nbsp;1: Prime righe del file</p>
-<div class="sourceCode" id="lst-zcat-head" data-lst-cap="Prime righe del file" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="lst-zcat-head-1">Programma;Missione;Descrizione Missione;Componente;Descrizione Componente;ID Misura;Codice Univoco Misura;Descrizione Misura;ID Submisura;Codice CID;Codice Univoco Submisura;Descrizione Submisura;Amministrazione Titolare;Codice Identificativo Procedura di Attivazione;Titolo Procedura;Tipologia Procedura di Attivazione;CUP;Codice Locale Progetto;Stato CUP;CUP Codice Natura;CUP Descrizione Natura;CUP Codice Tipologia;CUP Descrizione Tipologia;CUP Codice Settore;CUP Descrizione Settore;CUP Codice Sottosettore;CUP Descrizione Sottosettore;CUP Codice Categoria;CUP Descrizione Categoria;Titolo Progetto;Sintesi Progetto;Descrizione Tipo Aiuto;Finanziamento - Stato;Finanziamento Stato - FOI;Finanziamento UE (Diverso da PNRR);Finanziamento Regione;Finanziamento Provincia;Finanziamento Comune;Finanziamento Altro Pubblico;Finanziamento Privato;Finanziamento Da Reperire;Finanziamento PNRR;Finanziamento PNC;Altri Fondi;Finanziamento Totale;Finanziamento Totale Pubblico;Finanziamento Totale Pubblico Netto;Soggetto Attuatore;Codice Fiscale Soggetto Attuatore;Flag Progetti in Essere;Data di Estrazione</span>
+<div id="lst-zcat-head" class="markdown listing">
+<figure class="quarto-float quarto-float-lst figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-zcat-head-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Lista&nbsp;1: Prime righe del file
+</figcaption>
+<div aria-describedby="lst-zcat-head-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="sourceCode" id="lst-zcat-head" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="lst-zcat-head-1">Programma;Missione;Descrizione Missione;Componente;Descrizione Componente;ID Misura;Codice Univoco Misura;Descrizione Misura;ID Submisura;Codice CID;Codice Univoco Submisura;Descrizione Submisura;Amministrazione Titolare;Codice Identificativo Procedura di Attivazione;Titolo Procedura;Tipologia Procedura di Attivazione;CUP;Codice Locale Progetto;Stato CUP;CUP Codice Natura;CUP Descrizione Natura;CUP Codice Tipologia;CUP Descrizione Tipologia;CUP Codice Settore;CUP Descrizione Settore;CUP Codice Sottosettore;CUP Descrizione Sottosettore;CUP Codice Categoria;CUP Descrizione Categoria;Titolo Progetto;Sintesi Progetto;Descrizione Tipo Aiuto;Finanziamento - Stato;Finanziamento Stato - FOI;Finanziamento UE (Diverso da PNRR);Finanziamento Regione;Finanziamento Provincia;Finanziamento Comune;Finanziamento Altro Pubblico;Finanziamento Privato;Finanziamento Da Reperire;Finanziamento PNRR;Finanziamento PNC;Altri Fondi;Finanziamento Totale;Finanziamento Totale Pubblico;Finanziamento Totale Pubblico Netto;Soggetto Attuatore;Codice Fiscale Soggetto Attuatore;Flag Progetti in Essere;Data di Estrazione</span>
 <span id="lst-zcat-head-2">PNRR;M1;Digitalizzazione, innovazione, competitività e cultura;M1C1;Digitalizzazione, innovazione e sicurezza nella PA;M1C1I1.2;M1C1I1.02;Abilitazione al cloud per le PA locali;M1C1I1.2;M1C1I1.2;M1C1I1.02.00;Abilitazione al cloud per le PA locali;PCM - DIPARTIM. TRASFORMAZIONE DIGITALE;1000000237;AVVISO AB. CLOUD COMUNI DEL 15/04/22;Bando;G61C22000240006;G61C22000240006;Attivo;02;ACQUISTO O REALIZZAZIONE DI SERVIZI;19;APPLICATIVI E PIATTAFORME WEB;10;SERVIZI PER LA P.A. E PER LA COLLETTIVITA';01;SERVIZI E TECNOLOGIE PER L'INFORMAZIONE E LE COMUNICAZIONI;007;SISTEMI INFORMATIVI PER LA P.A.;1.2. Ab.Cloud Com Cosoleto;MIGRAZIONE AL CLOUD DEI SERVIZI DIGITALI DELL'AMMINISTRAZIONE*TERRITORIO COMUNALE*N. 9 SERVIZI;INTERVENTO CHE NON COSTITUISCE AIUTO DI STATO;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;47427,00;0,00;0,00;47427,00;47427,00;47427,00;COMUNE DI COSOLETO;01234470803;No;13/06/2023</span>
 <span id="lst-zcat-head-3">PNRR;M1;Digitalizzazione, innovazione, competitività e cultura;M1C1;Digitalizzazione, innovazione e sicurezza nella PA;M1C1I1.2;M1C1I1.02;Abilitazione al cloud per le PA locali;M1C1I1.2;M1C1I1.2;M1C1I1.02.00;Abilitazione al cloud per le PA locali;PCM - DIPARTIM. TRASFORMAZIONE DIGITALE;1000000237;AVVISO AB. CLOUD COMUNI DEL 15/04/22;Bando;F71C22000160006;F71C22000160006;Attivo;02;ACQUISTO O REALIZZAZIONE DI SERVIZI;19;APPLICATIVI E PIATTAFORME WEB;10;SERVIZI PER LA P.A. E PER LA COLLETTIVITA';01;SERVIZI E TECNOLOGIE PER L'INFORMAZIONE E LE COMUNICAZIONI;007;SISTEMI INFORMATIVI PER LA P.A.;1.2. Ab.Cloud Com Bompensiere;MIGRAZIONE AL CLOUD DEI SERVIZI DIGITALI DELL'AMMINISTRAZIONE*TERRITORIO COMUNALE*N. 9 SERVIZI DA MIGRARE;INTERVENTO CHE NON COSTITUISCE AIUTO DI STATO;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;47427,00;0,00;0,00;47427,00;47427,00;47427,00;COMUNE DI BOMPENSIERE;80005060852;No;13/06/2023</span>
 <span id="lst-zcat-head-4">PNRR;M1;Digitalizzazione, innovazione, competitività e cultura;M1C1;Digitalizzazione, innovazione e sicurezza nella PA;M1C1I1.2;M1C1I1.02;Abilitazione al cloud per le PA locali;M1C1I1.2;M1C1I1.2;M1C1I1.02.00;Abilitazione al cloud per le PA locali;PCM - DIPARTIM. TRASFORMAZIONE DIGITALE;1000000237;AVVISO AB. CLOUD COMUNI DEL 15/04/22;Bando;B61C22000190006;B61C22000190006;Attivo;02;ACQUISTO O REALIZZAZIONE DI SERVIZI;19;APPLICATIVI E PIATTAFORME WEB;10;SERVIZI PER LA P.A. E PER LA COLLETTIVITA';01;SERVIZI E TECNOLOGIE PER L'INFORMAZIONE E LE COMUNICAZIONI;007;SISTEMI INFORMATIVI PER LA P.A.;1.2. Ab.Cloud Com Castelgrande;MIGRAZIONE AL CLOUD DEI SERVIZI DIGITALI DELL'AMMINISTRAZIONE*TERRITORIO COMUNALE*9 SERVIZI DA MIGRARE;INTERVENTO CHE NON COSTITUISCE AIUTO DI STATO;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;47427,00;0,00;0,00;47427,00;47427,00;47427,00;COMUNE DI CASTELGRANDE;80004060762;No;13/06/2023</span>
 <span id="lst-zcat-head-5">PNRR;M1;Digitalizzazione, innovazione, competitività e cultura;M1C1;Digitalizzazione, innovazione e sicurezza nella PA;M1C1I1.2;M1C1I1.02;Abilitazione al cloud per le PA locali;M1C1I1.2;M1C1I1.2;M1C1I1.02.00;Abilitazione al cloud per le PA locali;PCM - DIPARTIM. TRASFORMAZIONE DIGITALE;1000000237;AVVISO AB. CLOUD COMUNI DEL 15/04/22;Bando;F31C22000020006;F31C22000020006;Attivo;02;ACQUISTO O REALIZZAZIONE DI SERVIZI;19;APPLICATIVI E PIATTAFORME WEB;10;SERVIZI PER LA P.A. E PER LA COLLETTIVITA';01;SERVIZI E TECNOLOGIE PER L'INFORMAZIONE E LE COMUNICAZIONI;007;SISTEMI INFORMATIVI PER LA P.A.;1.2. Ab.Cloud Com Ittireddu;MIGRAZIONE AL CLOUD DEI SERVIZI DIGITALI DELL'AMMINISTRAZIONE*TERRITORIO COMUNALE*N. 9 SERVIZI DA MIGRARE;INTERVENTO CHE NON COSTITUISCE AIUTO DI STATO;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;47427,00;0,00;0,00;47427,00;47427,00;47427,00;COMUNE DI ITTIREDDU;00283910909;No;13/06/2023</span></code></pre></div>
+</div>
+</figure>
 </div>
 <p>E posso usare in modo diretto strumenti di analisi, trasformazione e filtro di file CSV come lo <a href="https://miller.readthedocs.io/">straordinario <strong>Miller</strong></a>.<br> Ad esempio avere restituito il <strong>conteggio</strong> dei <em>record</em>, i <strong>valori nulli</strong> di ogni campo e anche i valori <strong>distinti</strong>.<br> Se voglio farlo soltanto per i campi <code>Missione</code>, <code>Codice Univoco Misura</code> e <code>CUP Codice Natura</code>, utilizzerò il verbo <a href="https://miller.readthedocs.io/en/6.8.0/reference-verbs/index.html#cut"><code>cut</code></a> e <a href="https://miller.readthedocs.io/en/6.8.0/reference-verbs/index.html#summary"><code>summary</code></a>, direttamente sul file compresso:</p>
 <div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="ex" style="color: null;
@@ -126,10 +801,14 @@ font-style: inherit;">\</span></span>
 background-color: null;
 font-style: inherit;">-a</span> count,null_count,distinct_count PNRR_Progetti-Universo_REGIS_v2.1.csv.gz</span></code></pre></div>
 <p>In output avrò:</p>
-<div id="tbl-mlr-output" class="anchored">
+<div id="tbl-mlr-output" class="striped responsive small anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-mlr-output-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabella&nbsp;1: <em>Output</em> di <code>summary</code> di Miller
+</figcaption>
+<div aria-describedby="tbl-mlr-output-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="table-responsive">
 <table class="table-striped small table-sm table">
-<caption>Tabella&nbsp;1: <em>Output</em> di <code>summary</code> di Miller</caption>
 <thead>
 <tr class="header">
 <th>field_name</th>
@@ -160,6 +839,8 @@ font-style: inherit;">-a</span> count,null_count,distinct_count PNRR_Progetti-Un
 </tbody>
 </table>
 </div>
+</div>
+</figure>
 </div>
 <p>E con questo file compresso potrò usare anche strumenti di analisi e trasformazione che mi consentono di eseguire una più “<em>standard</em>” <strong><em>query</em> SQL</strong>, come <strong>DuckDB</strong>.<br> Per avere il totale del finanziamento PNRR per ogni missione, posso usare questo comando:</p>
 <div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="ex" style="color: null;
@@ -209,9 +890,13 @@ Informazioni utili
 
 <div class="no-row-height column-margin column-container"><div class="">
 <p><code>delim</code> e <code>header</code> sono riconosciuti automaticamente da DuckDB. Sono inseriti a scopo didattico.</p>
-</div></div><div id="lst-query-duckdb" class="listing">
-<p>Lista&nbsp;2: Query SQL tramite DuckDB su un CSV compresso</p>
-<div class="sourceCode" id="lst-query-duckdb" data-lst-cap="Query SQL tramite DuckDB su un CSV compresso" style="background: #f1f3f5;"><pre class="sourceCode bash code-annotation-code code-with-copy code-annotated"><code class="sourceCode bash"><span id="lst-query-duckdb-1"><span class="ex" style="color: null;
+</div></div><div id="lst-query-duckdb" class="bash listing">
+<figure class="quarto-float quarto-float-lst figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-query-duckdb-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Lista&nbsp;2: Query SQL tramite DuckDB su un CSV compresso
+</figcaption>
+<div aria-describedby="lst-query-duckdb-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="sourceCode" id="lst-query-duckdb" style="background: #f1f3f5;"><pre class="sourceCode code-annotation-code bash code-with-copy"><code class="sourceCode bash"><span id="lst-query-duckdb-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">duckdb</span> <span class="at" style="color: #657422;
 background-color: null;
@@ -229,16 +914,16 @@ font-style: inherit;">FROM  read_csv_auto(</span></span>
 <span id="lst-query-duckdb-4"><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">    "PNRR_Progetti-Universo_REGIS_v2.1.csv.gz",</span></span>
-<button class="code-annotation-anchor" data-target-cell="lst-query-duckdb" data-target-annotation="1">1</button><span id="lst-query-duckdb-5" class="code-annotation-target"><span class="st" style="color: #20794D;
+<span id="lst-query-duckdb-5"><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">    delim=";",</span></span>
-<button class="code-annotation-anchor" data-target-cell="lst-query-duckdb" data-target-annotation="2">2</button><span id="lst-query-duckdb-6" class="code-annotation-target"><span class="st" style="color: #20794D;
+<span id="lst-query-duckdb-6"><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">    decimal_separator=",",</span></span>
-<button class="code-annotation-anchor" data-target-cell="lst-query-duckdb" data-target-annotation="3">3</button><span id="lst-query-duckdb-7" class="code-annotation-target"><span class="st" style="color: #20794D;
+<span id="lst-query-duckdb-7"><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">    header=True,</span></span>
-<button class="code-annotation-anchor" data-target-cell="lst-query-duckdb" data-target-annotation="4">4</button><span id="lst-query-duckdb-8" class="code-annotation-target"><span class="st" style="color: #20794D;
+<span id="lst-query-duckdb-8"><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">    types={"Finanziamento PNRR":"FLOAT"}</span></span>
 <span id="lst-query-duckdb-9"><span class="st" style="color: #20794D;
@@ -249,26 +934,16 @@ background-color: null;
 font-style: inherit;">GROUP BY Missione</span></span>
 <span id="lst-query-duckdb-11"><span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">'</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div>
+font-style: inherit;">'</span></span></code></pre></div>
 </div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
-<dt data-target-cell="lst-query-duckdb" data-target-annotation="1">1</dt>
-<dd>
-<span data-code-lines="5" data-code-cell="lst-query-duckdb" data-code-annotation="1">imposta il separatore di campi a <code>;</code></span>
-</dd>
-<dt data-target-cell="lst-query-duckdb" data-target-annotation="2">2</dt>
-<dd>
-<span data-code-lines="6" data-code-cell="lst-query-duckdb" data-code-annotation="2">imposta il separatore di decimali a <code>,</code></span>
-</dd>
-<dt data-target-cell="lst-query-duckdb" data-target-annotation="3">3</dt>
-<dd>
-<span data-code-lines="7" data-code-cell="lst-query-duckdb" data-code-annotation="3">la prima riga è la riga di intestazione</span>
-</dd>
-<dt data-target-cell="lst-query-duckdb" data-target-annotation="4">4</dt>
-<dd>
-<span data-code-lines="8" data-code-cell="lst-query-duckdb" data-code-annotation="4">il campo <code>Finanziamento PNRR</code> è di tipo <code>FLOAT</code></span>
-</dd>
-</dl>
+</figure>
+</div>
+<ol type="1">
+<li>imposta il separatore di campi a <code>;</code></li>
+<li>imposta il separatore di decimali a <code>,</code></li>
+<li>la prima riga è la riga di intestazione</li>
+<li>il campo <code>Finanziamento PNRR</code> è di tipo <code>FLOAT</code></li>
+</ol>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -334,9 +1009,13 @@ Il vantaggio di un CSV standard
 </ul>
 <p>L’<em>utility</em> a riga di comando per gestire i file <code>ZSTD</code> si chiama <code>zstd</code> e si può installare in (quasi) tutti i sistemi operativi. Un’applicazione <em>open source</em>, multipiattaforma, con interfaccia grafica, che supporta questa compressione è <a href="https://peazip.github.io/index.html">PeaZip</a>.<br> Molte applicazioni e librerie <em>software</em> di accesso ai dati, come DuckDB, <a href="https://arrow.apache.org/">Apache Arrow</a> e <a href="https://spark.apache.org/">Apache Spark</a>, lo supportano nativamente.</p>
 <p>In DuckDB, si può leggere un file <code>CSV</code> compresso in formato <code>ZSTD</code>, semplicemente puntando ad esso (l’estensione <code>.zst</code> fa in modo che venga interpretato come file compresso in formato <code>ZSTD</code>):</p>
-<div id="lst-select-count" class="listing">
-<p>Lista&nbsp;3: Esempio di conteggio delle righe</p>
-<div class="sourceCode" id="lst-select-count" data-lst-cap="Esempio di conteggio delle righe" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="lst-select-count-1"><span class="ex" style="color: null;
+<div id="lst-select-count" class="bash listing">
+<figure class="quarto-float quarto-float-lst figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-select-count-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Lista&nbsp;3: Esempio di conteggio delle righe
+</figcaption>
+<div aria-describedby="lst-select-count-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="sourceCode" id="lst-select-count" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="lst-select-count-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">duckdb</span> <span class="at" style="color: #657422;
 background-color: null;
@@ -372,6 +1051,8 @@ font-style: inherit;">)</span></span>
 <span id="lst-select-count-10"><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'</span></span></code></pre></div>
+</div>
+</figure>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -1017,10 +1698,14 @@ font-style: inherit;">INTEGER</span>);</span></code></pre></div>
 <section id="formato-colonnare" class="level3">
 <h3 class="anchored" data-anchor-id="formato-colonnare">Formato colonnare</h3>
 <p>In molti dei formati tabellari più noti e comuni, i dati sono archiviati come sequenze di righe. Avviene per i <code>CSV</code>, ma anche per importanti database relazionali come <code>PostgreSQL</code> e <code>MySQL</code>.</p>
-<div id="tbl-parquet_colonne_start" class="anchored">
+<div id="tbl-parquet_colonne_start" class="striped responsive small anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-parquet_colonne_start-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabella&nbsp;2: Tabella dati di esempio
+</figcaption>
+<div aria-describedby="tbl-parquet_colonne_start-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="table-responsive">
 <table class="table-striped small table-sm table">
-<caption>Tabella&nbsp;2: Tabella dati di esempio</caption>
 <thead>
 <tr class="header">
 <th>Pizza</th>
@@ -1077,6 +1762,8 @@ font-style: inherit;">INTEGER</span>);</span></code></pre></div>
 </table>
 </div>
 </div>
+</figure>
+</div>
 <p>A partire da una tabella con dei dati sulle vendite di una pizzeria, come Tabella&nbsp;2, le domande che si potrebbero fare sono:</p>
 <ul>
 <li>quante pizze Margherita sono state vendute?</li>
@@ -1085,16 +1772,19 @@ font-style: inherit;">INTEGER</span>);</span></code></pre></div>
 <li>quante vendite sono state fatte il 2 gennaio 2023?</li>
 </ul>
 <p>Per rispondere a queste domande, un motore di “tabelle” basato su righe, dovrà leggere tutte le righe della tabella, dall’inizio alla fine. Per sapere quanti utenti che vengono dalla Sicilia hanno ordinato una pizza Parmigiana, si dovrà scorrere la tabella come in Figura&nbsp;1.</p>
-<div id="fig-row-based" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="https://aborruso.github.io/posts/duckdb-intro-csv/images/row-based.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption class="figure-caption">Figura&nbsp;1: Flusso lettura dati, in archivi basati su righe</figcaption>
+<div id="fig-row-based" class="quarto-figure quarto-figure-center anchored" width="100%">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-row-based-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://aborruso.github.io/posts/duckdb-intro-csv/images/row-based.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-row-based-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;1: Flusso lettura dati, in archivi basati su righe
+</figcaption>
 </figure>
 </div>
 <p>Basterebbe leggere soltanto i valori delle colonne <code>Pizza</code> e <code>Regione</code>, ma in uno schema di archiviazione basato su righe vengono lette anche le altre colonne.</p>
 <p>Per rispondere a questa <em>query</em> è molto più efficiente un’<strong>archiviazione a colonne</strong>.<br> In questo caso, ogni colonna è un’entità, il che significa che ogni colonna è fisicamente separata dalle altre. <br> Tornando alla nostra precedente domanda: in uno schema a colonne il motore di analisi può leggere soltanto le colonne necessarie per la <em>query</em> (<code>Pizza</code> e <code>Regione</code>). E, nella maggior parte dei casi, questo migliorerà le prestazioni delle <em>query</em> analitiche.</p>
 <table class="striped-table small table-sm table">
-<caption></caption>
 <thead>
 <tr class="header">
 <th>Pizza</th>
@@ -1150,18 +1840,26 @@ font-style: inherit;">INTEGER</span>);</span></code></pre></div>
 </tbody>
 </table>
 <p>Il formato <code>Parquet</code> è proprio un <strong>formato</strong> di <strong>archiviazione</strong> a <strong>colonne</strong>, anzi è più correttamente un formato di archiviazione <strong>a colonne</strong>, <strong>per gruppi di righe</strong>.<br></p>
-<div id="fig-row-groups" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="https://aborruso.github.io/posts/duckdb-intro-csv/images/row-groups.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption class="figure-caption">Figura&nbsp;2: Struttura a colonne per gruppi di righe</figcaption>
+<div id="fig-row-groups" class="quarto-figure quarto-figure-center anchored" width="100%">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-row-groups-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://aborruso.github.io/posts/duckdb-intro-csv/images/row-groups.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-row-groups-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2: Struttura a colonne per gruppi di righe
+</figcaption>
 </figure>
 </div>
 <p>Le colonne sono memorizzate sempre come unità separate, ma Parquet introduce delle strutture aggiuntive chiamate “<strong><em>Row group</em></strong>” (vedi Figura&nbsp;2).</p>
 <p>Perché sono un vantaggio? Nella <em>query</em> di esempio di sopra, non solo bastano due colonne, ma il <code>Gruppo 2</code> di righe è inutile (non c’è la “Parmigiana”).<br> Con questa struttura a gruppi di righe (qui semplificata per fini didattici) sarà possibile non tenere conto del “Gruppo 2” e la <em>query</em> sarà più rapida.</p>
-<div id="fig-row-groups-skip" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="https://aborruso.github.io/posts/duckdb-intro-csv/images/row-groups-skip.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption class="figure-caption">Figura&nbsp;3: Per la <em>query</em> di esempio, il “Gruppo 2” è inutile</figcaption>
+<div id="fig-row-groups-skip" class="quarto-figure quarto-figure-center anchored" width="100%">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-row-groups-skip-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://aborruso.github.io/posts/duckdb-intro-csv/images/row-groups-skip.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-row-groups-skip-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;3: Per la <em>query</em> di esempio, il “Gruppo 2” è inutile
+</figcaption>
 </figure>
 </div>
 </section>
@@ -1272,10 +1970,14 @@ font-style: inherit;">ORDER BY finanziamento_pnrr desc;</span></span>
 background-color: null;
 font-style: inherit;">'</span></span></code></pre></div>
 <p>E in circa 1 secondo (al primo lancio e in molto meno dal secondo in poi) ottengo:</p>
-<div id="tbl-parquet-api" class="anchored">
+<div id="tbl-parquet-api" class="striped responsive small anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-parquet-api-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabella&nbsp;3: Output della <em>query</em>
+</figcaption>
+<div aria-describedby="tbl-parquet-api-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="table-responsive">
 <table class="table-striped small table-sm table">
-<caption>Tabella&nbsp;3: Output della <em>query</em></caption>
 <colgroup>
 <col style="width: 27%">
 <col style="width: 36%">
@@ -1323,11 +2025,17 @@ font-style: inherit;">'</span></span></code></pre></div>
 </table>
 </div>
 </div>
+</figure>
+</div>
 <p>E posso farlo anche da una <a href="https://shell.duckdb.org/">pagina web</a> che includa DuckDb come <em>WebAssembly</em> (vedi Figura&nbsp;4).</p>
-<div id="fig-duckdb-wasm" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><a href="https://shell.duckdb.org/"><img src="https://aborruso.github.io/posts/duckdb-intro-csv/images/ddb-wasm.png" class="img-fluid figure-img" style="width:100.0%"></a></p>
-<figcaption class="figure-caption">Figura&nbsp;4: Il client DuckDB come modulo WASM</figcaption>
+<div id="fig-duckdb-wasm" class="quarto-figure quarto-figure-center anchored" width="100%">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-duckdb-wasm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="https://shell.duckdb.org/"><img src="https://aborruso.github.io/posts/duckdb-intro-csv/images/ddb-wasm.png" class="img-fluid figure-img" style="width:100.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-duckdb-wasm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;4: Il client DuckDB come modulo WASM
+</figcaption>
 </figure>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -1350,9 +2058,13 @@ Non è la soluzione definitiva
 <p>In contesti applicativi in cui le <em>performance</em>, lo spazio di archiviazione, le modalità di accesso sono parametri da tenere in alta considerazione, è già molto usato.<br> Un esempio per tutti è quello dei dataset di <a href="https://huggingface.co/datasets">Hugging Face</a>.</p>
 <p>I dati aperti globali sugli edifici del progetto <a href="https://github.com/microsoft/GlobalMLBuildingFootprints/">GlobalMLBuildingFootprints</a> (1.2 miliardi di edifici), sono in formato parquet, nella sua estensione spaziale.<br> Anche i dataset geografici del progetto <a href="https://overturemaps.org/download/">Overture Maps Foundation</a>, sono in formato parquet.<br> I dati aperti sulle <a href="https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page">corse di taxi e veicoli con conducente di New York</a>, sono anch’essi in questo formato.</p>
 <p>L’ultimo esempio, per chiudere in bellezza, è quello dell’impareggiabile <a href="https://www.data.gouv.fr/"><strong>portale Open Data della Francia</strong></a>.<br> Pubblica un dataset in formato <code>parquet</code>, sono disponibili gli URL statici dei file, ed è possibile fare <em>query</em> in modo comodissimo, come se fossero disponibili delle API.<br> Ad esempio posso interrogare il <a href="https://www.data.gouv.fr/fr/datasets/bureaux-de-vote-et-adresses-de-leurs-electeurs/">file da 470 MB degli indirizzi</a>, di 15 milioni di righe, per avere il numero di indirizzi per comune con questa semplicità (vedi Lista&nbsp;4):</p>
-<div id="lst-query-francia" class="listing">
-<p>Lista&nbsp;4: Esempio di <em>query</em> da <em>shell</em></p>
-<div class="sourceCode" id="lst-query-francia" data-lst-cap="Esempio di *query* da *shell*" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="lst-query-francia-1"><span class="ex" style="color: null;
+<div id="lst-query-francia" class="bash listing">
+<figure class="quarto-float quarto-float-lst figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-query-francia-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Lista&nbsp;4: Esempio di <em>query</em> da <em>shell</em>
+</figcaption>
+<div aria-describedby="lst-query-francia-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="sourceCode" id="lst-query-francia" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="lst-query-francia-1"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">duckdb</span> <span class="at" style="color: #657422;
 background-color: null;
@@ -1375,11 +2087,17 @@ font-style: inherit;">GROUP BY ALL ORDER by 2 DESC LIMIT 10;</span></span>
 background-color: null;
 font-style: inherit;">'</span></span></code></pre></div>
 </div>
+</figure>
+</div>
 <p>E in pochi secondi si ha restituito il risultato (vedi Figura&nbsp;5).</p>
-<div id="fig-portale-opendata-francia" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="https://aborruso.github.io/posts/duckdb-intro-csv/images/portale-opendata-francia.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption class="figure-caption">Figura&nbsp;5: Output da shell</figcaption>
+<div id="fig-portale-opendata-francia" class="quarto-figure quarto-figure-center anchored" width="100%">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-portale-opendata-francia-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://aborruso.github.io/posts/duckdb-intro-csv/images/portale-opendata-francia.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-portale-opendata-francia-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;5: Output da shell
+</figcaption>
 </figure>
 </div>
 </section>
@@ -1410,10 +2128,14 @@ font-style: inherit;">'</span></span></code></pre></div>
 <li>vengono restituite le istruzioni per l’installazione.</li>
 </ol>
 <p>E in pochissimo tempo si è pronti all’uso.</p>
-<div id="fig-duckdb-install" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><a href="https://duckdb.org/docs/installation/index"><img src="https://aborruso.github.io/posts/duckdb-intro-csv/images/duckdb_install.png" class="img-fluid figure-img" style="width:100.0%"></a></p>
-<figcaption class="figure-caption">Figura&nbsp;6: Pagina di installazione di DuckDB</figcaption>
+<div id="fig-duckdb-install" class="quarto-figure quarto-figure-center anchored" width="100%">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-duckdb-install-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="https://duckdb.org/docs/installation/index"><img src="https://aborruso.github.io/posts/duckdb-intro-csv/images/duckdb_install.png" class="img-fluid figure-img" style="width:100.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-duckdb-install-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;6: Pagina di installazione di DuckDB
+</figcaption>
 </figure>
 </div>
 </section>
@@ -1493,7 +2215,7 @@ font-style: inherit;">) test;'</span></span><div class="code-annotation-gutter-b
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-8" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-lines="1" data-code-cell="annotated-cell-8" data-code-annotation="1">carica l’estensione spaziale</span>
+<span data-code-cell="annotated-cell-8" data-code-lines="1" data-code-annotation="1">carica l’estensione spaziale</span>
 </dd>
 </dl>
 <p>A schermo si avrà <code>42.2471</code>.</p>
@@ -1811,9 +2533,13 @@ font-style: inherit;">head</span></span></code></pre></div>
 <p>Modificando un po’ il comando di sopra, con <code>unzip -p progetti_esteso_20230430.zip | wc -l</code>, leggo che il file è composto da 1.936.840 righe.</p>
 <p>Fatta questa prima esplorazione grezza, di solito voglio “guardare” in modo più “comodo” la tabella dei dati. Potrei salvare le prime 10 righe in un file, aggiungendo al comando di sopra <code>&gt; prime_dieci_righe.csv</code>, e infine aprirlo con un foglio elettronico; io preferisco usare lo <a href="https://ondata.github.io/guidaVisiData/">straordinario <strong>VisiData</strong></a> per farlo.<br> Con <code>unzip -p progetti_esteso_20230430.zip | head | vd -f csv --csv-delimiter=";"</code> ad esempio visualizzo le 10 righe di <em>output</em> e tutte le colonne (constatando che sono 199), ma soprattutto mi faccio una prima idea dei contenuti.</p>
 <div id="fig-duckdb-preview-vd" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="https://aborruso.github.io/posts/duckdb-intro-csv/images/visidata_explore.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figura&nbsp;7: Esempio visualizzazione con VisiData</figcaption>
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-duckdb-preview-vd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://aborruso.github.io/posts/duckdb-intro-csv/images/visidata_explore.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-duckdb-preview-vd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;7: Esempio visualizzazione con VisiData
+</figcaption>
 </figure>
 </div>
 <p>Ci sono tantissimi altri strumenti e modalità con cui potrei fare queste ed altre operazioni di esplorazione e analisi, ma questo è un <em>post</em> dedicato in modo particolare a DuckDB e alla sua applicazione a riga di comando. Quindi <strong>da qui in poi</strong>, utilizzerò <strong>soprattutto</strong> <strong>DuckDB</strong> e la sua <strong><code>cli</code></strong>.<br> Per replicare con DuckDB quanto visto sopra in Figura&nbsp;7, il comando è (metto qualche “a capo” per renderlo più leggibile):</p>
@@ -1856,22 +2582,26 @@ font-style: inherit;">-S</span></span><div class="code-annotation-gutter-bg"></d
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-22" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-lines="2" data-code-cell="annotated-cell-22" data-code-annotation="1"><code>-cmd '.mode box'</code> abilita la vista “box”</span>
+<span data-code-cell="annotated-cell-22" data-code-lines="2" data-code-annotation="1"><code>-cmd '.mode box'</code> abilita la vista “box”</span>
 </dd>
 <dt data-target-cell="annotated-cell-22" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-lines="3" data-code-cell="annotated-cell-22" data-code-annotation="2">L’<em>input</em> è lo <code>stdin</code></span>
+<span data-code-cell="annotated-cell-22" data-code-lines="3" data-code-annotation="2">L’<em>input</em> è lo <code>stdin</code></span>
 </dd>
 <dt data-target-cell="annotated-cell-22" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-lines="4" data-code-cell="annotated-cell-22" data-code-annotation="3">L’<em>output</em> a <code>less</code> in modo che sia leggibile</span>
+<span data-code-cell="annotated-cell-22" data-code-lines="4" data-code-annotation="3">L’<em>output</em> a <code>less</code> in modo che sia leggibile</span>
 </dd>
 </dl>
 <p>A schermo ho un’anteprima leggibile e navigabile, come questa di Figura&nbsp;8.</p>
 <div id="fig-duckdb-preview-box" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="https://aborruso.github.io/posts/duckdb-intro-csv/images/duckdb-preview-box.gif" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figura&nbsp;8: Output in modalità <code>box</code> di DuckDB</figcaption>
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-duckdb-preview-box-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://aborruso.github.io/posts/duckdb-intro-csv/images/duckdb-preview-box.gif" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-duckdb-preview-box-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;8: Output in modalità <code>box</code> di DuckDB
+</figcaption>
 </figure>
 </div>
 <p>Come detto sopra DuckDB può <strong>leggere nativamente</strong> file <strong>compressi</strong> in formato <strong><code>GZIP</code></strong> (e <code>ZSTD</code>).<br> Allora per comodità, ho creato la versione <code>GZIP</code> del file <code>Progetti con tracciato esteso</code> di OpenCoesione.</p>
@@ -1891,9 +2621,13 @@ background-color: null;
 font-style: inherit;">'</span></span></code></pre></div>
 <p>In output ho un’anteprima ben leggibile a schermo, in cui vedo 10 righe, alcuni dei campi e il loro tipo e il numero di colonne.</p>
 <div id="fig-duckdb-standard-output" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="https://aborruso.github.io/posts/duckdb-intro-csv/images/duck-standard-output.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figura&nbsp;9: DuckDb standard output</figcaption>
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-duckdb-standard-output-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://aborruso.github.io/posts/duckdb-intro-csv/images/duck-standard-output.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-duckdb-standard-output-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;9: DuckDb standard output
+</figcaption>
 </figure>
 </div>
 <p>Per vedere tutti i campi posso forzare l’<strong>output in <code>CSV</code></strong>, aggiungendo <code>--csv</code> e infine leggerlo con VisiData:</p>
@@ -1930,10 +2664,14 @@ font-style: inherit;">-f</span> csv</span></code></pre></div>
 <li>conteggio dei valori.</li>
 </ul>
 <p>Qui sotto in Tabella&nbsp;4 un esempio di output per alcune delle colonne del dataset di OpenCoesione.<br> È una tabella di gran valore, perché consente di fare delle prime scelte di analisi e di trasformazione dei dati e avere restituito degli elementi di qualità dei dati.</p>
-<div id="tbl-summarize-output" class="anchored">
+<div id="tbl-summarize-output" class="striped responsive small anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-summarize-output-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabella&nbsp;4: <em>Output</em> di esempio di SUMMARIZE
+</figcaption>
+<div aria-describedby="tbl-summarize-output-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="table-responsive">
 <table class="table-striped small table-sm table">
-<caption>Tabella&nbsp;4: <em>Output</em> di esempio di SUMMARIZE</caption>
 <colgroup>
 <col style="width: 6%">
 <col style="width: 6%">
@@ -2038,6 +2776,8 @@ font-style: inherit;">-f</span> csv</span></code></pre></div>
 </tbody>
 </table>
 </div>
+</div>
+</figure>
 </div>
 <p><br>Il comando si lancia anteponendolo alla lista di record di cui si vuole ottenere una preziosa sintesi:</p>
 <div class="sourceCode" id="cb26" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><span class="ex" style="color: null;
@@ -2163,10 +2903,14 @@ font-style: inherit;">&gt;</span>summarize.csv</span></code></pre></div>
 </div>
 </div>
 <p>Con questi dati di sintesi emerge ad esempio che circa 36 campi hanno almeno il 90% dei <strong>valori nulli</strong>.<br> O che in alcuni campi con le <strong>date</strong> ci sono <strong>valori</strong> (di minimo o di massimo) <strong>strani</strong> e probabilmente errati, come quelli in Tabella&nbsp;5.</p>
-<div id="tbl-strange-date" class="anchored">
+<div id="tbl-strange-date" class="striped responsive small anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-strange-date-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabella&nbsp;5: Campi con valori di date “strani”
+</figcaption>
+<div aria-describedby="tbl-strange-date-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="table-responsive">
 <table class="table-striped small table-sm table">
-<caption>Tabella&nbsp;5: Campi con valori di date “strani”</caption>
 <thead>
 <tr class="header">
 <th>column_name</th>
@@ -2239,11 +2983,17 @@ font-style: inherit;">&gt;</span>summarize.csv</span></code></pre></div>
 </table>
 </div>
 </div>
+</figure>
+</div>
 <p>Ma soprattutto è possibile constatare quali siano <strong>i campi “categorici”</strong>, quelli con un <strong>numero limitato di valori univoci</strong>, che possono essere usati per raggruppare e aggregare i dati e fare emergere elementi interessanti.</p>
 <p>Tra i campi categorici <code>OC_MACROAREA</code>, che definisce le macroaree geografiche italiane. E per sapere ad esempio qual è il finanziamento pubblico totale per ciascuna, si può usare la query <code>SQL</code>:</p>
-<div id="lst-query-macroarea" class="listing">
-<p>Lista&nbsp;5: Query SQL: totale dei finanziamenti pubblici per macroaree</p>
-<div class="sourceCode" id="lst-query-macroarea" data-lst-cap="Query SQL: totale dei finanziamenti pubblici per macroaree" style="background: #f1f3f5;"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="lst-query-macroarea-1"><span class="kw" style="color: #003B4F;
+<div id="lst-query-macroarea" class="sql listing">
+<figure class="quarto-float quarto-float-lst figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-query-macroarea-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Lista&nbsp;5: Query SQL: totale dei finanziamenti pubblici per macroaree
+</figcaption>
+<div aria-describedby="lst-query-macroarea-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="sourceCode" id="lst-query-macroarea" style="background: #f1f3f5;"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="lst-query-macroarea-1"><span class="kw" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">SELECT</span> OC_MACROAREA,</span>
 <span id="lst-query-macroarea-2"><span class="fu" style="color: #4758AB;
@@ -2266,8 +3016,16 @@ font-style: inherit;">BY</span> FINANZ_TOTALE_PUBBLICO <span class="kw" style="c
 background-color: null;
 font-style: inherit;">DESC</span></span></code></pre></div>
 </div>
+</figure>
+</div>
 <p>Restituirà qualcosa come in Tabella&nbsp;6.</p>
 <div class="cell" data-execution_count="2">
+<div id="tbl-aree-sum" class="cell anchored" data-execution_count="2">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-aree-sum-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabella&nbsp;6: Finanziamento pubblico per macro aree
+</figcaption>
+<div aria-describedby="tbl-aree-sum-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-display" data-execution_count="2">
 <style type="text/css">
 #T_6386e th:nth-child(1) {
@@ -2284,10 +3042,8 @@ font-style: inherit;">DESC</span></span></code></pre></div>
 }
 </style>
 
-<div id="tbl-aree-sum" class="anchored">
 <div class="table-responsive">
-<table id="T_6386e" class="table-bordered striped small table table-sm table-striped" data-quarto-postprocess="true">
-<caption>Tabella&nbsp;6: Finanziamento pubblico per macro aree</caption>
+<table id="T_6386e" class="table-bordered table-striped small cell table table-sm" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
 <th id="T_6386e_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Macro area</th>
@@ -2320,8 +3076,10 @@ font-style: inherit;">DESC</span></span></code></pre></div>
 </div>
 </div>
 </div>
+</figure>
 </div>
-<div class="cell dataframe table-bordered striped responsive small">
+</div>
+<div class="cell hidden dataframe table-bordered striped responsive small">
 <div class="sourceCode cell-code hidden" id="cb30" data-startfrom="983" data-source-offset="-0" style="background: #f1f3f5;"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 982;"><span id="cb30-983">data <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
@@ -2441,18 +3199,18 @@ Su OpenCoesione
 
 
 </section>
-<aside id="footnotes" class="footnotes footnotes-end-of-document">
-<hr>
+
+
+<a onclick="window.scrollTo(0, 0); return false;" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Torna in cima</a><div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Note</h2>
+
 <ol>
 <li id="fn1"><p>Le politiche di coesione sono un insieme di iniziative e azioni messe in atto dall’Unione Europea per ridurre le disparità economiche, sociali e territoriali tra le diverse regioni e Stati membri.↩︎</p></li>
 </ol>
-</aside>
-
-<a onclick="window.scrollTo(0, 0); return false;" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Torna in cima</a> ]]></description>
+</section></div> ]]></description>
   <category>duckdb</category>
   <category>csv</category>
   <category>parquet</category>
-  <guid>https://aborruso.github.io/posts/duckdb-intro-csv/index.html</guid>
+  <guid>https://aborruso.github.io/posts/duckdb-intro-csv/</guid>
   <pubDate>Sun, 20 Aug 2023 22:00:00 GMT</pubDate>
   <media:content url="https://aborruso.github.io/posts/duckdb-intro-csv/atutorial.png" medium="image" type="image/png" height="97" width="144"/>
 </item>

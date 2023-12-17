@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="it" xml:lang="it" dir="ltr"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.43">
+<meta name="generator" content="quarto-1.4.525">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -48,7 +48,13 @@ ul.task-list li input[type="checkbox"] {
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "Nessun risultato",
     "search-matching-documents-text": "documenti trovati",
@@ -57,8 +63,10 @@ ul.task-list li input[type="checkbox"] {
     "search-more-match-text": "ci sono altri risultati in questo documento",
     "search-more-matches-text": "ulteriori risultati in questo documento",
     "search-clear-button-title": "Pulire",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancellare",
-    "search-submit-button-title": "Inviare"
+    "search-submit-button-title": "Inviare",
+    "search-label": "Ricerca"
   }
 }</script>
 <script>
@@ -96,9 +104,9 @@ ul.task-list li input[type="checkbox"] {
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="styles.css">
-<link rel="alternate" type="application/rss+xml" title="aborruso's website" href="blog.xml"><meta property="og:title" content="aborruso’s website - Blog">
+<link rel="alternate" type="application/rss+xml" title="aborruso's website" href="blog.xml" data-external="1"><meta property="og:title" content="aborruso’s website - Blog">
 <meta property="og:image" content="https://aborruso.github.io/risorse/opengraph.png">
-<meta property="og:site-name" content="aborruso's website">
+<meta property="og:site_name" content="aborruso's website">
 <meta property="og:locale" content="it_IT">
 <meta property="og:image:height" content="630">
 <meta property="og:image:width" content="1200">
@@ -113,8 +121,8 @@ ul.task-list li input[type="checkbox"] {
 <body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
             <div id="quarto-search" class="" title="Ricerca"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Attiva/disattiva la navigazione" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
@@ -123,21 +131,21 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html" rel="" target="">
- <span class="menu-text">Home</span></a>
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./blog.html" rel="" target="" aria-current="page">
- <span class="menu-text">Blog</span></a>
+    <a class="nav-link active" href="./blog.html" aria-current="page"> 
+<span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./til.html" rel="" target="">
- <span class="menu-text">TIL</span></a>
+    <a class="nav-link" href="./til.html"> 
+<span class="menu-text">TIL</span></a>
   </li>  
 </ul>
-            <div class="quarto-navbar-tools ms-auto">
-</div>
           </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
       </div> <!-- /container-fluid -->
     </nav>
 </header>
@@ -163,7 +171,7 @@ ul.task-list li input[type="checkbox"] {
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    <h5 class="quarto-listing-category-title">Categorie</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">Tutti <span class="quarto-category-count">(1)</span></div><div class="category" data-category="csv">csv <span class="quarto-category-count">(1)</span></div><div class="category" data-category="duckdb">duckdb <span class="quarto-category-count">(1)</span></div><div class="category" data-category="parquet">parquet <span class="quarto-category-count">(1)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categorie</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">Tutti <span class="quarto-category-count">(2)</span></div><div class="category" data-category="ai">ai <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cli">cli <span class="quarto-category-count">(1)</span></div><div class="category" data-category="csv">csv <span class="quarto-category-count">(1)</span></div><div class="category" data-category="duckdb">duckdb <span class="quarto-category-count">(1)</span></div><div class="category" data-category="google">google <span class="quarto-category-count">(1)</span></div><div class="category" data-category="parquet">parquet <span class="quarto-category-count">(1)</span></div></div></div>
 <!-- main -->
 <main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
 
@@ -174,21 +182,61 @@ ul.task-list li input[type="checkbox"] {
 
 
 
+
 <div class="quarto-listing quarto-listing-container-default" id="listing-listing">
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="duckdb,csv,parquet" data-listing-date-sort="1692568800000" data-listing-file-modified-sort="1693917006391" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="43">
+<div class="quarto-post image-right" data-index="0" data-categories="ai,google,cli" data-listing-date-sort="1702767600000" data-listing-file-modified-sort="1702843706576" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1045">
 <div class="thumbnail">
-<p><a href="./posts/duckdb-intro-csv/index.html"> <img src="./posts/duckdb-intro-csv/atutorial.png" class="thumbnail-image"> </a></p>
+<p><a href="./posts/accedere-google-ai-riga-di-comando/index.html" class="no-external"></a></p><a href="./posts/accedere-google-ai-riga-di-comando/index.html" class="no-external">
+<p><img src="./posts/accedere-google-ai-riga-di-comando/gemini_via_cli.png" class="thumbnail-image"></p>
+</a><p><a href="./posts/accedere-google-ai-riga-di-comando/index.html" class="no-external"></a></p>
 </div>
 <div class="body">
-<a href="./posts/duckdb-intro-csv/index.html">
 <h3 class="no-anchor listing-title">
-Gestire file CSV grandi, brutti e cattivi
+<a href="./posts/accedere-google-ai-riga-di-comando/index.html" class="no-external">Usare la nuova intelligenza artificiale di Google</a>
 </h3>
 <div class="listing-subtitle">
-
+<a href="./posts/accedere-google-ai-riga-di-comando/index.html" class="no-external"></a>
+</div>
+<div class="listing-categories">
+<div class="listing-category" onclick="window.quartoListingCategory('ai'); return false;">
+ai
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('google'); return false;">
+google
+</div>
+<div class="listing-category" onclick="window.quartoListingCategory('cli'); return false;">
+cli
+</div>
+</div>
+<div class="listing-description">
+<a href="./posts/accedere-google-ai-riga-di-comando/index.html" class="no-external">Farlo a riga di comando, già oggi che non è disponibile in Italia</a>
+</div>
+</div>
+<div class="metadata">
+<a href="./posts/accedere-google-ai-riga-di-comando/index.html" class="no-external">
+<div class="listing-date">
+17 dic 2023
+</div>
+<div class="listing-author">
+Andrea Borruso
 </div>
 </a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="1" data-categories="duckdb,csv,parquet" data-listing-date-sort="1692568800000" data-listing-file-modified-sort="1694085218962" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="43" data-listing-word-count-sort="8530">
+<div class="thumbnail">
+<p><a href="./posts/duckdb-intro-csv/index.html" class="no-external"></a></p><a href="./posts/duckdb-intro-csv/index.html" class="no-external">
+<p><img src="./posts/duckdb-intro-csv/atutorial.png" class="thumbnail-image"></p>
+</a><p><a href="./posts/duckdb-intro-csv/index.html" class="no-external"></a></p>
+</div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/duckdb-intro-csv/index.html" class="no-external">Gestire file CSV grandi, brutti e cattivi</a>
+</h3>
+<div class="listing-subtitle">
+<a href="./posts/duckdb-intro-csv/index.html" class="no-external"></a>
+</div>
 <div class="listing-categories">
 <div class="listing-category" onclick="window.quartoListingCategory('duckdb'); return false;">
 duckdb
@@ -200,14 +248,12 @@ csv
 parquet
 </div>
 </div>
-<a href="./posts/duckdb-intro-csv/index.html">
 <div class="listing-description">
-<p><em>Tips &amp; tricks</em>, ispirati da DuckDB, file Parquet e OpenCoesione</p>
+<a href="./posts/duckdb-intro-csv/index.html" class="no-external"><em>Tips &amp; tricks</em>, ispirati da DuckDB, file Parquet e OpenCoesione</a>
 </div>
-</a>
 </div>
 <div class="metadata">
-<a href="./posts/duckdb-intro-csv/index.html">
+<a href="./posts/duckdb-intro-csv/index.html" class="no-external">
 <div class="listing-date">
 21 ago 2023
 </div>
@@ -301,10 +347,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp(".*aborruso\.github\.io\.*");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -314,8 +377,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -331,31 +403,132 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    const typesetMath = (el) => {
+      if (window.MathJax) {
+        // MathJax Typeset
+        window.MathJax.typeset([el]);
+      } else if (window.katex) {
+        // KaTeX Render
+        var mathElements = el.getElementsByClassName("math");
+        var macros = [];
+        for (var i = 0; i < mathElements.length; i++) {
+          var texText = mathElements[i].firstChild;
+          if (mathElements[i].tagName == "SPAN") {
+            window.katex.render(texText.data, mathElements[i], {
+              displayMode: mathElements[i].classList.contains('display'),
+              throwOnError: false,
+              macros: macros,
+              fleqn: false
+            });
+          }
+        }
+      }
+    }
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        typesetMath(container);
+        return container.innerHTML
+      } else {
+        typesetMath(note);
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      typesetMath(note);
+      return note.innerHTML;
+    }
+  }
   for (var i=0; i<xrefs.length; i++) {
     const xref = xrefs[i];
-    tippyHover(xref, function() {
-      let href = xref.getAttribute('href');
-      try { href = new URL(href).hash; } catch {}
-      const id = href.replace(/^#\/?/, "");
-      const note = window.document.getElementById(id);
-      if (note !== null) {
-        if (id.startsWith('sec-')) {
-          // Special case sections, only their first couple elements
-          const container = document.createElement("div");
-          if (note.children && note.children.length > 2) {
-            for (let i = 0; i < 2; i++) {
-              container.appendChild(note.children[i].cloneNode(true));
-            }
-            return container.innerHTML
-          } else {
-            return note.innerHTML;
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
           }
         } else {
-          return note.innerHTML;
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
         }
       } else {
-        return "";
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
       }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -399,6 +572,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -424,6 +598,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -481,29 +681,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       });
     }
   }
-    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-      var filterRegex = new RegExp(".*aborruso\.github\.io\.*");
-    var isInternal = (href) => {
-        return filterRegex.test(href) || localhostRegex.test(href);
-    }
-    // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
-    for (var i=0; i<links.length; i++) {
-      const link = links[i];
-      if (!isInternal(link.href)) {
-          // target, if specified
-          link.setAttribute("target", "_blank");
-      }
-    }
 });
 </script>
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
-    <div class="nav-footer-left">Costruito con <a href="https://quarto.org">quarto</a> 😍 | Contenuti in <a href="https://creativecommons.org/licenses/by/4.0/deed.it">CC BY 4.0</a></div>   
+    <div class="nav-footer-left">
+<p>Costruito con <a href="https://quarto.org">quarto</a> 😍 | Contenuti in <a href="https://creativecommons.org/licenses/by/4.0/deed.it">CC BY 4.0</a></p>
+</div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/aborruso/aborruso.github.io/edit/main/blog.qmd" class="toc-action">Modifica questa pagina</a></p><p><a href="https://github.com/aborruso/aborruso.github.io/issues/new" class="toc-action">Segnala un problema</a></p></div></div></div>
+    <div class="toc-actions"><ul><li><a href="https://github.com/aborruso/aborruso.github.io/edit/main/blog.qmd" class="toc-action"><i class="bi bi-github"></i>Modifica questa pagina</a></li><li><a href="https://github.com/aborruso/aborruso.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Segnala un problema</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">
@@ -528,6 +716,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
+
 
 
 

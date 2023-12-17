@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Andrea Borruso">
-<meta name="description" content="Come farlo soltanto per un tag span (ad esempio per una parola)">
+<meta name="description" content="Un, due, tre, via">
 
-<title>aborruso’s website - Quarto: applicare stile CSS</title>
+<title>aborruso’s website - Usare postgis da docker</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -124,15 +124,15 @@ background: #75aadb;
 
 
 <link rel="stylesheet" href="../../styles.css">
-<meta property="og:title" content="aborruso’s website - Quarto: applicare stile CSS">
-<meta property="og:description" content="Come farlo soltanto per un tag span (ad esempio per una parola)">
+<meta property="og:title" content="aborruso’s website - Usare postgis da docker">
+<meta property="og:description" content="Un, due, tre, via">
 <meta property="og:image" content="https://aborruso.github.io/risorse/opengraph.png">
 <meta property="og:site_name" content="aborruso's website">
 <meta property="og:locale" content="it_IT">
 <meta property="og:image:height" content="630">
 <meta property="og:image:width" content="1200">
-<meta name="twitter:title" content="aborruso’s website - Quarto: applicare stile CSS">
-<meta name="twitter:description" content="Come farlo soltanto per un tag span (ad esempio per una parola)">
+<meta name="twitter:title" content="aborruso’s website - Usare postgis da docker">
+<meta name="twitter:description" content="Un, due, tre, via">
 <meta name="twitter:image" content="https://aborruso.github.io/risorse/twitter-card.png">
 <meta name="twitter:creator" content="@aborruso">
 <meta name="twitter:card" content="summary_large_image">
@@ -175,15 +175,16 @@ background: #75aadb;
 <header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Quarto: applicare stile CSS</h1>
+      <h1 class="title">Usare postgis da docker</h1>
                   <div>
         <div class="description">
-          Come farlo soltanto per un tag span (ad esempio per una parola)
+          Un, due, tre, via
         </div>
       </div>
                           <div class="quarto-categories">
-                <div class="quarto-category">quarto</div>
-                <div class="quarto-category">css</div>
+                <div class="quarto-category">postgis</div>
+                <div class="quarto-category">docker</div>
+                <div class="quarto-category">PostgreSQL</div>
               </div>
                   </div>
   </div>
@@ -210,7 +211,7 @@ background: #75aadb;
       <div>
       <div class="quarto-title-meta-heading">Data di Pubblicazione</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">26 febbraio 2023</p>
+        <p class="date">5 dicembre 2023</p>
       </div>
     </div>
     
@@ -234,18 +235,43 @@ background: #75aadb;
 
 
 
-<p>Se voglio applicare ad esempio a una sola parola <strong>uno stile definito <em>inline</em></strong>, basterà fare come sotto:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>L'arancia è <span class="co">[</span><span class="ot">arancione</span><span class="co">]</span>{style="color:#ffa500"}.</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>L’arancia è <span style="color:#ffa500">arancione</span>.</p>
-<p>Se invece voglio associare a una frase uno stile di <code>bootstrap</code> (come quelli sui pulsanti), potrò fare in questo modo:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">☝️ Partecipa</span><span class="co">]</span>{.btn .btn-success}</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><span class="btn btn-success">☝️ Partecipa</span></p>
-<p>Se infine voglio applicare una determinata classe, seguita da un attributo personalizzato, in modo da poter associare uno stile personalizzato tramite uno specifico <code>CSS Selector</code>, potrò fare così:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Lorem ipsum</span><span class="co">]</span>{.class key="val"}</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Il codice <code>HTML</code> generato sarà:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">span</span><span class="ot"> class</span><span class="op">=</span><span class="st">"class"</span><span class="ot"> data-key</span><span class="op">=</span><span class="st">"val"</span><span class="dt">&gt;</span>Lorem ipsum<span class="dt">&lt;/</span><span class="kw">span</span><span class="dt">&gt;</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>È possibile usare postgis da docker, usando le immagini ufficiali: <a href="https://github.com/postgis/docker-postgis" class="uri">https://github.com/postgis/docker-postgis</a></p>
+<p>Il primo step è fare il <code>pull</code> dell’immagine:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> pull postgis/postgis:16-master</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Poi si può dare il primo avvio del <em>container</em>, impostando un <em>setup</em> di base:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">--name</span> postgis16 <span class="dt">\</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>-p 5432:5432 <span class="dt">\</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>-v /home/user/folder:/directory_docker <span class="dt">\</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>-e POSTGRES_PASSWORD=thePassword <span class="dt">\</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>-d postgis/postgis:16-master</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Alcune spiegazioni:</p>
+<ul>
+<li><code>--name postgis16</code>: assegna il nome <code>postgis16</code> al container. È utile per identificare e gestire il container in seguito.</li>
+<li><code>-p 5432:5432</code>: mappa la porta 5432 del <em>container</em> (a destra) sulla porta 5432 del tuo <em>host</em> (a sinistra). Ciò permette la connessione al database PostGIS all’interno del <em>container</em> dalla tua macchina <em>host</em> sulla stessa porta. Questo è fondamentale per conntersi al database da QGIS, PGAdmin o altri software.</li>
+<li><code>-v /home/user/folder:/directory_docker</code>: monta un volume, collegando la directory <code>/home/user/folder</code> del tuo <em>host</em> alla directory <code>/directory_docker</code> dentro il container. Questo è utile per la persistenza dei dati o per condividere file tra il container e l’<em>host</em>.</li>
+<li><code>-e POSTGRES_PASSWORD=thePassword</code>: imposta la variabile d’ambiente <code>POSTGRES_PASSWORD</code> con il valore <code>thePassword</code>. Questo è utilizzato per impostare la password dell’utente <code>postgres</code> di postgres.</li>
+<li><code>-d</code>: esegue il container in <em>background</em> (modalità <em>detached</em>), così non blocca il terminale.</li>
+<li><code>postgis/postgis:16-master</code>: specifica quale immagine Docker usare, in questo caso l’immagine <code>postgis/postgis</code> con il tag <code>16-master</code>.</li>
+</ul>
+<p>Una volta che il container è in esecuzione si può entrare nella <code>cli</code> di questa immagine con il comando:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> exec <span class="at">-it</span> postgis16 bash</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Alcune note:</p>
+<ul>
+<li><code>-it</code>: questa opzione è una combinazione di due <em>flag</em>:
+<ul>
+<li><code>-i</code> o <code>--interactive</code> mantiene aperto lo <em>standard input</em> (<code>STDIN</code>) per il comando che stai eseguendo. Ciò permette di interagire con il comando eseguito nel <em>container</em>.</li>
+<li><code>-t</code> o <code>--tty</code> alloca un terminale <em>pseudo-TTY</em>, che è essenzialmente un modo per avere un’interfaccia a riga di comando all’interno del container.</li>
+</ul></li>
+</ul>
+<p>Una volta dentro la cli, si può accedere al database con il comando:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">psql</span> <span class="at">-U</span> postgres <span class="at">-d</span> postgres</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Alcune note:</p>
+<ul>
+<li>in questa immagine pre esiste l’utente <code>postgres</code> e un db <code>postgres</code></li>
+<li>il db <code>postgres</code> è un db con l’estensione <code>postgis</code> già installata</li>
+<li>per abilitate l’utilizzo delle funzioni raster di postgis, è necessario installare l’estensione <code>postgis_raster</code> con il comando:</li>
+</ul>
+<pre class="{sql}"><code>CREATE EXTENSION postgis_raster;</code></pre>
 
 
 
@@ -673,7 +699,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><ul><li><a href="https://github.com/aborruso/aborruso.github.io/edit/main/til/quarto-applicare-stili-span/index.qmd" class="toc-action"><i class="bi bi-github"></i>Modifica questa pagina</a></li><li><a href="https://github.com/aborruso/aborruso.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Segnala un problema</a></li></ul></div></div>
+    <div class="toc-actions"><ul><li><a href="https://github.com/aborruso/aborruso.github.io/edit/main/til/postgis-docker/index.qmd" class="toc-action"><i class="bi bi-github"></i>Modifica questa pagina</a></li><li><a href="https://github.com/aborruso/aborruso.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Segnala un problema</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">

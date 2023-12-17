@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="it" xml:lang="it" dir="ltr"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.43">
+<meta name="generator" content="quarto-1.4.525">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -24,7 +24,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -82,7 +82,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "Nessun risultato",
     "search-matching-documents-text": "documenti trovati",
@@ -91,8 +97,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "ci sono altri risultati in questo documento",
     "search-more-matches-text": "ulteriori risultati in questo documento",
     "search-clear-button-title": "Pulire",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancellare",
-    "search-submit-button-title": "Inviare"
+    "search-submit-button-title": "Inviare",
+    "search-label": "Ricerca"
   }
 }</script>
 <style>
@@ -123,7 +131,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <meta property="og:title" content="aborruso’s website - Gestire file CSV grandi, brutti e cattivi">
 <meta property="og:description" content="Tips &amp; tricks, ispirati da DuckDB, file Parquet e OpenCoesione">
 <meta property="og:image" content="https://aborruso.github.io/posts/duckdb-intro-csv/atutorial.png">
-<meta property="og:site-name" content="aborruso's website">
+<meta property="og:site_name" content="aborruso's website">
 <meta property="og:locale" content="it_IT">
 <meta property="og:image:height" content="730">
 <meta property="og:image:width" content="1080">
@@ -139,31 +147,31 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <body class="floating nav-fixed slimcontent">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-            <div id="quarto-search" class="" title="false"></div>
+            <div id="quarto-search" class="" title="Ricerca"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Attiva/disattiva la navigazione" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../index.html" rel="" target="">
- <span class="menu-text">Home</span></a>
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../blog.html" rel="" target="">
- <span class="menu-text">Blog</span></a>
+    <a class="nav-link" href="../../blog.html"> 
+<span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../../til.html" rel="" target="">
- <span class="menu-text">TIL</span></a>
+    <a class="nav-link" href="../../til.html"> 
+<span class="menu-text">TIL</span></a>
   </li>  
 </ul>
-            <div class="quarto-navbar-tools ms-auto">
-</div>
           </div> <!-- /navcollapse -->
+          <div class="quarto-navbar-tools">
+</div>
       </div> <!-- /container-fluid -->
     </nav>
 </header>
@@ -192,14 +200,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div class="quarto-title-meta-contents">
       <p class="author"><a href="https://twitter.com/aborruso">Andrea Borruso</a> </p>
     </div>
-      <div class="quarto-title-meta-contents">
+    <div class="quarto-title-meta-contents">
           <p class="affiliation">
               <a href="https://ondata.it">
               Associazione onData
               </a>
             </p>
         </div>
-      </div>
+    </div>
 
   <div class="quarto-title-meta">
 
@@ -217,7 +225,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">In questa pagina</h2>
    
@@ -260,14 +268,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#in-conclusione" id="toc-in-conclusione" class="nav-link" data-scroll-target="#in-conclusione">In conclusione</a></li>
   <li><a href="#buone-letture-e-fonti-di-ispirazione" id="toc-buone-letture-e-fonti-di-ispirazione" class="nav-link" data-scroll-target="#buone-letture-e-fonti-di-ispirazione">Buone letture e fonti di ispirazione</a></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/aborruso/aborruso.github.io/edit/main/posts/duckdb-intro-csv/index.qmd" class="toc-action">Modifica questa pagina</a></p><p><a href="https://github.com/aborruso/aborruso.github.io/issues/new" class="toc-action">Segnala un problema</a></p></div></div></nav>
+<div class="toc-actions"><ul><li><a href="https://github.com/aborruso/aborruso.github.io/edit/main/posts/duckdb-intro-csv/index.qmd" class="toc-action"><i class="bi bi-github"></i>Modifica questa pagina</a></li><li><a href="https://github.com/aborruso/aborruso.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Segnala un problema</a></li></ul></div></nav>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
     </div>
 <!-- main -->
 <main class="content quarto-banner-title-block page-columns page-full" id="quarto-document-content">
+
 
 
 
@@ -337,23 +346,33 @@ Ambiente di lavoro utilizzato
 <div class="no-row-height column-margin column-container"><div class="">
 <p><code>head</code> estrae le prime 5 righe.</p>
 </div></div><p>Mi verrà restituito l’<em>output</em> di <a href="#lst-zcat-head" class="quarto-xref">Lista&nbsp;1</a>, e potrò constatare che c’è una <strong>riga di intestazione</strong> (non è obbligatoria nei <code>CSV</code>), che il <strong>separatore di campo</strong> è il <code>;</code>, che il <strong>separatore dei decimali</strong> è la <code>,</code> e soprattutto farmi un’idea dei contenuti.</p>
-<div id="lst-zcat-head" class="listing">
-<p>Lista&nbsp;1: Prime righe del file</p>
-<div class="sourceCode" id="lst-zcat-head" data-lst-cap="Prime righe del file"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="lst-zcat-head-1"><a href="#lst-zcat-head-1" aria-hidden="true" tabindex="-1"></a>Programma;Missione;Descrizione Missione;Componente;Descrizione Componente;ID Misura;Codice Univoco Misura;Descrizione Misura;ID Submisura;Codice CID;Codice Univoco Submisura;Descrizione Submisura;Amministrazione Titolare;Codice Identificativo Procedura di Attivazione;Titolo Procedura;Tipologia Procedura di Attivazione;CUP;Codice Locale Progetto;Stato CUP;CUP Codice Natura;CUP Descrizione Natura;CUP Codice Tipologia;CUP Descrizione Tipologia;CUP Codice Settore;CUP Descrizione Settore;CUP Codice Sottosettore;CUP Descrizione Sottosettore;CUP Codice Categoria;CUP Descrizione Categoria;Titolo Progetto;Sintesi Progetto;Descrizione Tipo Aiuto;Finanziamento - Stato;Finanziamento Stato - FOI;Finanziamento UE (Diverso da PNRR);Finanziamento Regione;Finanziamento Provincia;Finanziamento Comune;Finanziamento Altro Pubblico;Finanziamento Privato;Finanziamento Da Reperire;Finanziamento PNRR;Finanziamento PNC;Altri Fondi;Finanziamento Totale;Finanziamento Totale Pubblico;Finanziamento Totale Pubblico Netto;Soggetto Attuatore;Codice Fiscale Soggetto Attuatore;Flag Progetti in Essere;Data di Estrazione</span>
+<div id="lst-zcat-head" class="markdown listing">
+<figure class="quarto-float quarto-float-lst figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-zcat-head-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Lista&nbsp;1: Prime righe del file
+</figcaption>
+<div aria-describedby="lst-zcat-head-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="sourceCode" id="lst-zcat-head"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="lst-zcat-head-1"><a href="#lst-zcat-head-1" aria-hidden="true" tabindex="-1"></a>Programma;Missione;Descrizione Missione;Componente;Descrizione Componente;ID Misura;Codice Univoco Misura;Descrizione Misura;ID Submisura;Codice CID;Codice Univoco Submisura;Descrizione Submisura;Amministrazione Titolare;Codice Identificativo Procedura di Attivazione;Titolo Procedura;Tipologia Procedura di Attivazione;CUP;Codice Locale Progetto;Stato CUP;CUP Codice Natura;CUP Descrizione Natura;CUP Codice Tipologia;CUP Descrizione Tipologia;CUP Codice Settore;CUP Descrizione Settore;CUP Codice Sottosettore;CUP Descrizione Sottosettore;CUP Codice Categoria;CUP Descrizione Categoria;Titolo Progetto;Sintesi Progetto;Descrizione Tipo Aiuto;Finanziamento - Stato;Finanziamento Stato - FOI;Finanziamento UE (Diverso da PNRR);Finanziamento Regione;Finanziamento Provincia;Finanziamento Comune;Finanziamento Altro Pubblico;Finanziamento Privato;Finanziamento Da Reperire;Finanziamento PNRR;Finanziamento PNC;Altri Fondi;Finanziamento Totale;Finanziamento Totale Pubblico;Finanziamento Totale Pubblico Netto;Soggetto Attuatore;Codice Fiscale Soggetto Attuatore;Flag Progetti in Essere;Data di Estrazione</span>
 <span id="lst-zcat-head-2"><a href="#lst-zcat-head-2" aria-hidden="true" tabindex="-1"></a>PNRR;M1;Digitalizzazione, innovazione, competitività e cultura;M1C1;Digitalizzazione, innovazione e sicurezza nella PA;M1C1I1.2;M1C1I1.02;Abilitazione al cloud per le PA locali;M1C1I1.2;M1C1I1.2;M1C1I1.02.00;Abilitazione al cloud per le PA locali;PCM - DIPARTIM. TRASFORMAZIONE DIGITALE;1000000237;AVVISO AB. CLOUD COMUNI DEL 15/04/22;Bando;G61C22000240006;G61C22000240006;Attivo;02;ACQUISTO O REALIZZAZIONE DI SERVIZI;19;APPLICATIVI E PIATTAFORME WEB;10;SERVIZI PER LA P.A. E PER LA COLLETTIVITA';01;SERVIZI E TECNOLOGIE PER L'INFORMAZIONE E LE COMUNICAZIONI;007;SISTEMI INFORMATIVI PER LA P.A.;1.2. Ab.Cloud Com Cosoleto;MIGRAZIONE AL CLOUD DEI SERVIZI DIGITALI DELL'AMMINISTRAZIONE*TERRITORIO COMUNALE*N. 9 SERVIZI;INTERVENTO CHE NON COSTITUISCE AIUTO DI STATO;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;47427,00;0,00;0,00;47427,00;47427,00;47427,00;COMUNE DI COSOLETO;01234470803;No;13/06/2023</span>
 <span id="lst-zcat-head-3"><a href="#lst-zcat-head-3" aria-hidden="true" tabindex="-1"></a>PNRR;M1;Digitalizzazione, innovazione, competitività e cultura;M1C1;Digitalizzazione, innovazione e sicurezza nella PA;M1C1I1.2;M1C1I1.02;Abilitazione al cloud per le PA locali;M1C1I1.2;M1C1I1.2;M1C1I1.02.00;Abilitazione al cloud per le PA locali;PCM - DIPARTIM. TRASFORMAZIONE DIGITALE;1000000237;AVVISO AB. CLOUD COMUNI DEL 15/04/22;Bando;F71C22000160006;F71C22000160006;Attivo;02;ACQUISTO O REALIZZAZIONE DI SERVIZI;19;APPLICATIVI E PIATTAFORME WEB;10;SERVIZI PER LA P.A. E PER LA COLLETTIVITA';01;SERVIZI E TECNOLOGIE PER L'INFORMAZIONE E LE COMUNICAZIONI;007;SISTEMI INFORMATIVI PER LA P.A.;1.2. Ab.Cloud Com Bompensiere;MIGRAZIONE AL CLOUD DEI SERVIZI DIGITALI DELL'AMMINISTRAZIONE*TERRITORIO COMUNALE*N. 9 SERVIZI DA MIGRARE;INTERVENTO CHE NON COSTITUISCE AIUTO DI STATO;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;47427,00;0,00;0,00;47427,00;47427,00;47427,00;COMUNE DI BOMPENSIERE;80005060852;No;13/06/2023</span>
 <span id="lst-zcat-head-4"><a href="#lst-zcat-head-4" aria-hidden="true" tabindex="-1"></a>PNRR;M1;Digitalizzazione, innovazione, competitività e cultura;M1C1;Digitalizzazione, innovazione e sicurezza nella PA;M1C1I1.2;M1C1I1.02;Abilitazione al cloud per le PA locali;M1C1I1.2;M1C1I1.2;M1C1I1.02.00;Abilitazione al cloud per le PA locali;PCM - DIPARTIM. TRASFORMAZIONE DIGITALE;1000000237;AVVISO AB. CLOUD COMUNI DEL 15/04/22;Bando;B61C22000190006;B61C22000190006;Attivo;02;ACQUISTO O REALIZZAZIONE DI SERVIZI;19;APPLICATIVI E PIATTAFORME WEB;10;SERVIZI PER LA P.A. E PER LA COLLETTIVITA';01;SERVIZI E TECNOLOGIE PER L'INFORMAZIONE E LE COMUNICAZIONI;007;SISTEMI INFORMATIVI PER LA P.A.;1.2. Ab.Cloud Com Castelgrande;MIGRAZIONE AL CLOUD DEI SERVIZI DIGITALI DELL'AMMINISTRAZIONE*TERRITORIO COMUNALE*9 SERVIZI DA MIGRARE;INTERVENTO CHE NON COSTITUISCE AIUTO DI STATO;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;47427,00;0,00;0,00;47427,00;47427,00;47427,00;COMUNE DI CASTELGRANDE;80004060762;No;13/06/2023</span>
 <span id="lst-zcat-head-5"><a href="#lst-zcat-head-5" aria-hidden="true" tabindex="-1"></a>PNRR;M1;Digitalizzazione, innovazione, competitività e cultura;M1C1;Digitalizzazione, innovazione e sicurezza nella PA;M1C1I1.2;M1C1I1.02;Abilitazione al cloud per le PA locali;M1C1I1.2;M1C1I1.2;M1C1I1.02.00;Abilitazione al cloud per le PA locali;PCM - DIPARTIM. TRASFORMAZIONE DIGITALE;1000000237;AVVISO AB. CLOUD COMUNI DEL 15/04/22;Bando;F31C22000020006;F31C22000020006;Attivo;02;ACQUISTO O REALIZZAZIONE DI SERVIZI;19;APPLICATIVI E PIATTAFORME WEB;10;SERVIZI PER LA P.A. E PER LA COLLETTIVITA';01;SERVIZI E TECNOLOGIE PER L'INFORMAZIONE E LE COMUNICAZIONI;007;SISTEMI INFORMATIVI PER LA P.A.;1.2. Ab.Cloud Com Ittireddu;MIGRAZIONE AL CLOUD DEI SERVIZI DIGITALI DELL'AMMINISTRAZIONE*TERRITORIO COMUNALE*N. 9 SERVIZI DA MIGRARE;INTERVENTO CHE NON COSTITUISCE AIUTO DI STATO;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;0,00;47427,00;0,00;0,00;47427,00;47427,00;47427,00;COMUNE DI ITTIREDDU;00283910909;No;13/06/2023</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</figure>
 </div>
 <p>E posso usare in modo diretto strumenti di analisi, trasformazione e filtro di file CSV come lo <a href="https://miller.readthedocs.io/">straordinario <strong>Miller</strong></a>.<br> Ad esempio avere restituito il <strong>conteggio</strong> dei <em>record</em>, i <strong>valori nulli</strong> di ogni campo e anche i valori <strong>distinti</strong>.<br> Se voglio farlo soltanto per i campi <code>Missione</code>, <code>Codice Univoco Misura</code> e <code>CUP Codice Natura</code>, utilizzerò il verbo <a href="https://miller.readthedocs.io/en/6.8.0/reference-verbs/index.html#cut"><code>cut</code></a> e <a href="https://miller.readthedocs.io/en/6.8.0/reference-verbs/index.html#summary"><code>summary</code></a>, direttamente sul file compresso:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">mlr</span> <span class="at">--csv</span> <span class="at">--ifs</span> <span class="st">";"</span> <span class="dt">\</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>cut <span class="at">-f</span> Missione,<span class="st">"Codice Univoco Misura"</span>,<span class="st">"CUP Codice Natura"</span> then <span class="dt">\</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>summary <span class="at">-a</span> count,null_count,distinct_count PNRR_Progetti-Universo_REGIS_v2.1.csv.gz</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>In output avrò:</p>
-<div id="tbl-mlr-output" class="anchored">
+<div id="tbl-mlr-output" class="striped responsive small anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-mlr-output-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabella&nbsp;1: <em>Output</em> di <code>summary</code> di Miller
+</figcaption>
+<div aria-describedby="tbl-mlr-output-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="table-responsive">
 <table class="table-striped small table-sm table">
-<caption>Tabella&nbsp;1: <em>Output</em> di <code>summary</code> di Miller</caption>
 <thead>
 <tr class="header">
 <th>field_name</th>
@@ -384,6 +403,8 @@ Ambiente di lavoro utilizzato
 </tbody>
 </table>
 </div>
+</div>
+</figure>
 </div>
 <p>E con questo file compresso potrò usare anche strumenti di analisi e trasformazione che mi consentono di eseguire una più “<em>standard</em>” <strong><em>query</em> SQL</strong>, come <a href="#duckdb"><strong>DuckDB</strong></a>.<br> Per avere il totale del finanziamento PNRR per ogni missione, posso usare questo comando:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> <span class="at">-csv</span> <span class="at">-c</span> <span class="st">'</span></span>
@@ -417,38 +438,32 @@ Informazioni utili
 
 <div class="no-row-height column-margin column-container"><div class="">
 <p><code>delim</code> e <code>header</code> sono riconosciuti automaticamente da DuckDB. Sono inseriti a scopo didattico.</p>
-</div></div><div id="lst-query-duckdb" class="listing">
-<p>Lista&nbsp;2: Query SQL tramite DuckDB su un CSV compresso</p>
-<div class="sourceCode" id="lst-query-duckdb" data-lst-cap="Query SQL tramite DuckDB su un CSV compresso"><pre class="sourceCode bash code-annotation-code code-with-copy code-annotated"><code class="sourceCode bash"><span id="lst-query-duckdb-1"><a href="#lst-query-duckdb-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> <span class="at">-csv</span> <span class="at">-c</span> <span class="st">'</span></span>
+</div></div><div id="lst-query-duckdb" class="bash listing">
+<figure class="quarto-float quarto-float-lst figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-query-duckdb-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Lista&nbsp;2: Query SQL tramite DuckDB su un CSV compresso
+</figcaption>
+<div aria-describedby="lst-query-duckdb-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="sourceCode" id="lst-query-duckdb"><pre class="sourceCode code-annotation-code bash code-with-copy"><code class="sourceCode bash"><span id="lst-query-duckdb-1"><a href="#lst-query-duckdb-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> <span class="at">-csv</span> <span class="at">-c</span> <span class="st">'</span></span>
 <span id="lst-query-duckdb-2"><a href="#lst-query-duckdb-2" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT Missione, SUM("Finanziamento PNRR") AS total_PNRR</span></span>
 <span id="lst-query-duckdb-3"><a href="#lst-query-duckdb-3" aria-hidden="true" tabindex="-1"></a><span class="st">FROM  read_csv_auto(</span></span>
 <span id="lst-query-duckdb-4"><a href="#lst-query-duckdb-4" aria-hidden="true" tabindex="-1"></a><span class="st">    "PNRR_Progetti-Universo_REGIS_v2.1.csv.gz",</span></span>
-<button class="code-annotation-anchor" data-target-cell="lst-query-duckdb" data-target-annotation="1">1</button><span id="lst-query-duckdb-5" class="code-annotation-target"><a href="#lst-query-duckdb-5" aria-hidden="true" tabindex="-1"></a><span class="st">    delim=";",</span></span>
-<button class="code-annotation-anchor" data-target-cell="lst-query-duckdb" data-target-annotation="2">2</button><span id="lst-query-duckdb-6" class="code-annotation-target"><a href="#lst-query-duckdb-6" aria-hidden="true" tabindex="-1"></a><span class="st">    decimal_separator=",",</span></span>
-<button class="code-annotation-anchor" data-target-cell="lst-query-duckdb" data-target-annotation="3">3</button><span id="lst-query-duckdb-7" class="code-annotation-target"><a href="#lst-query-duckdb-7" aria-hidden="true" tabindex="-1"></a><span class="st">    header=True,</span></span>
-<button class="code-annotation-anchor" data-target-cell="lst-query-duckdb" data-target-annotation="4">4</button><span id="lst-query-duckdb-8" class="code-annotation-target"><a href="#lst-query-duckdb-8" aria-hidden="true" tabindex="-1"></a><span class="st">    types={"Finanziamento PNRR":"FLOAT"}</span></span>
+<span id="lst-query-duckdb-5"><a href="#lst-query-duckdb-5" aria-hidden="true" tabindex="-1"></a><span class="st">    delim=";",</span></span>
+<span id="lst-query-duckdb-6"><a href="#lst-query-duckdb-6" aria-hidden="true" tabindex="-1"></a><span class="st">    decimal_separator=",",</span></span>
+<span id="lst-query-duckdb-7"><a href="#lst-query-duckdb-7" aria-hidden="true" tabindex="-1"></a><span class="st">    header=True,</span></span>
+<span id="lst-query-duckdb-8"><a href="#lst-query-duckdb-8" aria-hidden="true" tabindex="-1"></a><span class="st">    types={"Finanziamento PNRR":"FLOAT"}</span></span>
 <span id="lst-query-duckdb-9"><a href="#lst-query-duckdb-9" aria-hidden="true" tabindex="-1"></a><span class="st">)</span></span>
 <span id="lst-query-duckdb-10"><a href="#lst-query-duckdb-10" aria-hidden="true" tabindex="-1"></a><span class="st">GROUP BY Missione</span></span>
-<span id="lst-query-duckdb-11"><a href="#lst-query-duckdb-11" aria-hidden="true" tabindex="-1"></a><span class="st">'</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="lst-query-duckdb-11"><a href="#lst-query-duckdb-11" aria-hidden="true" tabindex="-1"></a><span class="st">'</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<dl class="code-annotation-container-hidden code-annotation-container-grid">
-<dt data-target-cell="lst-query-duckdb" data-target-annotation="1">1</dt>
-<dd>
-<span data-code-lines="5" data-code-cell="lst-query-duckdb" data-code-annotation="1">imposta il separatore di campi a <code>;</code></span>
-</dd>
-<dt data-target-cell="lst-query-duckdb" data-target-annotation="2">2</dt>
-<dd>
-<span data-code-lines="6" data-code-cell="lst-query-duckdb" data-code-annotation="2">imposta il separatore di decimali a <code>,</code></span>
-</dd>
-<dt data-target-cell="lst-query-duckdb" data-target-annotation="3">3</dt>
-<dd>
-<span data-code-lines="7" data-code-cell="lst-query-duckdb" data-code-annotation="3">la prima riga è la riga di intestazione</span>
-</dd>
-<dt data-target-cell="lst-query-duckdb" data-target-annotation="4">4</dt>
-<dd>
-<span data-code-lines="8" data-code-cell="lst-query-duckdb" data-code-annotation="4">il campo <code>Finanziamento PNRR</code> è di tipo <code>FLOAT</code></span>
-</dd>
-</dl>
+</figure>
+</div>
+<ol type="1">
+<li>imposta il separatore di campi a <code>;</code></li>
+<li>imposta il separatore di decimali a <code>,</code></li>
+<li>la prima riga è la riga di intestazione</li>
+<li>il campo <code>Finanziamento PNRR</code> è di tipo <code>FLOAT</code></li>
+</ol>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -514,9 +529,13 @@ Il vantaggio di un CSV standard
 </ul>
 <p>L’<em>utility</em> a riga di comando per gestire i file <code>ZSTD</code> si chiama <code>zstd</code> e si può installare in (quasi) tutti i sistemi operativi. Un’applicazione <em>open source</em>, multipiattaforma, con interfaccia grafica, che supporta questa compressione è <a href="https://peazip.github.io/index.html">PeaZip</a>.<br> Molte applicazioni e librerie <em>software</em> di accesso ai dati, come DuckDB, <a href="https://arrow.apache.org/">Apache Arrow</a> e <a href="https://spark.apache.org/">Apache Spark</a>, lo supportano nativamente.</p>
 <p>In <a href="#duckdb">DuckDB</a>, si può leggere un file <code>CSV</code> compresso in formato <code>ZSTD</code>, semplicemente puntando ad esso (l’estensione <code>.zst</code> fa in modo che venga interpretato come file compresso in formato <code>ZSTD</code>):</p>
-<div id="lst-select-count" class="listing">
-<p>Lista&nbsp;3: Esempio di conteggio delle righe</p>
-<div class="sourceCode" id="lst-select-count" data-lst-cap="Esempio di conteggio delle righe"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="lst-select-count-1"><a href="#lst-select-count-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> <span class="at">-csv</span> <span class="at">-c</span> <span class="st">'</span></span>
+<div id="lst-select-count" class="bash listing">
+<figure class="quarto-float quarto-float-lst figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-select-count-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Lista&nbsp;3: Esempio di conteggio delle righe
+</figcaption>
+<div aria-describedby="lst-select-count-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="sourceCode" id="lst-select-count"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="lst-select-count-1"><a href="#lst-select-count-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> <span class="at">-csv</span> <span class="at">-c</span> <span class="st">'</span></span>
 <span id="lst-select-count-2"><a href="#lst-select-count-2" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT count(*) numero_righe</span></span>
 <span id="lst-select-count-3"><a href="#lst-select-count-3" aria-hidden="true" tabindex="-1"></a><span class="st">FROM  read_csv_auto(</span></span>
 <span id="lst-select-count-4"><a href="#lst-select-count-4" aria-hidden="true" tabindex="-1"></a><span class="st">        "PNRR_Progetti-Universo_REGIS_v2.1.csv.zst",</span></span>
@@ -526,6 +545,8 @@ Il vantaggio di un CSV standard
 <span id="lst-select-count-8"><a href="#lst-select-count-8" aria-hidden="true" tabindex="-1"></a><span class="st">        types={"Finanziamento PNRR":"FLOAT"}</span></span>
 <span id="lst-select-count-9"><a href="#lst-select-count-9" aria-hidden="true" tabindex="-1"></a><span class="st">)</span></span>
 <span id="lst-select-count-10"><a href="#lst-select-count-10" aria-hidden="true" tabindex="-1"></a><span class="st">'</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</figure>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -717,10 +738,14 @@ Schema <code>SQL</code> tabella progetti di OpenCoesione
 <section id="formato-colonnare" class="level3">
 <h3 class="anchored" data-anchor-id="formato-colonnare">Formato colonnare</h3>
 <p>In molti dei formati tabellari più noti e comuni, i dati sono archiviati come sequenze di righe. Avviene per i <code>CSV</code>, ma anche per importanti database relazionali come <code>PostgreSQL</code> e <code>MySQL</code>.</p>
-<div id="tbl-parquet_colonne_start" class="anchored">
+<div id="tbl-parquet_colonne_start" class="striped responsive small anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-parquet_colonne_start-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabella&nbsp;2: Tabella dati di esempio
+</figcaption>
+<div aria-describedby="tbl-parquet_colonne_start-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="table-responsive">
 <table class="table-striped small table-sm table">
-<caption>Tabella&nbsp;2: Tabella dati di esempio</caption>
 <thead>
 <tr class="header">
 <th>Pizza</th>
@@ -777,6 +802,8 @@ Schema <code>SQL</code> tabella progetti di OpenCoesione
 </table>
 </div>
 </div>
+</figure>
+</div>
 <p>A partire da una tabella con dei dati sulle vendite di una pizzeria, come <a href="#tbl-parquet_colonne_start" class="quarto-xref">Tabella&nbsp;2</a>, le domande che si potrebbero fare sono:</p>
 <ul>
 <li>quante pizze Margherita sono state vendute?</li>
@@ -785,16 +812,19 @@ Schema <code>SQL</code> tabella progetti di OpenCoesione
 <li>quante vendite sono state fatte il 2 gennaio 2023?</li>
 </ul>
 <p>Per rispondere a queste domande, un motore di “tabelle” basato su righe, dovrà leggere tutte le righe della tabella, dall’inizio alla fine. Per sapere quanti utenti che vengono dalla Sicilia hanno ordinato una pizza Parmigiana, si dovrà scorrere la tabella come in <a href="#fig-row-based" class="quarto-xref">Figura&nbsp;1</a>.</p>
-<div id="fig-row-based" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="images/row-based.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption class="figure-caption">Figura&nbsp;1: Flusso lettura dati, in archivi basati su righe</figcaption>
+<div id="fig-row-based" class="quarto-figure quarto-figure-center anchored" width="100%">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-row-based-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/row-based.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-row-based-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;1: Flusso lettura dati, in archivi basati su righe
+</figcaption>
 </figure>
 </div>
 <p>Basterebbe leggere soltanto i valori delle colonne <code>Pizza</code> e <code>Regione</code>, ma in uno schema di archiviazione basato su righe vengono lette anche le altre colonne.</p>
 <p>Per rispondere a questa <em>query</em> è molto più efficiente un’<strong>archiviazione a colonne</strong>.<br> In questo caso, ogni colonna è un’entità, il che significa che ogni colonna è fisicamente separata dalle altre. <br> Tornando alla nostra precedente domanda: in uno schema a colonne il motore di analisi può leggere soltanto le colonne necessarie per la <em>query</em> (<code>Pizza</code> e <code>Regione</code>). E, nella maggior parte dei casi, questo migliorerà le prestazioni delle <em>query</em> analitiche.</p>
 <table class="striped-table small table-sm table">
-<caption></caption>
 <thead>
 <tr class="header">
 <th>Pizza</th>
@@ -850,18 +880,26 @@ Schema <code>SQL</code> tabella progetti di OpenCoesione
 </tbody>
 </table>
 <p>Il formato <code>Parquet</code> è proprio un <strong>formato</strong> di <strong>archiviazione</strong> a <strong>colonne</strong>, anzi è più correttamente un formato di archiviazione <strong>a colonne</strong>, <strong>per gruppi di righe</strong>.<br></p>
-<div id="fig-row-groups" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="images/row-groups.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption class="figure-caption">Figura&nbsp;2: Struttura a colonne per gruppi di righe</figcaption>
+<div id="fig-row-groups" class="quarto-figure quarto-figure-center anchored" width="100%">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-row-groups-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/row-groups.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-row-groups-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2: Struttura a colonne per gruppi di righe
+</figcaption>
 </figure>
 </div>
 <p>Le colonne sono memorizzate sempre come unità separate, ma Parquet introduce delle strutture aggiuntive chiamate “<strong><em>Row group</em></strong>” (vedi <a href="#fig-row-groups" class="quarto-xref">Figura&nbsp;2</a>).</p>
 <p>Perché sono un vantaggio? Nella <em>query</em> di esempio di sopra, non solo bastano due colonne, ma il <code>Gruppo 2</code> di righe è inutile (non c’è la “Parmigiana”).<br> Con questa struttura a gruppi di righe (qui semplificata per fini didattici) sarà possibile non tenere conto del “Gruppo 2” e la <em>query</em> sarà più rapida.</p>
-<div id="fig-row-groups-skip" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="images/row-groups-skip.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption class="figure-caption">Figura&nbsp;3: Per la <em>query</em> di esempio, il “Gruppo 2” è inutile</figcaption>
+<div id="fig-row-groups-skip" class="quarto-figure quarto-figure-center anchored" width="100%">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-row-groups-skip-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/row-groups-skip.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-row-groups-skip-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;3: Per la <em>query</em> di esempio, il “Gruppo 2” è inutile
+</figcaption>
 </figure>
 </div>
 </section>
@@ -918,10 +956,14 @@ Comando da usare per la conversione da CSV a Parquet
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="st">ORDER BY finanziamento_pnrr desc;</span></span>
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="st">'</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>E in circa 1 secondo (al primo lancio e in molto meno dal secondo in poi) ottengo:</p>
-<div id="tbl-parquet-api" class="anchored">
+<div id="tbl-parquet-api" class="striped responsive small anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-parquet-api-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabella&nbsp;3: Output della <em>query</em>
+</figcaption>
+<div aria-describedby="tbl-parquet-api-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="table-responsive">
 <table class="table-striped small table-sm table">
-<caption>Tabella&nbsp;3: Output della <em>query</em></caption>
 <colgroup>
 <col style="width: 27%">
 <col style="width: 36%">
@@ -969,11 +1011,17 @@ Comando da usare per la conversione da CSV a Parquet
 </table>
 </div>
 </div>
+</figure>
+</div>
 <p>E posso farlo anche da una <a href="https://shell.duckdb.org/">pagina web</a> che includa DuckDb come <em>WebAssembly</em> (vedi <a href="#fig-duckdb-wasm" class="quarto-xref">Figura&nbsp;4</a>).</p>
-<div id="fig-duckdb-wasm" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><a href="https://shell.duckdb.org/"><img src="images/ddb-wasm.png" class="img-fluid figure-img" style="width:100.0%"></a></p>
-<figcaption class="figure-caption">Figura&nbsp;4: Il client DuckDB come modulo WASM</figcaption>
+<div id="fig-duckdb-wasm" class="quarto-figure quarto-figure-center anchored" width="100%">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-duckdb-wasm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="https://shell.duckdb.org/"><img src="images/ddb-wasm.png" class="img-fluid figure-img" style="width:100.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-duckdb-wasm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;4: Il client DuckDB come modulo WASM
+</figcaption>
 </figure>
 </div>
 <div class="callout callout-style-default callout-note callout-titled">
@@ -996,20 +1044,30 @@ Non è la soluzione definitiva
 <p>In contesti applicativi in cui le <em>performance</em>, lo spazio di archiviazione, le modalità di accesso sono parametri da tenere in alta considerazione, è già molto usato.<br> Un esempio per tutti è quello dei dataset di <a href="https://huggingface.co/datasets">Hugging Face</a>.</p>
 <p>I dati aperti globali sugli edifici del progetto <a href="https://github.com/microsoft/GlobalMLBuildingFootprints/">GlobalMLBuildingFootprints</a> (1.2 miliardi di edifici), sono in formato parquet, nella sua estensione spaziale.<br> Anche i dataset geografici del progetto <a href="https://overturemaps.org/download/">Overture Maps Foundation</a>, sono in formato parquet.<br> I dati aperti sulle <a href="https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page">corse di taxi e veicoli con conducente di New York</a>, sono anch’essi in questo formato.</p>
 <p>L’ultimo esempio, per chiudere in bellezza, è quello dell’impareggiabile <a href="https://www.data.gouv.fr/"><strong>portale Open Data della Francia</strong></a>.<br> Pubblica un dataset in formato <code>parquet</code>, sono disponibili gli URL statici dei file, ed è possibile fare <em>query</em> in modo comodissimo, come se fossero <a href="#come-avere-delle-api">disponibili delle API</a>.<br> Ad esempio posso interrogare il <a href="https://www.data.gouv.fr/fr/datasets/bureaux-de-vote-et-adresses-de-leurs-electeurs/">file da 470 MB degli indirizzi</a>, di 15 milioni di righe, per avere il numero di indirizzi per comune con questa semplicità (vedi <a href="#lst-query-francia" class="quarto-xref">Lista&nbsp;4</a>):</p>
-<div id="lst-query-francia" class="listing">
-<p>Lista&nbsp;4: Esempio di <em>query</em> da <em>shell</em></p>
-<div class="sourceCode" id="lst-query-francia" data-lst-cap="Esempio di *query* da *shell*"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="lst-query-francia-1"><a href="#lst-query-francia-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> <span class="at">-c</span> <span class="st">'</span></span>
+<div id="lst-query-francia" class="bash listing">
+<figure class="quarto-float quarto-float-lst figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-query-francia-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Lista&nbsp;4: Esempio di <em>query</em> da <em>shell</em>
+</figcaption>
+<div aria-describedby="lst-query-francia-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="sourceCode" id="lst-query-francia"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="lst-query-francia-1"><a href="#lst-query-francia-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> <span class="at">-c</span> <span class="st">'</span></span>
 <span id="lst-query-francia-2"><a href="#lst-query-francia-2" aria-hidden="true" tabindex="-1"></a><span class="st">load httpfs;</span></span>
 <span id="lst-query-francia-3"><a href="#lst-query-francia-3" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT code_commune_ref, sum(nb_adresses) sum</span></span>
 <span id="lst-query-francia-4"><a href="#lst-query-francia-4" aria-hidden="true" tabindex="-1"></a><span class="st">FROM "https://static.data.gouv.fr/resources/bureaux-de-vote-et-adresses-de-leurs-electeurs/20230626-135723/table-adresses-reu.parquet"</span></span>
 <span id="lst-query-francia-5"><a href="#lst-query-francia-5" aria-hidden="true" tabindex="-1"></a><span class="st">GROUP BY ALL ORDER by 2 DESC LIMIT 10;</span></span>
 <span id="lst-query-francia-6"><a href="#lst-query-francia-6" aria-hidden="true" tabindex="-1"></a><span class="st">'</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</figure>
+</div>
 <p>E in pochi secondi si ha restituito il risultato (vedi <a href="#fig-portale-opendata-francia" class="quarto-xref">Figura&nbsp;5</a>).</p>
-<div id="fig-portale-opendata-francia" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="images/portale-opendata-francia.png" class="img-fluid figure-img" style="width:100.0%"></p>
-<figcaption class="figure-caption">Figura&nbsp;5: Output da shell</figcaption>
+<div id="fig-portale-opendata-francia" class="quarto-figure quarto-figure-center anchored" width="100%">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-portale-opendata-francia-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/portale-opendata-francia.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-portale-opendata-francia-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;5: Output da shell
+</figcaption>
 </figure>
 </div>
 </section>
@@ -1040,10 +1098,14 @@ Non è la soluzione definitiva
 <li>vengono restituite le istruzioni per l’installazione.</li>
 </ol>
 <p>E in pochissimo tempo si è pronti all’uso.</p>
-<div id="fig-duckdb-install" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><a href="https://duckdb.org/docs/installation/index"><img src="images/duckdb_install.png" class="img-fluid figure-img" style="width:100.0%"></a></p>
-<figcaption class="figure-caption">Figura&nbsp;6: Pagina di installazione di DuckDB</figcaption>
+<div id="fig-duckdb-install" class="quarto-figure quarto-figure-center anchored" width="100%">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-duckdb-install-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="https://duckdb.org/docs/installation/index"><img src="images/duckdb_install.png" class="img-fluid figure-img" style="width:100.0%"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-duckdb-install-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;6: Pagina di installazione di DuckDB
+</figcaption>
 </figure>
 </div>
 </section>
@@ -1079,7 +1141,7 @@ Non è la soluzione definitiva
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-8" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-lines="1" data-code-cell="annotated-cell-8" data-code-annotation="1">carica l’estensione spaziale</span>
+<span data-code-cell="annotated-cell-8" data-code-lines="1" data-code-annotation="1">carica l’estensione spaziale</span>
 </dd>
 </dl>
 <p>A schermo si avrà <code>42.2471</code>.</p>
@@ -1209,9 +1271,13 @@ Questa tabella
 <p>Modificando un po’ il comando di sopra, con <code>unzip -p progetti_esteso_20230430.zip | wc -l</code>, leggo che il file è composto da 1.936.840 righe.</p>
 <p>Fatta questa prima esplorazione grezza, di solito voglio “guardare” in modo più “comodo” la tabella dei dati. Potrei salvare le prime 10 righe in un file, aggiungendo al comando di sopra <code>&gt; prime_dieci_righe.csv</code>, e infine aprirlo con un foglio elettronico; io preferisco usare lo <a href="https://ondata.github.io/guidaVisiData/">straordinario <strong>VisiData</strong></a> per farlo.<br> Con <code>unzip -p progetti_esteso_20230430.zip | head | vd -f csv --csv-delimiter=";"</code> ad esempio visualizzo le 10 righe di <em>output</em> e tutte le colonne (constatando che sono 199), ma soprattutto mi faccio una prima idea dei contenuti.</p>
 <div id="fig-duckdb-preview-vd" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="./images/visidata_explore.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figura&nbsp;7: Esempio visualizzazione con VisiData</figcaption>
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-duckdb-preview-vd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./images/visidata_explore.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-duckdb-preview-vd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;7: Esempio visualizzazione con VisiData
+</figcaption>
 </figure>
 </div>
 <p>Ci sono tantissimi altri strumenti e modalità con cui potrei fare queste ed altre operazioni di esplorazione e analisi, ma questo è un <em>post</em> dedicato in modo particolare a <a href="#duckdb">DuckDB</a> e alla sua applicazione a riga di comando. Quindi <strong>da qui in poi</strong>, utilizzerò <strong>soprattutto</strong> <strong>DuckDB</strong> e la sua <strong><code>cli</code></strong>.<br> Per replicare con DuckDB quanto visto sopra in <a href="#fig-duckdb-preview-vd" class="quarto-xref">Figura&nbsp;7</a>, il comando è (metto qualche “a capo” per renderlo più leggibile):</p>
@@ -1222,22 +1288,26 @@ Questa tabella
 <dl class="code-annotation-container-hidden code-annotation-container-grid">
 <dt data-target-cell="annotated-cell-22" data-target-annotation="1">1</dt>
 <dd>
-<span data-code-lines="2" data-code-cell="annotated-cell-22" data-code-annotation="1"><code>-cmd '.mode box'</code> abilita la vista “box”</span>
+<span data-code-cell="annotated-cell-22" data-code-lines="2" data-code-annotation="1"><code>-cmd '.mode box'</code> abilita la vista “box”</span>
 </dd>
 <dt data-target-cell="annotated-cell-22" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-lines="3" data-code-cell="annotated-cell-22" data-code-annotation="2">L’<em>input</em> è lo <code>stdin</code></span>
+<span data-code-cell="annotated-cell-22" data-code-lines="3" data-code-annotation="2">L’<em>input</em> è lo <code>stdin</code></span>
 </dd>
 <dt data-target-cell="annotated-cell-22" data-target-annotation="3">3</dt>
 <dd>
-<span data-code-lines="4" data-code-cell="annotated-cell-22" data-code-annotation="3">L’<em>output</em> a <code>less</code> in modo che sia leggibile</span>
+<span data-code-cell="annotated-cell-22" data-code-lines="4" data-code-annotation="3">L’<em>output</em> a <code>less</code> in modo che sia leggibile</span>
 </dd>
 </dl>
 <p>A schermo ho un’anteprima leggibile e navigabile, come questa di <a href="#fig-duckdb-preview-box" class="quarto-xref">Figura&nbsp;8</a>.</p>
 <div id="fig-duckdb-preview-box" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="images/duckdb-preview-box.gif" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figura&nbsp;8: Output in modalità <code>box</code> di DuckDB</figcaption>
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-duckdb-preview-box-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/duckdb-preview-box.gif" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-duckdb-preview-box-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;8: Output in modalità <code>box</code> di DuckDB
+</figcaption>
 </figure>
 </div>
 <p>Come detto <a href="#compressione-dei-file-csv">sopra</a> DuckDB può <strong>leggere nativamente</strong> file <strong>compressi</strong> in formato <strong><code>GZIP</code></strong> (e <code>ZSTD</code>).<br> Allora per comodità, ho creato la versione <code>GZIP</code> del file <code>Progetti con tracciato esteso</code> di OpenCoesione.</p>
@@ -1247,9 +1317,13 @@ Questa tabella
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="st">'</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>In output ho un’anteprima ben leggibile a schermo, in cui vedo 10 righe, alcuni dei campi e il loro tipo e il numero di colonne.</p>
 <div id="fig-duckdb-standard-output" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="images/duck-standard-output.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Figura&nbsp;9: DuckDb standard output</figcaption>
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-duckdb-standard-output-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/duck-standard-output.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-duckdb-standard-output-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;9: DuckDb standard output
+</figcaption>
 </figure>
 </div>
 <p>Per vedere tutti i campi posso forzare l’<strong>output in <code>CSV</code></strong>, aggiungendo <code>--csv</code> e infine leggerlo con VisiData:</p>
@@ -1268,10 +1342,14 @@ Questa tabella
 <li>conteggio dei valori.</li>
 </ul>
 <p>Qui sotto in <a href="#tbl-summarize-output" class="quarto-xref">Tabella&nbsp;4</a> un esempio di output per alcune delle colonne del dataset di OpenCoesione.<br> È una tabella di gran valore, perché consente di fare delle prime scelte di analisi e di trasformazione dei dati e avere restituito degli elementi di qualità dei dati.</p>
-<div id="tbl-summarize-output" class="anchored">
+<div id="tbl-summarize-output" class="striped responsive small anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-summarize-output-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabella&nbsp;4: <em>Output</em> di esempio di SUMMARIZE
+</figcaption>
+<div aria-describedby="tbl-summarize-output-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="table-responsive">
 <table class="table-striped small table-sm table">
-<caption>Tabella&nbsp;4: <em>Output</em> di esempio di SUMMARIZE</caption>
 <colgroup>
 <col style="width: 6%">
 <col style="width: 6%">
@@ -1377,6 +1455,8 @@ Questa tabella
 </table>
 </div>
 </div>
+</figure>
+</div>
 <p><br>Il comando si lancia anteponendolo alla lista di record di cui si vuole ottenere una preziosa sintesi:</p>
 <div class="sourceCode" id="cb26"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> <span class="at">--csv</span> <span class="at">-c</span> <span class="st">'</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="st">SUMMARIZE SELECT * from read_csv_auto("progetti_esteso_20230430.csv.gz")</span></span>
@@ -1431,10 +1511,14 @@ Procedura corretta per <code>SUMMARIZE</code>
 </div>
 </div>
 <p>Con questi dati di sintesi emerge ad esempio che circa 36 campi hanno almeno il 90% dei <strong>valori nulli</strong>.<br> O che in alcuni campi con le <strong>date</strong> ci sono <strong>valori</strong> (di minimo o di massimo) <strong>strani</strong> e probabilmente errati, come quelli in <a href="#tbl-strange-date" class="quarto-xref">Tabella&nbsp;5</a>.</p>
-<div id="tbl-strange-date" class="anchored">
+<div id="tbl-strange-date" class="striped responsive small anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-strange-date-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabella&nbsp;5: Campi con valori di date “strani”
+</figcaption>
+<div aria-describedby="tbl-strange-date-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="table-responsive">
 <table class="table-striped small table-sm table">
-<caption>Tabella&nbsp;5: Campi con valori di date “strani”</caption>
 <thead>
 <tr class="header">
 <th>column_name</th>
@@ -1507,17 +1591,31 @@ Procedura corretta per <code>SUMMARIZE</code>
 </table>
 </div>
 </div>
+</figure>
+</div>
 <p>Ma soprattutto è possibile constatare quali siano <strong>i campi “categorici”</strong>, quelli con un <strong>numero limitato di valori univoci</strong>, che possono essere usati per raggruppare e aggregare i dati e fare emergere elementi interessanti.</p>
 <p>Tra i campi categorici <code>OC_MACROAREA</code>, che definisce le macroaree geografiche italiane. E per sapere ad esempio qual è il finanziamento pubblico totale per ciascuna, si può usare la query <code>SQL</code>:</p>
-<div id="lst-query-macroarea" class="listing">
-<p>Lista&nbsp;5: Query SQL: totale dei finanziamenti pubblici per macroaree</p>
-<div class="sourceCode" id="lst-query-macroarea" data-lst-cap="Query SQL: totale dei finanziamenti pubblici per macroaree"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="lst-query-macroarea-1"><a href="#lst-query-macroarea-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> OC_MACROAREA,</span>
+<div id="lst-query-macroarea" class="sql listing">
+<figure class="quarto-float quarto-float-lst figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-query-macroarea-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Lista&nbsp;5: Query SQL: totale dei finanziamenti pubblici per macroaree
+</figcaption>
+<div aria-describedby="lst-query-macroarea-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="sourceCode" id="lst-query-macroarea"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="lst-query-macroarea-1"><a href="#lst-query-macroarea-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> OC_MACROAREA,</span>
 <span id="lst-query-macroarea-2"><a href="#lst-query-macroarea-2" aria-hidden="true" tabindex="-1"></a><span class="fu">CAST</span>(<span class="fu">SUM</span>(FINANZ_TOTALE_PUBBLICO) <span class="kw">AS</span> BIGINT) FINANZ_TOTALE_PUBBLICO</span>
 <span id="lst-query-macroarea-3"><a href="#lst-query-macroarea-3" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> OC_MACROAREA</span>
 <span id="lst-query-macroarea-4"><a href="#lst-query-macroarea-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> FINANZ_TOTALE_PUBBLICO <span class="kw">DESC</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</figure>
+</div>
 <p>Restituirà qualcosa come in <a href="#tbl-aree-sum" class="quarto-xref">Tabella&nbsp;6</a>.</p>
 <div class="cell" data-execution_count="2">
+<div id="tbl-aree-sum" class="cell anchored" data-execution_count="2">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-aree-sum-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabella&nbsp;6: Finanziamento pubblico per macro aree
+</figcaption>
+<div aria-describedby="tbl-aree-sum-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-display" data-execution_count="2">
 <style type="text/css">
 #T_6386e th:nth-child(1) {
@@ -1534,10 +1632,8 @@ Procedura corretta per <code>SUMMARIZE</code>
 }
 </style>
 
-<div id="tbl-aree-sum" class="anchored">
 <div class="table-responsive">
-<table id="T_6386e" class="table-bordered striped small table table-sm table-striped" data-quarto-postprocess="true">
-<caption>Tabella&nbsp;6: Finanziamento pubblico per macro aree</caption>
+<table id="T_6386e" class="table-bordered table-striped small cell table table-sm" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
 <th id="T_6386e_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Macro area</th>
@@ -1570,8 +1666,10 @@ Procedura corretta per <code>SUMMARIZE</code>
 </div>
 </div>
 </div>
+</figure>
 </div>
-<div class="cell dataframe table-bordered striped responsive small">
+</div>
+<div class="cell hidden dataframe table-bordered striped responsive small">
 <div class="sourceCode cell-code hidden" id="cb30" data-startfrom="983" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 982;"><span id="cb30-983"><a href="#cb30-983" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> <span class="fu">FileAttachment</span>(<span class="st">"./risorse/sum-by-region.csv"</span>)<span class="op">.</span><span class="fu">csv</span>({ <span class="dt">typed</span><span class="op">:</span> <span class="kw">true</span> })</span>
 <span id="cb30-984"><a href="#cb30-984" aria-hidden="true" tabindex="-1"></a>Inputs<span class="op">.</span><span class="fu">table</span>(data<span class="op">,</span> {<span class="dt">locale</span><span class="op">:</span> <span class="st">"it-IT"</span>})</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display hidden">
@@ -1663,17 +1761,16 @@ Su OpenCoesione
 
 
 </section>
-<aside id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
-<hr>
+
+
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Torna in cima</a><div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Note</h2>
+
 <ol>
 <li id="fn1"><p>Le politiche di coesione sono un insieme di iniziative e azioni messe in atto dall’Unione Europea per ridurre le disparità economiche, sociali e territoriali tra le diverse regioni e Stati membri.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
-</aside>
-
-<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Torna in cima</a></main> <!-- /main -->
-
+</section></div></main> <!-- /main -->
 <script type="ojs-module-contents">
-{"contents":[{"methodName":"interpret","cellName":"ojs-cell-1","inline":false,"source":"pnrrdb = DuckDBClient.of({\n  progetti: FileAttachment(\"file/PNRR_Progetti-Universo_REGIS_v2.1.parquet\")\n})\n"},{"methodName":"interpret","cellName":"ojs-cell-2","inline":false,"source":"Inputs.table(\n  pnrrdb.sql`SELECT Missione, SUM(\"Finanziamento PNRR\") AS total_PNRR\n  FROM progetti\n  GROUP BY ALL`, {locale: \"it-IT\"}\n)\n"},{"methodName":"interpret","cellName":"ojs-cell-3","inline":false,"source":"data = FileAttachment(\"./risorse/sum-by-region.csv\").csv({ typed: true })\nInputs.table(data, {locale: \"it-IT\"})\n"}]}
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InBucnJkYiA9IER1Y2tEQkNsaWVudC5vZih7XG4gIHByb2dldHRpOiBGaWxlQXR0YWNobWVudChcImZpbGUvUE5SUl9Qcm9nZXR0aS1Vbml2ZXJzb19SRUdJU192Mi4xLnBhcnF1ZXRcIilcbn0pXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTIiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJJbnB1dHMudGFibGUoXG4gIHBucnJkYi5zcWxgU0VMRUNUIE1pc3Npb25lLCBTVU0oXCJGaW5hbnppYW1lbnRvIFBOUlJcIikgQVMgdG90YWxfUE5SUlxuICBGUk9NIHByb2dldHRpXG4gIEdST1VQIEJZIEFMTGAsIHtsb2NhbGU6IFwiaXQtSVRcIn1cbilcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMyIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6ImRhdGEgPSBGaWxlQXR0YWNobWVudChcIi4vcmlzb3JzZS9zdW0tYnktcmVnaW9uLmNzdlwiKS5jc3YoeyB0eXBlZDogdHJ1ZSB9KVxuSW5wdXRzLnRhYmxlKGRhdGEsIHtsb2NhbGU6IFwiaXQtSVRcIn0pXG4ifV19
 </script>
 <script type="module">
 if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
@@ -1762,10 +1859,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp(".*aborruso\.github\.io\.*");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1775,8 +1889,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1832,6 +1955,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1857,8 +1981,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
-      // Handle positioning of the toggle
-      window.addEventListener(
+        // Handle positioning of the toggle
+    window.addEventListener(
       "resize",
       throttle(() => {
         elRect = undefined;
@@ -1866,23 +1990,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
           selectCodeLines(selectedAnnoteEl);
         }
       }, 10)
-      );
-      function throttle(fn, ms) {
-      let throttle = false;
-      let timer;
-        return (...args) => {
-          if(!throttle) { // first call gets through
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
               fn.apply(this, args);
-              throttle = true;
-          } else { // all the others get throttled
-              if(timer) clearTimeout(timer); // cancel #2
-              timer = setTimeout(() => {
-                fn.apply(this, args);
-                timer = throttle = false;
-              }, ms);
-          }
-        };
-      }
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       const annoteTargets = window.document.querySelectorAll('.code-annotation-anchor');
       for (let i=0; i<annoteTargets.length; i++) {
         const annoteTarget = annoteTargets[i];
@@ -1927,7 +2051,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
               options: {
                 flipVariations: false, // true by default
                 allowedAutoPlacements: ['right'],
-                fallbackPlacements: ['right', 'top', 'top-start', 'top-end'],
+                fallbackPlacements: ['right', 'top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left'],
               },
             },
             {
@@ -1979,26 +2103,14 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       });
     }
   }
-    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-      var filterRegex = new RegExp(".*aborruso\.github\.io\.*");
-    var isInternal = (href) => {
-        return filterRegex.test(href) || localhostRegex.test(href);
-    }
-    // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item)');
-    for (var i=0; i<links.length; i++) {
-      const link = links[i];
-      if (!isInternal(link.href)) {
-          // target, if specified
-          link.setAttribute("target", "_blank");
-      }
-    }
 });
 </script>
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
-    <div class="nav-footer-left">Costruito con <a href="https://quarto.org">quarto</a> 😍 | Contenuti in <a href="https://creativecommons.org/licenses/by/4.0/deed.it">CC BY 4.0</a></div>   
+    <div class="nav-footer-left">
+<p>Costruito con <a href="https://quarto.org">quarto</a> 😍 | Contenuti in <a href="https://creativecommons.org/licenses/by/4.0/deed.it">CC BY 4.0</a></p>
+</div>   
     <div class="nav-footer-center">
       &nbsp;
     </div>
@@ -2026,6 +2138,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
+
 
 
 

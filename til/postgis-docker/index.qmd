@@ -3,6 +3,7 @@ title: "Usare postgis da docker"
 description: "Un, due, tre, via"
 date: "2023-12-05"
 draft: true
+search: false
 categories:
   - postgis
   - docker
@@ -15,13 +16,13 @@ categories:
 
 Il primo step è fare il `pull` dell'immagine:
 
-```{bash}
+```{.bash}
 docker pull postgis/postgis:16-master
 ```
 
 Poi si può dare il primo avvio del *container*, impostando un *setup* di base:
 
-```{bash}
+```{.bash}
 docker run --name postgis16 \
 -p 5432:5432 \
 -v /home/user/folder:/directory_docker \
@@ -40,7 +41,7 @@ Alcune spiegazioni:
 
 Una volta che il container è in esecuzione si può entrare nella `cli` di questa immagine con il comando:
 
-```{bash}
+```{.bash}
 docker exec -it postgis16 bash
 ```
 
@@ -52,7 +53,7 @@ Alcune note:
 
 Una volta dentro la cli, si può accedere al database con il comando:
 
-```{bash}
+```{.bash}
 psql -U postgres -d postgres
 ```
 

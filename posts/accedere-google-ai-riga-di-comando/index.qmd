@@ -1,0 +1,234 @@
+---
+title: "Usare la nuova intelligenza artificiale di Google"
+description: "Farlo a riga di comando, già oggi che non è disponibile in Italia"
+date: "2023-12-17"
+draft: false
+search: true
+categories:
+  - ai
+  - google
+  - cli
+format:
+  html:
+    crossrefs-hover: false
+website:
+  twitter-card:
+    description: "Usare la nuova intelligenza artificiale di Google, a riga di comando, già oggi che non disponibile in Italia."
+    image: gemini_via_cli.png
+  open-graph:
+    description: "Usare la nuova intelligenza artificiale di Google, a riga di comando, già oggi che non disponibile in Italia."
+    image: gemini_via_cli.png
+image: gemini_via_cli.png
+---
+
+😉 Questo post è per [Cesare Gerbino](https://twitter.com/CesareGerbino/status/1735723196270199040).
+
+## Introduzione
+
+Google [ha lanciato](https://blog.google/technology/ai/google-gemini-ai/) a inizio dicembre del 2023 **Gemini**, il suo modello di intelligenza artificiale migliore.
+Può comprendere e combinare diversi tipi di informazioni, come testo, codice, audio, immagini e video.
+
+Da poco sono disponibili le [**API**](https://makersuite.google.com/app/apikey) e ho voluto fare qualche test di base, usando la riga di comando.
+
+::: {.callout-note}
+Al momento le API sono **accessibili soltanto dagli Stati Uniti**, quindi bisogna usare un VPN. Io ho usato quella gratuita di [Proton VPN](https://protonvpn.com/) (grazie a Francesco Passantino per il suggerimento di anni fa).
+:::
+
+A seguire una mini guida per testarle
+
+## Connessione alla VPN
+
+Per prima cosa bisogna connettersi alla VPN e scegliere come paese di **connessione** gli **Stati Uniti**.
+
+![Esempio connessione usando Proton VPN](./images/Proton_VPN_USA.png)
+
+## Generare una chiave API
+
+Una volta connessi dagli Stati Uniti è necessario **generare** una **chiave API**, per autenticarsi. Si può fare da questa pagina: <https://makersuite.google.com/app/apikey>.
+
+Una volta generata - è una lunga stringa - è da archiviare da qualche parte.
+
+## Accesso alle API in REST, via cURL
+
+È il modo più immediato e diretto. Si apre la `shell` e si manda una richiesta come questa, in cui si definisce prima una variabile con la chiave API e poi si lancia la chiamata.
+
+```{.bash .code-overflow-wrap}
+# Una variabile dove inserire la chiave API
+API_KEY="AIxxSyCnBOUyPuDLtjWY11HOwxxxxxxx"
+
+# Lanciare la chiamata
+curl -s "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=$API_KEY" \
+-H 'Content-Type: application/json' \
+-X POST -d '{"contents": [{"parts":[{"text": "Creami tre nomi buffi per un gatto siamese con le orecchie molto grandi"}]}]}'
+```
+
+{{< include _json_output.qmd >}}
+
+Se si espande l'esempio di JSON qui sopra, la parte con la risposta alla chiamata è quella contenuta in `.candidates[0].content.parts[0].text`.<br>
+Si può modifcare il comando di sopra e usare [`jq`](https://jqlang.github.io/jq/) per estrarla:
+
+```{.bash .code-overflow-wrap}
+curl -s "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=$API_KEY" \
+-H 'Content-Type: application/json' \
+-X POST -d '{"contents": [{"parts":[{"text": "Creami tre nomi buffi per un gatto siamese con le orecchie molto grandi"}]}]}' | \
+jq '.candidates[0].content.parts[0].text' -r
+```
+
+In output si avrà qualcosa come:
+
+```{.markdown}
+1. Dumbo
+2. Flitzer
+3. Elicottero
+```
+
+Non vi resta che testare e divertirvi, con esempi migliori del mio. La cosa interessante è che è un'`API REST`, quindi si può usare da qualsiasi linguaggio di programmazione.
+
+![](./gemini_via_cli.png)
+
+## Utilizzare l'eccezionale `LLM` via cli
+
+[**`LLM`**](https://llm.datasette.io/en/stable/index.html#) è un'*utility* a riga di comando e una libreria Python per interagire con *Large Language Models* (LLM), ovvero modelli di linguaggio avanzati.<br>
+Permette di utilizzare sia API remote per accedere a modelli ospitati su server esterni, sia modelli installati e eseguiti localmente sul proprio *computer*.
+
+Ed è possibile quindi usarlo per connettersi con il *Large Language Models* di Google Gemini.
+
+🙏 L'autore della cli `LLM` è quel genio di [**Simon Willison**](https://simonwillison.net/).
+
+### Installazione
+
+Per installarlo è sufficiente usare `pip`:
+
+```{.bash .code-overflow-wrap}
+pip3 install llm
+```
+
+Per usare Gemini, è necessario instalare il plug-in dedicato, [`llm-gemini`](https://github.com/simonw/llm-gemini):
+
+```{.bash .code-overflow-wrap}
+llm install llm-gemini
+```
+
+O anche
+
+```{.bash .code-overflow-wrap}
+pip3 install llm-gemini
+```
+
+### Utilizzo
+
+La prima cosa da fare è impostare la propria chiave API (quella richiesta [sopra](#generare-una-chiave-api)). Si apre la shell:
+
+```{.bash .code-overflow-wrap}
+llm keys set gemini
+```
+
+Si incolla la chiave API e si preme `Invio`.
+
+Una volta fatto, si può testare il funzionamento con un esempio:
+
+```{.bash .code-overflow-wrap}
+llm -m gemini-pro "Creami tre nomi buffi per un gatto siamese con le orecchie molto grandi"
+```
+
+In output si avrà qualcosa come:
+
+```{.markdown}
+- Dumbo
+- Elio
+- Pipistrello
+```
+
+La cosa bella è che `llm`, come tutte le buone `cli`, può ricevere input dallo `stdin` e quindi può utilizzare l'output di altri comandi.
+
+Ad esempio l'output di `echo`:
+
+```{.bash .code-overflow-wrap}
+echo 'Dieci nomi per un blog che parla della riga di comando' | llm -m gemini-pro
+```
+
+E avrò in output qualcosa come:
+
+```{.markdown}
+1. Il Comando Centrale
+2. Padronanza del Terminale
+3. Il Mago della Riga di Comando
+4. Il Domatore di Terminale
+5. Il Maestro del Prompt
+6. La Guida alla Riga di Comando
+7. Il Tutorial del Terminale
+8. Il Manuale del Terminale
+9. Le Avventure di un SysAdmin
+10. La Linea di Comando per Tutti
+```
+
+Un esempio più carino, che mostra le info sul sistema operativo che sto usando adesso per testare Gemini. Il comando da cui parto è `uname -a`, che mi restituisce:
+
+```{.markdown .code-overflow-wrap}
+Linux MSI 5.15.133.1-microsoft-standard-WSL2 #1 SMP Thu Oct 5 21:02:42 UTC 2023 x86_64 GNU/Linux
+```
+
+Voglio creare un'informazione più leggile, e la voglio in formato `markdown`, per scriverla qui (il markdown è il formato in cui è scritto questo sito), e lo chiedo a Gemini, via `llm`:
+
+```{.bash .code-overflow-wrap}
+llm -m gemini-pro "Questo è il mio sistema operativo: $(uname -a). Dimmi qualcosa di più, e dimmelo in markdown."
+```
+
+In output avrò qualcosa come:
+
+::: {.panel-tabset}
+
+## Output del comando
+
+```{.markdown}
+* **Kernel**: Linux 5.15.133.1-microsoft-standard-WSL2
+    * Questo è il kernel Linux utilizzato per eseguire WSL2. È una versione modificata del kernel Linux 5.15 che è stato ottimizzato per l'esecuzione in un ambiente Windows.
+* **Nome Host**: MSI
+    * Questo è il nome del computer WSL2.
+* **Versione**: #1 SMP Thu Oct 5 21:02:42 UTC 2023
+    * Questa è la versione della build del kernel Linux utilizzata per eseguire WSL2.
+* **Architettura**: x86_64
+    * Questa è l'architettura del processore del computer WSL2.
+* **Sistema Operativo**: GNU/Linux
+    * Questo è il sistema operativo utilizzato per eseguire WSL2. GNU/Linux è una distribuzione Linux basata sul kernel Linux.
+```
+
+## Output in HTML
+
+* **Kernel**: Linux 5.15.133.1-microsoft-standard-WSL2
+    * Questo è il kernel Linux utilizzato per eseguire WSL2. È una versione modificata del kernel Linux 5.15 che è stato ottimizzato per l'esecuzione in un ambiente Windows.
+* **Nome Host**: MSI
+    * Questo è il nome del computer WSL2.
+* **Versione**: #1 SMP Thu Oct 5 21:02:42 UTC 2023
+    * Questa è la versione della build del kernel Linux utilizzata per eseguire WSL2.
+* **Architettura**: x86_64
+    * Questa è l'architettura del processore del computer WSL2.
+* **Sistema Operativo**: GNU/Linux
+    * Questo è il sistema operativo utilizzato per eseguire WSL2. GNU/Linux è una distribuzione Linux basata sul kernel Linux.
+
+
+:::
+
+
+### Chattare in modo interattivo
+
+Per attivare una modalità interattiva, domande e risposte, come una chat, il comando è:
+
+```{.bash .code-overflow-wrap}
+llm chat -m gemini-pro
+```
+
+Una volta attivato, si potrà attivare il dialogo in modalità *chat* (vedi @fig-llm-chat).
+
+![`llm` in modalità *chat*](./images/linux_date.gif){#fig-llm-chat}
+
+
+## Conclusioni
+
+Il bello di questo tipo di accesso, è quello di poter creare in modo diretto e semplici, un utilizzo programmatico di questi strumenti. E la cosa è applicabile alla gran parte dei "Large Language Model" (LLM), ovvero questi tipi di AI che si concentrano sulla comprensione e generazione del linguaggio naturale umano.
+
+Questo *post* ha lo scopo soltanto di farvi **due passi** - non di più - nel nuovo motore di AI di Google, Gemini.<br>
+L'*utility* **`llm`** è un gioiellino e consente di **fare** molto, ma molto **di più**.
+
+😉 Su entrambi lascio a chi legge tutti i necessari e divertenti approfondimenti del caso.
+

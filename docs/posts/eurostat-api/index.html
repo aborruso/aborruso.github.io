@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Andrea Borruso">
-<meta name="description" content="Come farlo soltanto per un tag span (ad esempio per una parola)">
+<meta name="description" content="Palermo">
 
-<title>aborruso’s website - Quarto: applicare stile CSS</title>
+<title>aborruso’s website - Eurostat</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,40 +21,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -117,22 +83,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
       .quarto-title-block .quarto-title-banner {
         color: #ffffff;
-background: #75aadb;
       }
 </style>
 <link rel="alternate" type="application/rss+xml" title="Il blog del sito di Andrea Borruso" href="https://aborruso.github.io/blog.xml">
 
 
 <link rel="stylesheet" href="../../styles.css">
-<meta property="og:title" content="aborruso’s website - Quarto: applicare stile CSS">
-<meta property="og:description" content="Come farlo soltanto per un tag span (ad esempio per una parola)">
+<meta property="og:title" content="aborruso’s website - Eurostat">
+<meta property="og:description" content="Palermo">
 <meta property="og:image" content="https://aborruso.github.io/risorse/opengraph.png">
 <meta property="og:site_name" content="aborruso's website">
 <meta property="og:locale" content="it_IT">
 <meta property="og:image:height" content="630">
 <meta property="og:image:width" content="1200">
-<meta name="twitter:title" content="aborruso’s website - Quarto: applicare stile CSS">
-<meta name="twitter:description" content="Come farlo soltanto per un tag span (ad esempio per una parola)">
+<meta name="twitter:title" content="aborruso’s website - Eurostat">
+<meta name="twitter:description" content="Palermo">
 <meta name="twitter:image" content="https://aborruso.github.io/risorse/twitter-card.png">
 <meta name="twitter:creator" content="@aborruso">
 <meta name="twitter:card" content="summary_large_image">
@@ -175,15 +140,15 @@ background: #75aadb;
 <header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Quarto: applicare stile CSS</h1>
+      <h1 class="title">Eurostat</h1>
                   <div>
         <div class="description">
-          Come farlo soltanto per un tag span (ad esempio per una parola)
+          Palermo
         </div>
       </div>
                           <div class="quarto-categories">
-                <div class="quarto-category">quarto</div>
-                <div class="quarto-category">css</div>
+                <div class="quarto-category">duckdb</div>
+                <div class="quarto-category">spatial</div>
               </div>
                   </div>
   </div>
@@ -210,7 +175,7 @@ background: #75aadb;
       <div>
       <div class="quarto-title-meta-heading">Data di Pubblicazione</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">26 febbraio 2023</p>
+        <p class="date">30 luglio 2023</p>
       </div>
     </div>
     
@@ -234,18 +199,10 @@ background: #75aadb;
 
 
 
-<p>Se voglio applicare ad esempio a una sola parola <strong>uno stile definito <em>inline</em></strong>, basterà fare come sotto:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>L'arancia è <span class="co">[</span><span class="ot">arancione</span><span class="co">]</span>{style="color:#ffa500"}.</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>L’arancia è <span style="color:#ffa500">arancione</span>.</p>
-<p>Se invece voglio associare a una frase uno stile di <code>bootstrap</code> (come quelli sui pulsanti), potrò fare in questo modo:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">☝️ Partecipa</span><span class="co">]</span>{.btn .btn-success}</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><span class="btn btn-success">☝️ Partecipa</span></p>
-<p>Se infine voglio applicare una determinata classe, seguita da un attributo personalizzato, in modo da poter associare uno stile personalizzato tramite uno specifico <code>CSS Selector</code>, potrò fare così:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">Lorem ipsum</span><span class="co">]</span>{.class key="val"}</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Il codice <code>HTML</code> generato sarà:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">p</span><span class="dt">&gt;</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&lt;</span><span class="kw">span</span><span class="ot"> class</span><span class="op">=</span><span class="st">"class"</span><span class="ot"> data-key</span><span class="op">=</span><span class="st">"val"</span><span class="dt">&gt;</span>Lorem ipsum<span class="dt">&lt;/</span><span class="kw">span</span><span class="dt">&gt;</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;/</span><span class="kw">p</span><span class="dt">&gt;</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Bla</p>
+<pre><code>duckdb  -c 'select * from read_csv_auto("https://ec.europa.eu/eurostat/api/dissemination/sdmx/2.1/data/BOP_EU6_M?format=TSV&amp;compressed=true",compression=gzip,delim="\t",header=True,nullstr=": ")'</code></pre>
+<p>https://wikis.ec.europa.eu/display/EUROSTATHELP/Which+are+the+available+formats#:~:text=TSV%20stands%20for%20Tab%20Separated,reports%20one%20observation%20per%20line.</p>
+<p>https://wikis.ec.europa.eu/display/EUROSTATHELP/Transition+-+from+Eurostat+Bulk+Download+to+API</p>
 
 
 
@@ -673,7 +630,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><ul><li><a href="https://github.com/aborruso/aborruso.github.io/edit/main/til/quarto-applicare-stili-span/index.qmd" class="toc-action"><i class="bi bi-github"></i>Modifica questa pagina</a></li><li><a href="https://github.com/aborruso/aborruso.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Segnala un problema</a></li></ul></div></div>
+    <div class="toc-actions"><ul><li><a href="https://github.com/aborruso/aborruso.github.io/edit/main/posts/eurostat-api/index.qmd" class="toc-action"><i class="bi bi-github"></i>Modifica questa pagina</a></li><li><a href="https://github.com/aborruso/aborruso.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Segnala un problema</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">
