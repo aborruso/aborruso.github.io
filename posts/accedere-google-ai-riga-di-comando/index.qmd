@@ -13,10 +13,10 @@ format:
     crossrefs-hover: false
 website:
   twitter-card:
-    description: "Usare la nuova intelligenza artificiale di Google, a riga di comando, già oggi che non disponibile in Italia."
+    description: "Usare la nuova intelligenza artificiale di Google, a riga di comando, già oggi che non è ancora disponibile in Italia."
     image: gemini_via_cli.png
   open-graph:
-    description: "Usare la nuova intelligenza artificiale di Google, a riga di comando, già oggi che non disponibile in Italia."
+    description: "Usare la nuova intelligenza artificiale di Google, a riga di comando, già oggi che non è ancora disponibile in Italia."
     image: gemini_via_cli.png
 image: gemini_via_cli.png
 ---
