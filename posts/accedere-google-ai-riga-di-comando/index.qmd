@@ -223,6 +223,13 @@ Una volta attivato, si potrà attivare il dialogo in modalità *chat* (vedi @fig
 ![`llm` in modalità *chat*](./images/linux_date.gif){#fig-llm-chat}
 
 
+## Il costo di Gemini Pro
+
+> Right now, developers have free access to Gemini Pro and Gemini Pro Vision through Google AI Studio, with up to 60 requests per minute, making it suitable for most app development needs. Vertex AI developers can try the same models, with the same rate limits, at no cost until [general availability](https://support.google.com/a/answer/11202276?hl=en#:~:text=General%20Availability%20(GA)&text=Google%20typically%20supports%20General%20Availability,the%20particular%20product%20or%20feature.) early next year, after which there will be a charge per 1,000 characters or per image across [Google AI Studio](https://ai.google.dev/pricing) and [Vertex AI](https://cloud.google.com/vertex-ai/docs/generative-ai/pricing).
+
+Fonte: <https://blog.google/technology/ai/gemini-api-developers-cloud>
+
+
 ## Conclusioni
 
 Il bello di questo tipo di accesso, è quello di poter creare in modo diretto e semplici, un utilizzo programmatico di questi strumenti. E la cosa è applicabile alla gran parte dei "Large Language Model" (LLM), ovvero questi tipi di AI che si concentrano sulla comprensione e generazione del linguaggio naturale umano.

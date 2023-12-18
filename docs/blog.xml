@@ -662,6 +662,13 @@ Figura&nbsp;1: <code>llm</code> in modalità <em>chat</em>
 </div>
 </section>
 </section>
+<section id="il-costo-di-gemini-pro" class="level2">
+<h2 class="anchored" data-anchor-id="il-costo-di-gemini-pro">Il costo di Gemini Pro</h2>
+<blockquote class="blockquote">
+<p>Right now, developers have free access to Gemini Pro and Gemini Pro Vision through Google AI Studio, with up to 60 requests per minute, making it suitable for most app development needs. Vertex AI developers can try the same models, with the same rate limits, at no cost until <a href="https://support.google.com/a/answer/11202276?hl=en#:~:text=General%20Availability%20(GA)&amp;text=Google%20typically%20supports%20General%20Availability,the%20particular%20product%20or%20feature.">general availability</a> early next year, after which there will be a charge per 1,000 characters or per image across <a href="https://ai.google.dev/pricing">Google AI Studio</a> and <a href="https://cloud.google.com/vertex-ai/docs/generative-ai/pricing">Vertex AI</a>.</p>
+</blockquote>
+<p>Fonte: <a href="https://blog.google/technology/ai/gemini-api-developers-cloud" class="uri">https://blog.google/technology/ai/gemini-api-developers-cloud</a></p>
+</section>
 <section id="conclusioni" class="level2">
 <h2 class="anchored" data-anchor-id="conclusioni">Conclusioni</h2>
 <p>Il bello di questo tipo di accesso, è quello di poter creare in modo diretto e semplici, un utilizzo programmatico di questi strumenti. E la cosa è applicabile alla gran parte dei “Large Language Model” (LLM), ovvero questi tipi di AI che si concentrano sulla comprensione e generazione del linguaggio naturale umano.</p>
