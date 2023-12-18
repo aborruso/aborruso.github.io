@@ -1,5 +1,5 @@
 ::: {.callout-note collapse="true"}
-## Qui ssempio di output JSON
+## Qui un esempio di output JSON
 
 ```{.json .code-overflow-wrap}
 {
