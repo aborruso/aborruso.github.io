@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="it" xml:lang="it" dir="ltr"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.525">
+<meta name="generator" content="quarto-1.4.533">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -59,7 +59,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -123,7 +123,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script type="module" src="../../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
 <link href="../../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
 
@@ -267,6 +267,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#in-conclusione" id="toc-in-conclusione" class="nav-link" data-scroll-target="#in-conclusione">In conclusione</a></li>
   <li><a href="#buone-letture-e-fonti-di-ispirazione" id="toc-buone-letture-e-fonti-di-ispirazione" class="nav-link" data-scroll-target="#buone-letture-e-fonti-di-ispirazione">Buone letture e fonti di ispirazione</a></li>
+  <li><a href="#il-piacere-di-vedere-questo-articolo-girare" id="toc-il-piacere-di-vedere-questo-articolo-girare" class="nav-link" data-scroll-target="#il-piacere-di-vedere-questo-articolo-girare">Il piacere di vedere questo articolo “girare”</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/aborruso/aborruso.github.io/edit/main/posts/duckdb-intro-csv/index.qmd" class="toc-action"><i class="bi bi-github"></i>Modifica questa pagina</a></li><li><a href="https://github.com/aborruso/aborruso.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Segnala un problema</a></li></ul></div></nav>
 </nav>
@@ -346,7 +347,7 @@ Ambiente di lavoro utilizzato
 <div class="no-row-height column-margin column-container"><div class="">
 <p><code>head</code> estrae le prime 5 righe.</p>
 </div></div><p>Mi verrà restituito l’<em>output</em> di <a href="#lst-zcat-head" class="quarto-xref">Lista&nbsp;1</a>, e potrò constatare che c’è una <strong>riga di intestazione</strong> (non è obbligatoria nei <code>CSV</code>), che il <strong>separatore di campo</strong> è il <code>;</code>, che il <strong>separatore dei decimali</strong> è la <code>,</code> e soprattutto farmi un’idea dei contenuti.</p>
-<div id="lst-zcat-head" class="markdown listing">
+<div id="lst-zcat-head" class="markdown listing quarto-float">
 <figure class="quarto-float quarto-float-lst figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-zcat-head-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Lista&nbsp;1: Prime righe del file
@@ -365,7 +366,7 @@ Lista&nbsp;1: Prime righe del file
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>cut <span class="at">-f</span> Missione,<span class="st">"Codice Univoco Misura"</span>,<span class="st">"CUP Codice Natura"</span> then <span class="dt">\</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>summary <span class="at">-a</span> count,null_count,distinct_count PNRR_Progetti-Universo_REGIS_v2.1.csv.gz</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>In output avrò:</p>
-<div id="tbl-mlr-output" class="striped responsive small anchored">
+<div id="tbl-mlr-output" class="striped responsive small quarto-float anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-mlr-output-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Tabella&nbsp;1: <em>Output</em> di <code>summary</code> di Miller
@@ -438,7 +439,7 @@ Informazioni utili
 
 <div class="no-row-height column-margin column-container"><div class="">
 <p><code>delim</code> e <code>header</code> sono riconosciuti automaticamente da DuckDB. Sono inseriti a scopo didattico.</p>
-</div></div><div id="lst-query-duckdb" class="bash listing">
+</div></div><div id="lst-query-duckdb" class="bash listing quarto-float">
 <figure class="quarto-float quarto-float-lst figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-query-duckdb-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Lista&nbsp;2: Query SQL tramite DuckDB su un CSV compresso
@@ -529,7 +530,7 @@ Il vantaggio di un CSV standard
 </ul>
 <p>L’<em>utility</em> a riga di comando per gestire i file <code>ZSTD</code> si chiama <code>zstd</code> e si può installare in (quasi) tutti i sistemi operativi. Un’applicazione <em>open source</em>, multipiattaforma, con interfaccia grafica, che supporta questa compressione è <a href="https://peazip.github.io/index.html">PeaZip</a>.<br> Molte applicazioni e librerie <em>software</em> di accesso ai dati, come DuckDB, <a href="https://arrow.apache.org/">Apache Arrow</a> e <a href="https://spark.apache.org/">Apache Spark</a>, lo supportano nativamente.</p>
 <p>In <a href="#duckdb">DuckDB</a>, si può leggere un file <code>CSV</code> compresso in formato <code>ZSTD</code>, semplicemente puntando ad esso (l’estensione <code>.zst</code> fa in modo che venga interpretato come file compresso in formato <code>ZSTD</code>):</p>
-<div id="lst-select-count" class="bash listing">
+<div id="lst-select-count" class="bash listing quarto-float">
 <figure class="quarto-float quarto-float-lst figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-select-count-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Lista&nbsp;3: Esempio di conteggio delle righe
@@ -738,7 +739,7 @@ Schema <code>SQL</code> tabella progetti di OpenCoesione
 <section id="formato-colonnare" class="level3">
 <h3 class="anchored" data-anchor-id="formato-colonnare">Formato colonnare</h3>
 <p>In molti dei formati tabellari più noti e comuni, i dati sono archiviati come sequenze di righe. Avviene per i <code>CSV</code>, ma anche per importanti database relazionali come <code>PostgreSQL</code> e <code>MySQL</code>.</p>
-<div id="tbl-parquet_colonne_start" class="striped responsive small anchored">
+<div id="tbl-parquet_colonne_start" class="striped responsive small quarto-float anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-parquet_colonne_start-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Tabella&nbsp;2: Tabella dati di esempio
@@ -812,7 +813,7 @@ Tabella&nbsp;2: Tabella dati di esempio
 <li>quante vendite sono state fatte il 2 gennaio 2023?</li>
 </ul>
 <p>Per rispondere a queste domande, un motore di “tabelle” basato su righe, dovrà leggere tutte le righe della tabella, dall’inizio alla fine. Per sapere quanti utenti che vengono dalla Sicilia hanno ordinato una pizza Parmigiana, si dovrà scorrere la tabella come in <a href="#fig-row-based" class="quarto-xref">Figura&nbsp;1</a>.</p>
-<div id="fig-row-based" class="quarto-figure quarto-figure-center anchored" width="100%">
+<div id="fig-row-based" class="quarto-figure quarto-figure-center quarto-float anchored" width="100%">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-row-based-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="images/row-based.png" class="img-fluid figure-img" style="width:100.0%">
@@ -880,7 +881,7 @@ Figura&nbsp;1: Flusso lettura dati, in archivi basati su righe
 </tbody>
 </table>
 <p>Il formato <code>Parquet</code> è proprio un <strong>formato</strong> di <strong>archiviazione</strong> a <strong>colonne</strong>, anzi è più correttamente un formato di archiviazione <strong>a colonne</strong>, <strong>per gruppi di righe</strong>.<br></p>
-<div id="fig-row-groups" class="quarto-figure quarto-figure-center anchored" width="100%">
+<div id="fig-row-groups" class="quarto-figure quarto-figure-center quarto-float anchored" width="100%">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-row-groups-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="images/row-groups.png" class="img-fluid figure-img" style="width:100.0%">
@@ -892,7 +893,7 @@ Figura&nbsp;2: Struttura a colonne per gruppi di righe
 </div>
 <p>Le colonne sono memorizzate sempre come unità separate, ma Parquet introduce delle strutture aggiuntive chiamate “<strong><em>Row group</em></strong>” (vedi <a href="#fig-row-groups" class="quarto-xref">Figura&nbsp;2</a>).</p>
 <p>Perché sono un vantaggio? Nella <em>query</em> di esempio di sopra, non solo bastano due colonne, ma il <code>Gruppo 2</code> di righe è inutile (non c’è la “Parmigiana”).<br> Con questa struttura a gruppi di righe (qui semplificata per fini didattici) sarà possibile non tenere conto del “Gruppo 2” e la <em>query</em> sarà più rapida.</p>
-<div id="fig-row-groups-skip" class="quarto-figure quarto-figure-center anchored" width="100%">
+<div id="fig-row-groups-skip" class="quarto-figure quarto-figure-center quarto-float anchored" width="100%">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-row-groups-skip-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="images/row-groups-skip.png" class="img-fluid figure-img" style="width:100.0%">
@@ -956,7 +957,7 @@ Comando da usare per la conversione da CSV a Parquet
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="st">ORDER BY finanziamento_pnrr desc;</span></span>
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="st">'</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>E in circa 1 secondo (al primo lancio e in molto meno dal secondo in poi) ottengo:</p>
-<div id="tbl-parquet-api" class="striped responsive small anchored">
+<div id="tbl-parquet-api" class="striped responsive small quarto-float anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-parquet-api-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Tabella&nbsp;3: Output della <em>query</em>
@@ -1014,7 +1015,7 @@ Tabella&nbsp;3: Output della <em>query</em>
 </figure>
 </div>
 <p>E posso farlo anche da una <a href="https://shell.duckdb.org/">pagina web</a> che includa DuckDb come <em>WebAssembly</em> (vedi <a href="#fig-duckdb-wasm" class="quarto-xref">Figura&nbsp;4</a>).</p>
-<div id="fig-duckdb-wasm" class="quarto-figure quarto-figure-center anchored" width="100%">
+<div id="fig-duckdb-wasm" class="quarto-figure quarto-figure-center quarto-float anchored" width="100%">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-duckdb-wasm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <a href="https://shell.duckdb.org/"><img src="images/ddb-wasm.png" class="img-fluid figure-img" style="width:100.0%"></a>
@@ -1044,7 +1045,7 @@ Non è la soluzione definitiva
 <p>In contesti applicativi in cui le <em>performance</em>, lo spazio di archiviazione, le modalità di accesso sono parametri da tenere in alta considerazione, è già molto usato.<br> Un esempio per tutti è quello dei dataset di <a href="https://huggingface.co/datasets">Hugging Face</a>.</p>
 <p>I dati aperti globali sugli edifici del progetto <a href="https://github.com/microsoft/GlobalMLBuildingFootprints/">GlobalMLBuildingFootprints</a> (1.2 miliardi di edifici), sono in formato parquet, nella sua estensione spaziale.<br> Anche i dataset geografici del progetto <a href="https://overturemaps.org/download/">Overture Maps Foundation</a>, sono in formato parquet.<br> I dati aperti sulle <a href="https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page">corse di taxi e veicoli con conducente di New York</a>, sono anch’essi in questo formato.</p>
 <p>L’ultimo esempio, per chiudere in bellezza, è quello dell’impareggiabile <a href="https://www.data.gouv.fr/"><strong>portale Open Data della Francia</strong></a>.<br> Pubblica un dataset in formato <code>parquet</code>, sono disponibili gli URL statici dei file, ed è possibile fare <em>query</em> in modo comodissimo, come se fossero <a href="#come-avere-delle-api">disponibili delle API</a>.<br> Ad esempio posso interrogare il <a href="https://www.data.gouv.fr/fr/datasets/bureaux-de-vote-et-adresses-de-leurs-electeurs/">file da 470 MB degli indirizzi</a>, di 15 milioni di righe, per avere il numero di indirizzi per comune con questa semplicità (vedi <a href="#lst-query-francia" class="quarto-xref">Lista&nbsp;4</a>):</p>
-<div id="lst-query-francia" class="bash listing">
+<div id="lst-query-francia" class="bash listing quarto-float">
 <figure class="quarto-float quarto-float-lst figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-query-francia-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Lista&nbsp;4: Esempio di <em>query</em> da <em>shell</em>
@@ -1060,7 +1061,7 @@ Lista&nbsp;4: Esempio di <em>query</em> da <em>shell</em>
 </figure>
 </div>
 <p>E in pochi secondi si ha restituito il risultato (vedi <a href="#fig-portale-opendata-francia" class="quarto-xref">Figura&nbsp;5</a>).</p>
-<div id="fig-portale-opendata-francia" class="quarto-figure quarto-figure-center anchored" width="100%">
+<div id="fig-portale-opendata-francia" class="quarto-figure quarto-figure-center quarto-float anchored" width="100%">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-portale-opendata-francia-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="images/portale-opendata-francia.png" class="img-fluid figure-img" style="width:100.0%">
@@ -1098,7 +1099,7 @@ Figura&nbsp;5: Output da shell
 <li>vengono restituite le istruzioni per l’installazione.</li>
 </ol>
 <p>E in pochissimo tempo si è pronti all’uso.</p>
-<div id="fig-duckdb-install" class="quarto-figure quarto-figure-center anchored" width="100%">
+<div id="fig-duckdb-install" class="quarto-figure quarto-figure-center quarto-float anchored" width="100%">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-duckdb-install-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <a href="https://duckdb.org/docs/installation/index"><img src="images/duckdb_install.png" class="img-fluid figure-img" style="width:100.0%"></a>
@@ -1270,7 +1271,7 @@ Questa tabella
 <p>Con qualche sforzo in più di scorrimento a schermo, riesco a vedere che il separatore dei decimali è la <code>,</code> e che i campi con le date sono in un formato che sembra un numero intero, ma in realtà è <code>YYYYMMDD</code> (<code>23 agosto 2021</code> è espresso come <code>20210823</code>).</p>
 <p>Modificando un po’ il comando di sopra, con <code>unzip -p progetti_esteso_20230430.zip | wc -l</code>, leggo che il file è composto da 1.936.840 righe.</p>
 <p>Fatta questa prima esplorazione grezza, di solito voglio “guardare” in modo più “comodo” la tabella dei dati. Potrei salvare le prime 10 righe in un file, aggiungendo al comando di sopra <code>&gt; prime_dieci_righe.csv</code>, e infine aprirlo con un foglio elettronico; io preferisco usare lo <a href="https://ondata.github.io/guidaVisiData/">straordinario <strong>VisiData</strong></a> per farlo.<br> Con <code>unzip -p progetti_esteso_20230430.zip | head | vd -f csv --csv-delimiter=";"</code> ad esempio visualizzo le 10 righe di <em>output</em> e tutte le colonne (constatando che sono 199), ma soprattutto mi faccio una prima idea dei contenuti.</p>
-<div id="fig-duckdb-preview-vd" class="quarto-figure quarto-figure-center anchored">
+<div id="fig-duckdb-preview-vd" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-duckdb-preview-vd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="./images/visidata_explore.png" class="img-fluid figure-img">
@@ -1300,7 +1301,7 @@ Figura&nbsp;7: Esempio visualizzazione con VisiData
 </dd>
 </dl>
 <p>A schermo ho un’anteprima leggibile e navigabile, come questa di <a href="#fig-duckdb-preview-box" class="quarto-xref">Figura&nbsp;8</a>.</p>
-<div id="fig-duckdb-preview-box" class="quarto-figure quarto-figure-center anchored">
+<div id="fig-duckdb-preview-box" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-duckdb-preview-box-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="images/duckdb-preview-box.gif" class="img-fluid figure-img">
@@ -1316,7 +1317,7 @@ Figura&nbsp;8: Output in modalità <code>box</code> di DuckDB
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT * from read_csv_auto("progetti_esteso_20230430.csv.gz") LIMIT 10</span></span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="st">'</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>In output ho un’anteprima ben leggibile a schermo, in cui vedo 10 righe, alcuni dei campi e il loro tipo e il numero di colonne.</p>
-<div id="fig-duckdb-standard-output" class="quarto-figure quarto-figure-center anchored">
+<div id="fig-duckdb-standard-output" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-duckdb-standard-output-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="images/duck-standard-output.png" class="img-fluid figure-img">
@@ -1342,7 +1343,7 @@ Figura&nbsp;9: DuckDb standard output
 <li>conteggio dei valori.</li>
 </ul>
 <p>Qui sotto in <a href="#tbl-summarize-output" class="quarto-xref">Tabella&nbsp;4</a> un esempio di output per alcune delle colonne del dataset di OpenCoesione.<br> È una tabella di gran valore, perché consente di fare delle prime scelte di analisi e di trasformazione dei dati e avere restituito degli elementi di qualità dei dati.</p>
-<div id="tbl-summarize-output" class="striped responsive small anchored">
+<div id="tbl-summarize-output" class="striped responsive small quarto-float anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-summarize-output-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Tabella&nbsp;4: <em>Output</em> di esempio di SUMMARIZE
@@ -1511,7 +1512,7 @@ Procedura corretta per <code>SUMMARIZE</code>
 </div>
 </div>
 <p>Con questi dati di sintesi emerge ad esempio che circa 36 campi hanno almeno il 90% dei <strong>valori nulli</strong>.<br> O che in alcuni campi con le <strong>date</strong> ci sono <strong>valori</strong> (di minimo o di massimo) <strong>strani</strong> e probabilmente errati, come quelli in <a href="#tbl-strange-date" class="quarto-xref">Tabella&nbsp;5</a>.</p>
-<div id="tbl-strange-date" class="striped responsive small anchored">
+<div id="tbl-strange-date" class="striped responsive small quarto-float anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-strange-date-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Tabella&nbsp;5: Campi con valori di date “strani”
@@ -1595,7 +1596,7 @@ Tabella&nbsp;5: Campi con valori di date “strani”
 </div>
 <p>Ma soprattutto è possibile constatare quali siano <strong>i campi “categorici”</strong>, quelli con un <strong>numero limitato di valori univoci</strong>, che possono essere usati per raggruppare e aggregare i dati e fare emergere elementi interessanti.</p>
 <p>Tra i campi categorici <code>OC_MACROAREA</code>, che definisce le macroaree geografiche italiane. E per sapere ad esempio qual è il finanziamento pubblico totale per ciascuna, si può usare la query <code>SQL</code>:</p>
-<div id="lst-query-macroarea" class="sql listing">
+<div id="lst-query-macroarea" class="sql listing quarto-float">
 <figure class="quarto-float quarto-float-lst figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-query-macroarea-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Lista&nbsp;5: Query SQL: totale dei finanziamenti pubblici per macroaree
@@ -1610,7 +1611,7 @@ Lista&nbsp;5: Query SQL: totale dei finanziamenti pubblici per macroaree
 </div>
 <p>Restituirà qualcosa come in <a href="#tbl-aree-sum" class="quarto-xref">Tabella&nbsp;6</a>.</p>
 <div class="cell" data-execution_count="2">
-<div id="tbl-aree-sum" class="cell anchored" data-execution_count="2">
+<div id="tbl-aree-sum" class="cell quarto-float anchored" data-execution_count="2">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-aree-sum-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Tabella&nbsp;6: Finanziamento pubblico per macro aree
@@ -1618,48 +1619,48 @@ Tabella&nbsp;6: Finanziamento pubblico per macro aree
 <div aria-describedby="tbl-aree-sum-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-display" data-execution_count="2">
 <style type="text/css">
-#T_6386e th:nth-child(1) {
+#T_1bc3b th:nth-child(1) {
   text-align: left;
 }
-#T_6386e th:nth-child(2) {
+#T_1bc3b th:nth-child(2) {
   text-align: right;
 }
-#T_6386e_row0_col0, #T_6386e_row1_col0, #T_6386e_row2_col0, #T_6386e_row3_col0, #T_6386e_row4_col0 {
+#T_1bc3b_row0_col0, #T_1bc3b_row1_col0, #T_1bc3b_row2_col0, #T_1bc3b_row3_col0, #T_1bc3b_row4_col0 {
   text-align: left;
 }
-#T_6386e_row0_col1, #T_6386e_row1_col1, #T_6386e_row2_col1, #T_6386e_row3_col1, #T_6386e_row4_col1 {
+#T_1bc3b_row0_col1, #T_1bc3b_row1_col1, #T_1bc3b_row2_col1, #T_1bc3b_row3_col1, #T_1bc3b_row4_col1 {
   text-align: right;
 }
 </style>
 
 <div class="table-responsive">
-<table id="T_6386e" class="table-bordered table-striped small cell table table-sm" data-quarto-postprocess="true">
+<table id="T_1bc3b" class="table-bordered table-striped small do-not-create-environment cell table table-sm" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
-<th id="T_6386e_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Macro area</th>
-<th id="T_6386e_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Finanziamento totale pubblico (€)</th>
+<th id="T_1bc3b_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Macro area</th>
+<th id="T_1bc3b_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Finanziamento totale pubblico (€)</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_6386e_row0_col0" class="data row0 col0">Mezzogiorno</td>
-<td id="T_6386e_row0_col1" class="data row0 col1">182.919.710.550</td>
+<td id="T_1bc3b_row0_col0" class="data row0 col0">Mezzogiorno</td>
+<td id="T_1bc3b_row0_col1" class="data row0 col1">182.919.710.550</td>
 </tr>
 <tr class="even">
-<td id="T_6386e_row1_col0" class="data row1 col0">Centro-Nord</td>
-<td id="T_6386e_row1_col1" class="data row1 col1">61.964.843.697</td>
+<td id="T_1bc3b_row1_col0" class="data row1 col0">Centro-Nord</td>
+<td id="T_1bc3b_row1_col1" class="data row1 col1">61.964.843.697</td>
 </tr>
 <tr class="odd">
-<td id="T_6386e_row2_col0" class="data row2 col0">Ambito Nazionale</td>
-<td id="T_6386e_row2_col1" class="data row2 col1">8.808.650.456</td>
+<td id="T_1bc3b_row2_col0" class="data row2 col0">Ambito Nazionale</td>
+<td id="T_1bc3b_row2_col1" class="data row2 col1">8.808.650.456</td>
 </tr>
 <tr class="even">
-<td id="T_6386e_row3_col0" class="data row3 col0">Altro</td>
-<td id="T_6386e_row3_col1" class="data row3 col1">3.684.521.639</td>
+<td id="T_1bc3b_row3_col0" class="data row3 col0">Altro</td>
+<td id="T_1bc3b_row3_col1" class="data row3 col1">3.684.521.639</td>
 </tr>
 <tr class="odd">
-<td id="T_6386e_row4_col0" class="data row4 col0">Estero</td>
-<td id="T_6386e_row4_col1" class="data row4 col1">287.153.594</td>
+<td id="T_1bc3b_row4_col0" class="data row4 col0">Estero</td>
+<td id="T_1bc3b_row4_col1" class="data row4 col1">287.153.594</td>
 </tr>
 </tbody>
 </table>
@@ -1758,6 +1759,27 @@ Su OpenCoesione
 <li><a href="https://tech.marksblogg.com/duckdb-geospatial-gis.html">Geospatial DuckDB</a></li>
 <li><a href="https://duckdb.org/2023/08/23/even-friendlier-sql.html">Even Friendlier SQL with DuckDB</a></li>
 </ul>
+<hr>
+</section>
+<section id="il-piacere-di-vedere-questo-articolo-girare" class="level2">
+<h2 class="anchored" data-anchor-id="il-piacere-di-vedere-questo-articolo-girare">Il piacere di vedere questo articolo “girare”</h2>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Chi ha parlato di questo articolo
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><a href="https://newsletterest.com/message/185579/Data-Elixir-Issue-450"><strong>Data Elixir - Issue 450</strong></a>;</li>
+<li><a href="https://buttondown.email/puntofisso/archive/532-quantum-of-sollazzo/"><strong>532: quantum of sollazzo</strong></a>, di Giuseppe Sollazzo;</li>
+<li><a href="https://stefanogatti.substack.com/p/laculturadeldato-094#LaCulturaDelDato"><strong>LaCulturaDelDato #094</strong></a>, di Stefano Gatti.</li>
+</ul>
+</div>
+</div>
 
 
 </section>
@@ -2113,7 +2135,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    </div>
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/aborruso/aborruso.github.io/edit/main/posts/duckdb-intro-csv/index.qmd" class="toc-action"><i class="bi bi-github"></i>Modifica questa pagina</a></li><li><a href="https://github.com/aborruso/aborruso.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Segnala un problema</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">

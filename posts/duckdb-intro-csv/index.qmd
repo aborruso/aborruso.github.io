@@ -1055,3 +1055,15 @@ E infine voglio sottolineare ancora una volta, che **senza** **dataset** come qu
 - [Parquet devrait remplacer le format CSV](https://www.icem7.fr/outils/parquet-devrait-remplacer-le-format-csv/)
 - [Geospatial DuckDB](https://tech.marksblogg.com/duckdb-geospatial-gis.html)
 - [Even Friendlier SQL with DuckDB](https://duckdb.org/2023/08/23/even-friendlier-sql.html)
+
+---
+
+## Il piacere di vedere questo articolo "girare"
+
+::: {.callout-tip}
+## Chi ha parlato di questo articolo
+
+- [**Data Elixir - Issue 450**](https://newsletterest.com/message/185579/Data-Elixir-Issue-450);
+- [**532: quantum of sollazzo**](https://buttondown.email/puntofisso/archive/532-quantum-of-sollazzo/), di Giuseppe Sollazzo;
+- [**LaCulturaDelDato #094**](https://stefanogatti.substack.com/p/laculturadeldato-094#LaCulturaDelDato), di Stefano Gatti.
+:::
