@@ -27,6 +27,21 @@ data = FileAttachment("data.csv").csv({ typed: true })
 Inputs.table(data)
 ```
 
+Se vuoi applicare la formattazione della localizzazione italiana, con la `,` come separatore decimale, puoi usare e il `.` come separatore delle migliaia, basta modifcarlo in
+
+```{{ojs}}
+data = FileAttachment("data.csv").csv({ typed: true })
+Inputs.table(data,{ locale: "it-IT" })
+```
+
+per ottenere
+
+```{ojs}
+//| echo: false
+data = FileAttachment("data.csv").csv({ typed: true })
+Inputs.table(data,{ locale: "it-IT" })
+```
+
 
 O in alternativa con [`arquero`](https://observablehq.com/@uwdata/introducing-arquero) (ma vale la pena usarlo anche per trasformare i dati)
 
@@ -37,6 +52,7 @@ dati_aquero = aq.loadCSV("data.csv")
 
 dati_aquero.view()
 ```
+
 
 
 ::: {.callout-note}

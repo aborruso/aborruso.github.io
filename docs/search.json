@@ -56,20 +56,6 @@
     "text": "Di base i comandi sono questi di sotto:\ngit clone https://github.com/jqnatividad/qsv.git\ncd qsv\ncargo build --release --locked --bin qsv -F all_features\nPer il mio ambiente è comodo, prima della compilazione, settare la variabile d’ambiente CARGO_BUILD_RUSTFLAGS, per avere in output un binario ottimizzato per la mia CPU:\nexport CARGO_BUILD_RUSTFLAGS='-C target-cpu=native'\nÈ consigliato avere un ambiente “pulito” prima della compilazione. Quindi la procedura potrebbe diventare questa:\ngit clone https://github.com/jqnatividad/qsv.git\nrustup up\ncargo clean\ncd qsv\ncargo build --release --locked --bin qsv -F all_features\nSe si ha poca RAM (meno di 16GB), è meglio rinunciare ad alcun feature (come to, che è oneroso da compilare):\ngit clone https://github.com/jqnatividad/qsv.git\nrustup up\ncargo clean\ncd qsv\ncargo build --release --locked --bin qsv -F feature_capable,polars\n\n\n\n Torna in cima"
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Andrea Borruso",
-    "section": "",
-    "text": "Ciao\nGrazie per essere qui. Questo è uno spazio dove inserirò alcuni appunti sulle cose che imparo, sui progetti che mi piacciono e/o che sto sviluppando, sugli strumenti con cui lavoro e gioco e sulle persone che incontro.\nSono socio dell’associazione onData.\n\n\nQuando hai dato lo stesso consiglio 3 volte, scrivi un post (David Robinson).\n\n\n\n\n Torna in cima"
-  },
-  {
-    "objectID": "blog.html",
-    "href": "blog.html",
-    "title": "Blog",
-    "section": "",
-    "text": "Usare la nuova intelligenza artificiale di Google\n\n\n\n\n\n\nai\n\n\ngoogle\n\n\ncli\n\n\n\nFarlo a riga di comando, già oggi che non è disponibile in Italia\n\n\n\n\n\n17 dic 2023\n\n\nAndrea Borruso\n\n\n\n\n\n\n\n\n\n\n\n\nGestire file CSV grandi, brutti e cattivi\n\n\n\n\n\n\nduckdb\n\n\ncsv\n\n\nparquet\n\n\n\nTips & tricks, ispirati da DuckDB, file Parquet e OpenCoesione\n\n\n\n\n\n21 ago 2023\n\n\nAndrea Borruso\n\n\n\n\n\n\nNessun risultato\n\n Torna in cima"
-  },
-  {
     "objectID": "posts/accedere-google-ai-riga-di-comando/index.html",
     "href": "posts/accedere-google-ai-riga-di-comando/index.html",
     "title": "Usare la nuova intelligenza artificiale di Google",
@@ -126,6 +112,20 @@
     "text": "Conclusioni\nIl bello di questo tipo di accesso, è quello di poter creare in modo diretto e semplici, un utilizzo programmatico di questi strumenti. E la cosa è applicabile alla gran parte dei “Large Language Model” (LLM), ovvero questi tipi di AI che si concentrano sulla comprensione e generazione del linguaggio naturale umano.\nQuesto post ha lo scopo soltanto di farvi due passi - non di più - nel nuovo motore di AI di Google, Gemini. L’utility llm è un gioiellino e consente di fare molto, ma molto di più.\n😉 Su entrambi lascio a chi legge tutti i necessari e divertenti approfondimenti del caso."
   },
   {
+    "objectID": "blog.html",
+    "href": "blog.html",
+    "title": "Blog",
+    "section": "",
+    "text": "Usare la nuova intelligenza artificiale di Google\n\n\n\n\n\n\nai\n\n\ngoogle\n\n\ncli\n\n\n\nFarlo a riga di comando, già oggi che non è disponibile in Italia\n\n\n\n\n\n17 dic 2023\n\n\nAndrea Borruso\n\n\n\n\n\n\n\n\n\n\n\n\nGestire file CSV grandi, brutti e cattivi\n\n\n\n\n\n\nduckdb\n\n\ncsv\n\n\nparquet\n\n\n\nTips & tricks, ispirati da DuckDB, file Parquet e OpenCoesione\n\n\n\n\n\n21 ago 2023\n\n\nAndrea Borruso\n\n\n\n\n\n\nNessun risultato\n\n Torna in cima"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Andrea Borruso",
+    "section": "",
+    "text": "Ciao\nGrazie per essere qui. Questo è uno spazio dove inserirò alcuni appunti sulle cose che imparo, sui progetti che mi piacciono e/o che sto sviluppando, sugli strumenti con cui lavoro e gioco e sulle persone che incontro.\nSono socio dell’associazione onData.\n\n\nQuando hai dato lo stesso consiglio 3 volte, scrivi un post (David Robinson).\n\n\n\n\n Torna in cima"
+  },
+  {
     "objectID": "til.html",
     "href": "til.html",
     "title": "TIL (Today I Learned)",
@@ -165,6 +165,6 @@
     "href": "til/renderizzare-csv-quarto-observable/index.html",
     "title": "Quarto: leggere un CSV via Obeservable e visualizzare i dati",
     "section": "",
-    "text": "Si può usare semplicemente il metodo FileAttachment di Observable, per data.csv\n```{ojs}\ndata = FileAttachment(\"data.csv\").csv({ typed: true })\nInputs.table(data)\n```\nper ottenere\n\ndata = FileAttachment(\"data.csv\").csv({ typed: true })\nInputs.table(data)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nO in alternativa con arquero (ma vale la pena usarlo anche per trasformare i dati)\n\n```{ojs}\n//| echo: fenced\nimport { aq, op } from '@uwdata/arquero'\ndati_aquero = aq.loadCSV(\"data.csv\")\n\ndati_aquero.view()\n```\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNota\n\n\n\nIl Quarto del titolo è lui https://quarto.org/\n\n\n\n\n\n Torna in cima"
+    "text": "Si può usare semplicemente il metodo FileAttachment di Observable, per data.csv\n```{ojs}\ndata = FileAttachment(\"data.csv\").csv({ typed: true })\nInputs.table(data)\n```\nper ottenere\n\ndata = FileAttachment(\"data.csv\").csv({ typed: true })\nInputs.table(data)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nSe vuoi applicare la formattazione della localizzazione italiana, con la , come separatore decimale, puoi usare e il . come separatore delle migliaia, basta modifcarlo in\n```{ojs}\ndata = FileAttachment(\"data.csv\").csv({ typed: true })\nInputs.table(data,{ locale: \"it-IT\" })\n```\nper ottenere\n\ndata = FileAttachment(\"data.csv\").csv({ typed: true })\nInputs.table(data,{ locale: \"it-IT\" })\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nO in alternativa con arquero (ma vale la pena usarlo anche per trasformare i dati)\n\n```{ojs}\n//| echo: fenced\nimport { aq, op } from '@uwdata/arquero'\ndati_aquero = aq.loadCSV(\"data.csv\")\n\ndati_aquero.view()\n```\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNota\n\n\n\nIl Quarto del titolo è lui https://quarto.org/\n\n\n\n\n\n Torna in cima"
   }
 ]

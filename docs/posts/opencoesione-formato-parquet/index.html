@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Andrea Borruso">
-<meta name="description" content="Appunti sull’estensione spaziale">
+<meta name="description" content="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.">
 
-<title>aborruso’s website - duckdb</title>
+<title>aborruso’s website - OpenCoesione in formato parquet</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,40 +21,6 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
-}
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -117,22 +83,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
       .quarto-title-block .quarto-title-banner {
         color: #ffffff;
-background: #75aadb;
       }
 </style>
 <link rel="alternate" type="application/rss+xml" title="Il blog del sito di Andrea Borruso" href="https://aborruso.github.io/blog.xml">
 
 
 <link rel="stylesheet" href="../../styles.css">
-<meta property="og:title" content="aborruso’s website - duckdb">
-<meta property="og:description" content="Appunti sull’estensione spaziale">
+<meta property="og:title" content="aborruso’s website - OpenCoesione in formato parquet">
+<meta property="og:description" content="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.">
 <meta property="og:image" content="https://aborruso.github.io/risorse/opengraph.png">
 <meta property="og:site_name" content="aborruso's website">
 <meta property="og:locale" content="it_IT">
 <meta property="og:image:height" content="630">
 <meta property="og:image:width" content="1200">
-<meta name="twitter:title" content="aborruso’s website - duckdb">
-<meta name="twitter:description" content="Appunti sull’estensione spaziale">
+<meta name="twitter:title" content="aborruso’s website - OpenCoesione in formato parquet">
+<meta name="twitter:description" content="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.">
 <meta name="twitter:image" content="https://aborruso.github.io/risorse/twitter-card.png">
 <meta name="twitter:creator" content="@aborruso">
 <meta name="twitter:card" content="summary_large_image">
@@ -175,15 +140,15 @@ background: #75aadb;
 <header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">duckdb</h1>
+      <h1 class="title">OpenCoesione in formato parquet</h1>
                   <div>
         <div class="description">
-          Appunti sull’estensione spaziale
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
         </div>
       </div>
                           <div class="quarto-categories">
                 <div class="quarto-category">duckdb</div>
-                <div class="quarto-category">spatial</div>
+                <div class="quarto-category">parquet</div>
               </div>
                   </div>
   </div>
@@ -234,32 +199,16 @@ background: #75aadb;
 
 
 
-<p>I dati in formato Parquet di Overture Maps</p>
-<p><a href="https://github.com/OvertureMaps/data/blob/main/README.md#how-to-access-overture-maps-data" class="uri">https://github.com/OvertureMaps/data/blob/main/README.md#how-to-access-overture-maps-data</a></p>
-<p>Per scaricarli si può usare aws cli</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">aws</span> s3 cp <span class="at">--recursive</span> <span class="st">'s3://overturemaps-us-west-2/release/2023-07-26-alpha.0/theme=places/'</span> overture</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Nota
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p><code>overture</code> è la cartella di destinazione</p>
-</div>
-</div>
-<p>Estrarre i dati come CSV (vedi <a href="https://github.com/bdon/overture-tiles">qui</a>):</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">COPY</span> (<span class="kw">select</span> json_extract(bbox,<span class="st">'$.minx'</span>) <span class="kw">as</span> x,</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>      json_extract(bbox,<span class="st">'$.miny'</span>) <span class="kw">as</span> y,</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>      json_extract_string(names, <span class="st">'$.common[0].value'</span>) <span class="kw">as</span> name,</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>      json_extract_string(categories, <span class="st">'$.main'</span>) <span class="kw">as</span> category_main,</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>      <span class="kw">from</span> read_parquet(<span class="st">'overture/theme=places/type=place/*'</span>)) <span class="kw">TO</span> <span class="st">'pois.csv'</span> (<span class="kw">HEADER</span>, DELIMITER <span class="st">','</span>);</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>La conversione di dati spaziali si può fare anche così (vedi <a href="https://twitter.com/Maxxen_/status/1684917990171529219?t=EeOQ4FSEfRVmjSAAKtqE7A&amp;s=09">qui</a>)</p>
-<pre><code>duckdb -list -noheader -c "LOAD spatial; SELECT st_asgeojson(st_transform(st_geomfromwkb(wkb_geometry), 'EPSG:3857','EPSG:4326')) FROM st_read('/vsicurl/https://raw.githubusercontent.com/duckdblabs/duckdb_spatial/main/test/data/amsterdam_roads.fgb');" | tippecanoe -o output.pmtiles</code></pre>
-<p>Altri tip https://github.com/OvertureMaps/data/discussions/23#discussioncomment-6573244</p>
+<ul>
+<li>consente a una fetta enorme di farci qualcosa in autonomia</li>
+<li>tools: dbeaver, duckdb, visidata, pandas, tad</li>
+<li>esempi SQL
+<ul>
+<li>75% percentile per totale finanziamento</li>
+<li>tutti i progetti per palermo</li>
+<li>tutti i progetti per Palermo per tema sintetico</li>
+</ul></li>
+</ul>
 
 
 
@@ -672,7 +621,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><ul><li><a href="https://github.com/aborruso/aborruso.github.io/edit/main/til/duckdb-spatial/index.qmd" class="toc-action"><i class="bi bi-github"></i>Modifica questa pagina</a></li><li><a href="https://github.com/aborruso/aborruso.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Segnala un problema</a></li></ul></div></div>
+    <div class="toc-actions"><ul><li><a href="https://github.com/aborruso/aborruso.github.io/edit/main/posts/opencoesione-formato-parquet/index.qmd" class="toc-action"><i class="bi bi-github"></i>Modifica questa pagina</a></li><li><a href="https://github.com/aborruso/aborruso.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Segnala un problema</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">

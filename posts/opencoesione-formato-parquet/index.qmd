@@ -1,0 +1,18 @@
+---
+title: "OpenCoesione in formato parquet"
+description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+date: "2023-07-30"
+draft: true
+search: false
+categories:
+  - duckdb
+  - parquet
+---
+
+
+- consente a una fetta enorme di farci qualcosa in autonomia
+- tools: dbeaver, duckdb, visidata, pandas, tad
+- esempi SQL
+  - 75% percentile per totale finanziamento
+  - tutti i progetti per palermo
+  - tutti i progetti per Palermo per tema sintetico

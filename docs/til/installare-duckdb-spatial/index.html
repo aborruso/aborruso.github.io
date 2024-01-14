@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="it" xml:lang="it" dir="ltr"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.533">
+<meta name="generator" content="quarto-1.4.536">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -237,7 +237,7 @@ background: #75aadb;
 
 <p>È stata rilasciata <a href="https://github.com/duckdblabs/duckdb_spatial">questa <strong>estensione spaziale</strong></a> per DuckDB.</p>
 <p>Uno dei modi per istallarla è scaricare i binari precompilati, accessibili dai <a href="https://github.com/duckdblabs/duckdb_spatial/actions"><em>workflow</em> di compilazione</a>.</p>
-<div class="img-fluid quarto-figure quarto-figure-center">
+<div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="duckdb-spatial.png" class="img-fluid figure-img"></p>
 <figcaption>I workflow, per i vari sistemi operativi</figcaption>
@@ -255,7 +255,7 @@ background: #75aadb;
 </ul>
 <p>E una volta caricata, potrai vedere tutti i nuovi formati file supportati da duckdb con</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span> <span class="op">*</span> <span class="kw">from</span> ST_LIST_DRIVERS() <span class="kw">order</span> <span class="kw">by</span> <span class="dv">1</span>;</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="img-fluid quarto-figure quarto-figure-center">
+<div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="./estensioni_spaziali.png" class="img-fluid figure-img"></p>
 <figcaption>La lista dei formati disponibili</figcaption>
