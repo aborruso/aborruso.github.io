@@ -27,7 +27,7 @@ data = FileAttachment("data.csv").csv({ typed: true })
 Inputs.table(data)
 ```
 
-Se vuoi applicare la formattazione della localizzazione italiana, con la `,` come separatore decimale, puoi usare e il `.` come separatore delle migliaia, basta modifcarlo in
+Se vuoi applicare la formattazione della localizzazione italiana, con la `,` come separatore decimale e il `.` come separatore delle migliaia, basta modifcarlo in
 
 ```{{ojs}}
 data = FileAttachment("data.csv").csv({ typed: true })
@@ -38,7 +38,6 @@ per ottenere
 
 ```{ojs}
 //| echo: false
-data = FileAttachment("data.csv").csv({ typed: true })
 Inputs.table(data,{ locale: "it-IT" })
 ```
 

@@ -256,39 +256,29 @@ background: #75aadb;
 </div>
 </div>
 </div>
-<p>Se vuoi applicare la formattazione della localizzazione italiana, con la <code>,</code> come separatore decimale, puoi usare e il <code>.</code> come separatore delle migliaia, basta modifcarlo in</p>
+<p>Se vuoi applicare la formattazione della localizzazione italiana, con la <code>,</code> come separatore decimale e il <code>.</code> come separatore delle migliaia, basta modifcarlo in</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{ojs}</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="in">data = FileAttachment("data.csv").csv({ typed: true })</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="in">Inputs.table(data,{ locale: "it-IT" })</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>per ottenere</p>
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb4" data-startfrom="41" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 40;"><span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> <span class="fu">FileAttachment</span>(<span class="st">"data.csv"</span>)<span class="op">.</span><span class="fu">csv</span>({ <span class="dt">typed</span><span class="op">:</span> <span class="kw">true</span> })</span>
-<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>Inputs<span class="op">.</span><span class="fu">table</span>(data<span class="op">,</span>{ <span class="dt">locale</span><span class="op">:</span> <span class="st">"it-IT"</span> })</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb4" data-startfrom="40" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 39;"><span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a>Inputs<span class="op">.</span><span class="fu">table</span>(data<span class="op">,</span>{ <span class="dt">locale</span><span class="op">:</span> <span class="st">"it-IT"</span> })</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<div>
-<div id="ojs-cell-2-1" data-nodetype="declaration">
+<div id="ojs-cell-2" data-nodetype="expression">
 
-</div>
-</div>
-</div>
-<div class="cell-output cell-output-display">
-<div>
-<div id="ojs-cell-2-2" data-nodetype="expression">
-
-</div>
 </div>
 </div>
 </div>
 <p>O in alternativa con <a href="https://observablehq.com/@uwdata/introducing-arquero"><code>arquero</code></a> (ma vale la pena usarlo anche per trasformare i dati)</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5" data-startfrom="48" data-source-offset="9"><pre class="sourceCode java code-with-copy"><code class="sourceCode java" style="counter-reset: source-line 47;"><span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>```<span class="op">{</span>ojs<span class="op">}</span></span>
-<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a><span class="co">//| echo: fenced</span></span>
-<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">{ aq, op } from '@uwdata/arquero'</span></span>
-<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>dati_aquero <span class="op">=</span> aq<span class="op">.</span><span class="fu">loadCSV</span><span class="op">(</span><span class="st">"data.csv"</span><span class="op">)</span></span>
-<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>dati_aquero<span class="op">.</span><span class="fu">view</span><span class="op">()</span></span>
-<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a>```</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5" data-startfrom="47" data-source-offset="9"><pre class="sourceCode java code-with-copy"><code class="sourceCode java" style="counter-reset: source-line 46;"><span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>```<span class="op">{</span>ojs<span class="op">}</span></span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a><span class="co">//| echo: fenced</span></span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a><span class="kw">import</span> <span class="im">{ aq, op } from '@uwdata/arquero'</span></span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>dati_aquero <span class="op">=</span> aq<span class="op">.</span><span class="fu">loadCSV</span><span class="op">(</span><span class="st">"data.csv"</span><span class="op">)</span></span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a>dati_aquero<span class="op">.</span><span class="fu">view</span><span class="op">()</span></span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>```</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-3-1" data-nodetype="declaration">
@@ -329,7 +319,7 @@ Nota
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Torna in cima</a></main> <!-- /main -->
 <script type="ojs-module-contents">
-eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6ImRhdGEgPSBGaWxlQXR0YWNobWVudChcImRhdGEuY3N2XCIpLmNzdih7IHR5cGVkOiB0cnVlIH0pXG5JbnB1dHMudGFibGUoZGF0YSlcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMiIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6ImRhdGEgPSBGaWxlQXR0YWNobWVudChcImRhdGEuY3N2XCIpLmNzdih7IHR5cGVkOiB0cnVlIH0pXG5JbnB1dHMudGFibGUoZGF0YSx7IGxvY2FsZTogXCJpdC1JVFwiIH0pXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTMiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJpbXBvcnQgeyBhcSwgb3AgfSBmcm9tICdAdXdkYXRhL2FycXVlcm8nXG5kYXRpX2FxdWVybyA9IGFxLmxvYWRDU1YoXCJkYXRhLmNzdlwiKVxuXG5kYXRpX2FxdWVyby52aWV3KClcbiJ9XX0=
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6ImRhdGEgPSBGaWxlQXR0YWNobWVudChcImRhdGEuY3N2XCIpLmNzdih7IHR5cGVkOiB0cnVlIH0pXG5JbnB1dHMudGFibGUoZGF0YSlcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMiIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6IklucHV0cy50YWJsZShkYXRhLHsgbG9jYWxlOiBcIml0LUlUXCIgfSlcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMyIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6ImltcG9ydCB7IGFxLCBvcCB9IGZyb20gJ0B1d2RhdGEvYXJxdWVybydcbmRhdGlfYXF1ZXJvID0gYXEubG9hZENTVihcImRhdGEuY3N2XCIpXG5cbmRhdGlfYXF1ZXJvLnZpZXcoKVxuIn1dfQ==
 </script>
 <script type="module">
 if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
