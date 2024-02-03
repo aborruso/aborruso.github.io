@@ -28,9 +28,9 @@ export CARGO_BUILD_RUSTFLAGS='-C target-cpu=native'
 
 ```markdown
 git clone https://github.com/jqnatividad/qsv.git
+cd qsv
 rustup up
 cargo clean
-cd qsv
 cargo build --release --locked --bin qsv -F all_features
 ```
 
@@ -38,9 +38,10 @@ Se si ha poca RAM (meno di 16GB), è meglio rinunciare ad alcun feature (come `t
 
 ```markdown
 git clone https://github.com/jqnatividad/qsv.git
+cd qsv
 rustup up
 cargo clean
-cd qsv
-cargo build --release --locked --bin qsv -F feature_capable,polars
+cargo build --release --locked --bin qsv -F feature_capable,apply,python,self_update,polars
 ```
 
+L'eseguibile compilato di `qsv` sarà generato in `target/release/qsv`. Se lo si vuole rendere disponibile a tutti gli utenti del sistema, si può copiare in `/usr/local/bin` o in qualsiasi altra cartella del `PATH`.
