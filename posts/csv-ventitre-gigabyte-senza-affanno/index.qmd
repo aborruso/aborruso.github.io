@@ -4,6 +4,11 @@ description: "L'esempio dei nuovi dati OpenCUP, da sfogliare a riga di comando"
 date: "2024-02-15"
 draft: false
 search: true
+author:
+  - name: "Andrea Borruso"
+    affiliation: "Associazione OnData"
+  - name: "Matteo Fortini"
+    affiliation: "Dipartimento per la Trasformazione Digitale"
 categories:
   - duckdb
   - csv
@@ -50,7 +55,7 @@ Ci sono alcune righe con un **numero di separatori di campo errato**: devono ess
 unzip -p "OpenData Complessivo.zip"  | awk '{if(gsub(/\|/,"&") == 90) print}' >open_cup_corrette.csv
 ```
 
-Grazie [Matteo Fortini](https://www.linkedin.com/in/matteofortini/) per la segnalazione.
+Vedi anche la sezione [Importazione dell'intero file](#importazione-dellintero-file).
 :::
 
 ## La prima lettura

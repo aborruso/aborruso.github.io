@@ -7,6 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Andrea Borruso">
+<meta name="author" content="Matteo Fortini">
 <meta name="description" content="L’esempio dei nuovi dati OpenCUP, da sfogliare a riga di comando">
 
 <title>aborruso’s website - Lavorare con grandi file CSV compressi</title>
@@ -192,17 +193,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
     
   <div class="quarto-title-meta-author">
-    <div class="quarto-title-meta-heading">Autore/Autrice</div>
-    <div class="quarto-title-meta-heading">Affiliazione</div>
+    <div class="quarto-title-meta-heading">Autori</div>
+    <div class="quarto-title-meta-heading">Affiliazioni</div>
     
       <div class="quarto-title-meta-contents">
-      <p class="author"><a href="https://twitter.com/aborruso">Andrea Borruso</a> </p>
+      <p class="author">Andrea Borruso </p>
     </div>
     <div class="quarto-title-meta-contents">
           <p class="affiliation">
-              <a href="https://ondata.it">
-              Associazione onData
-              </a>
+              Associazione OnData
+            </p>
+        </div>
+      <div class="quarto-title-meta-contents">
+      <p class="author">Matteo Fortini </p>
+    </div>
+    <div class="quarto-title-meta-contents">
+          <p class="affiliation">
+              Dipartimento per la Trasformazione Digitale
             </p>
         </div>
     </div>
@@ -233,6 +240,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#estrazione-di-un-campione" id="toc-estrazione-di-un-campione" class="nav-link" data-scroll-target="#estrazione-di-un-campione">Estrazione di un campione</a></li>
   <li><a href="#filtrare-lintero-file" id="toc-filtrare-lintero-file" class="nav-link" data-scroll-target="#filtrare-lintero-file">Filtrare l’intero file</a></li>
   <li><a href="#un-file-parquet-a-partire-dai-dati-filtrati" id="toc-un-file-parquet-a-partire-dai-dati-filtrati" class="nav-link" data-scroll-target="#un-file-parquet-a-partire-dai-dati-filtrati">Un file parquet a partire dai dati filtrati</a></li>
+  <li><a href="#importazione-dellintero-file" id="toc-importazione-dellintero-file" class="nav-link" data-scroll-target="#importazione-dellintero-file">Importazione dell’intero file</a>
+  <ul class="collapse">
+  <li><a href="#prestazioni-del-formato-duckdb" id="toc-prestazioni-del-formato-duckdb" class="nav-link" data-scroll-target="#prestazioni-del-formato-duckdb">Prestazioni del formato DuckDB</a></li>
+  <li><a href="#conversione-nel-formato-parquet" id="toc-conversione-nel-formato-parquet" class="nav-link" data-scroll-target="#conversione-nel-formato-parquet">Conversione nel formato Parquet</a></li>
+  </ul></li>
   <li><a href="#note-finali" id="toc-note-finali" class="nav-link" data-scroll-target="#note-finali">Note finali</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/aborruso/aborruso.github.io/edit/main/posts/csv-ventitre-gigabyte-senza-affanno/index.qmd" class="toc-action"><i class="bi bi-github"></i>Modifica questa pagina</a></li><li><a href="https://github.com/aborruso/aborruso.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Segnala un problema</a></li></ul></div></nav>
@@ -280,7 +292,7 @@ Avviso
 <div class="callout-body-container callout-body">
 <p>Ci sono alcune righe con un <strong>numero di separatori di campo errato</strong>: devono essere 90. Per estrarre soltanto quelle con 90 separatori si può usare <code>awk</code>:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span> <span class="at">-p</span> <span class="st">"OpenData Complessivo.zip"</span>  <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'{if(gsub(/\|/,"&amp;") == 90) print}'</span> <span class="op">&gt;</span>open_cup_corrette.csv</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Grazie <a href="https://www.linkedin.com/in/matteofortini/">Matteo Fortini</a> per la segnalazione.</p>
+<p>Vedi anche la sezione <a href="#importazione-dellintero-file">Importazione dell’intero file</a>.</p>
 </div>
 </div>
 </section>
@@ -289,7 +301,7 @@ Avviso
 <p>Un file così grande richiede un po’ di tempo per il download e poi per la decompressione.<br> Per fortuna però è possibile fare <strong>una prima lettura</strong> immediata, dopo il download, <strong>senza decomprimere per intero il file</strong>.</p>
 <p>Si può usare l’<em>utilty</em> <code>unzip</code> e lanciare il comando <code>unzip -p nomefile.zip</code>. Ma per una prima esplorazione, l’ideale è leggere soltanto le prime righe. E per fortuna esiste il comando <code>head</code>, che fa proprio questo e di default legge le prime 10 righe.:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span> <span class="at">-p</span> <span class="st">"OpenData Complessivo.zip"</span>  <span class="kw">|</span> <span class="fu">head</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>E subuito si vedrà qualcosa come in <a href="#fig-head" class="quarto-xref">Figura&nbsp;2</a>, che ci restituisce già elementi interessanti:</p>
+<p>E subito si vedrà qualcosa come in <a href="#fig-head" class="quarto-xref">Figura&nbsp;2</a>, che ci restituisce già elementi interessanti:</p>
 <ul>
 <li>i nomi dei campi;</li>
 <li>il separatore è il <code>|</code></li>
@@ -297,7 +309,7 @@ Avviso
 <div id="fig-head" class="lightbox quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-head-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="immagini/head.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" data-glightbox="description: .lightbox-desc-1"><img src="immagini/head.png" class="img-fluid figure-img"></a>
+<a href="immagini/head.png" class="lightbox" data-glightbox="description: .lightbox-desc-1" data-gallery="quarto-lightbox-gallery-1"><img src="immagini/head.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-head-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;2: Le prime righe del file con i progetti
@@ -313,7 +325,7 @@ Figura&nbsp;2: Le prime righe del file con i progetti
 <div id="fig-vd" class="lightbox quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-vd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="immagini/vd.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" data-glightbox="description: .lightbox-desc-2"><img src="immagini/vd.png" class="img-fluid figure-img"></a>
+<a href="immagini/vd.png" class="lightbox" data-glightbox="description: .lightbox-desc-2" data-gallery="quarto-lightbox-gallery-2"><img src="immagini/vd.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-vd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;3: Esplorazione dei dati campione con VisiData
@@ -352,6 +364,36 @@ Figura&nbsp;3: Esplorazione dei dati campione con VisiData
 <li>si usa il comando <code>COPY</code> per copiare questa selezione in un file <code>parquet</code> chiamato <code>regione_siciliana.parquet</code>, con compressione <code>ZSTD</code> e con un <code>ROW_GROUP_SIZE</code> di <code>100000</code>.</li>
 </ul>
 <p>Tutto circa sempre in un minuto e mezzo, con un file di <em>output</em> che pesa circa 33 MB, contro i 530 MB del file <code>CSV</code>.</p>
+</section>
+<section id="importazione-dellintero-file" class="level2">
+<h2 class="anchored" data-anchor-id="importazione-dellintero-file">Importazione dell’intero file</h2>
+<p>Il file CSV completo ha, alla data di oggi (15 Febbraio 2024) un problema a 2 righe (su 17.065.848), che hanno un numero errato di colonne (91 anziché 90). Per poterlo importare occorre filtrare solo le linee che hanno un numero di colonne corretto.</p>
+<p>È possibile importare il file in un DB in formato DuckDB con i seguenti comandi (occorre avere il file CSV su disco per limitare l’occupazione di RAM):</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span> <span class="st">"OpenData Complessivo.zip"</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">awk</span> <span class="at">-F\|</span> <span class="st">'{if (NF-1 == 90) { print } }'</span> <span class="op">&lt;</span> TOTALE.csv <span class="op">&gt;</span> TOTALEfix.csv</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> OpenCUP2.db <span class="at">-c</span> <span class="st">"CREATE TABLE OpenCUP AS SELECT * FROM read_csv_auto('TOTALEfix.csv',delim='|',parallel=FALSE);"</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Il file DuckDB risultante, a fronte di un CSV di 23.946.237.777 byte, è 4.466.159.616 byte, con una riduzione a circa 1/6, merito del formato binario contro quello ASCII.</p>
+<section id="prestazioni-del-formato-duckdb" class="level3">
+<h3 class="anchored" data-anchor-id="prestazioni-del-formato-duckdb">Prestazioni del formato DuckDB</h3>
+<p>Una query di esempio</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">time</span> duckdb OpenCUP.db <span class="at">-c</span> <span class="st">"SELECT ANNO_DECISIONE, COUNT(*) FROM OpenCUP GROUP BY ANNO_DECISIONE"</span> <span class="op">&gt;</span> /dev/null</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="ex">real</span>    0m0,039s</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="ex">user</span>    0m0,156s</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="ex">sys</span> 0m0,063s</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="conversione-nel-formato-parquet" class="level3">
+<h3 class="anchored" data-anchor-id="conversione-nel-formato-parquet">Conversione nel formato Parquet</h3>
+<p>Con il comando</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> OpenCUP.db  <span class="at">-c</span> <span class="st">"COPY (SELECT * FROM OpenCUP) TO 'OpenCUP.parquet' (FORMAT 'PARQUET', CODEC 'ZSTD');</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>si ottiene un file Parquet di 2.299.910.076 byte, con una riduzione di circa 1/2 rispetto al formato nativo DuckDB.</p>
+<p>Le prestazioni del formato Parquet sono notevoli</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="bu">time</span> duckdb <span class="at">-s</span> <span class="st">'SELECT ANNO_DECISIONE, COUNT (*) FROM read_parquet("OpenCUP.parquet") GROUP BY ANNO_DECISIONE;'</span> <span class="op">&gt;</span> /dev/null</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="ex">real</span>    0m0,074s</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="ex">user</span>    0m0,372s</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="ex">sys</span> 0m0,043s</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
 </section>
 <section id="note-finali" class="level2">
 <h2 class="anchored" data-anchor-id="note-finali">Note finali</h2>
@@ -685,7 +727,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"selector":".lightbox","openEffect":"zoom"});
+<script>var lightboxQuarto = GLightbox({"selector":".lightbox","loop":false,"descPosition":"bottom","openEffect":"zoom","closeEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;
