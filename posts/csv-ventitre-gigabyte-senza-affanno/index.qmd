@@ -6,10 +6,17 @@ draft: false
 search: true
 author:
   - name: "Andrea Borruso"
-    affiliation: "Associazione OnData"
+    affiliation:
+      - name: Associazione onData
+        url: https://ondata.it
+    url: https://twitter.com/aborruso
   - name: "Matteo Fortini"
-    affiliation: "Dipartimento per la Trasformazione Digitale"
+    affiliation:
+      - name: "Dipartimento per la Trasformazione Digitale"
+        url: https://innovazione.gov.it/
+    url: https://www.linkedin.com/in/matteofortini/
 categories:
+
   - duckdb
   - csv
   - cli
