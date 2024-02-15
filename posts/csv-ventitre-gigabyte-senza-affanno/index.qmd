@@ -130,7 +130,7 @@ duckdb -c "COPY(
 Alcune note su questo comando (messo su più righe, per migliorare la leggibilità):
 
 - si parte dal comando precedente, con il filtro per [estrarre il campione](#estrazione-di-un-campione);
-- si passa l'output a `duckdb`, che legge il `CSV` da `stdin` e nel `SELECT` al posto del nome del file è necessario inserire '/dev/stdin', che è il file virtuale che rappresenta lo standard input;
+- si passa l'*output* a `duckdb`, che legge il `CSV` da `stdin` e nel `SELECT` al posto del nome del file è necessario inserire `'/dev/stdin'`, che è il file virtuale che rappresenta lo *standard input*;
 - si usa il comando `COPY` per copiare questa selezione in un file `parquet` chiamato `regione_siciliana.parquet`, con compressione `ZSTD` e con un `ROW_GROUP_SIZE` di `100000`.
 
 Tutto circa sempre in un minuto e mezzo, con un file di *output* che pesa circa 33 MB, contro i 530 MB del file `CSV`.
