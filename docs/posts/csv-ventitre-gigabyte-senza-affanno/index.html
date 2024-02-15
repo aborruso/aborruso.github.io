@@ -348,7 +348,7 @@ Figura&nbsp;3: Esplorazione dei dati campione con VisiData
 <p>Alcune note su questo comando (messo su più righe, per migliorare la leggibilità):</p>
 <ul>
 <li>si parte dal comando precedente, con il filtro per <a href="#estrazione-di-un-campione">estrarre il campione</a>;</li>
-<li>si passa l’output a <code>duckdb</code>, che legge il <code>CSV</code> da <code>stdin</code> e nel <code>SELECT</code> al posto del nome del file è necessario inserire ‘/dev/stdin’, che è il file virtuale che rappresenta lo standard input;</li>
+<li>si passa l’<em>output</em> a <code>duckdb</code>, che legge il <code>CSV</code> da <code>stdin</code> e nel <code>SELECT</code> al posto del nome del file è necessario inserire <code>'/dev/stdin'</code>, che è il file virtuale che rappresenta lo <em>standard input</em>;</li>
 <li>si usa il comando <code>COPY</code> per copiare questa selezione in un file <code>parquet</code> chiamato <code>regione_siciliana.parquet</code>, con compressione <code>ZSTD</code> e con un <code>ROW_GROUP_SIZE</code> di <code>100000</code>.</li>
 </ul>
 <p>Tutto circa sempre in un minuto e mezzo, con un file di <em>output</em> che pesa circa 33 MB, contro i 530 MB del file <code>CSV</code>.</p>
@@ -685,7 +685,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","openEffect":"zoom","descPosition":"bottom","loop":false,"selector":".lightbox"});
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"selector":".lightbox","openEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;
