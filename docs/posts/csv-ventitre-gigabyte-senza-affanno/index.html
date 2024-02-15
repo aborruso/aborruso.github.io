@@ -280,7 +280,7 @@ Figura&nbsp;1: La home di OpenCUP
 <p>In numeri si passa <strong>da circa 6,5 a 9,5 milioni di progetti</strong>.</p>
 <section id="gli-open-data-di-opencup" class="level2">
 <h2 class="anchored" data-anchor-id="gli-open-data-di-opencup">Gli Open Data di OpenCUP</h2>
-<p>Sul sito di OpenCUP, è disponibile da tempo la <a href="https://www.opencup.gov.it/portale/web/opencup/accesso-agli-open-data"><strong>sezione OpenData</strong></a>. Con questo aggiornamento, sono stati pubblicati i nuovi dati, in formato <code>CSV</code> e <code>XML</code>.<br> Bisogna scorre la pagina e guardare la sezione “<strong>Progetti OpenData</strong>”.</p>
+<p>Sul sito di OpenCUP, è disponibile da tempo la <a href="https://www.opencup.gov.it/portale/web/opencup/accesso-agli-open-data"><strong>sezione OpenData</strong></a>. Con questo aggiornamento, sono stati pubblicati i nuovi dati, in formato <code>CSV</code> e <code>XML</code>.<br> Bisogna scorrere la pagina e guardare la sezione “<strong>Progetti OpenData</strong>”.</p>
 <p>In questo post, mosterò rapidamente come esplorare il <a href="https://www.opencup.gov.it/portale/web/opencup/dettaglio-opendata-complessivo">file “Complessivo”</a> di tutti i progetti.</p>
 <p>È un <strong>file “grande”</strong>. Quello in formato <code>CSV</code> è compresso come zip: pesa circa <strong>2.9 GB</strong>, e <strong>decompresso 23 GB</strong>. È probabilmente <strong>il file CSV più grande</strong> (o uno dei più grandi), pubblicato in una sezione open data di un sito di una <strong>Pubblica Amministrazione italiana</strong>.</p>
 <p>Non è gestibile con un comune foglio di calcolo, né con tanti altri strumenti.<br> A riga di comando invece si può ossevare, filtrare, e analizzare, con grande leggerezza e rapidità.</p>
@@ -313,7 +313,7 @@ Avviso
 <div id="fig-head" class="lightbox quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-head-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="immagini/head.png" class="lightbox" data-glightbox="description: .lightbox-desc-1" data-gallery="quarto-lightbox-gallery-1"><img src="immagini/head.png" class="img-fluid figure-img"></a>
+<a href="immagini/head.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" data-glightbox="description: .lightbox-desc-1"><img src="immagini/head.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-head-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;2: Le prime righe del file con i progetti
@@ -329,7 +329,7 @@ Figura&nbsp;2: Le prime righe del file con i progetti
 <div id="fig-vd" class="lightbox quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-vd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="immagini/vd.png" class="lightbox" data-glightbox="description: .lightbox-desc-2" data-gallery="quarto-lightbox-gallery-2"><img src="immagini/vd.png" class="img-fluid figure-img"></a>
+<a href="immagini/vd.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" data-glightbox="description: .lightbox-desc-2"><img src="immagini/vd.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-vd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;3: Esplorazione dei dati campione con VisiData
@@ -731,7 +731,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"selector":".lightbox","closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom"});
+<script>var lightboxQuarto = GLightbox({"openEffect":"zoom","descPosition":"bottom","selector":".lightbox","loop":false,"closeEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

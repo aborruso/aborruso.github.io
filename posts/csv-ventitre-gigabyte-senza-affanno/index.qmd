@@ -45,7 +45,7 @@ In numeri si passa **da circa 6,5 a 9,5 milioni di progetti**.
 ## Gli Open Data di OpenCUP
 
 Sul sito di OpenCUP, è disponibile da tempo la [**sezione OpenData**](https://www.opencup.gov.it/portale/web/opencup/accesso-agli-open-data). Con questo aggiornamento, sono stati pubblicati i nuovi dati, in formato `CSV` e `XML`.<br>
-Bisogna scorre la pagina e guardare la sezione "**Progetti OpenData**".
+Bisogna scorrere la pagina e guardare la sezione "**Progetti OpenData**".
 
 In questo post, mosterò rapidamente come esplorare il [file "Complessivo"](https://www.opencup.gov.it/portale/web/opencup/dettaglio-opendata-complessivo) di tutti i progetti.
 
