@@ -38,7 +38,7 @@ Bisogna scorre la pagina e guardare la sezione "**Progetti OpenData**".
 
 In questo post, mosterò rapidamente come esplorare il [file "Complessivo"](https://www.opencup.gov.it/portale/web/opencup/dettaglio-opendata-complessivo) di tutti i progetti.
 
-È un **file "grande"**. Quello in formato `CSV` è un che compresso pesa circa **2.9 GB**, e **decompresso 23 GB**. È probabilmente **il file CSV più grande** (o uno dei più grandi), pubblicato in una sezione open data di un sito di una **Pubblica Amministrazione italiana**.
+È un **file "grande"**. Quello in formato `CSV` è compresso come zip: pesa circa **2.9 GB**, e **decompresso 23 GB**. È probabilmente **il file CSV più grande** (o uno dei più grandi), pubblicato in una sezione open data di un sito di una **Pubblica Amministrazione italiana**.
 
 Non è gestibile con un comune foglio di calcolo, né con tanti altri strumenti.<br>
 A riga di comando invece si può ossevare, filtrare, e analizzare, con grande leggerezza e rapidità.
