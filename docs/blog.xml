@@ -96,7 +96,7 @@ font-style: inherit;">head</span></span></code></pre></div>
 <div id="fig-head" class="lightbox quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-head-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="immagini/head.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" data-glightbox="description: .lightbox-desc-1"><img src="https://aborruso.github.io/posts/csv-ventitre-gigabyte-senza-affanno/immagini/head.png" class="img-fluid figure-img"></a>
+<a href="immagini/head.png" class="lightbox" data-glightbox="description: .lightbox-desc-1" data-gallery="quarto-lightbox-gallery-1"><img src="https://aborruso.github.io/posts/csv-ventitre-gigabyte-senza-affanno/immagini/head.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-head-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;2: Le prime righe del file con i progetti
@@ -126,7 +126,7 @@ font-style: inherit;">&gt;</span> campione.csv</span></code></pre></div>
 <div id="fig-vd" class="lightbox quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-vd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="immagini/vd.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" data-glightbox="description: .lightbox-desc-2"><img src="https://aborruso.github.io/posts/csv-ventitre-gigabyte-senza-affanno/immagini/vd.png" class="img-fluid figure-img"></a>
+<a href="immagini/vd.png" class="lightbox" data-glightbox="description: .lightbox-desc-2" data-gallery="quarto-lightbox-gallery-2"><img src="https://aborruso.github.io/posts/csv-ventitre-gigabyte-senza-affanno/immagini/vd.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-vd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;3: Esplorazione dei dati campione con VisiData
@@ -260,7 +260,7 @@ background-color: null;
 font-style: inherit;">&gt;</span> TOTALEfix.csv</span>
 <span id="cb7-3"><span class="ex" style="color: null;
 background-color: null;
-font-style: inherit;">duckdb</span> OpenCUP2.db <span class="at" style="color: #657422;
+font-style: inherit;">duckdb</span> OpenCUP.db <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">-c</span> <span class="st" style="color: #20794D;
 background-color: null;
@@ -300,8 +300,16 @@ font-style: inherit;">-c</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"COPY (SELECT * FROM OpenCUP) TO 'OpenCUP.parquet' (FORMAT 'PARQUET', CODEC 'ZSTD');</span></span></code></pre></div>
 <p>si ottiene un file Parquet di 2.299.910.076 byte, con una riduzione di circa 1/2 rispetto al formato nativo DuckDB.</p>
+<p>Se con questo comando si hanno problemi di memoria si può provare a impostare <code>SET preserve_insertion_order=false</code>:</p>
+<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">duckdb</span> OpenCUP.db  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-c</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"SET preserve_insertion_order=false;COPY (SELECT * FROM OpenCUP) TO 'OpenCUP.parquet' (FORMAT 'PARQUET', CODEC 'ZSTD');</span></span></code></pre></div>
 <p>Le prestazioni del formato Parquet sono notevoli</p>
-<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><span class="bu" style="color: null;
+<div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">time</span> duckdb <span class="at" style="color: #657422;
 background-color: null;
@@ -310,14 +318,14 @@ background-color: null;
 font-style: inherit;">'SELECT ANNO_DECISIONE, COUNT (*) FROM read_parquet("OpenCUP.parquet") GROUP BY ANNO_DECISIONE;'</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">&gt;</span> /dev/null</span>
-<span id="cb10-2"></span>
-<span id="cb10-3"><span class="ex" style="color: null;
+<span id="cb11-2"></span>
+<span id="cb11-3"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">real</span>    0m0,074s</span>
-<span id="cb10-4"><span class="ex" style="color: null;
+<span id="cb11-4"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">user</span>    0m0,372s</span>
-<span id="cb10-5"><span class="ex" style="color: null;
+<span id="cb11-5"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">sys</span> 0m0,043s</span></code></pre></div>
 </section>
