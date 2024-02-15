@@ -313,7 +313,7 @@ Avviso
 <div id="fig-head" class="lightbox quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-head-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="immagini/head.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" data-glightbox="description: .lightbox-desc-1"><img src="immagini/head.png" class="img-fluid figure-img"></a>
+<a href="immagini/head.png" class="lightbox" data-glightbox="description: .lightbox-desc-1" data-gallery="quarto-lightbox-gallery-1"><img src="immagini/head.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-head-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;2: Le prime righe del file con i progetti
@@ -329,7 +329,7 @@ Figura&nbsp;2: Le prime righe del file con i progetti
 <div id="fig-vd" class="lightbox quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-vd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="immagini/vd.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" data-glightbox="description: .lightbox-desc-2"><img src="immagini/vd.png" class="img-fluid figure-img"></a>
+<a href="immagini/vd.png" class="lightbox" data-glightbox="description: .lightbox-desc-2" data-gallery="quarto-lightbox-gallery-2"><img src="immagini/vd.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-vd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;3: Esplorazione dei dati campione con VisiData
@@ -375,7 +375,7 @@ Figura&nbsp;3: Esplorazione dei dati campione con VisiData
 <p>È possibile importare il file in un DB in formato DuckDB con i seguenti comandi (occorre avere il file CSV su disco per limitare l’occupazione di RAM):</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span> <span class="st">"OpenData Complessivo.zip"</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">awk</span> <span class="at">-F\|</span> <span class="st">'{if (NF-1 == 90) { print } }'</span> <span class="op">&lt;</span> TOTALE.csv <span class="op">&gt;</span> TOTALEfix.csv</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> OpenCUP2.db <span class="at">-c</span> <span class="st">"CREATE TABLE OpenCUP AS SELECT * FROM read_csv_auto('TOTALEfix.csv',delim='|',parallel=FALSE);"</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> OpenCUP.db <span class="at">-c</span> <span class="st">"CREATE TABLE OpenCUP AS SELECT * FROM read_csv_auto('TOTALEfix.csv',delim='|',parallel=FALSE);"</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Il file DuckDB risultante, a fronte di un CSV di 23.946.237.777 byte, è 4.466.159.616 byte, con una riduzione a circa 1/6, merito del formato binario contro quello ASCII.</p>
 <section id="prestazioni-del-formato-duckdb" class="level3">
 <h3 class="anchored" data-anchor-id="prestazioni-del-formato-duckdb">Prestazioni del formato DuckDB</h3>
@@ -391,12 +391,14 @@ Figura&nbsp;3: Esplorazione dei dati campione con VisiData
 <p>Con il comando</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> OpenCUP.db  <span class="at">-c</span> <span class="st">"COPY (SELECT * FROM OpenCUP) TO 'OpenCUP.parquet' (FORMAT 'PARQUET', CODEC 'ZSTD');</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>si ottiene un file Parquet di 2.299.910.076 byte, con una riduzione di circa 1/2 rispetto al formato nativo DuckDB.</p>
+<p>Se con questo comando si hanno problemi di memoria si può provare a impostare <code>SET preserve_insertion_order=false</code>:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> OpenCUP.db  <span class="at">-c</span> <span class="st">"SET preserve_insertion_order=false;COPY (SELECT * FROM OpenCUP) TO 'OpenCUP.parquet' (FORMAT 'PARQUET', CODEC 'ZSTD');</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Le prestazioni del formato Parquet sono notevoli</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="bu">time</span> duckdb <span class="at">-s</span> <span class="st">'SELECT ANNO_DECISIONE, COUNT (*) FROM read_parquet("OpenCUP.parquet") GROUP BY ANNO_DECISIONE;'</span> <span class="op">&gt;</span> /dev/null</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="ex">real</span>    0m0,074s</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="ex">user</span>    0m0,372s</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="ex">sys</span> 0m0,043s</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">time</span> duckdb <span class="at">-s</span> <span class="st">'SELECT ANNO_DECISIONE, COUNT (*) FROM read_parquet("OpenCUP.parquet") GROUP BY ANNO_DECISIONE;'</span> <span class="op">&gt;</span> /dev/null</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="ex">real</span>    0m0,074s</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="ex">user</span>    0m0,372s</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="ex">sys</span> 0m0,043s</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
 <section id="note-finali" class="level2">
@@ -731,7 +733,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"openEffect":"zoom","descPosition":"bottom","selector":".lightbox","loop":false,"closeEffect":"zoom"});
+<script>var lightboxQuarto = GLightbox({"openEffect":"zoom","selector":".lightbox","closeEffect":"zoom","loop":false,"descPosition":"bottom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

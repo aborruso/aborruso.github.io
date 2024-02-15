@@ -156,7 +156,7 @@ Per poterlo importare occorre filtrare solo le linee che hanno un numero di colo
 ```bash
 unzip "OpenData Complessivo.zip"
 awk -F\| '{if (NF-1 == 90) { print } }' < TOTALE.csv > TOTALEfix.csv
-duckdb OpenCUP2.db -c "CREATE TABLE OpenCUP AS SELECT * FROM read_csv_auto('TOTALEfix.csv',delim='|',parallel=FALSE);"
+duckdb OpenCUP.db -c "CREATE TABLE OpenCUP AS SELECT * FROM read_csv_auto('TOTALEfix.csv',delim='|',parallel=FALSE);"
 ```
 
 Il file DuckDB risultante, a fronte di un CSV di 23.946.237.777 byte, è 4.466.159.616 byte, con una riduzione a circa 1/6, merito del formato binario contro quello ASCII.
@@ -181,6 +181,12 @@ Con il comando
 duckdb OpenCUP.db  -c "COPY (SELECT * FROM OpenCUP) TO 'OpenCUP.parquet' (FORMAT 'PARQUET', CODEC 'ZSTD');
 ```
 si ottiene un file Parquet di 2.299.910.076 byte, con una riduzione di circa 1/2 rispetto al formato nativo DuckDB.
+
+Se con questo comando si hanno problemi di memoria si può provare a impostare `SET preserve_insertion_order=false`:
+
+```bash
+duckdb OpenCUP.db  -c "SET preserve_insertion_order=false;COPY (SELECT * FROM OpenCUP) TO 'OpenCUP.parquet' (FORMAT 'PARQUET', CODEC 'ZSTD');
+```
 
 Le prestazioni del formato Parquet sono notevoli
 
