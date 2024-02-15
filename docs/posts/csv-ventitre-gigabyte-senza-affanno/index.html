@@ -260,7 +260,7 @@ Figura&nbsp;1: La home di OpenCUP
 </figcaption>
 </figure>
 </div>
-<p>La <strong>novità più importante</strong> di questo aggiornamento, è lagata alla <strong>natura degli interventi in elenco</strong>: a “Lavori Pubblici” e “Incentivi alle imprese e Contributi per calamità naturali”, si aggiungono “acquisti di beni, servizi, corsi di formazione, strumenti finanziari, progetti di ricerca e contributi a entità diverse dalle unità produttive per una Pubblica Amministrazione più trasparente e vicina al cittadino” (qui la <a href="https://www.opencup.gov.it/portale/web/opencup/home/-/asset_publisher/zIMyNGpUy0tF/content/14-febbraio-2024-il-nuovo-portale-opencup">notizia</a> di lancio).<br></p>
+<p>La <strong>novità più importante</strong> di questo aggiornamento, è legata alla <strong>natura degli interventi in elenco</strong>: a “Lavori Pubblici” e “Incentivi alle imprese e Contributi per calamità naturali”, si aggiungono “acquisti di beni, servizi, corsi di formazione, strumenti finanziari, progetti di ricerca e contributi a entità diverse dalle unità produttive per una Pubblica Amministrazione più trasparente e vicina al cittadino” (qui la <a href="https://www.opencup.gov.it/portale/web/opencup/home/-/asset_publisher/zIMyNGpUy0tF/content/14-febbraio-2024-il-nuovo-portale-opencup">notizia</a> di lancio).<br></p>
 <p>In numeri si passa <strong>da circa 6,5 a 9,5 milioni di progetti</strong>.</p>
 <section id="gli-open-data-di-opencup" class="level2">
 <h2 class="anchored" data-anchor-id="gli-open-data-di-opencup">Gli Open Data di OpenCUP</h2>
@@ -271,7 +271,7 @@ Figura&nbsp;1: La home di OpenCUP
 </section>
 <section id="la-prima-lettura" class="level2">
 <h2 class="anchored" data-anchor-id="la-prima-lettura">La prima lettura</h2>
-<p>Un file così grande richiede un po’ di tempo per il download e poi per la decopressione.<br> Per fortuna però è possibile fare <strong>una prima lettura</strong> immediata, dopo il download, <strong>senza decomprimere per intero il file</strong>.</p>
+<p>Un file così grande richiede un po’ di tempo per il download e poi per la decompressione.<br> Per fortuna però è possibile fare <strong>una prima lettura</strong> immediata, dopo il download, <strong>senza decomprimere per intero il file</strong>.</p>
 <p>Si può usare l’<em>utilty</em> <code>unzip</code> e lanciare il comando <code>unzip -p nomefile.zip</code>. Ma per una prima esplorazione, l’ideale è leggere soltanto le prime righe. E per fortuna esiste il comando <code>head</code>, che fa proprio questo e di default legge le prime 10 righe.:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span> <span class="at">-p</span> <span class="st">"OpenData Complessivo.zip"</span>  <span class="kw">|</span> <span class="fu">head</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>E subuito si vedrà qualcosa come in <a href="#fig-head" class="quarto-xref">Figura&nbsp;2</a>, che ci restituisce già elementi interessanti:</p>
@@ -309,7 +309,7 @@ Figura&nbsp;3: Esplorazione dei dati campione con VisiData
 <section id="filtrare-lintero-file" class="level2">
 <h2 class="anchored" data-anchor-id="filtrare-lintero-file">Filtrare l’intero file</h2>
 <p>L’esplorazione del <a href="#estrazione-di-un-campione">campione</a> consente di farsi un’idea di quali sono quei campi/colonne che fanno un po’ da elementi “categorici”, da usare come filtro per estrarre solo le righe che ci interessano.<br> Tra questi ad esempio il campo <code>SOGGETTO_TITOLARE</code>, con il nome della Pubblica Amministrazione, titolare del progetto, che posso usare per estrarre ad esempio tutti i progetti in cui la PA titolare è “<code>REGIONE AUTONOMA DELLA SICILIA</code>”.</p>
-<p>L’<em>utility</em> <strong><code>grep</code></strong> - una delle più importanti di tutti i tempio è perfetta per questo scopo.</p>
+<p>L’<em>utility</em> <strong><code>grep</code></strong> - una delle più importanti di tutti i tempi - è perfetta per questo scopo.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span> <span class="at">-p</span> <span class="st">"OpenData Complessivo.zip"</span>  <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-P</span> <span class="st">'\|REGIONE AUTONOMA DELLA SICILIA\|'</span> <span class="op">&gt;</span>regione_siciliana.csv</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Si applica un filtro al file <code>CSV</code> zippato di input, e per ogni riga in cui è presente la stringa <code>REGIONE AUTONOMA DELLA SICILIA</code> tra due caratteri <code>|</code>, viene salvata nel file <code>regione_siciliana.csv</code>. Nel filtro è stato inserito il carattere <code>\</code> prima del <code>|</code>, perché <code>|</code> è un carattere speciale.<br> E in un minuto e mezzo circa, sul mio buon (ma normale) PC ottengo <code>392.395</code> progetti associati alla Regione Siciliana, dopo aver letto <code>9,5</code> milioni di righe.</p>
 <p>Ma così c’è un <strong>problema</strong>: si perde l’intestazione del file, <strong>si perdono i nomi delle colonne</strong>. C’è allora da modificare il filtro ed estrarre anche la prima riga. E tutto questo è facile, grazie all’esplorazione fatta, in cui ho visto che la prima riga contiene ad esempio la stringa “<code>ANNO_DECISIONE</code>”.<br> Il nuovo comando sarà:</p>
@@ -340,7 +340,7 @@ Figura&nbsp;3: Esplorazione dei dati campione con VisiData
 </section>
 <section id="note-finali" class="level2">
 <h2 class="anchored" data-anchor-id="note-finali">Note finali</h2>
-<p>Questa descritta è <strong>soltanto</strong> una modalità per fare soprattuto una <strong>prima</strong> <strong>esplorazione</strong> e <strong>analisi</strong> di questo nuovo e importante aggiornamento dei dati di OpenCUP.<br> È utilissima per capire per cosa è possibile usare questi dati, quali sono le informazioni che ci interessano di più, che storia poter raccontare, che mappa creare, che <em>dashboard</em> realizzare, come usare l’integgligenza artificiale per arricchirli, come metterli in relazione con altri dati, ecc..</p>
+<p>Questa descritta è <strong>soltanto</strong> una modalità per fare soprattuto una <strong>prima</strong> <strong>esplorazione</strong> e <strong>analisi</strong> di questo nuovo e importante aggiornamento dei dati di OpenCUP.<br> È utilissima per capire per cosa è possibile usare questi dati, quali sono le informazioni che ci interessano di più, che storia poter raccontare, che mappa creare, che <em>dashboard</em> realizzare, come usare l’intelligenza artificiale per arricchirli, come metterli in relazione con altri dati, ecc..</p>
 <p>Ma sono dati grandi, e in produzione bisognerà andare un po’ oltre l’utilizzo delle eccezionali <em>utility</em> a riga di comando. In ogni caso <strong>duckdb</strong>, se <strong>usato bene</strong>, fa già tanta tanta roba (partizionando il dataset originario in più file <code>parquet</code>, si ha disposizione tutto il dataset con una grandissima facilità di accesso e lettura).</p>
 
 
@@ -670,7 +670,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","openEffect":"zoom","selector":".lightbox","loop":false,"descPosition":"bottom"});
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","openEffect":"zoom","descPosition":"bottom","selector":".lightbox","loop":false});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

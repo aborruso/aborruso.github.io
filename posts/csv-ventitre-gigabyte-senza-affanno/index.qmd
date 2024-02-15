@@ -27,7 +27,7 @@ OpenCUP mette a disposizione di tutti - cittadini, istituzioni ed altri enti - i
 
 [![La home di OpenCUP](opencup.png){#fig-opencup}](https://www.opencup.gov.it/)
 
-La **novità più importante** di questo aggiornamento, è lagata alla **natura degli interventi in elenco**: a "Lavori Pubblici" e "Incentivi alle imprese e Contributi per calamità naturali", si aggiungono "acquisti di beni, servizi, corsi di formazione, strumenti finanziari, progetti di ricerca e contributi a entità diverse dalle unità produttive per una Pubblica Amministrazione più trasparente e vicina al cittadino" (qui la [notizia](https://www.opencup.gov.it/portale/web/opencup/home/-/asset_publisher/zIMyNGpUy0tF/content/14-febbraio-2024-il-nuovo-portale-opencup) di lancio).<br>
+La **novità più importante** di questo aggiornamento, è legata alla **natura degli interventi in elenco**: a "Lavori Pubblici" e "Incentivi alle imprese e Contributi per calamità naturali", si aggiungono "acquisti di beni, servizi, corsi di formazione, strumenti finanziari, progetti di ricerca e contributi a entità diverse dalle unità produttive per una Pubblica Amministrazione più trasparente e vicina al cittadino" (qui la [notizia](https://www.opencup.gov.it/portale/web/opencup/home/-/asset_publisher/zIMyNGpUy0tF/content/14-febbraio-2024-il-nuovo-portale-opencup) di lancio).<br>
 
 In numeri si passa **da circa 6,5 a 9,5 milioni di progetti**.
 
@@ -45,7 +45,7 @@ A riga di comando invece si può ossevare, filtrare, e analizzare, con grande le
 
 ## La prima lettura
 
-Un file così grande richiede un po' di tempo per il download e poi per la decopressione.<br>
+Un file così grande richiede un po' di tempo per il download e poi per la decompressione.<br>
 Per fortuna però è possibile fare **una prima lettura** immediata, dopo il download, **senza decomprimere per intero il file**.
 
 Si può usare l'*utilty* `unzip` e lanciare il comando `unzip -p nomefile.zip`. Ma per una prima esplorazione, l'ideale è leggere soltanto le prime righe. E per fortuna esiste il comando `head`, che fa proprio questo e di default legge le prime 10 righe.:
@@ -79,7 +79,7 @@ E questo nuovo file sarà esplorabile con **foglio elettronico** o con altri str
 L'esplorazione del [campione](#estrazione-di-un-campione) consente di farsi un'idea di quali sono quei campi/colonne che fanno un po' da elementi "categorici", da usare come filtro per estrarre solo le righe che ci interessano.<br>
 Tra questi ad esempio il campo `SOGGETTO_TITOLARE`, con il nome della Pubblica Amministrazione, titolare del progetto, che posso usare per estrarre ad esempio tutti i progetti in cui la PA titolare è "`REGIONE AUTONOMA DELLA SICILIA`".
 
-L'*utility* **`grep`** - una delle più importanti di tutti i tempio è perfetta per questo scopo.
+L'*utility* **`grep`** - una delle più importanti di tutti i tempi - è perfetta per questo scopo.
 
 ```bash
 unzip -p "OpenData Complessivo.zip"  | grep -P '\|REGIONE AUTONOMA DELLA SICILIA\|' >regione_siciliana.csv
@@ -128,6 +128,6 @@ Tutto circa sempre in un minuto e mezzo, con un file di *output* che pesa circa 
 ## Note finali
 
 Questa descritta è **soltanto** una modalità per fare soprattuto una **prima** **esplorazione** e **analisi** di questo nuovo e importante aggiornamento dei dati di OpenCUP.<br>
-È utilissima per capire per cosa è possibile usare questi dati, quali sono le informazioni che ci interessano di più, che storia poter raccontare, che mappa creare, che *dashboard* realizzare, come usare l'integgligenza artificiale per arricchirli, come metterli in relazione con altri dati, ecc..
+È utilissima per capire per cosa è possibile usare questi dati, quali sono le informazioni che ci interessano di più, che storia poter raccontare, che mappa creare, che *dashboard* realizzare, come usare l'intelligenza artificiale per arricchirli, come metterli in relazione con altri dati, ecc..
 
 Ma sono dati grandi, e in produzione bisognerà andare un po' oltre l'utilizzo delle eccezionali *utility* a riga di comando. In ogni caso **duckdb**, se **usato bene**, fa già tanta tanta roba (partizionando il dataset originario in più file `parquet`, si ha disposizione tutto il dataset con una grandissima facilità di accesso e lettura).
