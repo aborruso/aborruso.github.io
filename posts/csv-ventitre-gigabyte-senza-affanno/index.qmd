@@ -38,7 +38,7 @@ Bisogna scorre la pagina e guardare la sezione "**Progetti OpenData**".
 
 In questo post, mosterò rapidamente come esplorare il [file "Complessivo"](https://www.opencup.gov.it/portale/web/opencup/dettaglio-opendata-complessivo) di tutti i progetti.
 
-È un **file "grande"**. Quello in formato `CSV` è compresso come zip: pesa circa **2.9 GB**, e **decompresso 23 GB**. È probabilmente **il file CSV più grande** (o uno dei più grandi), pubblicato in una sezione open data di un sito di una **Pubblica Amministrazione italiana**.
+È un **file "grande"**. Quello in formato `CSV` è un che compresso pesa circa **2.9 GB**, e **decompresso 23 GB**. È probabilmente **il file CSV più grande** (o uno dei più grandi), pubblicato in una sezione open data di un sito di una **Pubblica Amministrazione italiana**.
 
 Non è gestibile con un comune foglio di calcolo, né con tanti altri strumenti.<br>
 A riga di comando invece si può ossevare, filtrare, e analizzare, con grande leggerezza e rapidità.
@@ -64,7 +64,7 @@ Si può usare l'*utilty* `unzip` e lanciare il comando `unzip -p nomefile.zip`. 
 unzip -p "OpenData Complessivo.zip"  | head
 ```
 
-E subuito si vedrà qualcosa come in @fig-head, che ci restituisce già elementi interessanti:
+E subito si vedrà qualcosa come in @fig-head, che ci restituisce già elementi interessanti:
 
 - i nomi dei campi;
 - il separatore è il `|`
@@ -130,10 +130,56 @@ duckdb -c "COPY(
 Alcune note su questo comando (messo su più righe, per migliorare la leggibilità):
 
 - si parte dal comando precedente, con il filtro per [estrarre il campione](#estrazione-di-un-campione);
-- si passa l'*output* a `duckdb`, che legge il `CSV` da `stdin` e nel `SELECT` al posto del nome del file è necessario inserire `'/dev/stdin'`, che è il file virtuale che rappresenta lo *standard input*;
+- si passa l'output a `duckdb`, che legge il `CSV` da `stdin` e nel `SELECT` al posto del nome del file è necessario inserire '/dev/stdin', che è il file virtuale che rappresenta lo standard input;
 - si usa il comando `COPY` per copiare questa selezione in un file `parquet` chiamato `regione_siciliana.parquet`, con compressione `ZSTD` e con un `ROW_GROUP_SIZE` di `100000`.
 
 Tutto circa sempre in un minuto e mezzo, con un file di *output* che pesa circa 33 MB, contro i 530 MB del file `CSV`.
+
+## Importazione dell'intero file
+
+Il file CSV completo ha, alla data di oggi (15 Febbraio 2024) un problema a 2 righe (su 17.065.848), che hanno un numero errato di colonne (91 anziché 90).
+Per poterlo importare occorre filtrare solo le linee che hanno un numero di colonne corretto.
+
+È possibile importare il file in un DB in formato DuckDB con i seguenti comandi (occorre avere il file CSV su disco per limitare l'occupazione di RAM):
+
+```bash
+unzip "OpenData Complessivo.zip"
+awk -F\| '{if (NF-1 == 90) { print } }' < TOTALE.csv > TOTALEfix.csv
+duckdb OpenCUP2.db -c "CREATE TABLE OpenCUP AS SELECT * FROM read_csv_auto('TOTALEfix.csv',delim='|',parallel=FALSE);"
+```
+
+Il file DuckDB risultante, a fronte di un CSV di 23.946.237.777 byte, è 4.466.159.616 byte, con una riduzione a circa 1/6, merito del formato binario contro quello ASCII.
+
+### Prestazioni del formato DuckDB
+
+Una query di esempio
+
+``` bash
+time duckdb OpenCUP.db -c "SELECT ANNO_DECISIONE, COUNT(*) FROM OpenCUP GROUP BY ANNO_DECISIONE" > /dev/null
+
+real	0m0,039s
+user	0m0,156s
+sys	0m0,063s
+```
+
+### Conversione nel formato Parquet
+
+Con il comando
+
+```bash
+duckdb OpenCUP.db  -c "COPY (SELECT * FROM OpenCUP) TO 'OpenCUP.parquet' (FORMAT 'PARQUET', CODEC 'ZSTD');
+```
+si ottiene un file Parquet di 2.299.910.076 byte, con una riduzione di circa 1/2 rispetto al formato nativo DuckDB.
+
+Le prestazioni del formato Parquet sono notevoli
+
+``` bash
+time duckdb -s 'SELECT ANNO_DECISIONE, COUNT (*) FROM read_parquet("OpenCUP.parquet") GROUP BY ANNO_DECISIONE;' > /dev/null
+
+real	0m0,074s
+user	0m0,372s
+sys	0m0,043s
+```
 
 ## Note finali
 
