@@ -16,7 +16,6 @@ author:
         url: https://innovazione.gov.it/
     url: https://www.linkedin.com/in/matteofortini/
 categories:
-
   - duckdb
   - csv
   - cli
