@@ -10,7 +10,220 @@
 <atom:link href="https://aborruso.github.io/blog.xml" rel="self" type="application/rss+xml"/>
 <description></description>
 <generator>quarto-1.4.549</generator>
-<lastBuildDate>Sat, 16 Dec 2023 23:00:00 GMT</lastBuildDate>
+<lastBuildDate>Wed, 14 Feb 2024 23:00:00 GMT</lastBuildDate>
+<item>
+  <title>Lavorare con grandi file CSV compressi</title>
+  <dc:creator>Andrea Borruso</dc:creator>
+  <link>https://aborruso.github.io/posts/csv-ventitre-gigabyte-senza-affanno/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>Da pochissimo, dal 14 febbraio 2024, è andato online il <a href="https://www.opencup.gov.it/"><strong>nuovo portale OpenCUP</strong></a>.</p>
+<p>OpenCUP mette a disposizione di tutti - cittadini, istituzioni ed altri enti - i dati, in formato aperto, sulle <strong>decisioni di investimento pubblico</strong> finanziate con fondi pubblici nazionali, comunitarie o regionali o con risorse private registrate con il Codice Unico di Progetto.</p>
+<div id="fig-opencup" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-opencup-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="https://www.opencup.gov.it/"><img src="https://aborruso.github.io/posts/csv-ventitre-gigabyte-senza-affanno/opencup.png" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-opencup-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;1: La home di OpenCUP
+</figcaption>
+</figure>
+</div>
+<p>La <strong>novità più importante</strong> di questo aggiornamento, è lagata alla <strong>natura degli interventi in elenco</strong>: a “Lavori Pubblici” e “Incentivi alle imprese e Contributi per calamità naturali”, si aggiungono “acquisti di beni, servizi, corsi di formazione, strumenti finanziari, progetti di ricerca e contributi a entità diverse dalle unità produttive per una Pubblica Amministrazione più trasparente e vicina al cittadino” (qui la <a href="https://www.opencup.gov.it/portale/web/opencup/home/-/asset_publisher/zIMyNGpUy0tF/content/14-febbraio-2024-il-nuovo-portale-opencup">notizia</a> di lancio).<br></p>
+<p>In numeri si passa <strong>da circa 6,5 a 9,5 milioni di progetti</strong>.</p>
+<section id="gli-open-data-di-opencup" class="level2">
+<h2 class="anchored" data-anchor-id="gli-open-data-di-opencup">Gli Open Data di OpenCUP</h2>
+<p>Sul sito di OpenCUP, è disponibile da tempo la <a href="https://www.opencup.gov.it/portale/web/opencup/accesso-agli-open-data"><strong>sezione OpenData</strong></a>. Con questo aggiornamento, sono stati pubblicati i nuovi dati, in formato <code>CSV</code> e <code>XML</code>.<br> Bisogna scorre la pagina e guardare la sezione “<strong>Progetti OpenData</strong>”.</p>
+<p>In questo post, mosterò rapidamente come esplorare il <a href="https://www.opencup.gov.it/portale/web/opencup/dettaglio-opendata-complessivo">file “Complessivo”</a> di tutti i progetti.</p>
+<p>È un <strong>file “grande”</strong>. Quello in formato <code>CSV</code> è un che compresso pesa circa <strong>2.9 GB</strong>, e <strong>decompresso 23 GB</strong>. È probabilmente <strong>il file CSV più grande</strong> (o uno dei più grandi), pubblicato in una sezione open data di un sito di una <strong>Pubblica Amministrazione italiana</strong>.</p>
+<p>Non è gestibile con un comune foglio di calcolo, né con tanti altri strumenti.<br> A riga di comando invece si può ossevare, filtrare, e analizzare, con grande leggerezza e rapidità.</p>
+</section>
+<section id="la-prima-lettura" class="level2">
+<h2 class="anchored" data-anchor-id="la-prima-lettura">La prima lettura</h2>
+<p>Un file così grande richiede un po’ di tempo per il download e poi per la decopressione.<br> Per fortuna però è possibile fare <strong>una prima lettura</strong> immediata, dopo il download, <strong>senza decomprimere per intero il file</strong>.</p>
+<p>Si può usare l’<em>utilty</em> <code>unzip</code> e lanciare il comando <code>unzip -p nomefile.zip</code>. Ma per una prima esplorazione, l’ideale è leggere soltanto le prime righe. E per fortuna esiste il comando <code>head</code>, che fa proprio questo e di default legge le prime 10 righe.:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">unzip</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-p</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"OpenData Complessivo.zip"</span>  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">head</span></span></code></pre></div>
+<p>E subuito si vedrà qualcosa come in Figura&nbsp;2, che ci restituisce già elementi interessanti:</p>
+<ul>
+<li>i nomi dei campi;</li>
+<li>il separatore è il <code>|</code></li>
+</ul>
+<div id="fig-head" class="lightbox quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-head-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="immagini/head.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" data-glightbox="description: .lightbox-desc-1"><img src="https://aborruso.github.io/posts/csv-ventitre-gigabyte-senza-affanno/immagini/head.png" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-head-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2: Le prime righe del file con i progetti
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="estrazione-di-un-campione" class="level2">
+<h2 class="anchored" data-anchor-id="estrazione-di-un-campione">Estrazione di un campione</h2>
+<p>Viste le prime 10 righe e mappate le caratteristiche del CSV, il passo consigliato complessivo è quello dell’estrazione di un campione di righe più ampio, per fare un’analisi più approfondita.<br> Con una piccola modifica al comando soprastante, si possono ad esempio estrarre le prime 10.000 righe e salvarle in un nuovo file <code>CSV</code> (in <code>0.055</code> secondi):</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">unzip</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-p</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"OpenData Complessivo.zip"</span>  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">head</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-n</span> 10000 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> campione.csv</span></code></pre></div>
+<p>E questo nuovo file sarà esplorabile con <strong>foglio elettronico</strong> o con altri strumenti. A me ad esempio piace usare <a href="https://ondata.github.io/guidaVisiData/"><strong>VisiData</strong></a> per queste cose, con cui di solito subito osservo un po’ di dati sui campi (i valori nulli, i valori distinti, ecc.).</p>
+<div id="fig-vd" class="lightbox quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-vd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="immagini/vd.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" data-glightbox="description: .lightbox-desc-2"><img src="https://aborruso.github.io/posts/csv-ventitre-gigabyte-senza-affanno/immagini/vd.png" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-vd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;3: Esplorazione dei dati campione con VisiData
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="filtrare-lintero-file" class="level2">
+<h2 class="anchored" data-anchor-id="filtrare-lintero-file">Filtrare l’intero file</h2>
+<p>L’esplorazione del campione consente di farsi un’idea di quali sono quei campi/colonne che fanno un po’ da elementi “categorici”, da usare come filtro per estrarre solo le righe che ci interessano.<br> Tra questi ad esempio il campo <code>SOGGETTO_TITOLARE</code>, con il nome della Pubblica Amministrazione, titolare del progetto, che posso usare per estrarre ad esempio tutti i progetti in cui la PA titolare è “<code>REGIONE AUTONOMA DELLA SICILIA</code>”.</p>
+<p>L’<em>utility</em> <strong><code>grep</code></strong> - una delle più importanti di tutti i tempio è perfetta per questo scopo.</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">unzip</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-p</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"OpenData Complessivo.zip"</span>  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">grep</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-P</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'\|REGIONE AUTONOMA DELLA SICILIA\|'</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span>regione_siciliana.csv</span></code></pre></div>
+<p>Si applica un filtro al file <code>CSV</code> zippato di input, e per ogni riga in cui è presente la stringa <code>REGIONE AUTONOMA DELLA SICILIA</code> tra due caratteri <code>|</code>, viene salvata nel file <code>regione_siciliana.csv</code>. Nel filtro è stato inserito il carattere <code>\</code> prima del <code>|</code>, perché <code>|</code> è un carattere speciale.<br> E in un minuto e mezzo circa, sul mio buon (ma normale) PC ottengo <code>392.395</code> progetti associati alla Regione Siciliana, dopo aver letto <code>9,5</code> milioni di righe.</p>
+<p>Ma così c’è un <strong>problema</strong>: si perde l’intestazione del file, <strong>si perdono i nomi delle colonne</strong>. C’è allora da modificare il filtro ed estrarre anche la prima riga. E tutto questo è facile, grazie all’esplorazione fatta, in cui ho visto che la prima riga contiene ad esempio la stringa “<code>ANNO_DECISIONE</code>”.<br> Il nuovo comando sarà:</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">unzip</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-p</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"OpenData Complessivo.zip"</span>  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">|</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\</span></span>
+<span id="cb4-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">grep</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-P</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'(ANNO_DECISIONE|\|REGIONE AUTONOMA DELLA SICILIA\|)'</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span>regione_siciliana.csv</span></code></pre></div>
+<p>Così vengono cercate tutte le righe che contengono o <code>ANNO_DECISIONE</code> o <code>|REGIONE AUTONOMA DELLA SICILIA|</code> e quindi viene restituito un <code>CSV</code> con i nomi delle colonne e le righe filtrate.</p>
+</section>
+<section id="un-file-parquet-a-partire-dai-dati-filtrati" class="level2">
+<h2 class="anchored" data-anchor-id="un-file-parquet-a-partire-dai-dati-filtrati">Un file parquet a partire dai dati filtrati</h2>
+<p>Questo ultimo passo, perché è utile avere a disposizione questi dati anche in un formato più efficiente, come il <code>parquet</code>, che è un formato di file binario, compresso e colonnare, che permette di ridurre notevolmente lo spazio occupato e di velocizzare le operazioni di lettura e analisi.<br> Per chi non ne ha mai sentito parlare, <strong><a href="../../posts/duckdb-intro-csv/index.html">ne ho scritto lungamente qui</a></strong>.</p>
+<p>L’<em>utility</em> stavolta è <a href="https://duckdb.org/"><strong>duckdb</strong></a>. E il comando è:</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">unzip</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-p</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"OpenData Complessivo.zip"</span>  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">|</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\</span></span>
+<span id="cb5-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">grep</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-P</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'(ANNO_DECISIONE|\|REGIONE AUTONOMA DELLA SICILIA\|)'</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">|</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\</span></span>
+<span id="cb5-3"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">duckdb</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-c</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"COPY(</span></span>
+<span id="cb5-4"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  SELECT * FROM read_csv_auto('/dev/stdin', delim = '|')</span></span>
+<span id="cb5-5"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">) TO 'regione_siciliana.parquet' (</span></span>
+<span id="cb5-6"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  FORMAT 'parquet',</span></span>
+<span id="cb5-7"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  COMPRESSION 'ZSTD',</span></span>
+<span id="cb5-8"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  ROW_GROUP_SIZE 100000</span></span>
+<span id="cb5-9"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">)"</span></span></code></pre></div>
+<p>Alcune note su questo comando (messo su più righe, per migliorare la leggibilità):</p>
+<ul>
+<li>si parte dal comando precedente, con il filtro per estrarre il campione;</li>
+<li>si passa l’output a <code>duckdb</code>, che legge il <code>CSV</code> da <code>stdin</code> e nel <code>SELECT</code> al posto del nome del file è necessario inserire ‘/dev/stdin’, che è il file virtuale che rappresenta lo standard input;</li>
+<li>si usa il comando <code>COPY</code> per copiare questa selezione in un file <code>parquet</code> chiamato <code>regione_siciliana.parquet</code>, con compressione <code>ZSTD</code> e con un <code>ROW_GROUP_SIZE</code> di <code>100000</code>.</li>
+</ul>
+<p>Tutto circa sempre in un minuto e mezzo, con un file di <em>output</em> che pesa circa 33 MB, contro i 530 MB del file <code>CSV</code>.</p>
+</section>
+<section id="note-finali" class="level2">
+<h2 class="anchored" data-anchor-id="note-finali">Note finali</h2>
+<p>Questa descritta è <strong>soltanto</strong> una modalità per fare soprattuto una <strong>prima</strong> <strong>esplorazione</strong> e <strong>analisi</strong> di questo nuovo e importante aggiornamento dei dati di OpenCUP.<br> È utilissima per capire per cosa è possibile usare questi dati, quali sono le informazioni che ci interessano di più, che storia poter raccontare, che mappa creare, che <em>dashboard</em> realizzare, come usare l’integgligenza artificiale per arricchirli, come metterli in relazione con altri dati, ecc..</p>
+<p>Ma sono dati grandi, e in produzione bisognerà andare un po’ oltre l’utilizzo delle eccezionali <em>utility</em> a riga di comando. In ogni caso <strong>duckdb</strong>, se <strong>usato bene</strong>, fa già tanta tanta roba (partizionando il dataset originario in più file <code>parquet</code>, si ha disposizione tutto il dataset con una grandissima facilità di accesso e lettura).</p>
+
+
+
+</section>
+
+<a onclick="window.scrollTo(0, 0); return false;" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Torna in cima</a> ]]></description>
+  <category>duckdb</category>
+  <category>csv</category>
+  <category>cli</category>
+  <guid>https://aborruso.github.io/posts/csv-ventitre-gigabyte-senza-affanno/</guid>
+  <pubDate>Wed, 14 Feb 2024 23:00:00 GMT</pubDate>
+  <media:content url="https://aborruso.github.io/posts/csv-ventitre-gigabyte-senza-affanno/opencup.png" medium="image" type="image/png" height="106" width="144"/>
+</item>
 <item>
   <title>Usare la nuova intelligenza artificiale di Google</title>
   <dc:creator>Andrea Borruso</dc:creator>

@@ -1,0 +1,133 @@
+---
+title: "Lavorare con grandi file CSV compressi"
+description: "L'esempio dei nuovi dati OpenCUP, da sfogliare a riga di comando"
+date: "2024-02-15"
+draft: false
+search: true
+categories:
+  - duckdb
+  - csv
+  - cli
+format:
+  html:
+    crossrefs-hover: false
+website:
+  twitter-card:
+    description: "Lavorare con grandi file CSV compressi: l'esempio dei nuovi dati OpenCUP, da sfogliare a riga di comando"
+    image: opencup.png
+  open-graph:
+    description: "Lavorare con grandi file CSV compressi: l'esempio dei nuovi dati OpenCUP, da sfogliare a riga di comando"
+    image: opencup.png
+image: opencup.png
+---
+
+Da pochissimo, dal 14 febbraio 2024, è andato online il [**nuovo portale OpenCUP**](https://www.opencup.gov.it/).
+
+OpenCUP mette a disposizione di tutti - cittadini, istituzioni ed altri enti - i dati, in formato aperto, sulle **decisioni di investimento pubblico** finanziate con fondi pubblici nazionali, comunitarie o regionali o con risorse private registrate con il Codice Unico di Progetto.
+
+[![La home di OpenCUP](opencup.png){#fig-opencup}](https://www.opencup.gov.it/)
+
+La **novità più importante** di questo aggiornamento, è lagata alla **natura degli interventi in elenco**: a "Lavori Pubblici" e "Incentivi alle imprese e Contributi per calamità naturali", si aggiungono "acquisti di beni, servizi, corsi di formazione, strumenti finanziari, progetti di ricerca e contributi a entità diverse dalle unità produttive per una Pubblica Amministrazione più trasparente e vicina al cittadino" (qui la [notizia](https://www.opencup.gov.it/portale/web/opencup/home/-/asset_publisher/zIMyNGpUy0tF/content/14-febbraio-2024-il-nuovo-portale-opencup) di lancio).<br>
+
+In numeri si passa **da circa 6,5 a 9,5 milioni di progetti**.
+
+## Gli Open Data di OpenCUP
+
+Sul sito di OpenCUP, è disponibile da tempo la [**sezione OpenData**](https://www.opencup.gov.it/portale/web/opencup/accesso-agli-open-data). Con questo aggiornamento, sono stati pubblicati i nuovi dati, in formato `CSV` e `XML`.<br>
+Bisogna scorre la pagina e guardare la sezione "**Progetti OpenData**".
+
+In questo post, mosterò rapidamente come esplorare il [file "Complessivo"](https://www.opencup.gov.it/portale/web/opencup/dettaglio-opendata-complessivo) di tutti i progetti.
+
+È un **file "grande"**. Quello in formato `CSV` è un che compresso pesa circa **2.9 GB**, e **decompresso 23 GB**. È probabilmente **il file CSV più grande** (o uno dei più grandi), pubblicato in una sezione open data di un sito di una **Pubblica Amministrazione italiana**.
+
+Non è gestibile con un comune foglio di calcolo, né con tanti altri strumenti.<br>
+A riga di comando invece si può ossevare, filtrare, e analizzare, con grande leggerezza e rapidità.
+
+## La prima lettura
+
+Un file così grande richiede un po' di tempo per il download e poi per la decopressione.<br>
+Per fortuna però è possibile fare **una prima lettura** immediata, dopo il download, **senza decomprimere per intero il file**.
+
+Si può usare l'*utilty* `unzip` e lanciare il comando `unzip -p nomefile.zip`. Ma per una prima esplorazione, l'ideale è leggere soltanto le prime righe. E per fortuna esiste il comando `head`, che fa proprio questo e di default legge le prime 10 righe.:
+
+```bash
+unzip -p "OpenData Complessivo.zip"  | head
+```
+
+E subuito si vedrà qualcosa come in @fig-head, che ci restituisce già elementi interessanti:
+
+- i nomi dei campi;
+- il separatore è il `|`
+
+![Le prime righe del file con i progetti](immagini/head.png){.lightbox #fig-head}
+
+## Estrazione di un campione
+
+Viste le prime 10 righe e mappate le caratteristiche del CSV, il passo consigliato complessivo è quello dell'estrazione di un campione di righe più ampio, per fare un'analisi più approfondita.<br>
+Con una piccola modifica al comando soprastante, si possono ad esempio estrarre le prime 10.000 righe e salvarle in un nuovo file `CSV` (in `0.055` secondi):
+
+```bash
+unzip -p "OpenData Complessivo.zip"  | head -n 10000 > campione.csv
+```
+
+E questo nuovo file sarà esplorabile con **foglio elettronico** o con altri strumenti. A me ad esempio piace usare [**VisiData**](https://ondata.github.io/guidaVisiData/) per queste cose, con cui di solito subito osservo un po' di dati sui campi (i valori nulli, i valori distinti, ecc.).
+
+![Esplorazione dei dati campione con VisiData](immagini/vd.png){.lightbox #fig-vd}
+
+## Filtrare l'intero file
+
+L'esplorazione del [campione](#estrazione-di-un-campione) consente di farsi un'idea di quali sono quei campi/colonne che fanno un po' da elementi "categorici", da usare come filtro per estrarre solo le righe che ci interessano.<br>
+Tra questi ad esempio il campo `SOGGETTO_TITOLARE`, con il nome della Pubblica Amministrazione, titolare del progetto, che posso usare per estrarre ad esempio tutti i progetti in cui la PA titolare è "`REGIONE AUTONOMA DELLA SICILIA`".
+
+L'*utility* **`grep`** - una delle più importanti di tutti i tempio è perfetta per questo scopo.
+
+```bash
+unzip -p "OpenData Complessivo.zip"  | grep -P '\|REGIONE AUTONOMA DELLA SICILIA\|' >regione_siciliana.csv
+```
+
+Si applica un filtro al file `CSV` zippato di input, e per ogni riga in cui è presente la stringa `REGIONE AUTONOMA DELLA SICILIA` tra due caratteri `|`, viene salvata nel file `regione_siciliana.csv`. Nel filtro è stato inserito il carattere `\` prima del `|`, perché `|` è un carattere speciale.<br>
+E in un minuto e mezzo circa, sul mio buon (ma normale) PC ottengo `392.395` progetti associati alla Regione Siciliana, dopo aver letto `9,5` milioni di righe.
+
+Ma così c'è un **problema**: si perde l'intestazione del file, **si perdono i nomi delle colonne**. C'è allora da modificare il filtro ed estrarre anche la prima riga. E tutto questo è facile, grazie all'esplorazione fatta, in cui ho visto che la prima riga contiene ad esempio la stringa "`ANNO_DECISIONE`".<br>
+Il nuovo comando sarà:
+
+```bash
+unzip -p "OpenData Complessivo.zip"  | \
+grep -P '(ANNO_DECISIONE|\|REGIONE AUTONOMA DELLA SICILIA\|)' >regione_siciliana.csv
+```
+
+Così vengono cercate tutte le righe che contengono o `ANNO_DECISIONE` o `|REGIONE AUTONOMA DELLA SICILIA|` e quindi viene restituito un `CSV` con i nomi delle colonne e le righe filtrate.
+
+## Un file parquet a partire dai dati filtrati
+
+Questo ultimo passo, perché è utile avere a disposizione questi dati anche in un formato più efficiente, come il `parquet`, che è un formato di file binario, compresso e colonnare, che permette di ridurre notevolmente lo spazio occupato e di velocizzare le operazioni di lettura e analisi.<br>
+Per chi non ne ha mai sentito parlare, **[ne ho scritto lungamente qui](../duckdb-intro-csv/index.qmd)**.
+
+L'*utility* stavolta è [**duckdb**](https://duckdb.org/). E il comando è:
+
+```bash
+unzip -p "OpenData Complessivo.zip"  | \
+grep -P '(ANNO_DECISIONE|\|REGIONE AUTONOMA DELLA SICILIA\|)' | \
+duckdb -c "COPY(
+  SELECT * FROM read_csv_auto('/dev/stdin', delim = '|')
+) TO 'regione_siciliana.parquet' (
+  FORMAT 'parquet',
+  COMPRESSION 'ZSTD',
+  ROW_GROUP_SIZE 100000
+)"
+```
+
+Alcune note su questo comando (messo su più righe, per migliorare la leggibilità):
+
+- si parte dal comando precedente, con il filtro per [estrarre il campione](#estrazione-di-un-campione);
+- si passa l'output a `duckdb`, che legge il `CSV` da `stdin` e nel `SELECT` al posto del nome del file è necessario inserire '/dev/stdin', che è il file virtuale che rappresenta lo standard input;
+- si usa il comando `COPY` per copiare questa selezione in un file `parquet` chiamato `regione_siciliana.parquet`, con compressione `ZSTD` e con un `ROW_GROUP_SIZE` di `100000`.
+
+Tutto circa sempre in un minuto e mezzo, con un file di *output* che pesa circa 33 MB, contro i 530 MB del file `CSV`.
+
+## Note finali
+
+Questa descritta è **soltanto** una modalità per fare soprattuto una **prima** **esplorazione** e **analisi** di questo nuovo e importante aggiornamento dei dati di OpenCUP.<br>
+È utilissima per capire per cosa è possibile usare questi dati, quali sono le informazioni che ci interessano di più, che storia poter raccontare, che mappa creare, che *dashboard* realizzare, come usare l'integgligenza artificiale per arricchirli, come metterli in relazione con altri dati, ecc..
+
+Ma sono dati grandi, e in produzione bisognerà andare un po' oltre l'utilizzo delle eccezionali *utility* a riga di comando. In ogni caso **duckdb**, se **usato bene**, fa già tanta tanta roba (partizionando il dataset originario in più file `parquet`, si ha disposizione tutto il dataset con una grandissima facilità di accesso e lettura).
