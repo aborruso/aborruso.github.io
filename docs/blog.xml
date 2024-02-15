@@ -41,12 +41,41 @@ Figura&nbsp;1: La home di OpenCUP
 <p>In questo post, mosterò rapidamente come esplorare il <a href="https://www.opencup.gov.it/portale/web/opencup/dettaglio-opendata-complessivo">file “Complessivo”</a> di tutti i progetti.</p>
 <p>È un <strong>file “grande”</strong>. Quello in formato <code>CSV</code> è un che compresso pesa circa <strong>2.9 GB</strong>, e <strong>decompresso 23 GB</strong>. È probabilmente <strong>il file CSV più grande</strong> (o uno dei più grandi), pubblicato in una sezione open data di un sito di una <strong>Pubblica Amministrazione italiana</strong>.</p>
 <p>Non è gestibile con un comune foglio di calcolo, né con tanti altri strumenti.<br> A riga di comando invece si può ossevare, filtrare, e analizzare, con grande leggerezza e rapidità.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Avviso
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Ci sono alcune righe con un <strong>numero di separatori di campo errato</strong>: devono essere 90. Per estrarre soltanto quelle con 90 separatori si può usare <code>awk</code>:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">unzip</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-p</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"OpenData Complessivo.zip"</span>  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">awk</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'{if(gsub(/\|/,"&amp;") == 90) print}'</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span>open_cup_corrette.csv</span></code></pre></div>
+<p>Grazie <a href="https://www.linkedin.com/in/matteofortini/">Matteo Fortini</a> per la segnalazione.</p>
+</div>
+</div>
 </section>
 <section id="la-prima-lettura" class="level2">
 <h2 class="anchored" data-anchor-id="la-prima-lettura">La prima lettura</h2>
 <p>Un file così grande richiede un po’ di tempo per il download e poi per la decompressione.<br> Per fortuna però è possibile fare <strong>una prima lettura</strong> immediata, dopo il download, <strong>senza decomprimere per intero il file</strong>.</p>
 <p>Si può usare l’<em>utilty</em> <code>unzip</code> e lanciare il comando <code>unzip -p nomefile.zip</code>. Ma per una prima esplorazione, l’ideale è leggere soltanto le prime righe. E per fortuna esiste il comando <code>head</code>, che fa proprio questo e di default legge le prime 10 righe.:</p>
-<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="fu" style="color: #4758AB;
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">unzip</span> <span class="at" style="color: #657422;
 background-color: null;
@@ -76,7 +105,7 @@ Figura&nbsp;2: Le prime righe del file con i progetti
 <section id="estrazione-di-un-campione" class="level2">
 <h2 class="anchored" data-anchor-id="estrazione-di-un-campione">Estrazione di un campione</h2>
 <p>Viste le prime 10 righe e mappate le caratteristiche del CSV, il passo consigliato complessivo è quello dell’estrazione di un campione di righe più ampio, per fare un’analisi più approfondita.<br> Con una piccola modifica al comando soprastante, si possono ad esempio estrarre le prime 10.000 righe e salvarle in un nuovo file <code>CSV</code> (in <code>0.055</code> secondi):</p>
-<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><span class="fu" style="color: #4758AB;
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">unzip</span> <span class="at" style="color: #657422;
 background-color: null;
@@ -107,7 +136,7 @@ Figura&nbsp;3: Esplorazione dei dati campione con VisiData
 <h2 class="anchored" data-anchor-id="filtrare-lintero-file">Filtrare l’intero file</h2>
 <p>L’esplorazione del campione consente di farsi un’idea di quali sono quei campi/colonne che fanno un po’ da elementi “categorici”, da usare come filtro per estrarre solo le righe che ci interessano.<br> Tra questi ad esempio il campo <code>SOGGETTO_TITOLARE</code>, con il nome della Pubblica Amministrazione, titolare del progetto, che posso usare per estrarre ad esempio tutti i progetti in cui la PA titolare è “<code>REGIONE AUTONOMA DELLA SICILIA</code>”.</p>
 <p>L’<em>utility</em> <strong><code>grep</code></strong> - una delle più importanti di tutti i tempi - è perfetta per questo scopo.</p>
-<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">unzip</span> <span class="at" style="color: #657422;
 background-color: null;
@@ -126,32 +155,6 @@ background-color: null;
 font-style: inherit;">&gt;</span>regione_siciliana.csv</span></code></pre></div>
 <p>Si applica un filtro al file <code>CSV</code> zippato di input, e per ogni riga in cui è presente la stringa <code>REGIONE AUTONOMA DELLA SICILIA</code> tra due caratteri <code>|</code>, viene salvata nel file <code>regione_siciliana.csv</code>. Nel filtro è stato inserito il carattere <code>\</code> prima del <code>|</code>, perché <code>|</code> è un carattere speciale.<br> E in un minuto e mezzo circa, sul mio buon (ma normale) PC ottengo <code>392.395</code> progetti associati alla Regione Siciliana, dopo aver letto <code>9,5</code> milioni di righe.</p>
 <p>Ma così c’è un <strong>problema</strong>: si perde l’intestazione del file, <strong>si perdono i nomi delle colonne</strong>. C’è allora da modificare il filtro ed estrarre anche la prima riga. E tutto questo è facile, grazie all’esplorazione fatta, in cui ho visto che la prima riga contiene ad esempio la stringa “<code>ANNO_DECISIONE</code>”.<br> Il nuovo comando sarà:</p>
-<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">unzip</span> <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">-p</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"OpenData Complessivo.zip"</span>  <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">|</span> <span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">\</span></span>
-<span id="cb4-2"><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">grep</span> <span class="at" style="color: #657422;
-background-color: null;
-font-style: inherit;">-P</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">'(ANNO_DECISIONE|\|REGIONE AUTONOMA DELLA SICILIA\|)'</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&gt;</span>regione_siciliana.csv</span></code></pre></div>
-<p>Così vengono cercate tutte le righe che contengono o <code>ANNO_DECISIONE</code> o <code>|REGIONE AUTONOMA DELLA SICILIA|</code> e quindi viene restituito un <code>CSV</code> con i nomi delle colonne e le righe filtrate.</p>
-</section>
-<section id="un-file-parquet-a-partire-dai-dati-filtrati" class="level2">
-<h2 class="anchored" data-anchor-id="un-file-parquet-a-partire-dai-dati-filtrati">Un file parquet a partire dai dati filtrati</h2>
-<p>Questo ultimo passo, perché è utile avere a disposizione questi dati anche in un formato più efficiente, come il <code>parquet</code>, che è un formato di file binario, compresso e colonnare, che permette di ridurre notevolmente lo spazio occupato e di velocizzare le operazioni di lettura e analisi.<br> Per chi non ne ha mai sentito parlare, <strong><a href="../../posts/duckdb-intro-csv/index.html">ne ho scritto lungamente qui</a></strong>.</p>
-<p>L’<em>utility</em> stavolta è <a href="https://duckdb.org/"><strong>duckdb</strong></a>. E il comando è:</p>
 <div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">unzip</span> <span class="at" style="color: #657422;
@@ -169,34 +172,60 @@ font-style: inherit;">grep</span> <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">-P</span> <span class="st" style="color: #20794D;
 background-color: null;
+font-style: inherit;">'(ANNO_DECISIONE|\|REGIONE AUTONOMA DELLA SICILIA\|)'</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span>regione_siciliana.csv</span></code></pre></div>
+<p>Così vengono cercate tutte le righe che contengono o <code>ANNO_DECISIONE</code> o <code>|REGIONE AUTONOMA DELLA SICILIA|</code> e quindi viene restituito un <code>CSV</code> con i nomi delle colonne e le righe filtrate.</p>
+</section>
+<section id="un-file-parquet-a-partire-dai-dati-filtrati" class="level2">
+<h2 class="anchored" data-anchor-id="un-file-parquet-a-partire-dai-dati-filtrati">Un file parquet a partire dai dati filtrati</h2>
+<p>Questo ultimo passo, perché è utile avere a disposizione questi dati anche in un formato più efficiente, come il <code>parquet</code>, che è un formato di file binario, compresso e colonnare, che permette di ridurre notevolmente lo spazio occupato e di velocizzare le operazioni di lettura e analisi.<br> Per chi non ne ha mai sentito parlare, <strong><a href="../../posts/duckdb-intro-csv/index.html">ne ho scritto lungamente qui</a></strong>.</p>
+<p>L’<em>utility</em> stavolta è <a href="https://duckdb.org/"><strong>duckdb</strong></a>. E il comando è:</p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">unzip</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-p</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"OpenData Complessivo.zip"</span>  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">|</span> <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">\</span></span>
+<span id="cb6-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">grep</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-P</span> <span class="st" style="color: #20794D;
+background-color: null;
 font-style: inherit;">'(ANNO_DECISIONE|\|REGIONE AUTONOMA DELLA SICILIA\|)'</span> <span class="kw" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">|</span> <span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">\</span></span>
-<span id="cb5-3"><span class="ex" style="color: null;
+<span id="cb6-3"><span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">duckdb</span> <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">-c</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"COPY(</span></span>
-<span id="cb5-4"><span class="st" style="color: #20794D;
+<span id="cb6-4"><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">  SELECT * FROM read_csv_auto('/dev/stdin', delim = '|')</span></span>
-<span id="cb5-5"><span class="st" style="color: #20794D;
+<span id="cb6-5"><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">) TO 'regione_siciliana.parquet' (</span></span>
-<span id="cb5-6"><span class="st" style="color: #20794D;
+<span id="cb6-6"><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">  FORMAT 'parquet',</span></span>
-<span id="cb5-7"><span class="st" style="color: #20794D;
+<span id="cb6-7"><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">  COMPRESSION 'ZSTD',</span></span>
-<span id="cb5-8"><span class="st" style="color: #20794D;
+<span id="cb6-8"><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">  ROW_GROUP_SIZE 100000</span></span>
-<span id="cb5-9"><span class="st" style="color: #20794D;
+<span id="cb6-9"><span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">)"</span></span></code></pre></div>
 <p>Alcune note su questo comando (messo su più righe, per migliorare la leggibilità):</p>

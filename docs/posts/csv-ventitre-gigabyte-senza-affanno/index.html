@@ -268,12 +268,27 @@ Figura&nbsp;1: La home di OpenCUP
 <p>In questo post, mosterò rapidamente come esplorare il <a href="https://www.opencup.gov.it/portale/web/opencup/dettaglio-opendata-complessivo">file “Complessivo”</a> di tutti i progetti.</p>
 <p>È un <strong>file “grande”</strong>. Quello in formato <code>CSV</code> è un che compresso pesa circa <strong>2.9 GB</strong>, e <strong>decompresso 23 GB</strong>. È probabilmente <strong>il file CSV più grande</strong> (o uno dei più grandi), pubblicato in una sezione open data di un sito di una <strong>Pubblica Amministrazione italiana</strong>.</p>
 <p>Non è gestibile con un comune foglio di calcolo, né con tanti altri strumenti.<br> A riga di comando invece si può ossevare, filtrare, e analizzare, con grande leggerezza e rapidità.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Avviso
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Ci sono alcune righe con un <strong>numero di separatori di campo errato</strong>: devono essere 90. Per estrarre soltanto quelle con 90 separatori si può usare <code>awk</code>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span> <span class="at">-p</span> <span class="st">"OpenData Complessivo.zip"</span>  <span class="kw">|</span> <span class="fu">awk</span> <span class="st">'{if(gsub(/\|/,"&amp;") == 90) print}'</span> <span class="op">&gt;</span>open_cup_corrette.csv</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Grazie <a href="https://www.linkedin.com/in/matteofortini/">Matteo Fortini</a> per la segnalazione.</p>
+</div>
+</div>
 </section>
 <section id="la-prima-lettura" class="level2">
 <h2 class="anchored" data-anchor-id="la-prima-lettura">La prima lettura</h2>
 <p>Un file così grande richiede un po’ di tempo per il download e poi per la decompressione.<br> Per fortuna però è possibile fare <strong>una prima lettura</strong> immediata, dopo il download, <strong>senza decomprimere per intero il file</strong>.</p>
 <p>Si può usare l’<em>utilty</em> <code>unzip</code> e lanciare il comando <code>unzip -p nomefile.zip</code>. Ma per una prima esplorazione, l’ideale è leggere soltanto le prime righe. E per fortuna esiste il comando <code>head</code>, che fa proprio questo e di default legge le prime 10 righe.:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span> <span class="at">-p</span> <span class="st">"OpenData Complessivo.zip"</span>  <span class="kw">|</span> <span class="fu">head</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span> <span class="at">-p</span> <span class="st">"OpenData Complessivo.zip"</span>  <span class="kw">|</span> <span class="fu">head</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>E subuito si vedrà qualcosa come in <a href="#fig-head" class="quarto-xref">Figura&nbsp;2</a>, che ci restituisce già elementi interessanti:</p>
 <ul>
 <li>i nomi dei campi;</li>
@@ -293,7 +308,7 @@ Figura&nbsp;2: Le prime righe del file con i progetti
 <section id="estrazione-di-un-campione" class="level2">
 <h2 class="anchored" data-anchor-id="estrazione-di-un-campione">Estrazione di un campione</h2>
 <p>Viste le prime 10 righe e mappate le caratteristiche del CSV, il passo consigliato complessivo è quello dell’estrazione di un campione di righe più ampio, per fare un’analisi più approfondita.<br> Con una piccola modifica al comando soprastante, si possono ad esempio estrarre le prime 10.000 righe e salvarle in un nuovo file <code>CSV</code> (in <code>0.055</code> secondi):</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span> <span class="at">-p</span> <span class="st">"OpenData Complessivo.zip"</span>  <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 10000 <span class="op">&gt;</span> campione.csv</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span> <span class="at">-p</span> <span class="st">"OpenData Complessivo.zip"</span>  <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 10000 <span class="op">&gt;</span> campione.csv</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>E questo nuovo file sarà esplorabile con <strong>foglio elettronico</strong> o con altri strumenti. A me ad esempio piace usare <a href="https://ondata.github.io/guidaVisiData/"><strong>VisiData</strong></a> per queste cose, con cui di solito subito osservo un po’ di dati sui campi (i valori nulli, i valori distinti, ecc.).</p>
 <div id="fig-vd" class="lightbox quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -310,26 +325,26 @@ Figura&nbsp;3: Esplorazione dei dati campione con VisiData
 <h2 class="anchored" data-anchor-id="filtrare-lintero-file">Filtrare l’intero file</h2>
 <p>L’esplorazione del <a href="#estrazione-di-un-campione">campione</a> consente di farsi un’idea di quali sono quei campi/colonne che fanno un po’ da elementi “categorici”, da usare come filtro per estrarre solo le righe che ci interessano.<br> Tra questi ad esempio il campo <code>SOGGETTO_TITOLARE</code>, con il nome della Pubblica Amministrazione, titolare del progetto, che posso usare per estrarre ad esempio tutti i progetti in cui la PA titolare è “<code>REGIONE AUTONOMA DELLA SICILIA</code>”.</p>
 <p>L’<em>utility</em> <strong><code>grep</code></strong> - una delle più importanti di tutti i tempi - è perfetta per questo scopo.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span> <span class="at">-p</span> <span class="st">"OpenData Complessivo.zip"</span>  <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-P</span> <span class="st">'\|REGIONE AUTONOMA DELLA SICILIA\|'</span> <span class="op">&gt;</span>regione_siciliana.csv</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span> <span class="at">-p</span> <span class="st">"OpenData Complessivo.zip"</span>  <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-P</span> <span class="st">'\|REGIONE AUTONOMA DELLA SICILIA\|'</span> <span class="op">&gt;</span>regione_siciliana.csv</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Si applica un filtro al file <code>CSV</code> zippato di input, e per ogni riga in cui è presente la stringa <code>REGIONE AUTONOMA DELLA SICILIA</code> tra due caratteri <code>|</code>, viene salvata nel file <code>regione_siciliana.csv</code>. Nel filtro è stato inserito il carattere <code>\</code> prima del <code>|</code>, perché <code>|</code> è un carattere speciale.<br> E in un minuto e mezzo circa, sul mio buon (ma normale) PC ottengo <code>392.395</code> progetti associati alla Regione Siciliana, dopo aver letto <code>9,5</code> milioni di righe.</p>
 <p>Ma così c’è un <strong>problema</strong>: si perde l’intestazione del file, <strong>si perdono i nomi delle colonne</strong>. C’è allora da modificare il filtro ed estrarre anche la prima riga. E tutto questo è facile, grazie all’esplorazione fatta, in cui ho visto che la prima riga contiene ad esempio la stringa “<code>ANNO_DECISIONE</code>”.<br> Il nuovo comando sarà:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span> <span class="at">-p</span> <span class="st">"OpenData Complessivo.zip"</span>  <span class="kw">|</span> <span class="dt">\</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-P</span> <span class="st">'(ANNO_DECISIONE|\|REGIONE AUTONOMA DELLA SICILIA\|)'</span> <span class="op">&gt;</span>regione_siciliana.csv</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span> <span class="at">-p</span> <span class="st">"OpenData Complessivo.zip"</span>  <span class="kw">|</span> <span class="dt">\</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-P</span> <span class="st">'(ANNO_DECISIONE|\|REGIONE AUTONOMA DELLA SICILIA\|)'</span> <span class="op">&gt;</span>regione_siciliana.csv</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Così vengono cercate tutte le righe che contengono o <code>ANNO_DECISIONE</code> o <code>|REGIONE AUTONOMA DELLA SICILIA|</code> e quindi viene restituito un <code>CSV</code> con i nomi delle colonne e le righe filtrate.</p>
 </section>
 <section id="un-file-parquet-a-partire-dai-dati-filtrati" class="level2">
 <h2 class="anchored" data-anchor-id="un-file-parquet-a-partire-dai-dati-filtrati">Un file parquet a partire dai dati filtrati</h2>
 <p>Questo ultimo passo, perché è utile avere a disposizione questi dati anche in un formato più efficiente, come il <code>parquet</code>, che è un formato di file binario, compresso e colonnare, che permette di ridurre notevolmente lo spazio occupato e di velocizzare le operazioni di lettura e analisi.<br> Per chi non ne ha mai sentito parlare, <strong><a href="../../posts/duckdb-intro-csv/index.html">ne ho scritto lungamente qui</a></strong>.</p>
 <p>L’<em>utility</em> stavolta è <a href="https://duckdb.org/"><strong>duckdb</strong></a>. E il comando è:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span> <span class="at">-p</span> <span class="st">"OpenData Complessivo.zip"</span>  <span class="kw">|</span> <span class="dt">\</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-P</span> <span class="st">'(ANNO_DECISIONE|\|REGIONE AUTONOMA DELLA SICILIA\|)'</span> <span class="kw">|</span> <span class="dt">\</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> <span class="at">-c</span> <span class="st">"COPY(</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="st">  SELECT * FROM read_csv_auto('/dev/stdin', delim = '|')</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="st">) TO 'regione_siciliana.parquet' (</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="st">  FORMAT 'parquet',</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="st">  COMPRESSION 'ZSTD',</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="st">  ROW_GROUP_SIZE 100000</span></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="st">)"</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span> <span class="at">-p</span> <span class="st">"OpenData Complessivo.zip"</span>  <span class="kw">|</span> <span class="dt">\</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-P</span> <span class="st">'(ANNO_DECISIONE|\|REGIONE AUTONOMA DELLA SICILIA\|)'</span> <span class="kw">|</span> <span class="dt">\</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> <span class="at">-c</span> <span class="st">"COPY(</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="st">  SELECT * FROM read_csv_auto('/dev/stdin', delim = '|')</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="st">) TO 'regione_siciliana.parquet' (</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="st">  FORMAT 'parquet',</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="st">  COMPRESSION 'ZSTD',</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="st">  ROW_GROUP_SIZE 100000</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="st">)"</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Alcune note su questo comando (messo su più righe, per migliorare la leggibilità):</p>
 <ul>
 <li>si parte dal comando precedente, con il filtro per <a href="#estrazione-di-un-campione">estrarre il campione</a>;</li>
@@ -670,7 +685,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","openEffect":"zoom","descPosition":"bottom","selector":".lightbox","loop":false});
+<script>var lightboxQuarto = GLightbox({"loop":false,"selector":".lightbox","descPosition":"bottom","closeEffect":"zoom","openEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;
