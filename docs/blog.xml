@@ -96,7 +96,7 @@ font-style: inherit;">head</span></span></code></pre></div>
 <div id="fig-head" class="lightbox quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-head-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="immagini/head.png" class="lightbox" data-glightbox="description: .lightbox-desc-1" data-gallery="quarto-lightbox-gallery-1"><img src="https://aborruso.github.io/posts/csv-ventitre-gigabyte-senza-affanno/immagini/head.png" class="img-fluid figure-img"></a>
+<a href="immagini/head.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" data-glightbox="description: .lightbox-desc-1"><img src="https://aborruso.github.io/posts/csv-ventitre-gigabyte-senza-affanno/immagini/head.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-head-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;2: Le prime righe del file con i progetti
@@ -126,7 +126,7 @@ font-style: inherit;">&gt;</span> campione.csv</span></code></pre></div>
 <div id="fig-vd" class="lightbox quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-vd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="immagini/vd.png" class="lightbox" data-glightbox="description: .lightbox-desc-2" data-gallery="quarto-lightbox-gallery-2"><img src="https://aborruso.github.io/posts/csv-ventitre-gigabyte-senza-affanno/immagini/vd.png" class="img-fluid figure-img"></a>
+<a href="immagini/vd.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" data-glightbox="description: .lightbox-desc-2"><img src="https://aborruso.github.io/posts/csv-ventitre-gigabyte-senza-affanno/immagini/vd.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-vd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;3: Esplorazione dei dati campione con VisiData
@@ -264,8 +264,9 @@ font-style: inherit;">duckdb</span> OpenCUP.db <span class="at" style="color: #6
 background-color: null;
 font-style: inherit;">-c</span> <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"CREATE TABLE OpenCUP AS SELECT * FROM read_csv_auto('TOTALEfix.csv',delim='|',parallel=FALSE);"</span></span></code></pre></div>
-<p>Il file DuckDB risultante, a fronte di un CSV di 23.946.237.777 byte, è 4.466.159.616 byte, con una riduzione a circa 1/6, merito del formato binario contro quello ASCII.</p>
+font-style: inherit;">"CREATE TABLE OpenCUP AS SELECT * FROM read_csv_auto('TOTALEfix.csv',delim='|',dateformat='%d-%b-%y',parallel=FALSE);"</span></span></code></pre></div>
+<p>Notare che è stato necessario esplicitare il formato per la data, in modo che duckdb converta correttamente i campi relativi, che sono del tipo 01-JAN-15. Questo permette sia una migliore gestione dei dati, che una rappresentazione più efficiente in termini di spazio su disco.</p>
+<p>Il file DuckDB risultante, a fronte di un CSV di 23.946.237.777 byte, è 4.431.294.464 byte, con una riduzione a circa 1/6, merito del formato binario contro quello ASCII.</p>
 <section id="prestazioni-del-formato-duckdb" class="level3">
 <h3 class="anchored" data-anchor-id="prestazioni-del-formato-duckdb">Prestazioni del formato DuckDB</h3>
 <p>Una query di esempio</p>
@@ -299,7 +300,7 @@ background-color: null;
 font-style: inherit;">-c</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"COPY (SELECT * FROM OpenCUP) TO 'OpenCUP.parquet' (FORMAT 'PARQUET', CODEC 'ZSTD');</span></span></code></pre></div>
-<p>si ottiene un file Parquet di 2.299.910.076 byte, con una riduzione di circa 1/2 rispetto al formato nativo DuckDB.</p>
+<p>si ottiene un file Parquet di 2.296.193.848 byte, con una riduzione di circa 1/2 rispetto al formato nativo DuckDB.</p>
 <p>Se con questo comando si hanno problemi di memoria si può provare a impostare <code>SET preserve_insertion_order=false</code>:</p>
 <div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><span class="ex" style="color: null;
 background-color: null;
