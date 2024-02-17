@@ -187,7 +187,7 @@ si ottiene un file Parquet di 2.296.193.848 byte, con una riduzione di circa 1/2
 Se con questo comando si hanno problemi di memoria si può provare a impostare `SET preserve_insertion_order=false`:
 
 ```bash
-duckdb OpenCUP.db  -c "SET preserve_insertion_order=false;COPY (SELECT * FROM OpenCUP) TO 'OpenCUP.parquet' (FORMAT 'PARQUET', CODEC 'ZSTD');
+duckdb OpenCUP.db  -c "SET preserve_insertion_order=false;COPY (SELECT * FROM OpenCUP) TO 'OpenCUP.parquet' (FORMAT 'PARQUET', CODEC 'ZSTD');"
 ```
 
 Le prestazioni del formato Parquet sono notevoli
@@ -199,6 +199,31 @@ real	0m0,074s
 user	0m0,372s
 sys	0m0,043s
 ```
+
+### Note sui tempi di esecuzione
+
+I tempi di esecuzione sono stati misurati su un computer abbastanza "normale", con 16 GB di RAM e questo processore:
+
+```
+Vendor ID:               GenuineIntel
+  Model name:            12th Gen Intel(R) Core(TM) i7-1280P
+    CPU family:          6
+    Model:               154
+    Thread(s) per core:  2
+    Core(s) per socket:  10
+```
+
+Questa la tabella riassuntiva dei tempi di esecuzione:
+
+| Operazione | Tempo |
+|------------|-------|
+| Download (con `wget`) | `12:13.81` |
+| Decompressione (con `unzip`) | `1:33.05` |
+| Estrazione delle sole righe corrette (con `ugrep`)[^ugrep] | `2:25.63` |
+| Importazione in DuckDB | `4:15.97` |
+| Conversione in Parquet | `28.811` |
+
+[^ugrep]: `ugrep '^(?:[^|]*\|){90}[^|]*$' TOTALE.csv >TOTALEfix.csv`
 
 ## Note finali
 

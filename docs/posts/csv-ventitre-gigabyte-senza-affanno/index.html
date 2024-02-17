@@ -248,6 +248,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#prestazioni-del-formato-duckdb" id="toc-prestazioni-del-formato-duckdb" class="nav-link" data-scroll-target="#prestazioni-del-formato-duckdb">Prestazioni del formato DuckDB</a></li>
   <li><a href="#conversione-nel-formato-parquet" id="toc-conversione-nel-formato-parquet" class="nav-link" data-scroll-target="#conversione-nel-formato-parquet">Conversione nel formato Parquet</a></li>
+  <li><a href="#note-sui-tempi-di-esecuzione" id="toc-note-sui-tempi-di-esecuzione" class="nav-link" data-scroll-target="#note-sui-tempi-di-esecuzione">Note sui tempi di esecuzione</a></li>
   </ul></li>
   <li><a href="#note-finali" id="toc-note-finali" class="nav-link" data-scroll-target="#note-finali">Note finali</a></li>
   </ul>
@@ -393,13 +394,58 @@ Figura&nbsp;3: Esplorazione dei dati campione con VisiData
 <div class="sourceCode" id="cb9"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> OpenCUP.db  <span class="at">-c</span> <span class="st">"COPY (SELECT * FROM OpenCUP) TO 'OpenCUP.parquet' (FORMAT 'PARQUET', CODEC 'ZSTD');</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>si ottiene un file Parquet di 2.296.193.848 byte, con una riduzione di circa 1/2 rispetto al formato nativo DuckDB.</p>
 <p>Se con questo comando si hanno problemi di memoria si può provare a impostare <code>SET preserve_insertion_order=false</code>:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> OpenCUP.db  <span class="at">-c</span> <span class="st">"SET preserve_insertion_order=false;COPY (SELECT * FROM OpenCUP) TO 'OpenCUP.parquet' (FORMAT 'PARQUET', CODEC 'ZSTD');</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> OpenCUP.db  <span class="at">-c</span> <span class="st">"SET preserve_insertion_order=false;COPY (SELECT * FROM OpenCUP) TO 'OpenCUP.parquet' (FORMAT 'PARQUET', CODEC 'ZSTD');"</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Le prestazioni del formato Parquet sono notevoli</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">time</span> duckdb <span class="at">-s</span> <span class="st">'SELECT ANNO_DECISIONE, COUNT (*) FROM read_parquet("OpenCUP.parquet") GROUP BY ANNO_DECISIONE;'</span> <span class="op">&gt;</span> /dev/null</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="ex">real</span>    0m0,074s</span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="ex">user</span>    0m0,372s</span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="ex">sys</span> 0m0,043s</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="note-sui-tempi-di-esecuzione" class="level3">
+<h3 class="anchored" data-anchor-id="note-sui-tempi-di-esecuzione">Note sui tempi di esecuzione</h3>
+<p>I tempi di esecuzione sono stati misurati su un computer abbastanza “normale”, con 16 GB di RAM e questo processore:</p>
+<pre><code>Vendor ID:               GenuineIntel
+  Model name:            12th Gen Intel(R) Core(TM) i7-1280P
+    CPU family:          6
+    Model:               154
+    Thread(s) per core:  2
+    Core(s) per socket:  10</code></pre>
+<p>Questa la tabella riassuntiva dei tempi di esecuzione:</p>
+<table class="table">
+<colgroup>
+<col style="width: 63%">
+<col style="width: 36%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Operazione</th>
+<th>Tempo</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Download (con <code>wget</code>)</td>
+<td><code>12:13.81</code></td>
+</tr>
+<tr class="even">
+<td>Decompressione (con <code>unzip</code>)</td>
+<td><code>1:33.05</code></td>
+</tr>
+<tr class="odd">
+<td>Estrazione delle sole righe corrette (con <code>ugrep</code>)<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></td>
+<td><code>2:25.63</code></td>
+</tr>
+<tr class="even">
+<td>Importazione in DuckDB</td>
+<td><code>4:15.97</code></td>
+</tr>
+<tr class="odd">
+<td>Conversione in Parquet</td>
+<td><code>28.811</code></td>
+</tr>
+</tbody>
+</table>
 </section>
 </section>
 <section id="note-finali" class="level2">
@@ -414,7 +460,13 @@ Figura&nbsp;3: Esplorazione dei dati campione con VisiData
 </div>
 </section>
 
-<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Torna in cima</a></main> <!-- /main -->
+
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Torna in cima</a><div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Note</h2>
+
+<ol>
+<li id="fn1"><p><code>ugrep '^(?:[^|]*\|){90}[^|]*$' TOTALE.csv &gt;TOTALEfix.csv</code><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -734,7 +786,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"openEffect":"zoom","closeEffect":"zoom","selector":".lightbox","loop":false,"descPosition":"bottom"});
+<script>var lightboxQuarto = GLightbox({"selector":".lightbox","loop":false,"descPosition":"bottom","closeEffect":"zoom","openEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

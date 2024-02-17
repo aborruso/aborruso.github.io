@@ -308,7 +308,7 @@ font-style: inherit;">duckdb</span> OpenCUP.db  <span class="at" style="color: #
 background-color: null;
 font-style: inherit;">-c</span> <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"SET preserve_insertion_order=false;COPY (SELECT * FROM OpenCUP) TO 'OpenCUP.parquet' (FORMAT 'PARQUET', CODEC 'ZSTD');</span></span></code></pre></div>
+font-style: inherit;">"SET preserve_insertion_order=false;COPY (SELECT * FROM OpenCUP) TO 'OpenCUP.parquet' (FORMAT 'PARQUET', CODEC 'ZSTD');"</span></span></code></pre></div>
 <p>Le prestazioni del formato Parquet sono notevoli</p>
 <div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><span class="bu" style="color: null;
 background-color: null;
@@ -330,6 +330,51 @@ font-style: inherit;">user</span>    0m0,372s</span>
 background-color: null;
 font-style: inherit;">sys</span> 0m0,043s</span></code></pre></div>
 </section>
+<section id="note-sui-tempi-di-esecuzione" class="level3">
+<h3 class="anchored" data-anchor-id="note-sui-tempi-di-esecuzione">Note sui tempi di esecuzione</h3>
+<p>I tempi di esecuzione sono stati misurati su un computer abbastanza “normale”, con 16 GB di RAM e questo processore:</p>
+<pre><code>Vendor ID:               GenuineIntel
+  Model name:            12th Gen Intel(R) Core(TM) i7-1280P
+    CPU family:          6
+    Model:               154
+    Thread(s) per core:  2
+    Core(s) per socket:  10</code></pre>
+<p>Questa la tabella riassuntiva dei tempi di esecuzione:</p>
+<table class="table">
+<colgroup>
+<col style="width: 63%">
+<col style="width: 36%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Operazione</th>
+<th>Tempo</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Download (con <code>wget</code>)</td>
+<td><code>12:13.81</code></td>
+</tr>
+<tr class="even">
+<td>Decompressione (con <code>unzip</code>)</td>
+<td><code>1:33.05</code></td>
+</tr>
+<tr class="odd">
+<td>Estrazione delle sole righe corrette (con <code>ugrep</code>)<sup>1</sup></td>
+<td><code>2:25.63</code></td>
+</tr>
+<tr class="even">
+<td>Importazione in DuckDB</td>
+<td><code>4:15.97</code></td>
+</tr>
+<tr class="odd">
+<td>Conversione in Parquet</td>
+<td><code>28.811</code></td>
+</tr>
+</tbody>
+</table>
+</section>
 </section>
 <section id="note-finali" class="level2">
 <h2 class="anchored" data-anchor-id="note-finali">Note finali</h2>
@@ -340,7 +385,13 @@ font-style: inherit;">sys</span> 0m0,043s</span></code></pre></div>
 
 </section>
 
-<a onclick="window.scrollTo(0, 0); return false;" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Torna in cima</a> ]]></description>
+
+<a onclick="window.scrollTo(0, 0); return false;" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Torna in cima</a><div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document"><h2 class="anchored quarto-appendix-heading">Note</h2>
+
+<ol>
+<li id="fn1"><p><code>ugrep '^(?:[^|]*\|){90}[^|]*$' TOTALE.csv &gt;TOTALEfix.csv</code>↩︎</p></li>
+</ol>
+</section></div> ]]></description>
   <category>duckdb</category>
   <category>csv</category>
   <category>cli</category>
