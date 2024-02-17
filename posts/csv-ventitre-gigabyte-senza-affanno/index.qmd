@@ -220,7 +220,7 @@ Questa la tabella riassuntiva dei tempi di esecuzione:
 | Decompressione (con `unzip`) | `1:33.05` |
 | Estrazione delle sole righe corrette (con `ugrep`)[^ugrep] | `2:25.63` |
 | Importazione in DuckDB | `4:15.97` |
-| Conversione in Parquet | `00:28.811` |
+| Conversione in Parquet | `0:28.811` |
 
 [^ugrep]: `ugrep '^(?:[^|]*\|){90}[^|]*$' TOTALE.csv >TOTALEfix.csv`
 
