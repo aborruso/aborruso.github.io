@@ -376,9 +376,9 @@ Figura&nbsp;3: Esplorazione dei dati campione con VisiData
 <p>È possibile importare il file in un DB in formato DuckDB con i seguenti comandi (occorre avere il file CSV su disco per limitare l’occupazione di RAM):</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span> <span class="st">"OpenData Complessivo.zip"</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">awk</span> <span class="at">-F\|</span> <span class="st">'{if (NF-1 == 90) { print } }'</span> <span class="op">&lt;</span> TOTALE.csv <span class="op">&gt;</span> TOTALEfix.csv</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> OpenCUP.db <span class="at">-c</span> <span class="st">"CREATE TABLE OpenCUP AS SELECT * FROM read_csv_auto('TOTALEfix.csv',delim='|',dateformat='%d-%b-%y',parallel=FALSE);"</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Notare che è stato necessario esplicitare il formato per la data, in modo che duckdb converta correttamente i campi relativi, che sono del tipo 01-JAN-15. Questo permette sia una migliore gestione dei dati, che una rappresentazione più efficiente in termini di spazio su disco.</p>
-<p>Il file DuckDB risultante, a fronte di un CSV di 23.946.237.777 byte, è 4.431.294.464 byte, con una riduzione a circa 1/6, merito del formato binario contro quello ASCII.</p>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> OpenCUP.db <span class="at">-c</span> <span class="st">"CREATE TABLE OpenCUP AS SELECT * FROM read_csv_auto('TOTALEfix.csv',delim='|',header = true,dateformat='%d-%b-%y',parallel=FALSE,types={'DATA_ULTIMA_MODIFICA_SSC':'DATE','DATA_ULTIMA_MODIFICA_UTENTE':'DATE','DATA_CHIUSURA_REVOCA':'DATE','DATA_GENERAZIONE_CUP':'DATE'});"</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Notare che è stato esplicitato il formato per il formato delle date, e quali sono i campi di tipo <code>DATE</code>, in modo che duckdb converta correttamente i campi relativi, che sono del tipo <code>01-JAN-15</code>. Questo permette sia una migliore gestione dei dati, che una rappresentazione più efficiente in termini di spazio su disco.</p>
+<p>Il file DuckDB risultante, a fronte di un CSV di <code>23.946.237.777 byte</code>, è <code>4.431.294.464 byte</code>, con una riduzione a circa 1/6, merito del formato binario contro quello ASCII.</p>
 <section id="prestazioni-del-formato-duckdb" class="level3">
 <h3 class="anchored" data-anchor-id="prestazioni-del-formato-duckdb">Prestazioni del formato DuckDB</h3>
 <p>Una query di esempio</p>
@@ -786,7 +786,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"selector":".lightbox","loop":false,"descPosition":"bottom","closeEffect":"zoom","openEffect":"zoom"});
+<script>var lightboxQuarto = GLightbox({"descPosition":"bottom","loop":false,"openEffect":"zoom","closeEffect":"zoom","selector":".lightbox"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

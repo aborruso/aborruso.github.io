@@ -264,9 +264,9 @@ font-style: inherit;">duckdb</span> OpenCUP.db <span class="at" style="color: #6
 background-color: null;
 font-style: inherit;">-c</span> <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"CREATE TABLE OpenCUP AS SELECT * FROM read_csv_auto('TOTALEfix.csv',delim='|',dateformat='%d-%b-%y',parallel=FALSE);"</span></span></code></pre></div>
-<p>Notare che è stato necessario esplicitare il formato per la data, in modo che duckdb converta correttamente i campi relativi, che sono del tipo 01-JAN-15. Questo permette sia una migliore gestione dei dati, che una rappresentazione più efficiente in termini di spazio su disco.</p>
-<p>Il file DuckDB risultante, a fronte di un CSV di 23.946.237.777 byte, è 4.431.294.464 byte, con una riduzione a circa 1/6, merito del formato binario contro quello ASCII.</p>
+font-style: inherit;">"CREATE TABLE OpenCUP AS SELECT * FROM read_csv_auto('TOTALEfix.csv',delim='|',header = true,dateformat='%d-%b-%y',parallel=FALSE,types={'DATA_ULTIMA_MODIFICA_SSC':'DATE','DATA_ULTIMA_MODIFICA_UTENTE':'DATE','DATA_CHIUSURA_REVOCA':'DATE','DATA_GENERAZIONE_CUP':'DATE'});"</span></span></code></pre></div>
+<p>Notare che è stato esplicitato il formato per il formato delle date, e quali sono i campi di tipo <code>DATE</code>, in modo che duckdb converta correttamente i campi relativi, che sono del tipo <code>01-JAN-15</code>. Questo permette sia una migliore gestione dei dati, che una rappresentazione più efficiente in termini di spazio su disco.</p>
+<p>Il file DuckDB risultante, a fronte di un CSV di <code>23.946.237.777 byte</code>, è <code>4.431.294.464 byte</code>, con una riduzione a circa 1/6, merito del formato binario contro quello ASCII.</p>
 <section id="prestazioni-del-formato-duckdb" class="level3">
 <h3 class="anchored" data-anchor-id="prestazioni-del-formato-duckdb">Prestazioni del formato DuckDB</h3>
 <p>Una query di esempio</p>
