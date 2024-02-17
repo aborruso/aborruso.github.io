@@ -158,7 +158,7 @@ unzip "OpenData Complessivo.zip"
 awk -F\| '{if (NF-1 == 90) { print } }' < TOTALE.csv > TOTALEfix.csv
 duckdb OpenCUP.db -c "CREATE TABLE OpenCUP AS SELECT * FROM read_csv_auto('TOTALEfix.csv',delim='|',header = true,dateformat='%d-%b-%y',parallel=FALSE,types={'DATA_ULTIMA_MODIFICA_SSC':'DATE','DATA_ULTIMA_MODIFICA_UTENTE':'DATE','DATA_CHIUSURA_REVOCA':'DATE','DATA_GENERAZIONE_CUP':'DATE'});"
 ```
-Notare che è stato esplicitato il formato per il formato delle date, e quali sono i campi di tipo `DATE`, in modo che duckdb converta correttamente i campi relativi, che sono del tipo `01-JAN-15`. Questo permette sia una migliore gestione dei dati, che una rappresentazione più efficiente in termini di spazio su disco.
+Notare che è stato esplicitato il formato delle date, e quali sono i campi di tipo `DATE`, in modo che duckdb converta correttamente i campi relativi, che sono del tipo `01-JAN-15`. Questo permette sia una migliore gestione dei dati, che una rappresentazione più efficiente in termini di spazio su disco.
 
 Il file DuckDB risultante, a fronte di un CSV di `23.946.237.777 byte`, è `4.431.294.464 byte`, con una riduzione a circa 1/6, merito del formato binario contro quello ASCII.
 
