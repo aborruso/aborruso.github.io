@@ -249,6 +249,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#prestazioni-del-formato-duckdb" id="toc-prestazioni-del-formato-duckdb" class="nav-link" data-scroll-target="#prestazioni-del-formato-duckdb">Prestazioni del formato DuckDB</a></li>
   <li><a href="#conversione-nel-formato-parquet" id="toc-conversione-nel-formato-parquet" class="nav-link" data-scroll-target="#conversione-nel-formato-parquet">Conversione nel formato Parquet</a></li>
   <li><a href="#note-sui-tempi-di-esecuzione" id="toc-note-sui-tempi-di-esecuzione" class="nav-link" data-scroll-target="#note-sui-tempi-di-esecuzione">Note sui tempi di esecuzione</a></li>
+  <li><a href="#versione-più-sintetica-e-rapida" id="toc-versione-più-sintetica-e-rapida" class="nav-link" data-scroll-target="#versione-più-sintetica-e-rapida">Versione più sintetica e rapida</a></li>
   </ul></li>
   <li><a href="#note-finali" id="toc-note-finali" class="nav-link" data-scroll-target="#note-finali">Note finali</a></li>
   </ul>
@@ -314,7 +315,7 @@ Avviso
 <div id="fig-head" class="lightbox quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-head-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="immagini/head.png" class="lightbox" data-glightbox="description: .lightbox-desc-1" data-gallery="quarto-lightbox-gallery-1"><img src="immagini/head.png" class="img-fluid figure-img"></a>
+<a href="immagini/head.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" data-glightbox="description: .lightbox-desc-1"><img src="immagini/head.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-head-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;2: Le prime righe del file con i progetti
@@ -330,7 +331,7 @@ Figura&nbsp;2: Le prime righe del file con i progetti
 <div id="fig-vd" class="lightbox quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-vd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="immagini/vd.png" class="lightbox" data-glightbox="description: .lightbox-desc-2" data-gallery="quarto-lightbox-gallery-2"><img src="immagini/vd.png" class="img-fluid figure-img"></a>
+<a href="immagini/vd.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" data-glightbox="description: .lightbox-desc-2"><img src="immagini/vd.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-vd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;3: Esplorazione dei dati campione con VisiData
@@ -446,6 +447,14 @@ Figura&nbsp;3: Esplorazione dei dati campione con VisiData
 </tr>
 </tbody>
 </table>
+</section>
+<section id="versione-più-sintetica-e-rapida" class="level3">
+<h3 class="anchored" data-anchor-id="versione-più-sintetica-e-rapida">Versione più sintetica e rapida</h3>
+<p>In duckdb, nell’import dei file <code>CSV</code>, c’è l’opzione <code>ignore_errors=true</code>, che permette di ignorare le righe con un numero di colonne errato. E quindi si può saltare la creazione di un secondo grande <code>CSV</code> per applicare il filtro.</p>
+<p>Inoltre, se non abbiamo bisogno del database DuckDB, possiamo convertire direttamente il file <code>CSV</code> in <code>parquet</code> e saltare quindi un altro passaggio.</p>
+<p>Il comando sintetico è:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> <span class="at">-c</span> <span class="st">"SET preserve_insertion_order=false;COPY(SELECT * FROM read_csv_auto('TOTALE.csv',delim='|',header = true,ignore_errors=true,dateformat='%d-%b-%y',parallel=FALSE,types={'DATA_ULTIMA_MODIFICA_SSC':'DATE','DATA_ULTIMA_MODIFICA_UTENTE':'DATE','DATA_CHIUSURA_REVOCA':'DATE','DATA_GENERAZIONE_CUP':'DATE'})) TO 'opencup.parquet' WITH (FORMAT PARQUET, COMPRESSION ZSTD,ROW_GROUP_SIZE 100000)"</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Così facendo, c’è un risparmio di tempo di circa il 30%.</p>
 </section>
 </section>
 <section id="note-finali" class="level2">
@@ -786,7 +795,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","selector":".lightbox","openEffect":"zoom","loop":false,"descPosition":"bottom"});
+<script>var lightboxQuarto = GLightbox({"openEffect":"zoom","loop":false,"selector":".lightbox","descPosition":"bottom","closeEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

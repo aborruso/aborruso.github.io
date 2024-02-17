@@ -96,7 +96,7 @@ font-style: inherit;">head</span></span></code></pre></div>
 <div id="fig-head" class="lightbox quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-head-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="immagini/head.png" class="lightbox" data-glightbox="description: .lightbox-desc-1" data-gallery="quarto-lightbox-gallery-1"><img src="https://aborruso.github.io/posts/csv-ventitre-gigabyte-senza-affanno/immagini/head.png" class="img-fluid figure-img"></a>
+<a href="immagini/head.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" data-glightbox="description: .lightbox-desc-1"><img src="https://aborruso.github.io/posts/csv-ventitre-gigabyte-senza-affanno/immagini/head.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-head-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;2: Le prime righe del file con i progetti
@@ -126,7 +126,7 @@ font-style: inherit;">&gt;</span> campione.csv</span></code></pre></div>
 <div id="fig-vd" class="lightbox quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-vd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="immagini/vd.png" class="lightbox" data-glightbox="description: .lightbox-desc-2" data-gallery="quarto-lightbox-gallery-2"><img src="https://aborruso.github.io/posts/csv-ventitre-gigabyte-senza-affanno/immagini/vd.png" class="img-fluid figure-img"></a>
+<a href="immagini/vd.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" data-glightbox="description: .lightbox-desc-2"><img src="https://aborruso.github.io/posts/csv-ventitre-gigabyte-senza-affanno/immagini/vd.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-vd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;3: Esplorazione dei dati campione con VisiData
@@ -374,6 +374,20 @@ font-style: inherit;">sys</span> 0m0,043s</span></code></pre></div>
 </tr>
 </tbody>
 </table>
+</section>
+<section id="versione-più-sintetica-e-rapida" class="level3">
+<h3 class="anchored" data-anchor-id="versione-più-sintetica-e-rapida">Versione più sintetica e rapida</h3>
+<p>In duckdb, nell’import dei file <code>CSV</code>, c’è l’opzione <code>ignore_errors=true</code>, che permette di ignorare le righe con un numero di colonne errato. E quindi si può saltare la creazione di un secondo grande <code>CSV</code> per applicare il filtro.</p>
+<p>Inoltre, se non abbiamo bisogno del database DuckDB, possiamo convertire direttamente il file <code>CSV</code> in <code>parquet</code> e saltare quindi un altro passaggio.</p>
+<p>Il comando sintetico è:</p>
+<div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">duckdb</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-c</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"SET preserve_insertion_order=false;COPY(SELECT * FROM read_csv_auto('TOTALE.csv',delim='|',header = true,ignore_errors=true,dateformat='%d-%b-%y',parallel=FALSE,types={'DATA_ULTIMA_MODIFICA_SSC':'DATE','DATA_ULTIMA_MODIFICA_UTENTE':'DATE','DATA_CHIUSURA_REVOCA':'DATE','DATA_GENERAZIONE_CUP':'DATE'})) TO 'opencup.parquet' WITH (FORMAT PARQUET, COMPRESSION ZSTD,ROW_GROUP_SIZE 100000)"</span></span></code></pre></div>
+<p>Così facendo, c’è un risparmio di tempo di circa il 30%.</p>
 </section>
 </section>
 <section id="note-finali" class="level2">

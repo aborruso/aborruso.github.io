@@ -224,6 +224,20 @@ Questa la tabella riassuntiva dei tempi di esecuzione:
 
 [^ugrep]: `ugrep '^(?:[^|]*\|){90}[^|]*$' TOTALE.csv >TOTALEfix.csv`
 
+### Versione più sintetica e rapida
+
+In duckdb, nell'import dei file `CSV`, c'è l'opzione `ignore_errors=true`, che permette di ignorare le righe con un numero di colonne errato. E quindi si può saltare la creazione di un secondo grande `CSV` per applicare il filtro.
+
+Inoltre, se non abbiamo bisogno del database DuckDB, possiamo convertire direttamente il file `CSV` in `parquet` e saltare quindi un altro passaggio.
+
+Il comando sintetico è:
+
+```bash
+duckdb -c "SET preserve_insertion_order=false;COPY(SELECT * FROM read_csv_auto('TOTALE.csv',delim='|',header = true,ignore_errors=true,dateformat='%d-%b-%y',parallel=FALSE,types={'DATA_ULTIMA_MODIFICA_SSC':'DATE','DATA_ULTIMA_MODIFICA_UTENTE':'DATE','DATA_CHIUSURA_REVOCA':'DATE','DATA_GENERAZIONE_CUP':'DATE'})) TO 'opencup.parquet' WITH (FORMAT PARQUET, COMPRESSION ZSTD,ROW_GROUP_SIZE 100000)"
+```
+
+Così facendo, c'è un risparmio di tempo di circa il 30%.
+
 ## Note finali
 
 Questa descritta è **soltanto** una modalità per fare soprattuto una **prima** **esplorazione** e **analisi** di questo nuovo e importante aggiornamento dei dati di OpenCUP.<br>
