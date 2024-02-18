@@ -95,6 +95,10 @@ E questo nuovo file sarà esplorabile con **foglio elettronico** o con altri str
 
 ![Esplorazione dei dati campione con VisiData](immagini/vd.png){.lightbox #fig-vd}
 
+::: {.callout-note}
+Il [professore Taibi](https://www.linkedin.com/in/davide-taibi-b6825113/) ci ha fatto notare che **questo non è un vero campione**, ma soltanto le prime `n` righe del file. Un vero campione dovrebbe essere estratto in modo casuale, ma sarebbe necessario decomprimere tutto il file per farlo. E quindi qui, per un'esplorazione rapida, ci accontentiamo di questo.
+:::
+
 ## Filtrare l'intero file
 
 L'esplorazione del [campione](#estrazione-di-un-campione) consente di farsi un'idea di quali sono quei campi/colonne che fanno un po' da elementi "categorici", da usare come filtro per estrarre solo le righe che ci interessano.<br>
