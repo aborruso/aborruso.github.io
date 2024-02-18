@@ -106,7 +106,7 @@ Figura&nbsp;2: Le prime righe del file con i progetti
 </section>
 <section id="estrazione-di-un-campione" class="level2">
 <h2 class="anchored" data-anchor-id="estrazione-di-un-campione">Estrazione di un campione</h2>
-<p>Viste le prime 10 righe e mappate le caratteristiche del CSV, il passo consigliato complessivo è quello dell’estrazione di un campione di righe più ampio, per fare un’analisi più approfondita.<br> Con una piccola modifica al comando soprastante, si possono ad esempio estrarre le prime 10.000 righe e salvarle in un nuovo file <code>CSV</code> (in <code>0.055</code> secondi):</p>
+<p>Viste le prime 10 righe e mappate le caratteristiche del CSV, il passo consigliato successivo è quello dell’estrazione di un campione di righe più ampio, per fare un’analisi più approfondita.<br> Con una piccola modifica al comando soprastante, si possono ad esempio estrarre le prime 10.000 righe e salvarle in un nuovo file <code>CSV</code> (in <code>0.055</code> secondi):</p>
 <div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">unzip</span> <span class="at" style="color: #657422;

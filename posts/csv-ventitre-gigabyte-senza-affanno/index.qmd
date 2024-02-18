@@ -84,7 +84,7 @@ E subito si vedrà qualcosa come in @fig-head, che ci restituisce già elementi 
 
 ## Estrazione di un campione
 
-Viste le prime 10 righe e mappate le caratteristiche del CSV, il passo consigliato complessivo è quello dell'estrazione di un campione di righe più ampio, per fare un'analisi più approfondita.<br>
+Viste le prime 10 righe e mappate le caratteristiche del CSV, il passo consigliato successivo è quello dell'estrazione di un campione di righe più ampio, per fare un'analisi più approfondita.<br>
 Con una piccola modifica al comando soprastante, si possono ad esempio estrarre le prime 10.000 righe e salvarle in un nuovo file `CSV` (in `0.055` secondi):
 
 ```bash
