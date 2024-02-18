@@ -182,7 +182,7 @@ font-style: inherit;">&gt;</span>regione_siciliana.csv</span></code></pre></div>
 <section id="un-file-parquet-a-partire-dai-dati-filtrati" class="level2">
 <h2 class="anchored" data-anchor-id="un-file-parquet-a-partire-dai-dati-filtrati">Un file parquet a partire dai dati filtrati</h2>
 <p>Questo ultimo passo, perché è utile avere a disposizione questi dati anche in un formato più efficiente, come il <code>parquet</code>, che è un formato di file binario, compresso e colonnare, che permette di ridurre notevolmente lo spazio occupato e di velocizzare le operazioni di lettura e analisi.<br> Per chi non ne ha mai sentito parlare, <strong><a href="../../posts/duckdb-intro-csv/index.html">ne ho scritto lungamente qui</a></strong>.</p>
-<p>L’<em>utility</em> stavolta è <a href="https://duckdb.org/"><strong>duckdb</strong></a>. E il comando è:</p>
+<p>L’<em>utility</em> stavolta è <a href="https://duckdb.org/"><strong>DuckDB</strong></a>. E il comando è:</p>
 <div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">unzip</span> <span class="at" style="color: #657422;
@@ -265,7 +265,7 @@ background-color: null;
 font-style: inherit;">-c</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"CREATE TABLE OpenCUP AS SELECT * FROM read_csv_auto('TOTALEfix.csv',delim='|',header = true,dateformat='%d-%b-%y',parallel=FALSE,types={'DATA_ULTIMA_MODIFICA_SSC':'DATE','DATA_ULTIMA_MODIFICA_UTENTE':'DATE','DATA_CHIUSURA_REVOCA':'DATE','DATA_GENERAZIONE_CUP':'DATE'});"</span></span></code></pre></div>
-<p>Notare che è stato esplicitato il formato delle date, e quali sono i campi di tipo <code>DATE</code>, in modo che duckdb converta correttamente i campi relativi, che sono del tipo <code>01-JAN-15</code>. Questo permette sia una migliore gestione dei dati, che una rappresentazione più efficiente in termini di spazio su disco.</p>
+<p>Notare che è stato esplicitato il formato delle date, e quali sono i campi di tipo <code>DATE</code>, in modo che DuckDB converta correttamente i campi relativi, che sono del tipo <code>01-JAN-15</code>. Questo permette sia una migliore gestione dei dati, che una rappresentazione più efficiente in termini di spazio su disco.</p>
 <p>Il file DuckDB risultante, a fronte di un CSV di <code>23.946.237.777 byte</code>, è <code>4.431.294.464 byte</code>, con una riduzione a circa 1/6, merito del formato binario contro quello ASCII.</p>
 <section id="prestazioni-del-formato-duckdb" class="level3">
 <h3 class="anchored" data-anchor-id="prestazioni-del-formato-duckdb">Prestazioni del formato DuckDB</h3>
@@ -377,7 +377,7 @@ font-style: inherit;">sys</span> 0m0,043s</span></code></pre></div>
 </section>
 <section id="versione-più-sintetica-e-rapida" class="level3">
 <h3 class="anchored" data-anchor-id="versione-più-sintetica-e-rapida">Versione più sintetica e rapida</h3>
-<p>In duckdb, nell’import dei file <code>CSV</code>, c’è l’opzione <code>ignore_errors=true</code>, che permette di ignorare le righe con un numero di colonne errato. E quindi si può saltare la creazione di un secondo grande <code>CSV</code> per applicare il filtro.</p>
+<p>In DuckDB, nell’import dei file <code>CSV</code>, c’è l’opzione <code>ignore_errors=true</code>, che permette di ignorare le righe che contengono errori (come quelle con un numero di colonne errato). E quindi si può saltare la creazione di un secondo grande <code>CSV</code> per applicare il filtro.</p>
 <p>Inoltre, se non abbiamo bisogno del database DuckDB, possiamo convertire direttamente il file <code>CSV</code> in <code>parquet</code> e saltare quindi un altro passaggio.</p>
 <p>Il comando sintetico è:</p>
 <div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><span class="ex" style="color: null;
@@ -393,7 +393,7 @@ font-style: inherit;">"SET preserve_insertion_order=false;COPY(SELECT * FROM rea
 <section id="note-finali" class="level2">
 <h2 class="anchored" data-anchor-id="note-finali">Note finali</h2>
 <p>Questa descritta è <strong>soltanto</strong> una modalità per fare soprattutto una <strong>prima</strong> <strong>esplorazione</strong> e <strong>analisi</strong> di questo nuovo e importante aggiornamento dei dati di OpenCUP.<br> È utilissima per capire per cosa è possibile usare questi dati, quali sono le informazioni che ci interessano di più, che storia poter raccontare, che mappa creare, che <em>dashboard</em> realizzare, come usare l’intelligenza artificiale per arricchirli, come metterli in relazione con altri dati, ecc..</p>
-<p>Ma sono dati grandi, e in produzione bisognerà andare un po’ oltre l’utilizzo delle eccezionali <em>utility</em> a riga di comando. In ogni caso <strong>duckdb</strong>, se <strong>usato bene</strong>, fa già tanta tanta roba (partizionando il dataset originario in più file <code>parquet</code>, si ha disposizione tutto il dataset con una grandissima facilità di accesso e lettura).</p>
+<p>Ma sono dati grandi, e in produzione bisognerà andare un po’ oltre l’utilizzo delle eccezionali <em>utility</em> a riga di comando. In ogni caso <strong>DuckDB</strong>, se <strong>usato bene</strong>, fa già tanta tanta roba (partizionando il dataset originario in più file <code>parquet</code>, si ha disposizione tutto il dataset con una grandissima facilità di accesso e lettura).</p>
 
 
 

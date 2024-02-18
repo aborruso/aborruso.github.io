@@ -353,7 +353,7 @@ Figura&nbsp;3: Esplorazione dei dati campione con VisiData
 <section id="un-file-parquet-a-partire-dai-dati-filtrati" class="level2">
 <h2 class="anchored" data-anchor-id="un-file-parquet-a-partire-dai-dati-filtrati">Un file parquet a partire dai dati filtrati</h2>
 <p>Questo ultimo passo, perché è utile avere a disposizione questi dati anche in un formato più efficiente, come il <code>parquet</code>, che è un formato di file binario, compresso e colonnare, che permette di ridurre notevolmente lo spazio occupato e di velocizzare le operazioni di lettura e analisi.<br> Per chi non ne ha mai sentito parlare, <strong><a href="../../posts/duckdb-intro-csv/index.html">ne ho scritto lungamente qui</a></strong>.</p>
-<p>L’<em>utility</em> stavolta è <a href="https://duckdb.org/"><strong>duckdb</strong></a>. E il comando è:</p>
+<p>L’<em>utility</em> stavolta è <a href="https://duckdb.org/"><strong>DuckDB</strong></a>. E il comando è:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span> <span class="at">-p</span> <span class="st">"OpenData Complessivo.zip"</span>  <span class="kw">|</span> <span class="dt">\</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span> <span class="at">-P</span> <span class="st">'(ANNO_DECISIONE|\|REGIONE AUTONOMA DELLA SICILIA\|)'</span> <span class="kw">|</span> <span class="dt">\</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> <span class="at">-c</span> <span class="st">"COPY(</span></span>
@@ -378,7 +378,7 @@ Figura&nbsp;3: Esplorazione dei dati campione con VisiData
 <div class="sourceCode" id="cb7"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span> <span class="st">"OpenData Complessivo.zip"</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">awk</span> <span class="at">-F\|</span> <span class="st">'{if (NF-1 == 90) { print } }'</span> <span class="op">&lt;</span> TOTALE.csv <span class="op">&gt;</span> TOTALEfix.csv</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> OpenCUP.db <span class="at">-c</span> <span class="st">"CREATE TABLE OpenCUP AS SELECT * FROM read_csv_auto('TOTALEfix.csv',delim='|',header = true,dateformat='%d-%b-%y',parallel=FALSE,types={'DATA_ULTIMA_MODIFICA_SSC':'DATE','DATA_ULTIMA_MODIFICA_UTENTE':'DATE','DATA_CHIUSURA_REVOCA':'DATE','DATA_GENERAZIONE_CUP':'DATE'});"</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Notare che è stato esplicitato il formato delle date, e quali sono i campi di tipo <code>DATE</code>, in modo che duckdb converta correttamente i campi relativi, che sono del tipo <code>01-JAN-15</code>. Questo permette sia una migliore gestione dei dati, che una rappresentazione più efficiente in termini di spazio su disco.</p>
+<p>Notare che è stato esplicitato il formato delle date, e quali sono i campi di tipo <code>DATE</code>, in modo che DuckDB converta correttamente i campi relativi, che sono del tipo <code>01-JAN-15</code>. Questo permette sia una migliore gestione dei dati, che una rappresentazione più efficiente in termini di spazio su disco.</p>
 <p>Il file DuckDB risultante, a fronte di un CSV di <code>23.946.237.777 byte</code>, è <code>4.431.294.464 byte</code>, con una riduzione a circa 1/6, merito del formato binario contro quello ASCII.</p>
 <section id="prestazioni-del-formato-duckdb" class="level3">
 <h3 class="anchored" data-anchor-id="prestazioni-del-formato-duckdb">Prestazioni del formato DuckDB</h3>
@@ -450,7 +450,7 @@ Figura&nbsp;3: Esplorazione dei dati campione con VisiData
 </section>
 <section id="versione-più-sintetica-e-rapida" class="level3">
 <h3 class="anchored" data-anchor-id="versione-più-sintetica-e-rapida">Versione più sintetica e rapida</h3>
-<p>In duckdb, nell’import dei file <code>CSV</code>, c’è l’opzione <code>ignore_errors=true</code>, che permette di ignorare le righe con un numero di colonne errato. E quindi si può saltare la creazione di un secondo grande <code>CSV</code> per applicare il filtro.</p>
+<p>In DuckDB, nell’import dei file <code>CSV</code>, c’è l’opzione <code>ignore_errors=true</code>, che permette di ignorare le righe che contengono errori (come quelle con un numero di colonne errato). E quindi si può saltare la creazione di un secondo grande <code>CSV</code> per applicare il filtro.</p>
 <p>Inoltre, se non abbiamo bisogno del database DuckDB, possiamo convertire direttamente il file <code>CSV</code> in <code>parquet</code> e saltare quindi un altro passaggio.</p>
 <p>Il comando sintetico è:</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> <span class="at">-c</span> <span class="st">"SET preserve_insertion_order=false;COPY(SELECT * FROM read_csv_auto('TOTALE.csv',delim='|',header = true,ignore_errors=true,dateformat='%d-%b-%y',parallel=FALSE,types={'DATA_ULTIMA_MODIFICA_SSC':'DATE','DATA_ULTIMA_MODIFICA_UTENTE':'DATE','DATA_CHIUSURA_REVOCA':'DATE','DATA_GENERAZIONE_CUP':'DATE'})) TO 'opencup.parquet' WITH (FORMAT PARQUET, COMPRESSION ZSTD,ROW_GROUP_SIZE 100000)"</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -460,7 +460,7 @@ Figura&nbsp;3: Esplorazione dei dati campione con VisiData
 <section id="note-finali" class="level2">
 <h2 class="anchored" data-anchor-id="note-finali">Note finali</h2>
 <p>Questa descritta è <strong>soltanto</strong> una modalità per fare soprattutto una <strong>prima</strong> <strong>esplorazione</strong> e <strong>analisi</strong> di questo nuovo e importante aggiornamento dei dati di OpenCUP.<br> È utilissima per capire per cosa è possibile usare questi dati, quali sono le informazioni che ci interessano di più, che storia poter raccontare, che mappa creare, che <em>dashboard</em> realizzare, come usare l’intelligenza artificiale per arricchirli, come metterli in relazione con altri dati, ecc..</p>
-<p>Ma sono dati grandi, e in produzione bisognerà andare un po’ oltre l’utilizzo delle eccezionali <em>utility</em> a riga di comando. In ogni caso <strong>duckdb</strong>, se <strong>usato bene</strong>, fa già tanta tanta roba (partizionando il dataset originario in più file <code>parquet</code>, si ha disposizione tutto il dataset con una grandissima facilità di accesso e lettura).</p>
+<p>Ma sono dati grandi, e in produzione bisognerà andare un po’ oltre l’utilizzo delle eccezionali <em>utility</em> a riga di comando. In ogni caso <strong>DuckDB</strong>, se <strong>usato bene</strong>, fa già tanta tanta roba (partizionando il dataset originario in più file <code>parquet</code>, si ha disposizione tutto il dataset con una grandissima facilità di accesso e lettura).</p>
 
 
 <div class="hidden" aria-hidden="true">
@@ -795,7 +795,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"selector":".lightbox","descPosition":"bottom","closeEffect":"zoom","openEffect":"zoom","loop":false});
+<script>var lightboxQuarto = GLightbox({"loop":false,"selector":".lightbox","descPosition":"bottom","openEffect":"zoom","closeEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

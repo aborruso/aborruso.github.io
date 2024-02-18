@@ -124,7 +124,7 @@ Così vengono cercate tutte le righe che contengono o `ANNO_DECISIONE` o `|REGIO
 Questo ultimo passo, perché è utile avere a disposizione questi dati anche in un formato più efficiente, come il `parquet`, che è un formato di file binario, compresso e colonnare, che permette di ridurre notevolmente lo spazio occupato e di velocizzare le operazioni di lettura e analisi.<br>
 Per chi non ne ha mai sentito parlare, **[ne ho scritto lungamente qui](../duckdb-intro-csv/index.qmd)**.
 
-L'*utility* stavolta è [**duckdb**](https://duckdb.org/). E il comando è:
+L'*utility* stavolta è [**DuckDB**](https://duckdb.org/). E il comando è:
 
 ```bash
 unzip -p "OpenData Complessivo.zip"  | \
@@ -158,7 +158,7 @@ unzip "OpenData Complessivo.zip"
 awk -F\| '{if (NF-1 == 90) { print } }' < TOTALE.csv > TOTALEfix.csv
 duckdb OpenCUP.db -c "CREATE TABLE OpenCUP AS SELECT * FROM read_csv_auto('TOTALEfix.csv',delim='|',header = true,dateformat='%d-%b-%y',parallel=FALSE,types={'DATA_ULTIMA_MODIFICA_SSC':'DATE','DATA_ULTIMA_MODIFICA_UTENTE':'DATE','DATA_CHIUSURA_REVOCA':'DATE','DATA_GENERAZIONE_CUP':'DATE'});"
 ```
-Notare che è stato esplicitato il formato delle date, e quali sono i campi di tipo `DATE`, in modo che duckdb converta correttamente i campi relativi, che sono del tipo `01-JAN-15`. Questo permette sia una migliore gestione dei dati, che una rappresentazione più efficiente in termini di spazio su disco.
+Notare che è stato esplicitato il formato delle date, e quali sono i campi di tipo `DATE`, in modo che DuckDB converta correttamente i campi relativi, che sono del tipo `01-JAN-15`. Questo permette sia una migliore gestione dei dati, che una rappresentazione più efficiente in termini di spazio su disco.
 
 Il file DuckDB risultante, a fronte di un CSV di `23.946.237.777 byte`, è `4.431.294.464 byte`, con una riduzione a circa 1/6, merito del formato binario contro quello ASCII.
 
@@ -226,7 +226,7 @@ Questa la tabella riassuntiva dei tempi di esecuzione:
 
 ### Versione più sintetica e rapida
 
-In duckdb, nell'import dei file `CSV`, c'è l'opzione `ignore_errors=true`, che permette di ignorare le righe con un numero di colonne errato. E quindi si può saltare la creazione di un secondo grande `CSV` per applicare il filtro.
+In DuckDB, nell'import dei file `CSV`, c'è l'opzione `ignore_errors=true`, che permette di ignorare le righe che contengono errori (come quelle con un numero di colonne errato). E quindi si può saltare la creazione di un secondo grande `CSV` per applicare il filtro.
 
 Inoltre, se non abbiamo bisogno del database DuckDB, possiamo convertire direttamente il file `CSV` in `parquet` e saltare quindi un altro passaggio.
 
@@ -243,4 +243,4 @@ Così facendo, c'è un risparmio di tempo di circa il 30%.
 Questa descritta è **soltanto** una modalità per fare soprattutto una **prima** **esplorazione** e **analisi** di questo nuovo e importante aggiornamento dei dati di OpenCUP.<br>
 È utilissima per capire per cosa è possibile usare questi dati, quali sono le informazioni che ci interessano di più, che storia poter raccontare, che mappa creare, che *dashboard* realizzare, come usare l'intelligenza artificiale per arricchirli, come metterli in relazione con altri dati, ecc..
 
-Ma sono dati grandi, e in produzione bisognerà andare un po' oltre l'utilizzo delle eccezionali *utility* a riga di comando. In ogni caso **duckdb**, se **usato bene**, fa già tanta tanta roba (partizionando il dataset originario in più file `parquet`, si ha disposizione tutto il dataset con una grandissima facilità di accesso e lettura).
+Ma sono dati grandi, e in produzione bisognerà andare un po' oltre l'utilizzo delle eccezionali *utility* a riga di comando. In ogni caso **DuckDB**, se **usato bene**, fa già tanta tanta roba (partizionando il dataset originario in più file `parquet`, si ha disposizione tutto il dataset con una grandissima facilità di accesso e lettura).
