@@ -35,8 +35,8 @@ image: opencup.png
 ::: {.callout-warning}
 ## Nota successiva alla pubblicazione
 Questo post ci ha consentito di fare una prima lettura di questa importante banca dati e sono **emerse** alcune **criticità**. Una è quelle citata nel post, sulle righe con numero di colonne errato.<br>
-Un'altra che ci sembra più importante è quella sul **numero dei progetti**: sul sito sono indicati circa 9.5 milioni, ma nel file `CSV` ce ne sono soltanto 6.5 milioni.<br>
-E sottolineiamo come i **dati** **PNRR** **non** sembra siano stati **aggiornati**, così come non è presente un attributo nel file complessivo che contraddistingua i progetti PNRR.
+Quella che ci sembra critica è relativa alla **natura dei progetti**, che era la novità più importante: sul `CSV` **ci sono soltanto 3 tipologie**, quindi nulla è cambiato. Le altre tipologie al momento sono visibili soltanto sul *front-end* del sito.<br>
+Sottolineiamo inoltre come i **dati** **PNRR** **non** sembra siano stati **aggiornati**, così come non è presente un attributo nel file complessivo che contraddistingua i progetti PNRR.
 <br>Abbiamo chiesto spiegazioni a OpenCUP e appena avremo risposte aggiorneremo questo post.
 :::
 
