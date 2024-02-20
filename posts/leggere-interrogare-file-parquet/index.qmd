@@ -1,0 +1,130 @@
+---
+title: "Lavorare con grandi file CSV compressi"
+description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
+date: "2024-02-15"
+draft: true
+search: false
+author:
+  - name: "Andrea Borruso"
+    affiliation:
+      - name: Associazione onData
+        url: https://ondata.it
+    url: https://twitter.com/aborruso
+  - name: "Davide Taibi"
+    affiliation:
+      - name: "Istituto per le Tecnologie Didattiche - CNR"
+        url: https://www.itd.cnr.it/
+    url: https://www.linkedin.com/in/davide-taibi-b6825113/
+categories:
+  - duckdb
+  - parquet
+  - sql
+format:
+  html:
+    crossrefs-hover: false
+website:
+  twitter-card:
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
+    image: opencup.png
+  open-graph:
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
+    image: opencup.png
+image: opencup.png
+---
+
+{{< include ../../include/_table-python.qmd >}}
+
+## Introduzione
+
+In questa piccola guida, ti porteremo per mano alla scoperta del **formato Parquet** e ti spiegheremo cos'è. Potresti preferirlo al buon vecchio formato `CSV`, visto che può rendere la tua vita con i dati un po' **più facile** e molto **più veloce**.<br>
+
+È un formato di archiviazione ottimizzato per lavorare con **dati complessi** e **voluminosi**. A differenza del CSV - che **memorizza** i dati **per riga** - **Parquet organizza i dati per colonne**.
+
+Immagina di avere una tabella con le  4 colonne `ID`, `Nome`, `Età`, `E-mail`. Come differisce l'**accesso** ai **dati** tra un file CSV e un file Parquet?
+
+In un file `CSV`, se vuoi accedere soltanto alla colonna `Età` per tutte le righe, **il sistema deve leggere l'intero file**, riga per riga, per estrarre l'informazione relativa.<br>
+Questo processo può essere piuttosto inefficiente, soprattutto con grandi volumi di dati, perché comporta la lettura di molti dati inutili (quelli delle colonne `ID`, `Nome` e `E-mail`).
+
+```{.markdown filename="tabella.csv"}
+ID,Nome,Età,E-mail
+1,Mario Rossi,30,mario.rossi@email.com
+2,Laura Bianchi,25,laura.bianchi@email.com
+...
+```
+
+Viceversa ad un file `Parquet`, essendo organizzato **per colonne**, si può accedere direttamente ed anche esclusivamente alla colonna `Età`, **senza dover leggere anche le altre colonne**.<br>
+Qui sotto un esempio, in si vede per accedere alla colonna `Età`, si possono saltare tutte le altre e leggere soltanto quella.
+
+```{.markdown filename="tabella.parquet"}
+ID: 1,2,...
+Nome: Mario Rossi,Laura Bianchi,...
+Età: 30,25,...
+E-mail: mario.rossi@email.com,laura.bianchi@email.com,...
+```
+
+Questo rende l'accesso ai dati molto più veloce e efficiente.
+
+## L'esempio di OpenCoesione
+
+
+Per tabelle di dati molto grandi, come quella dei **progetti** di [**OpenCoesione**](https://opencoesione.gov.it/it/opendata/#!progetti_section) (composta da circa `2.000.000 di righe x 200 colonne`), questa differenza è immediamente percepibile nell'uso.<br>
+E avere restituito ad esempio il **totale di finanziamento pubblico** per **ciclo di finanziamento** (vedi @tbl-cicli), è un'operazione che viene eseguita **in 0.07 secondi**.
+
+```{python}
+#| echo: false
+#| id: tbl-cicli
+#| tbl-cap: totale di finanziamento pubblico per ciclo di finanziamento
+
+query= """
+  SELECT oc_descr_ciclo Ciclo, SUM(finanz_totale_pubblico) "Totale finanziamento pubblico (€)"
+  FROM 'progetti_esteso_20230831.parquet'
+  GROUP BY oc_descr_ciclo
+  ORDER BY ciclo;
+  """
+
+tabella_cicli = duckdb.query(query).df()
+
+apply_italian_style(tabella_cicli)
+
+```
+
+
+E questa rapidità si ottiene sul proprio computer di lavoro, **senza** che sia necessario mettere in campo **risorse** di **calcolo** particolarmente potenti e dispendiose sul **_cloud_**.<br>
+O **senza** che sia necessario **importare** il **file** in un **database** **relazionale**, con tutte le operazioni di trasformazione e pulizia dei dati che questo comporta e senza che sia necessario installare e configurare un db relazionale.
+
+## Come leggere un file Parquet
+
+Se non hai mai sentito parlare di questo formato, probabilmente penserai che per te sia impossibile usarlo per leggere, filtrare, analizzare, ecc. i dati di OpenCoesione. Penserai che è per "tecnici".<br>
+Niente di più sbagliato! Leggere un file Parquet è **facile** e **veloce**, ed è paradossalmente più **necessario** l'**intervento** di un **tecnico** per leggere **un file `CSV` di 4,5 Gigabyte** (come quello dei progetti di OpenCoesione). Per la gran parte degli utenti è impossibile leggere un file di queste dimensioni, anche con un buon Personal Computer.<br>
+E programmi come **Excel** hanno in ogni caso un **limite** di **1.048.576 righe** per foglio di lavoro (qui sono circa 2.000.000).
+
+::: {.callout-note}
+## Nota bene
+Un file di queste dimensioni, aldilà del formato, deve essere gestito con attenzione e con un minimo di competenza.
+:::
+
+### Apertura al doppio click
+
+Per visualizzare un file Parquet con un semplice doppio click, puoi usare [**Tad**](https://www.tadviewer.com/), un visualizzatore di file Parquet (e anche CSV, SQLite e DuckDB) *open source*, gratuito e disponibile per Windows, Mac e Linux.
+
+Una volta installato, basterà fare doppio click sul file per aprirlo e visualizzarne il contenuto (vedi @fig-tad). È un file grande e sarà necessario qualche secondo.
+
+![esempio di visualizzazione e filtro dati con [TAD](https://www.tadviewer.com/)](images/tad_02.png){fig-alt="esempio di visualizzazione e filtro dati con Tad" #fig-tad .lightbox}
+
+### Accesso tramite GUI
+
+<https://duckdb.org/docs/guides/sql_editors/dbeaver.html>
+
+### Shell
+
+### DuckDB
+
+### VisiData
+
+### Harlequin
+
+## Accesso tramite linguaggio di programmazione
+
+## Accesso Observable
+
+
