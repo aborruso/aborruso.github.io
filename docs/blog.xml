@@ -23,6 +23,19 @@
 
 
 
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Nota successiva alla pubblicazione
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Questo post ci ha consentito di fare una prima lettura di questa importante banca dati e sono <strong>emerse</strong> alcune <strong>criticità</strong>. Una è quelle citata nel post, sulle righe con numero di colonne errato.<br> Un’altra che ci sembra più importante è quella sul <strong>numero dei progetti</strong>: sul sito sono indicati circa 9.5 milioni, ma nel file <code>CSV</code> ce ne sono soltanto 6.5 milioni.<br> E sottolineiamo come i <strong>dati</strong> <strong>PNRR</strong> <strong>non</strong> sembra siano stati <strong>aggiornati</strong>, così come non è presente un attributo nel file complessivo che contraddistingua i progetti PNRR. <br>Abbiamo chiesto spiegazioni a OpenCUP e appena avremo risposte aggiorneremo questo post.</p>
+</div>
+</div>
 <p>Da pochissimo, dal 14 febbraio 2024, è andato online il <a href="https://www.opencup.gov.it/"><strong>nuovo portale OpenCUP</strong></a>.</p>
 <p>OpenCUP mette a disposizione di tutti - cittadini, istituzioni ed altri enti - i dati, in formato aperto, sulle <strong>decisioni di investimento pubblico</strong> finanziate con fondi pubblici nazionali, comunitarie o regionali o con risorse private registrate con il Codice Unico di Progetto.</p>
 <div id="fig-opencup" class="quarto-figure quarto-figure-center quarto-float anchored">
