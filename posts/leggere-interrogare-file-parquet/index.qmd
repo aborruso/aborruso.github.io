@@ -25,11 +25,11 @@ format:
 website:
   twitter-card:
     description: "Un esempio con i dati di OpenCoesione"
-    image: opencup.png
+    image: images/dbeaver_05.png
   open-graph:
     description: "Un esempio con i dati di OpenCoesione"
-    image: opencup.png
-image: opencup.png
+    image: images/dbeaver_05.png
+image: images/dbeaver_05.png
 ---
 
 {{< include ../../include/_table-python.qmd >}}
