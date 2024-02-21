@@ -124,6 +124,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       }
 </style>
 <link rel="alternate" type="application/rss+xml" title="Il blog del sito di Andrea Borruso" href="https://aborruso.github.io/blog.xml">
+<script type="module" src="../../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="../../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
 
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
@@ -249,12 +251,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#al-doppio-click" id="toc-al-doppio-click" class="nav-link" data-scroll-target="#al-doppio-click">Al doppio click</a></li>
   <li><a href="#con-un-client-visuale-sql" id="toc-con-un-client-visuale-sql" class="nav-link" data-scroll-target="#con-un-client-visuale-sql">Con un client visuale SQL</a></li>
   <li><a href="#a-riga-di-comando-con-duckdb" id="toc-a-riga-di-comando-con-duckdb" class="nav-link" data-scroll-target="#a-riga-di-comando-con-duckdb">A riga di comando con DuckDB</a></li>
-  <li><a href="#duckdb" id="toc-duckdb" class="nav-link" data-scroll-target="#duckdb">DuckDB</a></li>
-  <li><a href="#visidata" id="toc-visidata" class="nav-link" data-scroll-target="#visidata">VisiData</a></li>
-  <li><a href="#harlequin" id="toc-harlequin" class="nav-link" data-scroll-target="#harlequin">Harlequin</a></li>
-  </ul></li>
-  <li><a href="#accesso-tramite-linguaggio-di-programmazione" id="toc-accesso-tramite-linguaggio-di-programmazione" class="nav-link" data-scroll-target="#accesso-tramite-linguaggio-di-programmazione">Accesso tramite linguaggio di programmazione</a></li>
+  <li><a href="#a-riga-di-comando-con-visidata" id="toc-a-riga-di-comando-con-visidata" class="nav-link" data-scroll-target="#a-riga-di-comando-con-visidata">A riga di comando con VisiData</a></li>
+  <li><a href="#accesso-tramite-python" id="toc-accesso-tramite-python" class="nav-link" data-scroll-target="#accesso-tramite-python">Accesso tramite Python</a></li>
   <li><a href="#accesso-observable" id="toc-accesso-observable" class="nav-link" data-scroll-target="#accesso-observable">Accesso Observable</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/aborruso/aborruso.github.io/edit/main/posts/leggere-interrogare-file-parquet/index.qmd" class="toc-action"><i class="bi bi-github"></i>Modifica questa pagina</a></li><li><a href="https://github.com/aborruso/aborruso.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Segnala un problema</a></li></ul></div></nav>
 </nav>
@@ -313,37 +313,37 @@ Tabella&nbsp;1: totale di finanziamento pubblico per ciclo di finanziamento
 <div aria-describedby="tbl-cicli-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-display" data-execution_count="2">
 <style type="text/css">
-#T_ddf45 th.col1 {
+#T_f3b32 th.col1 {
   text-align: right;
 }
-#T_ddf45_row0_col1, #T_ddf45_row1_col1, #T_ddf45_row2_col1, #T_ddf45_row3_col1 {
+#T_f3b32_row0_col1, #T_f3b32_row1_col1, #T_f3b32_row2_col1, #T_f3b32_row3_col1 {
   text-align: right;
 }
 </style>
 
-<table id="T_ddf45" class="do-not-create-environment cell table table-sm table-striped small" data-quarto-postprocess="true">
+<table id="T_f3b32" class="do-not-create-environment cell table table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
-<th id="T_ddf45_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Ciclo</th>
-<th id="T_ddf45_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Totale finanziamento pubblico (€)</th>
+<th id="T_f3b32_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Ciclo</th>
+<th id="T_f3b32_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Totale finanziamento pubblico (€)</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_ddf45_row0_col0" class="data row0 col0">Ciclo di programmazione 2000-2006</td>
-<td id="T_ddf45_row0_col1" class="data row0 col1">17.667.666.307,18</td>
+<td id="T_f3b32_row0_col0" class="data row0 col0">Ciclo di programmazione 2000-2006</td>
+<td id="T_f3b32_row0_col1" class="data row0 col1">17.667.666.307,18</td>
 </tr>
 <tr class="even">
-<td id="T_ddf45_row1_col0" class="data row1 col0">Ciclo di programmazione 2007-2013</td>
-<td id="T_ddf45_row1_col1" class="data row1 col1">101.629.942.347,96</td>
+<td id="T_f3b32_row1_col0" class="data row1 col0">Ciclo di programmazione 2007-2013</td>
+<td id="T_f3b32_row1_col1" class="data row1 col1">101.629.942.347,96</td>
 </tr>
 <tr class="odd">
-<td id="T_ddf45_row2_col0" class="data row2 col0">Ciclo di programmazione 2014-2020</td>
-<td id="T_ddf45_row2_col1" class="data row2 col1">154.061.098.680,89</td>
+<td id="T_f3b32_row2_col0" class="data row2 col0">Ciclo di programmazione 2014-2020</td>
+<td id="T_f3b32_row2_col1" class="data row2 col1">154.061.098.680,89</td>
 </tr>
 <tr class="even">
-<td id="T_ddf45_row3_col0" class="data row3 col0">Ciclo di programmazione 2021-2027</td>
-<td id="T_ddf45_row3_col1" class="data row3 col1">7.465.189.173,71</td>
+<td id="T_f3b32_row3_col0" class="data row3 col0">Ciclo di programmazione 2021-2027</td>
+<td id="T_f3b32_row3_col1" class="data row3 col1">7.465.189.173,71</td>
 </tr>
 </tbody>
 </table>
@@ -377,7 +377,7 @@ Nota bene
 <div id="fig-tad" class="lightbox quarto-figure quarto-figure-center quarto-float anchored" alt="esempio di visualizzazione e filtro dati con Tad">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-tad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="images/tad_02.png" class="lightbox" data-glightbox="description: .lightbox-desc-1" data-gallery="quarto-lightbox-gallery-1"><img src="images/tad_02.png" class="img-fluid figure-img" alt="esempio di visualizzazione e filtro dati con Tad"></a>
+<a href="images/tad_02.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" data-glightbox="description: .lightbox-desc-1"><img src="images/tad_02.png" class="img-fluid figure-img" alt="esempio di visualizzazione e filtro dati con Tad"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;1: esempio di visualizzazione e filtro dati con <a href="https://www.tadviewer.com/">TAD</a>
@@ -422,7 +422,7 @@ Figura&nbsp;2: DBeaver - impostazione path DuckDB
 <div id="fig-dbeaver" class="lightbox quarto-figure quarto-figure-center quarto-float anchored" alt="DBeaver - riquadro Database">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-dbeaver-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="images/dbeaver_04.png" class="lightbox" data-glightbox="description: .lightbox-desc-2" data-gallery="quarto-lightbox-gallery-2"><img src="images/dbeaver_04.png" class="img-fluid figure-img" alt="DBeaver - riquadro Database"></a>
+<a href="images/dbeaver_04.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" data-glightbox="description: .lightbox-desc-2"><img src="images/dbeaver_04.png" class="img-fluid figure-img" alt="DBeaver - riquadro Database"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dbeaver-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;3: DBeaver - riquadro Database
@@ -442,7 +442,7 @@ Figura&nbsp;3: DBeaver - riquadro Database
 <div id="fig-dbeaver" class="lightbox quarto-figure quarto-figure-center quarto-float anchored" alt="DBeaver - la prima query">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-dbeaver-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="images/dbeaver_05.png" class="lightbox" data-glightbox="description: .lightbox-desc-3" data-gallery="quarto-lightbox-gallery-3"><img src="images/dbeaver_05.png" class="img-fluid figure-img" alt="DBeaver - la prima query"></a>
+<a href="images/dbeaver_05.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" data-glightbox="description: .lightbox-desc-3"><img src="images/dbeaver_05.png" class="img-fluid figure-img" alt="DBeaver - la prima query"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dbeaver-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;4: DBeaver - la prima query
@@ -459,34 +459,217 @@ Figura&nbsp;4: DBeaver - la prima query
 <h3 class="anchored" data-anchor-id="a-riga-di-comando-con-duckdb">A riga di comando con DuckDB</h3>
 <p>Se preferisci lavorare da riga di comando, puoi usare lo straordinario <a href="https://duckdb.org/"><strong>DuckDB</strong></a>, un sistema di gestione di database relazionali (RDBMS), che supporta il formato Parquet.</p>
 <p>Per installarlo, puoi seguire le istruzioni disponibili qui: <a href="https://duckdb.org/docs/installation" class="uri">https://duckdb.org/docs/installation</a>.</p>
-<p>Per usarlo non ti resta che lanciare il comando <code>duckdb</code> e scrivere la tua prima <em>query</em>:</p>
-<p>```bash</p>
+<p>Per usarlo non ti resta che lanciare il comando <code>duckdb</code> e scrivere la tua prima <em>query</em>.</p>
+<p>Potrebbe essere diversa dalle precedenti, come quella <strong>comodissima</strong> per avere un <strong>riepilogo rapido</strong> dei <strong>dati</strong>, basata sul comando <a href="https://duckdb.org/docs/guides/meta/summarize.html"><code>SUMMARIZE</code></a> di DuckDB: restituisce per ogni campo, il tipo di campo e una ricca serie di calcoli, il numero di valori distinti, la percentuali di valori nulli, il minimo, il massimo, la media, ecc..<br> Qui sotto la sintassi della <em>query</em> e un esempio di <em>output</em> in <a href="#fig-duckdb" class="quarto-xref">Figura&nbsp;5</a>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>SUMMARIZE <span class="kw">select</span> <span class="op">*</span> <span class="kw">from</span> <span class="st">'progetti_esteso_20231231.parquet'</span>;</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="fig-duckdb" class="lightbox quarto-figure quarto-figure-center quarto-float anchored" alt="Esempio di output del comando SUMMARIZE">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-duckdb-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/duckdb-summarize.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" data-glightbox="description: .lightbox-desc-4"><img src="images/duckdb-summarize.png" class="img-fluid figure-img" alt="Esempio di output del comando SUMMARIZE"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-duckdb-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;5: Esempio di <em>output</em> del comando <code>SUMMARIZE</code>
+</figcaption>
+</figure>
+</div>
+<p>È un comando di grande comodità, che si può usare ad esempio per sapere <strong>quali</strong> sono le <strong>colonne</strong> che hanno <strong>meno del 10% di valori nulli</strong>:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> (summarize <span class="kw">select</span> <span class="op">*</span> <span class="kw">from</span> <span class="st">'progetti_esteso_20231231.parquet'</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>null_percentage <span class="op">&lt;</span><span class="dv">10</span>;</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Sono <strong>86 colonne su circa 200</strong> e si potrebbe scegliere di concentrarsi su questo campione più ristretto e velocizzare ulteriormente le operazioni.</p>
+<p>E sempre da <code>SUMMARIZE</code> ci si può fare un’idea delle colonne più “datose”, ovvero quelle con <strong>meno valori distinti</strong>, che sono spesso quelle più interessanti per fare analisi e visualizzazioni, perché consentono di definire categorie (le regioni, il settore, la natura, ecc.).</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> (summarize <span class="kw">select</span> <span class="op">*</span> <span class="kw">from</span> <span class="st">'progetti_esteso_20231231.parquet'</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">WHERE</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>approx_unique <span class="op">&lt;</span><span class="dv">30</span>;</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Nota
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>SUMMARIZE</code> restituisce in realtà un <strong>valore approssimativo</strong>, ma molto vicino al reale, dei valori distinti. Questo per ottimizzare i tempi di esecuzione.</p>
+</div>
+</div>
 </section>
-<section id="duckdb" class="level3">
-<h3 class="anchored" data-anchor-id="duckdb">DuckDB</h3>
+<section id="a-riga-di-comando-con-visidata" class="level3">
+<h3 class="anchored" data-anchor-id="a-riga-di-comando-con-visidata">A riga di comando con VisiData</h3>
+<p><a href="https://ondata.github.io/guidaVisiData/"><strong>VisiData</strong></a> è “il coltellino svizzero per i dati, che probabilmente non conosci”. E proprio con il formato Parquet se ne ha un’idea.</p>
+<p>Basta scrivere <code>vd nome_file.parquet</code> e premere <kbd>INVIO</kbd>, per aprire il file e iniziare a esplorarlo, filtrarlo, analizzarlo, ecc..<br> Con il file di OpenCoesione ci mette qualche secondo, perché è un file grande, ma poi si può iniziare a esplorarlo e ad esempio avere restituito il totale di finanziamento pubblico per regione.</p>
+<div id="fig-visidata" class="quarto-figure quarto-figure-center quarto-float anchored" alt="VisiData - esplorare un file Parquet">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-visidata-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/visidata.png" class="img-fluid figure-img" alt="VisiData - esplorare un file Parquet">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-visidata-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;6: VisiData - esplorare un file Parquet
+</figcaption>
+</figure>
+</div>
 </section>
-<section id="visidata" class="level3">
-<h3 class="anchored" data-anchor-id="visidata">VisiData</h3>
+<section id="accesso-tramite-python" class="level3">
+<h3 class="anchored" data-anchor-id="accesso-tramite-python">Accesso tramite Python</h3>
+<p>La <a href="#tbl-cicli" class="quarto-xref">Tabella&nbsp;1</a> è generata proprio a partire da codice <strong>Python</strong>, che legge il file Parquet dei progetti di OpenCoesione e ne estrae una sintesi.<br> Un modo comodissimo per farlo è usare la libreria <code>duckdb</code> e il suo metodo <code>query</code>, che permette di eseguire una <em>query</em> <code>SQL</code> e trasformare il risultato in un <code>DataFrame</code> di <code>pandas</code>.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># importa modulo duckdb</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> duckdb</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># definisci la query</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>query<span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="st">  SELECT oc_descr_ciclo Ciclo, SUM(finanz_totale_pubblico) "Totale finanziamento pubblico (€)"</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="st">  FROM 'progetti_esteso_20231231.parquet'</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="st">  GROUP BY oc_descr_ciclo</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="st">  ORDER BY ciclo;</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="st">  """</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co"># esegui la query e trasforma il risultato in un DataFrame</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>riepilogo_finanziamento<span class="op">=</span>duckdb.query(query).df()</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Ti consiglio di approfondire nella <a href="https://duckdb.org/docs/api/python/overview.html">documentazione ufficiale dedicata</a>.</p>
 </section>
-<section id="harlequin" class="level3">
-<h3 class="anchored" data-anchor-id="harlequin">Harlequin</h3>
-</section>
-</section>
-<section id="accesso-tramite-linguaggio-di-programmazione" class="level2">
-<h2 class="anchored" data-anchor-id="accesso-tramite-linguaggio-di-programmazione">Accesso tramite linguaggio di programmazione</h2>
-</section>
-<section id="accesso-observable" class="level2">
-<h2 class="anchored" data-anchor-id="accesso-observable">Accesso Observable</h2>
+<section id="accesso-observable" class="level3">
+<h3 class="anchored" data-anchor-id="accesso-observable">Accesso Observable</h3>
+<p>L’ultima modalità di accesso ti proponiamo è tramite <a href="https://observablehq.com/"><strong>Observable</strong></a>, una delle più importanti e belle piattaforme/framework per la visualizzazione e l’analisi dei dati.</p>
+<p>È un esempio a nostro avviso significativo perché mostra come si tratti di un formato pronto all’uso per una grandissima varietà di ambienti, linguaggi e strumenti.</p>
+<p>Il linguaggio di programmazione di Observable è <strong>JavaScript</strong>. La prima cosa da fare è caricare il file Parquet, che può essere fatto con la libreria <code>duckdb</code>.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode javascript code-with-copy"><code class="sourceCode javascript"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>db <span class="op">=</span> DuckDBClient<span class="op">.</span><span class="fu">of</span>({</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">progetti</span><span class="op">:</span> <span class="fu">FileAttachment</span>(<span class="st">"progetti_esteso_20231231.parquet"</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Nota
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Nella versione di Observable gratuita e <em>online</em>, il limite delle dimensioni di un file è di 50 MB. Ma utilizzando <a href="https://observablehq.com/framework/">Observable Framework</a> o con <a href="https://quarto.org/docs/computations/ojs.html">Quarto</a>, le dimensioni dei file non sono un problema.</p>
+</div>
+</div>
+<p>In output</p>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb9" data-startfrom="269" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 268;"><span id="cb9-269"><a href="#cb9-269" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> <span class="fu">FileAttachment</span>(<span class="st">"observable.csv"</span>)<span class="op">.</span><span class="fu">csv</span>({ <span class="dt">typed</span><span class="op">:</span> <span class="kw">true</span> })</span>
+<span id="cb9-270"><a href="#cb9-270" aria-hidden="true" tabindex="-1"></a>Inputs<span class="op">.</span><span class="fu">table</span>(data<span class="op">,</span>{<span class="dt">locale</span><span class="op">:</span> <span class="st">"it-IT"</span>})</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-2" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</div>
+<p>Poi ad esempio si può fare interrogare il file, ancora una volta con una <em>query</em> <code>SQL</code>, per avere ad esempio il conteggio dei progetti, per stato progetto:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode javascript code-with-copy"><code class="sourceCode javascript"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>viewof tbl_stato_proggetti <span class="op">=</span> {</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> data <span class="op">=</span> <span class="cf">await</span> db<span class="op">.</span><span class="fu">query</span>(<span class="vs">`SELECT</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="vs">  OC_STATO_PROGETTO AS "Stato Progetto", count(*) Conteggio FROM progetti</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="vs">  GROUP BY OC_STATO_PROGETTO</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="vs">  ORDER BY Conteggio DESC`</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> Inputs<span class="op">.</span><span class="fu">table</span>(data<span class="op">,</span> {<span class="dt">height</span><span class="op">:</span> <span class="dv">200</span><span class="op">,</span> <span class="dt">layout</span><span class="op">:</span> <span class="st">"auto"</span><span class="op">,</span><span class="dt">locale</span><span class="op">:</span> <span class="st">"it-IT"</span>})</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>E visto che siamo in un ambiente specializzato per la visualizzazione e l’analisi dei dati, si può anche visualizzare il risultato con un grafico a barre.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode javascript code-with-copy"><code class="sourceCode javascript"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>viewof graficoStatoProgetti <span class="op">=</span> {</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> data <span class="op">=</span> <span class="cf">await</span> db<span class="op">.</span><span class="fu">query</span>(<span class="vs">`SELECT</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="vs">  OC_STATO_PROGETTO AS "Stato Progetto", count(*) AS Conteggio FROM progetti</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="vs">  GROUP BY OC_STATO_PROGETTO</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="vs">  ORDER BY Conteggio DESC`</span>)<span class="op">;</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Definisci una funzione di formattazione per il locale "it-IT"</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> formatter <span class="op">=</span> <span class="kw">new</span> <span class="bu">Intl</span><span class="op">.</span><span class="fu">NumberFormat</span>(<span class="st">"it-IT"</span>)<span class="op">.</span><span class="at">format</span><span class="op">;</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Crea il grafico a barre utilizzando Plot con formattazione personalizzata</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">barY</span>(data<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"Stato Progetto"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"Conteggio"</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"Stato Progetto"</span>})<span class="op">,</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    ]<span class="op">,</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    <span class="dt">width</span><span class="op">:</span> <span class="dv">600</span><span class="op">,</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    <span class="dt">height</span><span class="op">:</span> <span class="dv">400</span><span class="op">,</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>    <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">50</span><span class="op">,</span> <span class="co">// Aumenta il margine sinistro se necessario</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>    <span class="dt">color</span><span class="op">:</span> {</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>      <span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>    <span class="dt">x</span><span class="op">:</span> {</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>      <span class="dt">label</span><span class="op">:</span> <span class="st">"Stato Progetto"</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>    <span class="dt">y</span><span class="op">:</span> {</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>      <span class="dt">label</span><span class="op">:</span> <span class="st">"Conteggio"</span><span class="op">,</span></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Usa la funzione di formattazione per le etichette dell'asse Y</span></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>      <span class="dt">tickFormat</span><span class="op">:</span> formatter</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>    <span class="dt">style</span><span class="op">:</span> {</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>      <span class="dt">overflow</span><span class="op">:</span> <span class="st">"visible"</span></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In output:</p>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb12" data-startfrom="326" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 325;"><span id="cb12-326"><a href="#cb12-326" aria-hidden="true" tabindex="-1"></a>viewof graficoStatoProgetti <span class="op">=</span> {</span>
+<span id="cb12-327"><a href="#cb12-327" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-328"><a href="#cb12-328" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Definisci una funzione di formattazione per il locale "it-IT"</span></span>
+<span id="cb12-329"><a href="#cb12-329" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> formatter <span class="op">=</span> <span class="kw">new</span> <span class="bu">Intl</span><span class="op">.</span><span class="fu">NumberFormat</span>(<span class="st">"it-IT"</span>)<span class="op">.</span><span class="at">format</span><span class="op">;</span></span>
+<span id="cb12-330"><a href="#cb12-330" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-331"><a href="#cb12-331" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Crea il grafico a barre utilizzando Plot con formattazione personalizzata</span></span>
+<span id="cb12-332"><a href="#cb12-332" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb12-333"><a href="#cb12-333" aria-hidden="true" tabindex="-1"></a>    <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb12-334"><a href="#cb12-334" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">barY</span>(data<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"Stato Progetto"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"Conteggio"</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"Stato Progetto"</span>})<span class="op">,</span></span>
+<span id="cb12-335"><a href="#cb12-335" aria-hidden="true" tabindex="-1"></a>    ]<span class="op">,</span></span>
+<span id="cb12-336"><a href="#cb12-336" aria-hidden="true" tabindex="-1"></a>    <span class="dt">width</span><span class="op">:</span> <span class="dv">600</span><span class="op">,</span></span>
+<span id="cb12-337"><a href="#cb12-337" aria-hidden="true" tabindex="-1"></a>    <span class="dt">height</span><span class="op">:</span> <span class="dv">400</span><span class="op">,</span></span>
+<span id="cb12-338"><a href="#cb12-338" aria-hidden="true" tabindex="-1"></a>    <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">50</span><span class="op">,</span> <span class="co">// Aumenta il margine sinistro se necessario</span></span>
+<span id="cb12-339"><a href="#cb12-339" aria-hidden="true" tabindex="-1"></a>    <span class="dt">color</span><span class="op">:</span> {</span>
+<span id="cb12-340"><a href="#cb12-340" aria-hidden="true" tabindex="-1"></a>      <span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span></span>
+<span id="cb12-341"><a href="#cb12-341" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb12-342"><a href="#cb12-342" aria-hidden="true" tabindex="-1"></a>    <span class="dt">x</span><span class="op">:</span> {</span>
+<span id="cb12-343"><a href="#cb12-343" aria-hidden="true" tabindex="-1"></a>      <span class="dt">label</span><span class="op">:</span> <span class="st">"Stato Progetto"</span></span>
+<span id="cb12-344"><a href="#cb12-344" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb12-345"><a href="#cb12-345" aria-hidden="true" tabindex="-1"></a>    <span class="dt">y</span><span class="op">:</span> {</span>
+<span id="cb12-346"><a href="#cb12-346" aria-hidden="true" tabindex="-1"></a>      <span class="dt">label</span><span class="op">:</span> <span class="st">"Conteggio"</span><span class="op">,</span></span>
+<span id="cb12-347"><a href="#cb12-347" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Usa la funzione di formattazione per le etichette dell'asse Y</span></span>
+<span id="cb12-348"><a href="#cb12-348" aria-hidden="true" tabindex="-1"></a>      <span class="dt">tickFormat</span><span class="op">:</span> formatter</span>
+<span id="cb12-349"><a href="#cb12-349" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb12-350"><a href="#cb12-350" aria-hidden="true" tabindex="-1"></a>    <span class="dt">style</span><span class="op">:</span> {</span>
+<span id="cb12-351"><a href="#cb12-351" aria-hidden="true" tabindex="-1"></a>      <span class="dt">overflow</span><span class="op">:</span> <span class="st">"visible"</span></span>
+<span id="cb12-352"><a href="#cb12-352" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb12-353"><a href="#cb12-353" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb12-354"><a href="#cb12-354" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
 
 
 <div class="hidden" aria-hidden="true">
 <span class="glightbox-desc lightbox-desc-1">Figura&nbsp;1: esempio di visualizzazione e filtro dati con <a href="https://www.tadviewer.com/">TAD</a></span>
 <span class="glightbox-desc lightbox-desc-2">Figura&nbsp;3: DBeaver - riquadro Database</span>
 <span class="glightbox-desc lightbox-desc-3">Figura&nbsp;4: DBeaver - la prima query</span>
+<span class="glightbox-desc lightbox-desc-4">Figura&nbsp;5: Esempio di <em>output</em> del comando <code>SUMMARIZE</code></span>
 </div>
+</section>
 </section>
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Torna in cima</a></main> <!-- /main -->
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6ImRhdGEgPSBGaWxlQXR0YWNobWVudChcIm9ic2VydmFibGUuY3N2XCIpLmNzdih7IHR5cGVkOiB0cnVlIH0pXG5JbnB1dHMudGFibGUoZGF0YSx7bG9jYWxlOiBcIml0LUlUXCJ9KVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0yIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoidmlld29mIGdyYWZpY29TdGF0b1Byb2dldHRpID0ge1xuXG4gIC8vIERlZmluaXNjaSB1bmEgZnVuemlvbmUgZGkgZm9ybWF0dGF6aW9uZSBwZXIgaWwgbG9jYWxlIFwiaXQtSVRcIlxuICBjb25zdCBmb3JtYXR0ZXIgPSBuZXcgSW50bC5OdW1iZXJGb3JtYXQoXCJpdC1JVFwiKS5mb3JtYXQ7XG5cbiAgLy8gQ3JlYSBpbCBncmFmaWNvIGEgYmFycmUgdXRpbGl6emFuZG8gUGxvdCBjb24gZm9ybWF0dGF6aW9uZSBwZXJzb25hbGl6emF0YVxuICByZXR1cm4gUGxvdC5wbG90KHtcbiAgICBtYXJrczogW1xuICAgICAgUGxvdC5iYXJZKGRhdGEsIHt4OiBcIlN0YXRvIFByb2dldHRvXCIsIHk6IFwiQ29udGVnZ2lvXCIsIGZpbGw6IFwiU3RhdG8gUHJvZ2V0dG9cIn0pLFxuICAgIF0sXG4gICAgd2lkdGg6IDYwMCxcbiAgICBoZWlnaHQ6IDQwMCxcbiAgICBtYXJnaW5MZWZ0OiA1MCwgLy8gQXVtZW50YSBpbCBtYXJnaW5lIHNpbmlzdHJvIHNlIG5lY2Vzc2FyaW9cbiAgICBjb2xvcjoge1xuICAgICAgbGVnZW5kOiB0cnVlXG4gICAgfSxcbiAgICB4OiB7XG4gICAgICBsYWJlbDogXCJTdGF0byBQcm9nZXR0b1wiXG4gICAgfSxcbiAgICB5OiB7XG4gICAgICBsYWJlbDogXCJDb250ZWdnaW9cIixcbiAgICAgIC8vIFVzYSBsYSBmdW56aW9uZSBkaSBmb3JtYXR0YXppb25lIHBlciBsZSBldGljaGV0dGUgZGVsbCdhc3NlIFlcbiAgICAgIHRpY2tGb3JtYXQ6IGZvcm1hdHRlclxuICAgIH0sXG4gICAgc3R5bGU6IHtcbiAgICAgIG92ZXJmbG93OiBcInZpc2libGVcIlxuICAgIH1cbiAgfSk7XG59XG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ2dyYWZpY29TdGF0b1Byb2dldHRpJykifV19
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../../posts/leggere-interrogare-file-parquet";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "../..";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -806,7 +989,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","openEffect":"zoom","descPosition":"bottom","loop":false,"selector":".lightbox"});
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","loop":false,"descPosition":"bottom","openEffect":"zoom","selector":".lightbox"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

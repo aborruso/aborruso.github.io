@@ -178,18 +178,179 @@ Se preferisci lavorare da riga di comando, puoi usare lo straordinario [**DuckDB
 
 Per installarlo, puoi seguire le istruzioni disponibili qui: <https://duckdb.org/docs/installation>.
 
-Per usarlo non ti resta che lanciare il comando `duckdb` e scrivere la tua prima *query*:
+Per usarlo non ti resta che lanciare il comando `duckdb` e scrivere la tua prima *query*.
 
-```bash
+Potrebbe essere diversa dalle precedenti, come quella **comodissima** per avere un **riepilogo rapido** dei **dati**, basata sul comando  [`SUMMARIZE`](https://duckdb.org/docs/guides/meta/summarize.html) di DuckDB: restituisce per ogni campo, il tipo di campo e una ricca serie di calcoli, il numero di valori distinti, la percentuali di valori nulli, il minimo, il massimo, la media, ecc..<br>
+Qui sotto la sintassi della *query* e un esempio di *output* in @fig-duckdb.
 
-### DuckDB
+```sql
+SUMMARIZE select * from 'progetti_esteso_20231231.parquet';
+```
 
-### VisiData
+![Esempio di *output* del comando `SUMMARIZE`](images/duckdb-summarize.png){fig-alt="Esempio di output del comando SUMMARIZE" #fig-duckdb .lightbox}
 
-### Harlequin
+È un comando di grande comodità, che si può usare ad esempio per sapere **quali** sono le **colonne** che hanno **meno del 10% di valori nulli**:
 
-## Accesso tramite linguaggio di programmazione
+```sql
+SELECT * FROM (summarize select * from 'progetti_esteso_20231231.parquet')
+WHERE
+null_percentage <10;
+```
 
-## Accesso Observable
+Sono **86 colonne su circa 200** e si potrebbe scegliere di concentrarsi su questo campione più ristretto e velocizzare ulteriormente le operazioni.
+
+E sempre da `SUMMARIZE` ci si può fare un'idea delle colonne più "datose", ovvero quelle con **meno valori distinti**, che sono spesso quelle più interessanti per fare analisi e visualizzazioni, perché consentono di definire categorie (le regioni, il settore, la natura, ecc.).
+
+```sql
+SELECT * FROM (summarize select * from 'progetti_esteso_20231231.parquet')
+WHERE
+approx_unique <30;
+```
+
+::: {.callout-note}
+`SUMMARIZE` restituisce in realtà un **valore approssimativo**, ma molto vicino al reale, dei valori distinti. Questo per ottimizzare i tempi di esecuzione.
+:::
+
+### A riga di comando con VisiData
+
+[**VisiData**](https://ondata.github.io/guidaVisiData/) è "il coltellino svizzero per i dati, che probabilmente non conosci". E proprio con il formato Parquet se ne ha un'idea.
+
+Basta scrivere `vd nome_file.parquet` e premere <kbd>INVIO</kbd>, per aprire il file e iniziare a esplorarlo, filtrarlo, analizzarlo, ecc..<br>
+Con il file di OpenCoesione ci mette qualche secondo, perché è un file grande, ma poi si può iniziare a esplorarlo e ad esempio avere restituito il totale di finanziamento pubblico per regione.
+
+![VisiData - esplorare un file Parquet](images/visidata.png){fig-alt="VisiData - esplorare un file Parquet" #fig-visidata }
+
+### Accesso tramite Python
+
+La @tbl-cicli è generata proprio a partire da codice **Python**, che legge il file Parquet dei progetti di OpenCoesione e ne estrae una sintesi.<br>
+Un modo comodissimo per farlo è usare la libreria `duckdb` e il suo metodo `query`, che permette di eseguire una *query* `SQL` e trasformare il risultato in un `DataFrame` di `pandas`.
+
+```python
+# importa modulo duckdb
+import duckdb
+
+# definisci la query
+query= """
+  SELECT oc_descr_ciclo Ciclo, SUM(finanz_totale_pubblico) "Totale finanziamento pubblico (€)"
+  FROM 'progetti_esteso_20231231.parquet'
+  GROUP BY oc_descr_ciclo
+  ORDER BY ciclo;
+  """
+
+# esegui la query e trasforma il risultato in un DataFrame
+riepilogo_finanziamento=duckdb.query(query).df()
+```
+
+Ti consiglio di approfondire nella [documentazione ufficiale dedicata](https://duckdb.org/docs/api/python/overview.html).
+
+### Accesso Observable
+
+L'ultima modalità di accesso ti proponiamo è tramite [**Observable**](https://observablehq.com/), una delle più importanti e belle piattaforme/framework per la visualizzazione e l'analisi dei dati.
+
+È un esempio a nostro avviso significativo perché mostra come si tratti di un formato pronto all'uso per una grandissima varietà di ambienti, linguaggi e strumenti.
+
+Il linguaggio di programmazione di Observable è **JavaScript**. La prima cosa da fare è caricare il file Parquet, che può essere fatto con la libreria `duckdb`.
 
 
+```javascript
+db = DuckDBClient.of({
+  progetti: FileAttachment("progetti_esteso_20231231.parquet")
+})
+```
+
+::: {.callout-note}
+Nella versione di Observable gratuita e *online*, il limite delle dimensioni di un file è di 50 MB. Ma utilizzando [Observable Framework](https://observablehq.com/framework/) o con [Quarto](https://quarto.org/docs/computations/ojs.html), le dimensioni dei file non sono un problema.
+:::
+
+In output
+
+```{ojs}
+//| echo: false
+data = FileAttachment("observable.csv").csv({ typed: true })
+Inputs.table(data,{locale: "it-IT"})
+```
+
+Poi ad esempio si può fare interrogare il file, ancora una volta con una *query* `SQL`, per avere ad esempio il conteggio dei progetti, per stato progetto:
+
+```javascript
+viewof tbl_stato_proggetti = {
+  const data = await db.query(`SELECT
+  OC_STATO_PROGETTO AS "Stato Progetto", count(*) Conteggio FROM progetti
+  GROUP BY OC_STATO_PROGETTO
+  ORDER BY Conteggio DESC`)
+  return Inputs.table(data, {height: 200, layout: "auto",locale: "it-IT"})
+}
+```
+
+E visto che siamo in un ambiente specializzato per la visualizzazione e l'analisi dei dati, si può anche visualizzare il risultato con un grafico a barre.
+
+```javascript
+viewof graficoStatoProgetti = {
+  const data = await db.query(`SELECT
+  OC_STATO_PROGETTO AS "Stato Progetto", count(*) AS Conteggio FROM progetti
+  GROUP BY OC_STATO_PROGETTO
+  ORDER BY Conteggio DESC`);
+
+  // Definisci una funzione di formattazione per il locale "it-IT"
+  const formatter = new Intl.NumberFormat("it-IT").format;
+
+  // Crea il grafico a barre utilizzando Plot con formattazione personalizzata
+  return Plot.plot({
+    marks: [
+      Plot.barY(data, {x: "Stato Progetto", y: "Conteggio", fill: "Stato Progetto"}),
+    ],
+    width: 600,
+    height: 400,
+    marginLeft: 50, // Aumenta il margine sinistro se necessario
+    color: {
+      legend: true
+    },
+    x: {
+      label: "Stato Progetto"
+    },
+    y: {
+      label: "Conteggio",
+      // Usa la funzione di formattazione per le etichette dell'asse Y
+      tickFormat: formatter
+    },
+    style: {
+      overflow: "visible"
+    }
+  });
+}
+```
+
+In output:
+
+```{ojs}
+//| echo: false
+viewof graficoStatoProgetti = {
+
+  // Definisci una funzione di formattazione per il locale "it-IT"
+  const formatter = new Intl.NumberFormat("it-IT").format;
+
+  // Crea il grafico a barre utilizzando Plot con formattazione personalizzata
+  return Plot.plot({
+    marks: [
+      Plot.barY(data, {x: "Stato Progetto", y: "Conteggio", fill: "Stato Progetto"}),
+    ],
+    width: 600,
+    height: 400,
+    marginLeft: 50, // Aumenta il margine sinistro se necessario
+    color: {
+      legend: true
+    },
+    x: {
+      label: "Stato Progetto"
+    },
+    y: {
+      label: "Conteggio",
+      // Usa la funzione di formattazione per le etichette dell'asse Y
+      tickFormat: formatter
+    },
+    style: {
+      overflow: "visible"
+    }
+  });
+}
+```
