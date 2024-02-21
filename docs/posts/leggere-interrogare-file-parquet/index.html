@@ -284,7 +284,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>2,Laura Bianchi,25,laura.bianchi@email.com</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>...</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Viceversa ad un file <code>Parquet</code>, essendo organizzato <strong>per colonne</strong>, si può accedere direttamente ed anche esclusivamente alla colonna <code>Età</code>, <strong>senza dover leggere anche le altre colonne</strong>.<br> Qui sotto un esempio, in si vede per accedere alla colonna <code>Età</code>, si possono saltare tutte le altre e leggere soltanto quella.</p>
+<p>Viceversa ad un file <code>Parquet</code>, essendo organizzato <strong>per colonne</strong>, si può accedere direttamente, e anche esclusivamente, alla colonna <code>Età</code>, <strong>senza dover leggere anche le altre colonne</strong>.<br> Qui sotto un esempio, in si vede per accedere alla colonna <code>Età</code>, si possono saltare tutte le altre e leggere soltanto quella.</p>
 <div class="code-with-filename">
 <div class="code-with-filename-file">
 <pre><strong>tabella.parquet</strong></pre>
@@ -294,15 +294,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="an">Età:</span><span class="co"> 30,25,...</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="an">E-mail:</span><span class="co"> mario.rossi@email.com,laura.bianchi@email.com,...</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Questo rende l’accesso ai dati molto più veloce e efficiente.</p>
+<p>Questo rende l’accesso ai dati molto più veloce ed efficiente.</p>
 </section>
 <section id="lesempio-di-opencoesione" class="level2">
 <h2 class="anchored" data-anchor-id="lesempio-di-opencoesione">L’esempio di OpenCoesione</h2>
 <p><a href="https://opencoesione.gov.it/"><strong>OpenCoesione</strong></a> è un progetto nazionale il cui obiettivo è <strong>promuovere</strong> <strong>trasparenza</strong>, <strong>collaborazione</strong> e <strong>partecipazione</strong> riguardo alle <strong>politiche</strong> di <strong>coesione</strong> nel paese.</p>
 <p>È da sempre uno dei progetti di riferimento per l’<strong>apertura dei dati</strong> in Italia, che <strong>ha fatto sempre scuola</strong>.<br> E lo ha fatto ancora una volta: dal 21 febbraio 2024 ha iniziato a <strong>pubblicare</strong> la <strong>propria banca dati</strong> anche in <strong>formato</strong> <strong>Parquet</strong>.</p>
-<p>Ed è probabilmente il <strong>primo progetto italiano di una Pubblica Amministrazione a farlo</strong>. E sicuramente il primo con una banca dati di questa ricchezza e dimensione.</p>
-<p>➡️ Si tratta dei catalogo dei <strong>Progetti con tracciato esteso</strong>, disponibile qui, anche in formato Parquet: <a href="https://opencoesione.gov.it/it/opendata/#!progetti_section" class="uri">https://opencoesione.gov.it/it/opendata/#!progetti_section</a></p>
-<p>Abbiamo sottolineato come il <strong>formato <code>Parquet</code></strong> sia molto <strong>più efficiente</strong> per l’accesso e l’analisi dei dati, rispetto al <strong><code>CSV</code></strong>.<br> Ed è molto evidente soprattutto per tabelle molto grandi, come questa dei <strong>progetti</strong> di <a href="https://opencoesione.gov.it/it/opendata/#!progetti_section"><strong>OpenCoesione</strong></a>, composta da circa <code>2.000.000 di righe x 200 colonne</code>.</p>
+<p>Ed è probabilmente il <strong>primo progetto italiano di una Pubblica Amministrazione a farlo</strong>, e sicuramente il primo con una banca dati di questa ricchezza e dimensione.</p>
+<p>➡️ Stiamo parlando del catalogo dei <strong>Progetti con tracciato esteso</strong>, disponibile qui, anche in formato Parquet: <a href="https://opencoesione.gov.it/it/opendata/#!progetti_section" class="uri">https://opencoesione.gov.it/it/opendata/#!progetti_section</a></p>
+<p>Abbiamo sottolineato come il <strong>formato <code>Parquet</code></strong> sia molto <strong>più efficiente</strong> per l’accesso e l’analisi dei dati, rispetto al <strong><code>CSV</code></strong>.<br> Questa caratteristica è molto evidente, soprattutto per tabelle molto grandi, come questa dei <strong>progetti</strong> di <a href="https://opencoesione.gov.it/it/opendata/#!progetti_section"><strong>OpenCoesione</strong></a>, composta da circa <code>2.000.000 di righe x 200 colonne</code>.</p>
 <p>È possibile ad esempio interrogarla, per avere restituito il <strong>totale di finanziamento pubblico</strong> per ogni <strong>ciclo di finanziamento</strong> (vedi <a href="#tbl-cicli" class="quarto-xref">Tabella&nbsp;1</a>), e avere la risposta <strong>in 0,07 secondi</strong>.</p>
 <div class="cell" data-execution_count="2">
 <div id="tbl-cicli" class="cell quarto-float anchored" data-execution_count="2">
@@ -313,37 +313,37 @@ Tabella&nbsp;1: totale di finanziamento pubblico per ciclo di finanziamento
 <div aria-describedby="tbl-cicli-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-display" data-execution_count="2">
 <style type="text/css">
-#T_f3b32 th.col1 {
+#T_58070 th.col1 {
   text-align: right;
 }
-#T_f3b32_row0_col1, #T_f3b32_row1_col1, #T_f3b32_row2_col1, #T_f3b32_row3_col1 {
+#T_58070_row0_col1, #T_58070_row1_col1, #T_58070_row2_col1, #T_58070_row3_col1 {
   text-align: right;
 }
 </style>
 
-<table id="T_f3b32" class="do-not-create-environment cell table table-sm table-striped small" data-quarto-postprocess="true">
+<table id="T_58070" class="do-not-create-environment cell table table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
-<th id="T_f3b32_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Ciclo</th>
-<th id="T_f3b32_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Totale finanziamento pubblico (€)</th>
+<th id="T_58070_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Ciclo</th>
+<th id="T_58070_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Totale finanziamento pubblico (€)</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_f3b32_row0_col0" class="data row0 col0">Ciclo di programmazione 2000-2006</td>
-<td id="T_f3b32_row0_col1" class="data row0 col1">17.667.666.307,18</td>
+<td id="T_58070_row0_col0" class="data row0 col0">Ciclo di programmazione 2000-2006</td>
+<td id="T_58070_row0_col1" class="data row0 col1">17.667.666.307,18</td>
 </tr>
 <tr class="even">
-<td id="T_f3b32_row1_col0" class="data row1 col0">Ciclo di programmazione 2007-2013</td>
-<td id="T_f3b32_row1_col1" class="data row1 col1">101.629.942.347,96</td>
+<td id="T_58070_row1_col0" class="data row1 col0">Ciclo di programmazione 2007-2013</td>
+<td id="T_58070_row1_col1" class="data row1 col1">101.629.942.347,96</td>
 </tr>
 <tr class="odd">
-<td id="T_f3b32_row2_col0" class="data row2 col0">Ciclo di programmazione 2014-2020</td>
-<td id="T_f3b32_row2_col1" class="data row2 col1">154.061.098.680,89</td>
+<td id="T_58070_row2_col0" class="data row2 col0">Ciclo di programmazione 2014-2020</td>
+<td id="T_58070_row2_col1" class="data row2 col1">154.061.098.680,89</td>
 </tr>
 <tr class="even">
-<td id="T_f3b32_row3_col0" class="data row3 col0">Ciclo di programmazione 2021-2027</td>
-<td id="T_f3b32_row3_col1" class="data row3 col1">7.465.189.173,71</td>
+<td id="T_58070_row3_col0" class="data row3 col0">Ciclo di programmazione 2021-2027</td>
+<td id="T_58070_row3_col1" class="data row3 col1">7.465.189.173,71</td>
 </tr>
 </tbody>
 </table>
@@ -352,11 +352,11 @@ Tabella&nbsp;1: totale di finanziamento pubblico per ciclo di finanziamento
 </figure>
 </div>
 </div>
-<p>E questa rapidità si ottiene sul proprio computer di lavoro, <strong>senza</strong> che sia necessario mettere in campo <strong>risorse</strong> di <strong>calcolo</strong> particolarmente potenti e dispendiose sul <strong><em>cloud</em></strong>.<br> O <strong>senza</strong> che sia necessario <strong>importare</strong> il <strong>file</strong> in un <strong>database</strong> <strong>relazionale</strong>, con tutte le operazioni di trasformazione e pulizia dei dati che questo comporta e senza che sia necessario installare e configurare un db relazionale.</p>
+<p>E questa rapidità si ottiene sul proprio computer di lavoro, <strong>senza</strong> che sia necessario mettere in campo <strong>risorse</strong> di <strong>calcolo</strong> particolarmente potenti e dispendiose sul <strong><em>cloud</em></strong>.<br> O <strong>senza</strong> che sia necessario <strong>importare</strong> il <strong>file</strong> in un <strong>database</strong> <strong>relazionale</strong>, con tutte le operazioni di trasformazione e pulizia dei dati che questo comporta evitando anche l’installazione e la configurazione di un db relazionale.</p>
 </section>
 <section id="come-leggere-un-file-parquet" class="level2">
 <h2 class="anchored" data-anchor-id="come-leggere-un-file-parquet">Come leggere un file Parquet</h2>
-<p>Se non hai mai sentito parlare di questo formato, probabilmente penserai che per te sia impossibile usarlo per leggere, filtrare, analizzare, ecc. i dati di OpenCoesione. Penserai che è per “tecnici”.<br> Niente di più sbagliato! Leggere un file Parquet è <strong>facile</strong> e <strong>veloce</strong>, ed è paradossalmente più <strong>necessario</strong> l’<strong>aiuto</strong> di un <strong>tecnico</strong> per leggere <strong>un file <code>CSV</code> di 4,5 Gigabyte</strong> (come quello dei progetti di OpenCoesione). Per la gran parte degli utenti è infatti impossibile leggere un file di queste dimensioni, anche con un buon Personal Computer.<br> E programmi come <strong>Excel</strong> hanno in ogni caso un <strong>limite</strong> di circa <strong>1.000.000 di righe</strong> per foglio di lavoro (qui sono circa 2.000.000).</p>
+<p>Se non hai mai sentito parlare di questo formato, probabilmente penserai che per te sia impossibile usarlo per leggere, filtrare, analizzare, ecc. i dati di OpenCoesione. Penserai che è un formato solo per “tecnici”.<br> Niente di più sbagliato! Leggere un file Parquet è <strong>facile</strong> e <strong>veloce</strong>, e paradossalmente è più <strong>necessario</strong> l’<strong>aiuto</strong> di un <strong>tecnico</strong> per leggere <strong>un file <code>CSV</code> di 4,5 Gigabyte</strong> (come quello dei progetti di OpenCoesione). Per la gran parte degli utenti è infatti impossibile leggere un file di queste dimensioni, anche con un buon Personal Computer.<br> E non pensare di utilizzare programmi come <strong>Excel</strong>, hanno un <strong>limite</strong> di circa <strong>1.000.000 di righe</strong> per foglio di lavoro (tante ma non sufficienti nel nostro caso in cui ne abbiamo circa 2.000.000).</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -372,12 +372,12 @@ Nota bene
 </div>
 <section id="al-doppio-click" class="level3">
 <h3 class="anchored" data-anchor-id="al-doppio-click">Al doppio click</h3>
-<p>Per visualizzare un file Parquet con un semplice doppio click, puoi usare <a href="https://www.tadviewer.com/"><strong>Tad</strong></a>, un visualizzatore di file Parquet (e anche <code>CSV</code>, <code>SQLite</code> e <code>DuckDB</code>) <em>open source</em>, gratuito e disponibile per Windows, Mac e Linux.</p>
+<p>Per visualizzare un file Parquet con un semplice doppio click, puoi usare <a href="https://www.tadviewer.com/"><strong>Tad</strong></a>, un visualizzatore di file Parquet (e anche <code>CSV</code>, <code>[SQLite](https://www.sqlite.org)</code> e <code>[DuckDB](http://duckdb.org/)</code>) <em>open source</em>, gratuito e disponibile per Windows, Mac e Linux.</p>
 <p>Una volta installato, basterà fare doppio click sul file per aprirlo e visualizzarne il contenuto (vedi <a href="#fig-tad" class="quarto-xref">Figura&nbsp;1</a>). Questo di OpenCoesione è un file grande e sarà necessario qualche secondo.</p>
 <div id="fig-tad" class="lightbox quarto-figure quarto-figure-center quarto-float anchored" alt="esempio di visualizzazione e filtro dati con Tad">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-tad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="images/tad_02.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" data-glightbox="description: .lightbox-desc-1"><img src="images/tad_02.png" class="img-fluid figure-img" alt="esempio di visualizzazione e filtro dati con Tad"></a>
+<a href="images/tad_02.png" class="lightbox" data-glightbox="description: .lightbox-desc-1" data-gallery="quarto-lightbox-gallery-1"><img src="images/tad_02.png" class="img-fluid figure-img" alt="esempio di visualizzazione e filtro dati con Tad"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;1: esempio di visualizzazione e filtro dati con <a href="https://www.tadviewer.com/">TAD</a>
@@ -422,7 +422,7 @@ Figura&nbsp;2: DBeaver - impostazione path DuckDB
 <div id="fig-dbeaver" class="lightbox quarto-figure quarto-figure-center quarto-float anchored" alt="DBeaver - riquadro Database">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-dbeaver-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="images/dbeaver_04.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" data-glightbox="description: .lightbox-desc-2"><img src="images/dbeaver_04.png" class="img-fluid figure-img" alt="DBeaver - riquadro Database"></a>
+<a href="images/dbeaver_04.png" class="lightbox" data-glightbox="description: .lightbox-desc-2" data-gallery="quarto-lightbox-gallery-2"><img src="images/dbeaver_04.png" class="img-fluid figure-img" alt="DBeaver - riquadro Database"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dbeaver-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;3: DBeaver - riquadro Database
@@ -442,7 +442,7 @@ Figura&nbsp;3: DBeaver - riquadro Database
 <div id="fig-dbeaver" class="lightbox quarto-figure quarto-figure-center quarto-float anchored" alt="DBeaver - la prima query">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-dbeaver-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="images/dbeaver_05.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" data-glightbox="description: .lightbox-desc-3"><img src="images/dbeaver_05.png" class="img-fluid figure-img" alt="DBeaver - la prima query"></a>
+<a href="images/dbeaver_05.png" class="lightbox" data-glightbox="description: .lightbox-desc-3" data-gallery="quarto-lightbox-gallery-3"><img src="images/dbeaver_05.png" class="img-fluid figure-img" alt="DBeaver - la prima query"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dbeaver-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;4: DBeaver - la prima query
@@ -465,7 +465,7 @@ Figura&nbsp;4: DBeaver - la prima query
 <div id="fig-duckdb" class="lightbox quarto-figure quarto-figure-center quarto-float anchored" alt="Esempio di output del comando SUMMARIZE">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-duckdb-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="images/duckdb-summarize.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" data-glightbox="description: .lightbox-desc-4"><img src="images/duckdb-summarize.png" class="img-fluid figure-img" alt="Esempio di output del comando SUMMARIZE"></a>
+<a href="images/duckdb-summarize.png" class="lightbox" data-glightbox="description: .lightbox-desc-4" data-gallery="quarto-lightbox-gallery-4"><img src="images/duckdb-summarize.png" class="img-fluid figure-img" alt="Esempio di output del comando SUMMARIZE"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-duckdb-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;5: Esempio di <em>output</em> del comando <code>SUMMARIZE</code>
@@ -989,7 +989,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","loop":false,"descPosition":"bottom","openEffect":"zoom","selector":".lightbox"});
+<script>var lightboxQuarto = GLightbox({"descPosition":"bottom","selector":".lightbox","loop":false,"closeEffect":"zoom","openEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;
