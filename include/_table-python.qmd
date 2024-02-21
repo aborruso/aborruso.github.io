@@ -1,0 +1,48 @@
+```{python}
+#| echo: false
+import duckdb
+import locale
+import pandas as pd
+from IPython.display import Markdown
+import humanize
+humanize.i18n.activate("it_IT")
+
+
+locale.setlocale(locale.LC_ALL, 'it_IT.utf8')
+
+# Function for formatting numbers in Italian format
+def italian_format(x):
+    if isinstance(x, float):
+        return "{:,.2f}".format(x).replace(",", "X").replace(".", ",").replace("X", ".")
+    elif isinstance(x, int):
+        return "{:,}".format(x).replace(",", ".")
+    else:
+        return x
+
+# To check if column is numeric
+def is_numeric_column(col):
+    return pd.api.types.is_numeric_dtype(col)
+
+# To have Italian format for numbers and right alignment
+def apply_italian_style(df):
+    styled_df = df.style.format(italian_format).hide(axis="index")
+    # Applica l'allineamento a destra alle celle se la colonna è numerica
+    styled_df = styled_df.apply(lambda x: ["text-align: right" if is_numeric_column(df[x.name]) else "" for i in x], axis=0)
+    # Applica l'allineamento a destra alle intestazioni delle colonne numeriche
+    styled_df.set_table_styles({col: [{'selector': 'th', 'props': 'text-align: right;'}]
+      for col in df.columns if is_numeric_column(df[col])}, overwrite=False)
+    return styled_df
+
+def italian_format_custom(x):
+    if isinstance(x, float):
+        # Suddivide il numero in parte intera e decimale
+        parte_intera, parte_decimale = str(x).split('.')
+        # Formatta la parte intera
+        parte_intera_formattata = "{:,}".format(int(parte_intera)).replace(",", ".")
+        # Combina la parte intera formattata con la parte decimale
+        return parte_intera_formattata + "," + parte_decimale
+    elif isinstance(x, int):
+        return "{:,}".format(x).replace(",", ".")
+    else:
+        return x
+```

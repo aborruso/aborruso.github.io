@@ -1,6 +1,6 @@
 ---
-title: "Lavorare con grandi file CSV compressi"
-description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
+title: "Come leggere un file Parquet"
+description: "Un esempio con i dati di OpenCoesione"
 date: "2024-02-15"
 draft: true
 search: false
@@ -24,10 +24,10 @@ format:
     crossrefs-hover: false
 website:
   twitter-card:
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
+    description: "Un esempio con i dati di OpenCoesione"
     image: opencup.png
   open-graph:
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
+    description: "Un esempio con i dati di OpenCoesione"
     image: opencup.png
 image: opencup.png
 ---
@@ -66,9 +66,19 @@ Questo rende l'accesso ai dati molto più veloce e efficiente.
 
 ## L'esempio di OpenCoesione
 
+[**OpenCoesione**](https://opencoesione.gov.it/) è un progetto nazionale il cui obiettivo è **promuovere** **trasparenza**, **collaborazione** e **partecipazione** riguardo alle **politiche** di **coesione** nel paese.
 
-Per tabelle di dati molto grandi, come quella dei **progetti** di [**OpenCoesione**](https://opencoesione.gov.it/it/opendata/#!progetti_section) (composta da circa `2.000.000 di righe x 200 colonne`), questa differenza è immediamente percepibile nell'uso.<br>
-E avere restituito ad esempio il **totale di finanziamento pubblico** per **ciclo di finanziamento** (vedi @tbl-cicli), è un'operazione che viene eseguita **in 0.07 secondi**.
+È da sempre uno dei progetti di riferimento per l'**apertura dei dati** in Italia, che **ha fatto sempre scuola**.<br>
+E lo ha fatto ancora una volta: dal 21 febbraio 2024 ha iniziato a **pubblicare** la **propria banca dati** anche in **formato** **Parquet**.
+
+Ed è probabilmente il **primo progetto italiano di una Pubblica Amministrazione a farlo**. E sicuramente il primo con una banca dati di questa ricchezza e dimensione.
+
+Si tratta dei catalogo dei **progetti** ed è disponibile qui: ................
+
+Abbiamo sottolineato come il **formato `Parquet`** sia molto **più efficiente** per l'accesso e l'analisi dei dati, rispetto al **`CSV`**.<br>
+Ed è molto evidente soprattutto per tabelle molto grandi, come questa dei **progetti** di [**OpenCoesione**](https://opencoesione.gov.it/it/opendata/#!progetti_section), composta da circa `2.000.000 di righe x 200 colonne`.
+
+È possibile ad esempio interrogarla, per avere restituito il **totale di finanziamento pubblico** per ogni **ciclo di finanziamento** (vedi @tbl-cicli), e avere la risposta **in 0,07 secondi**.
 
 ```{python}
 #| echo: false
@@ -95,25 +105,73 @@ O **senza** che sia necessario **importare** il **file** in un **database** **re
 ## Come leggere un file Parquet
 
 Se non hai mai sentito parlare di questo formato, probabilmente penserai che per te sia impossibile usarlo per leggere, filtrare, analizzare, ecc. i dati di OpenCoesione. Penserai che è per "tecnici".<br>
-Niente di più sbagliato! Leggere un file Parquet è **facile** e **veloce**, ed è paradossalmente più **necessario** l'**intervento** di un **tecnico** per leggere **un file `CSV` di 4,5 Gigabyte** (come quello dei progetti di OpenCoesione). Per la gran parte degli utenti è impossibile leggere un file di queste dimensioni, anche con un buon Personal Computer.<br>
-E programmi come **Excel** hanno in ogni caso un **limite** di **1.048.576 righe** per foglio di lavoro (qui sono circa 2.000.000).
+Niente di più sbagliato! Leggere un file Parquet è **facile** e **veloce**, ed è paradossalmente più **necessario** l'**aiuto** di un **tecnico** per leggere **un file `CSV` di 4,5 Gigabyte** (come quello dei progetti di OpenCoesione). Per la gran parte degli utenti è infatti impossibile leggere un file di queste dimensioni, anche con un buon Personal Computer.<br>
+E programmi come **Excel** hanno in ogni caso un **limite** di circa **1.000.000 di righe** per foglio di lavoro (qui sono circa 2.000.000).
 
 ::: {.callout-note}
 ## Nota bene
 Un file di queste dimensioni, aldilà del formato, deve essere gestito con attenzione e con un minimo di competenza.
 :::
 
-### Apertura al doppio click
+### Al doppio click
 
-Per visualizzare un file Parquet con un semplice doppio click, puoi usare [**Tad**](https://www.tadviewer.com/), un visualizzatore di file Parquet (e anche CSV, SQLite e DuckDB) *open source*, gratuito e disponibile per Windows, Mac e Linux.
+Per visualizzare un file Parquet con un semplice doppio click, puoi usare [**Tad**](https://www.tadviewer.com/), un visualizzatore di file Parquet (e anche `CSV`, `SQLite` e `DuckDB`) *open source*, gratuito e disponibile per Windows, Mac e Linux.
 
-Una volta installato, basterà fare doppio click sul file per aprirlo e visualizzarne il contenuto (vedi @fig-tad). È un file grande e sarà necessario qualche secondo.
+Una volta installato, basterà fare doppio click sul file per aprirlo e visualizzarne il contenuto (vedi @fig-tad). Questo di OpenCoesione è un file grande e sarà necessario qualche secondo.
 
 ![esempio di visualizzazione e filtro dati con [TAD](https://www.tadviewer.com/)](images/tad_02.png){fig-alt="esempio di visualizzazione e filtro dati con Tad" #fig-tad .lightbox}
 
-### Accesso tramite GUI
+Tra le funzionalità di Tad c'è anche la possibilità di **filtrare** i dati. Nell'immagine di sopra:
 
-<https://duckdb.org/docs/guides/sql_editors/dbeaver.html>
+1. il filtro applicato;
+2. il modulo per costruire il filtro;
+3. il mini report sul numero di righe filtrate.
+
+### Con un client visuale SQL
+
+**`SQL`** è uno dei linguaggi più diffusi e standard per l'interrogazione e la manipolazione dei dati. È **nato 50 anni fa**, quindi ci sono un'enormità di libri, *tutorial*, corsi, forum, *cheatsheet*, ecc. per imparare a usarlo, e ci sono centinaia di applicazioni, librerie, *framework*, ecc. per usarlo.
+
+**Un file `Parquet` è interrogabile con `SQL`**, quindi tutti possono usarlo per interrogare e analizzare i dati in questo formato.
+
+Un'**applicazione SQL "visuale"**, *open source* e multi-piattaforma, che puoi usare per interrogare un file Parquet è [**DBeaver**](https://dbeaver.io/). Questi i passi che dovrai seguire per interrogare un file Parquet con DBeaver:
+
+- scaricarla e installarla (<https://dbeaver.io/download/>);
+- lanciarla, aprire il menu `Database` e selezionare `New Database Connection`;
+- cercare `DuckDB`, selezionarlo e fare click su `Next`;
+
+![DBeaver - selezionare DuckDB come database](images/dbeaver_01.png){fig-alt=DBeaver - selezionare DuckDB come database" #fig-dbeaver}
+
+- impostare `:memory:` come `Path`;
+
+![DBeaver - impostazione path DuckDB](images/dbeaver_02.png){fig-alt="DBeaver - impostazione path DuckDB" #fig-dbeaver}
+
+- fare click su `Test Connection`, che verificherà la necessità di installare eventuali componenti mancanti. Se manca qualcosa, installarla facendo click su `Download`.
+
+A questo punto, nel riquadro di sinistra "*Database Navigator*" dovrebbe apparire una connessione al database DuckDB `memory`.
+
+![DBeaver - riquadro Database](images/dbeaver_04.png){fig-alt="DBeaver - riquadro Database" #fig-dbeaver .lightbox}
+
+Per lanciare una *query* non ti resta che fare *click* con il pulsante destro del *mouse* su `memory`, selezionare `SQL Editor`, poi `New SQL script` e scrivere la tua prima *query*, per leggere ad esempio le prime 5 righe del file `Parquet`:
+
+```sql
+SELECT	*
+FROM "c:\tmp\progetti_esteso_20230831.parquet" -- <1>
+LIMIT 5
+```
+
+1. Per puntare al file, è stato inserito il percorso del file Parquet.
+
+![DBeaver - la prima query](images/dbeaver_05.png){fig-alt="DBeaver - la prima query" #fig-dbeaver .lightbox}
+
+La *query* di esempio di sopra, con i dati per ciclo di finanziamento di @tbl-cicli, è invece il risultato di questa *query*, che puoi provare a lanciare in DBeaver:
+
+```sql
+SELECT oc_descr_ciclo Ciclo, SUM(finanz_totale_pubblico) "Totale finanziamento pubblico (€)"
+FROM "C\tmp\progetti_esteso_20230831.parquet"
+GROUP BY oc_descr_ciclo
+ORDER BY ciclo;
+```
+
 
 ### Shell
 
