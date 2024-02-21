@@ -15,4 +15,4 @@ posts/duckdb-intro-csv/file/*
 
 posts/duckdb-intro-csv/rill/opencoesione/*
 docs/posts/dot-cartogram/index.html
-posts/leggere-interrogare-file-parquet/progetti_esteso_20230831.parquet
+posts/leggere-interrogare-file-parquet/*.parquet

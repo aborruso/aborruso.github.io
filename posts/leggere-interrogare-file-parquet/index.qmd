@@ -73,7 +73,7 @@ E lo ha fatto ancora una volta: dal 21 febbraio 2024 ha iniziato a **pubblicare*
 
 Ed è probabilmente il **primo progetto italiano di una Pubblica Amministrazione a farlo**. E sicuramente il primo con una banca dati di questa ricchezza e dimensione.
 
-Si tratta dei catalogo dei **progetti** ed è disponibile qui: ................
+➡️ Si tratta dei catalogo dei **Progetti con tracciato esteso**, disponibile qui, anche in formato Parquet: <https://opencoesione.gov.it/it/opendata/#!progetti_section>
 
 Abbiamo sottolineato come il **formato `Parquet`** sia molto **più efficiente** per l'accesso e l'analisi dei dati, rispetto al **`CSV`**.<br>
 Ed è molto evidente soprattutto per tabelle molto grandi, come questa dei **progetti** di [**OpenCoesione**](https://opencoesione.gov.it/it/opendata/#!progetti_section), composta da circa `2.000.000 di righe x 200 colonne`.
@@ -87,7 +87,7 @@ Ed è molto evidente soprattutto per tabelle molto grandi, come questa dei **pro
 
 query= """
   SELECT oc_descr_ciclo Ciclo, SUM(finanz_totale_pubblico) "Totale finanziamento pubblico (€)"
-  FROM 'progetti_esteso_20230831.parquet'
+  FROM 'progetti_esteso_20231231.parquet'
   GROUP BY oc_descr_ciclo
   ORDER BY ciclo;
   """

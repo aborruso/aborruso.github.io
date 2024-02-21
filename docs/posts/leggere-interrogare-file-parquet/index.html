@@ -301,7 +301,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><a href="https://opencoesione.gov.it/"><strong>OpenCoesione</strong></a> è un progetto nazionale il cui obiettivo è <strong>promuovere</strong> <strong>trasparenza</strong>, <strong>collaborazione</strong> e <strong>partecipazione</strong> riguardo alle <strong>politiche</strong> di <strong>coesione</strong> nel paese.</p>
 <p>È da sempre uno dei progetti di riferimento per l’<strong>apertura dei dati</strong> in Italia, che <strong>ha fatto sempre scuola</strong>.<br> E lo ha fatto ancora una volta: dal 21 febbraio 2024 ha iniziato a <strong>pubblicare</strong> la <strong>propria banca dati</strong> anche in <strong>formato</strong> <strong>Parquet</strong>.</p>
 <p>Ed è probabilmente il <strong>primo progetto italiano di una Pubblica Amministrazione a farlo</strong>. E sicuramente il primo con una banca dati di questa ricchezza e dimensione.</p>
-<p>Si tratta dei catalogo dei <strong>progetti</strong> ed è disponibile qui: …………….</p>
+<p>➡️ Si tratta dei catalogo dei <strong>Progetti con tracciato esteso</strong>, disponibile qui, anche in formato Parquet: <a href="https://opencoesione.gov.it/it/opendata/#!progetti_section" class="uri">https://opencoesione.gov.it/it/opendata/#!progetti_section</a></p>
 <p>Abbiamo sottolineato come il <strong>formato <code>Parquet</code></strong> sia molto <strong>più efficiente</strong> per l’accesso e l’analisi dei dati, rispetto al <strong><code>CSV</code></strong>.<br> Ed è molto evidente soprattutto per tabelle molto grandi, come questa dei <strong>progetti</strong> di <a href="https://opencoesione.gov.it/it/opendata/#!progetti_section"><strong>OpenCoesione</strong></a>, composta da circa <code>2.000.000 di righe x 200 colonne</code>.</p>
 <p>È possibile ad esempio interrogarla, per avere restituito il <strong>totale di finanziamento pubblico</strong> per ogni <strong>ciclo di finanziamento</strong> (vedi <a href="#tbl-cicli" class="quarto-xref">Tabella&nbsp;1</a>), e avere la risposta <strong>in 0,07 secondi</strong>.</p>
 <div class="cell" data-execution_count="2">
@@ -313,37 +313,37 @@ Tabella&nbsp;1: totale di finanziamento pubblico per ciclo di finanziamento
 <div aria-describedby="tbl-cicli-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-display" data-execution_count="2">
 <style type="text/css">
-#T_0e508 th.col1 {
+#T_943a2 th.col1 {
   text-align: right;
 }
-#T_0e508_row0_col1, #T_0e508_row1_col1, #T_0e508_row2_col1, #T_0e508_row3_col1 {
+#T_943a2_row0_col1, #T_943a2_row1_col1, #T_943a2_row2_col1, #T_943a2_row3_col1 {
   text-align: right;
 }
 </style>
 
-<table id="T_0e508" class="do-not-create-environment cell table table-sm table-striped small" data-quarto-postprocess="true">
+<table id="T_943a2" class="do-not-create-environment cell table table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
-<th id="T_0e508_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Ciclo</th>
-<th id="T_0e508_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Totale finanziamento pubblico (€)</th>
+<th id="T_943a2_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Ciclo</th>
+<th id="T_943a2_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Totale finanziamento pubblico (€)</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_0e508_row0_col0" class="data row0 col0">Ciclo di programmazione 2000-2006</td>
-<td id="T_0e508_row0_col1" class="data row0 col1">16.044.460.685,63</td>
+<td id="T_943a2_row0_col0" class="data row0 col0">Ciclo di programmazione 2000-2006</td>
+<td id="T_943a2_row0_col1" class="data row0 col1">17.667.666.307,18</td>
 </tr>
 <tr class="even">
-<td id="T_0e508_row1_col0" class="data row1 col0">Ciclo di programmazione 2007-2013</td>
-<td id="T_0e508_row1_col1" class="data row1 col1">101.620.935.057,93</td>
+<td id="T_943a2_row1_col0" class="data row1 col0">Ciclo di programmazione 2007-2013</td>
+<td id="T_943a2_row1_col1" class="data row1 col1">101.629.942.347,96</td>
 </tr>
 <tr class="odd">
-<td id="T_0e508_row2_col0" class="data row2 col0">Ciclo di programmazione 2014-2020</td>
-<td id="T_0e508_row2_col1" class="data row2 col1">147.067.431.587,86</td>
+<td id="T_943a2_row2_col0" class="data row2 col0">Ciclo di programmazione 2014-2020</td>
+<td id="T_943a2_row2_col1" class="data row2 col1">154.061.098.680,89</td>
 </tr>
 <tr class="even">
-<td id="T_0e508_row3_col0" class="data row3 col0">Ciclo di programmazione 2021-2027</td>
-<td id="T_0e508_row3_col1" class="data row3 col1">6.254.538.737,08</td>
+<td id="T_943a2_row3_col0" class="data row3 col0">Ciclo di programmazione 2021-2027</td>
+<td id="T_943a2_row3_col1" class="data row3 col1">7.465.189.173,71</td>
 </tr>
 </tbody>
 </table>
@@ -802,7 +802,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"openEffect":"zoom","closeEffect":"zoom","loop":false,"descPosition":"bottom","selector":".lightbox"});
+<script>var lightboxQuarto = GLightbox({"selector":".lightbox","closeEffect":"zoom","loop":false,"openEffect":"zoom","descPosition":"bottom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;
