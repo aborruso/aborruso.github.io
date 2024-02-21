@@ -362,7 +362,7 @@ Abbiamo scritto questo post, perché crediamo che il formato Parquet sia un'oppo
 
 Il fatto che **OpenCoesione** sia stato **il primo progetto** a scegliere di pubblicare i propri dati in formato Parquet è un **segnale** molto **importante**: siamo confidenti che possa essere seguito presto da altre amministrazioni e organizzazioni.
 
-Non avremo mai immaginato che la [**scrittura di questo post**](../duckdb-intro-csv/index.qmd) avrebbe generato questa bella conseguenza.
+Non avremmo mai immaginato che la [**scrittura di questo post**](../duckdb-intro-csv/index.qmd) avrebbe generato questa bella conseguenza.
 E per questo gli autori del post e tutta l'**associazione onData** ringraziano OpenCoesione e il suo *staff* per essere stati prima in ascolto  e poi protagonisti di questa scelta.
 
 
