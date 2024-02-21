@@ -115,7 +115,7 @@ Un file di queste dimensioni, aldilà del formato, deve essere gestito con atten
 
 ### Al doppio click
 
-Per visualizzare un file Parquet con un semplice doppio click, puoi usare [**Tad**](https://www.tadviewer.com/), un visualizzatore di file Parquet (e anche `CSV`, `[SQLite](https://www.sqlite.org)` e `[DuckDB](http://duckdb.org/)`) *open source*, gratuito e disponibile per Windows, Mac e Linux.
+Per visualizzare un file Parquet con un semplice doppio click, puoi usare [**Tad**](https://www.tadviewer.com/), un visualizzatore di file Parquet (e anche `CSV`, [`SQLite`](https://www.sqlite.org) e [`DuckDB`](http://duckdb.org/)) *open source*, gratuito e disponibile per Windows, Mac e Linux.
 
 Una volta installato, basterà fare doppio click sul file per aprirlo e visualizzarne il contenuto (vedi @fig-tad). Questo di OpenCoesione è un file grande e sarà necessario qualche secondo.
 

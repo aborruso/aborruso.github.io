@@ -83,37 +83,37 @@ Tabella&nbsp;1: totale di finanziamento pubblico per ciclo di finanziamento
 <div aria-describedby="tbl-cicli-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-display" data-execution_count="2">
 <style type="text/css">
-#T_e3bf9 th.col1 {
+#T_a53ba th.col1 {
   text-align: right;
 }
-#T_e3bf9_row0_col1, #T_e3bf9_row1_col1, #T_e3bf9_row2_col1, #T_e3bf9_row3_col1 {
+#T_a53ba_row0_col1, #T_a53ba_row1_col1, #T_a53ba_row2_col1, #T_a53ba_row3_col1 {
   text-align: right;
 }
 </style>
 
-<table id="T_e3bf9" class="do-not-create-environment cell table table-sm table-striped small" data-quarto-postprocess="true">
+<table id="T_a53ba" class="do-not-create-environment cell table table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
-<th id="T_e3bf9_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Ciclo</th>
-<th id="T_e3bf9_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Totale finanziamento pubblico (€)</th>
+<th id="T_a53ba_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Ciclo</th>
+<th id="T_a53ba_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Totale finanziamento pubblico (€)</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_e3bf9_row0_col0" class="data row0 col0">Ciclo di programmazione 2000-2006</td>
-<td id="T_e3bf9_row0_col1" class="data row0 col1">17.667.666.307,18</td>
+<td id="T_a53ba_row0_col0" class="data row0 col0">Ciclo di programmazione 2000-2006</td>
+<td id="T_a53ba_row0_col1" class="data row0 col1">17.667.666.307,18</td>
 </tr>
 <tr class="even">
-<td id="T_e3bf9_row1_col0" class="data row1 col0">Ciclo di programmazione 2007-2013</td>
-<td id="T_e3bf9_row1_col1" class="data row1 col1">101.629.942.347,96</td>
+<td id="T_a53ba_row1_col0" class="data row1 col0">Ciclo di programmazione 2007-2013</td>
+<td id="T_a53ba_row1_col1" class="data row1 col1">101.629.942.347,96</td>
 </tr>
 <tr class="odd">
-<td id="T_e3bf9_row2_col0" class="data row2 col0">Ciclo di programmazione 2014-2020</td>
-<td id="T_e3bf9_row2_col1" class="data row2 col1">154.061.098.680,89</td>
+<td id="T_a53ba_row2_col0" class="data row2 col0">Ciclo di programmazione 2014-2020</td>
+<td id="T_a53ba_row2_col1" class="data row2 col1">154.061.098.680,89</td>
 </tr>
 <tr class="even">
-<td id="T_e3bf9_row3_col0" class="data row3 col0">Ciclo di programmazione 2021-2027</td>
-<td id="T_e3bf9_row3_col1" class="data row3 col1">7.465.189.173,71</td>
+<td id="T_a53ba_row3_col0" class="data row3 col0">Ciclo di programmazione 2021-2027</td>
+<td id="T_a53ba_row3_col1" class="data row3 col1">7.465.189.173,71</td>
 </tr>
 </tbody>
 </table>
@@ -142,12 +142,12 @@ Nota bene
 </div>
 <section id="al-doppio-click" class="level3">
 <h3 class="anchored" data-anchor-id="al-doppio-click">Al doppio click</h3>
-<p>Per visualizzare un file Parquet con un semplice doppio click, puoi usare <a href="https://www.tadviewer.com/"><strong>Tad</strong></a>, un visualizzatore di file Parquet (e anche <code>CSV</code>, <code>[SQLite](https://www.sqlite.org)</code> e <code>[DuckDB](http://duckdb.org/)</code>) <em>open source</em>, gratuito e disponibile per Windows, Mac e Linux.</p>
+<p>Per visualizzare un file Parquet con un semplice doppio click, puoi usare <a href="https://www.tadviewer.com/"><strong>Tad</strong></a>, un visualizzatore di file Parquet (e anche <code>CSV</code>, <a href="https://www.sqlite.org"><code>SQLite</code></a> e <a href="http://duckdb.org/"><code>DuckDB</code></a>) <em>open source</em>, gratuito e disponibile per Windows, Mac e Linux.</p>
 <p>Una volta installato, basterà fare doppio click sul file per aprirlo e visualizzarne il contenuto (vedi Figura&nbsp;1). Questo di OpenCoesione è un file grande e sarà necessario qualche secondo.</p>
 <div id="fig-tad" class="lightbox quarto-figure quarto-figure-center quarto-float anchored" alt="esempio di visualizzazione e filtro dati con Tad">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-tad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="images/tad_02.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" data-glightbox="description: .lightbox-desc-1"><img src="https://aborruso.github.io/posts/leggere-interrogare-file-parquet/images/tad_02.png" class="img-fluid figure-img" alt="esempio di visualizzazione e filtro dati con Tad"></a>
+<a href="images/tad_02.png" class="lightbox" data-glightbox="description: .lightbox-desc-1" data-gallery="quarto-lightbox-gallery-1"><img src="https://aborruso.github.io/posts/leggere-interrogare-file-parquet/images/tad_02.png" class="img-fluid figure-img" alt="esempio di visualizzazione e filtro dati con Tad"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;1: esempio di visualizzazione e filtro dati con <a href="https://www.tadviewer.com/">TAD</a>
@@ -192,7 +192,7 @@ Figura&nbsp;2: DBeaver - impostazione path DuckDB
 <div id="fig-dbeaver" class="lightbox quarto-figure quarto-figure-center quarto-float anchored" alt="DBeaver - riquadro Database">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-dbeaver-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="images/dbeaver_04.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" data-glightbox="description: .lightbox-desc-2"><img src="https://aborruso.github.io/posts/leggere-interrogare-file-parquet/images/dbeaver_04.png" class="img-fluid figure-img" alt="DBeaver - riquadro Database"></a>
+<a href="images/dbeaver_04.png" class="lightbox" data-glightbox="description: .lightbox-desc-2" data-gallery="quarto-lightbox-gallery-2"><img src="https://aborruso.github.io/posts/leggere-interrogare-file-parquet/images/dbeaver_04.png" class="img-fluid figure-img" alt="DBeaver - riquadro Database"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dbeaver-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;3: DBeaver - riquadro Database
@@ -224,7 +224,7 @@ font-style: inherit;">5</span></span><div class="code-annotation-gutter-bg"></di
 <div id="fig-dbeaver" class="lightbox quarto-figure quarto-figure-center quarto-float anchored" alt="DBeaver - la prima query">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-dbeaver-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="images/dbeaver_05.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" data-glightbox="description: .lightbox-desc-3"><img src="https://aborruso.github.io/posts/leggere-interrogare-file-parquet/images/dbeaver_05.png" class="img-fluid figure-img" alt="DBeaver - la prima query"></a>
+<a href="images/dbeaver_05.png" class="lightbox" data-glightbox="description: .lightbox-desc-3" data-gallery="quarto-lightbox-gallery-3"><img src="https://aborruso.github.io/posts/leggere-interrogare-file-parquet/images/dbeaver_05.png" class="img-fluid figure-img" alt="DBeaver - la prima query"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dbeaver-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;4: DBeaver - la prima query
@@ -273,7 +273,7 @@ font-style: inherit;">'progetti_esteso_20231231.parquet'</span>;</span></code></
 <div id="fig-duckdb" class="lightbox quarto-figure quarto-figure-center quarto-float anchored" alt="Esempio di output del comando SUMMARIZE">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-duckdb-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="images/duckdb-summarize.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" data-glightbox="description: .lightbox-desc-4"><img src="https://aborruso.github.io/posts/leggere-interrogare-file-parquet/images/duckdb-summarize.png" class="img-fluid figure-img" alt="Esempio di output del comando SUMMARIZE"></a>
+<a href="images/duckdb-summarize.png" class="lightbox" data-glightbox="description: .lightbox-desc-4" data-gallery="quarto-lightbox-gallery-4"><img src="https://aborruso.github.io/posts/leggere-interrogare-file-parquet/images/duckdb-summarize.png" class="img-fluid figure-img" alt="Esempio di output del comando SUMMARIZE"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-duckdb-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;5: Esempio di <em>output</em> del comando <code>SUMMARIZE</code>
