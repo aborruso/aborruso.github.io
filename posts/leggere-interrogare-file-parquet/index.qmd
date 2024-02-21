@@ -52,7 +52,7 @@ ID,Nome,Età,E-mail
 ...
 ```
 
-Viceversa ad un file `Parquet`, essendo organizzato **per colonne**, si può accedere direttamente ed anche esclusivamente alla colonna `Età`, **senza dover leggere anche le altre colonne**.<br>
+Viceversa ad un file `Parquet`, essendo organizzato **per colonne**, si può accedere direttamente, e anche esclusivamente, alla colonna `Età`, **senza dover leggere anche le altre colonne**.<br>
 Qui sotto un esempio, in si vede per accedere alla colonna `Età`, si possono saltare tutte le altre e leggere soltanto quella.
 
 ```{.markdown filename="tabella.parquet"}
@@ -62,7 +62,7 @@ Età: 30,25,...
 E-mail: mario.rossi@email.com,laura.bianchi@email.com,...
 ```
 
-Questo rende l'accesso ai dati molto più veloce e efficiente.
+Questo rende l'accesso ai dati molto più veloce ed efficiente.
 
 ## L'esempio di OpenCoesione
 
@@ -71,12 +71,12 @@ Questo rende l'accesso ai dati molto più veloce e efficiente.
 È da sempre uno dei progetti di riferimento per l'**apertura dei dati** in Italia, che **ha fatto sempre scuola**.<br>
 E lo ha fatto ancora una volta: dal 21 febbraio 2024 ha iniziato a **pubblicare** la **propria banca dati** anche in **formato** **Parquet**.
 
-Ed è probabilmente il **primo progetto italiano di una Pubblica Amministrazione a farlo**. E sicuramente il primo con una banca dati di questa ricchezza e dimensione.
+Ed è probabilmente il **primo progetto italiano di una Pubblica Amministrazione a farlo**, e sicuramente il primo con una banca dati di questa ricchezza e dimensione.
 
-➡️ Si tratta dei catalogo dei **Progetti con tracciato esteso**, disponibile qui, anche in formato Parquet: <https://opencoesione.gov.it/it/opendata/#!progetti_section>
+➡️ Stiamo parlando del catalogo dei **Progetti con tracciato esteso**, disponibile qui, anche in formato Parquet: <https://opencoesione.gov.it/it/opendata/#!progetti_section>
 
 Abbiamo sottolineato come il **formato `Parquet`** sia molto **più efficiente** per l'accesso e l'analisi dei dati, rispetto al **`CSV`**.<br>
-Ed è molto evidente soprattutto per tabelle molto grandi, come questa dei **progetti** di [**OpenCoesione**](https://opencoesione.gov.it/it/opendata/#!progetti_section), composta da circa `2.000.000 di righe x 200 colonne`.
+Questa caratteristica è molto evidente, soprattutto per tabelle molto grandi, come questa dei **progetti** di [**OpenCoesione**](https://opencoesione.gov.it/it/opendata/#!progetti_section), composta da circa `2.000.000 di righe x 200 colonne`.
 
 È possibile ad esempio interrogarla, per avere restituito il **totale di finanziamento pubblico** per ogni **ciclo di finanziamento** (vedi @tbl-cicli), e avere la risposta **in 0,07 secondi**.
 
@@ -100,13 +100,13 @@ apply_italian_style(tabella_cicli)
 
 
 E questa rapidità si ottiene sul proprio computer di lavoro, **senza** che sia necessario mettere in campo **risorse** di **calcolo** particolarmente potenti e dispendiose sul **_cloud_**.<br>
-O **senza** che sia necessario **importare** il **file** in un **database** **relazionale**, con tutte le operazioni di trasformazione e pulizia dei dati che questo comporta e senza che sia necessario installare e configurare un db relazionale.
+O **senza** che sia necessario **importare** il **file** in un **database** **relazionale**, con tutte le operazioni di trasformazione e pulizia dei dati che questo comporta evitando anche l'installazione e la configurazione di un db relazionale.
 
 ## Come leggere un file Parquet
 
-Se non hai mai sentito parlare di questo formato, probabilmente penserai che per te sia impossibile usarlo per leggere, filtrare, analizzare, ecc. i dati di OpenCoesione. Penserai che è per "tecnici".<br>
-Niente di più sbagliato! Leggere un file Parquet è **facile** e **veloce**, ed è paradossalmente più **necessario** l'**aiuto** di un **tecnico** per leggere **un file `CSV` di 4,5 Gigabyte** (come quello dei progetti di OpenCoesione). Per la gran parte degli utenti è infatti impossibile leggere un file di queste dimensioni, anche con un buon Personal Computer.<br>
-E programmi come **Excel** hanno in ogni caso un **limite** di circa **1.000.000 di righe** per foglio di lavoro (qui sono circa 2.000.000).
+Se non hai mai sentito parlare di questo formato, probabilmente penserai che per te sia impossibile usarlo per leggere, filtrare, analizzare, ecc. i dati di OpenCoesione. Penserai che è un formato solo per "tecnici".<br>
+Niente di più sbagliato! Leggere un file Parquet è **facile** e **veloce**, e paradossalmente è più **necessario** l'**aiuto** di un **tecnico** per leggere **un file `CSV` di 4,5 Gigabyte** (come quello dei progetti di OpenCoesione). Per la gran parte degli utenti è infatti impossibile leggere un file di queste dimensioni, anche con un buon Personal Computer.<br>
+E non pensare di utilizzare programmi come **Excel**, hanno un **limite** di circa **1.000.000 di righe** per foglio di lavoro (tante ma non sufficienti nel nostro caso in cui ne abbiamo circa 2.000.000).
 
 ::: {.callout-note}
 ## Nota bene
@@ -115,7 +115,7 @@ Un file di queste dimensioni, aldilà del formato, deve essere gestito con atten
 
 ### Al doppio click
 
-Per visualizzare un file Parquet con un semplice doppio click, puoi usare [**Tad**](https://www.tadviewer.com/), un visualizzatore di file Parquet (e anche `CSV`, `SQLite` e `DuckDB`) *open source*, gratuito e disponibile per Windows, Mac e Linux.
+Per visualizzare un file Parquet con un semplice doppio click, puoi usare [**Tad**](https://www.tadviewer.com/), un visualizzatore di file Parquet (e anche `CSV`, `[SQLite](https://www.sqlite.org)` e `[DuckDB](http://duckdb.org/)`) *open source*, gratuito e disponibile per Windows, Mac e Linux.
 
 Una volta installato, basterà fare doppio click sul file per aprirlo e visualizzarne il contenuto (vedi @fig-tad). Questo di OpenCoesione è un file grande e sarà necessario qualche secondo.
 
