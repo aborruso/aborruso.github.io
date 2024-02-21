@@ -139,7 +139,7 @@ Un'**applicazione SQL "visuale"**, *open source* e multi-piattaforma, che puoi u
 - lanciarla, aprire il menu `Database` e selezionare `New Database Connection`;
 - cercare `DuckDB`, selezionarlo e fare click su `Next`;
 
-![DBeaver - selezionare DuckDB come database](images/dbeaver_01.png){fig-alt=DBeaver - selezionare DuckDB come database" #fig-dbeaver}
+![DBeaver - selezionare DuckDB come database](images/dbeaver_01.png){fig-alt="DBeaver - selezionare DuckDB come database" #fig-dbeaver}
 
 - impostare `:memory:` come `Path`;
 
