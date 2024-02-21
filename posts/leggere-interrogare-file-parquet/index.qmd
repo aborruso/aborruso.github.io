@@ -129,7 +129,7 @@ Tra le funzionalità di Tad c'è anche la possibilità di **filtrare** i dati. N
 
 ### Con un client visuale SQL
 
-**`SQL`** è uno dei linguaggi più diffusi e standard per l'interrogazione e la manipolazione dei dati. È **nato 50 anni fa**, quindi ci sono un'enormità di libri, *tutorial*, corsi, forum, *cheatsheet*, ecc. per imparare a usarlo, e ci sono centinaia di applicazioni, librerie, *framework*, ecc. per usarlo.
+**`SQL`** è uno dei linguaggi più diffusi e standard per l'interrogazione e la manipolazione dei dati. È **nato 50 anni fa**, quindi c'è un gran numero di libri, *tutorial*, corsi, forum, *cheatsheet*, ecc. per imparare a usarlo, e ci sono centinaia di applicazioni, librerie, *framework*, ecc. per usarlo.
 
 **Un file `Parquet` è interrogabile con `SQL`**, quindi tutti possono usarlo per interrogare e analizzare i dati in questo formato.
 
@@ -172,8 +172,15 @@ GROUP BY oc_descr_ciclo
 ORDER BY ciclo;
 ```
 
+### A riga di comando con DuckDB
 
-### Shell
+Se preferisci lavorare da riga di comando, puoi usare lo straordinario [**DuckDB**](https://duckdb.org/), un sistema di gestione di database relazionali (RDBMS), che supporta il formato Parquet.
+
+Per installarlo, puoi seguire le istruzioni disponibili qui: <https://duckdb.org/docs/installation>.
+
+Per usarlo non ti resta che lanciare il comando `duckdb` e scrivere la tua prima *query*:
+
+```bash
 
 ### DuckDB
 

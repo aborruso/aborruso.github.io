@@ -248,7 +248,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#al-doppio-click" id="toc-al-doppio-click" class="nav-link" data-scroll-target="#al-doppio-click">Al doppio click</a></li>
   <li><a href="#con-un-client-visuale-sql" id="toc-con-un-client-visuale-sql" class="nav-link" data-scroll-target="#con-un-client-visuale-sql">Con un client visuale SQL</a></li>
-  <li><a href="#shell" id="toc-shell" class="nav-link" data-scroll-target="#shell">Shell</a></li>
+  <li><a href="#a-riga-di-comando-con-duckdb" id="toc-a-riga-di-comando-con-duckdb" class="nav-link" data-scroll-target="#a-riga-di-comando-con-duckdb">A riga di comando con DuckDB</a></li>
   <li><a href="#duckdb" id="toc-duckdb" class="nav-link" data-scroll-target="#duckdb">DuckDB</a></li>
   <li><a href="#visidata" id="toc-visidata" class="nav-link" data-scroll-target="#visidata">VisiData</a></li>
   <li><a href="#harlequin" id="toc-harlequin" class="nav-link" data-scroll-target="#harlequin">Harlequin</a></li>
@@ -313,37 +313,37 @@ Tabella&nbsp;1: totale di finanziamento pubblico per ciclo di finanziamento
 <div aria-describedby="tbl-cicli-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-display" data-execution_count="2">
 <style type="text/css">
-#T_943a2 th.col1 {
+#T_719d0 th.col1 {
   text-align: right;
 }
-#T_943a2_row0_col1, #T_943a2_row1_col1, #T_943a2_row2_col1, #T_943a2_row3_col1 {
+#T_719d0_row0_col1, #T_719d0_row1_col1, #T_719d0_row2_col1, #T_719d0_row3_col1 {
   text-align: right;
 }
 </style>
 
-<table id="T_943a2" class="do-not-create-environment cell table table-sm table-striped small" data-quarto-postprocess="true">
+<table id="T_719d0" class="do-not-create-environment cell table table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
-<th id="T_943a2_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Ciclo</th>
-<th id="T_943a2_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Totale finanziamento pubblico (€)</th>
+<th id="T_719d0_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Ciclo</th>
+<th id="T_719d0_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Totale finanziamento pubblico (€)</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_943a2_row0_col0" class="data row0 col0">Ciclo di programmazione 2000-2006</td>
-<td id="T_943a2_row0_col1" class="data row0 col1">17.667.666.307,18</td>
+<td id="T_719d0_row0_col0" class="data row0 col0">Ciclo di programmazione 2000-2006</td>
+<td id="T_719d0_row0_col1" class="data row0 col1">17.667.666.307,18</td>
 </tr>
 <tr class="even">
-<td id="T_943a2_row1_col0" class="data row1 col0">Ciclo di programmazione 2007-2013</td>
-<td id="T_943a2_row1_col1" class="data row1 col1">101.629.942.347,96</td>
+<td id="T_719d0_row1_col0" class="data row1 col0">Ciclo di programmazione 2007-2013</td>
+<td id="T_719d0_row1_col1" class="data row1 col1">101.629.942.347,96</td>
 </tr>
 <tr class="odd">
-<td id="T_943a2_row2_col0" class="data row2 col0">Ciclo di programmazione 2014-2020</td>
-<td id="T_943a2_row2_col1" class="data row2 col1">154.061.098.680,89</td>
+<td id="T_719d0_row2_col0" class="data row2 col0">Ciclo di programmazione 2014-2020</td>
+<td id="T_719d0_row2_col1" class="data row2 col1">154.061.098.680,89</td>
 </tr>
 <tr class="even">
-<td id="T_943a2_row3_col0" class="data row3 col0">Ciclo di programmazione 2021-2027</td>
-<td id="T_943a2_row3_col1" class="data row3 col1">7.465.189.173,71</td>
+<td id="T_719d0_row3_col0" class="data row3 col0">Ciclo di programmazione 2021-2027</td>
+<td id="T_719d0_row3_col1" class="data row3 col1">7.465.189.173,71</td>
 </tr>
 </tbody>
 </table>
@@ -393,7 +393,7 @@ Figura&nbsp;1: esempio di visualizzazione e filtro dati con <a href="https://www
 </section>
 <section id="con-un-client-visuale-sql" class="level3">
 <h3 class="anchored" data-anchor-id="con-un-client-visuale-sql">Con un client visuale SQL</h3>
-<p><strong><code>SQL</code></strong> è uno dei linguaggi più diffusi e standard per l’interrogazione e la manipolazione dei dati. È <strong>nato 50 anni fa</strong>, quindi ci sono un’enormità di libri, <em>tutorial</em>, corsi, forum, <em>cheatsheet</em>, ecc. per imparare a usarlo, e ci sono centinaia di applicazioni, librerie, <em>framework</em>, ecc. per usarlo.</p>
+<p><strong><code>SQL</code></strong> è uno dei linguaggi più diffusi e standard per l’interrogazione e la manipolazione dei dati. È <strong>nato 50 anni fa</strong>, quindi c’è un gran numero di libri, <em>tutorial</em>, corsi, forum, <em>cheatsheet</em>, ecc. per imparare a usarlo, e ci sono centinaia di applicazioni, librerie, <em>framework</em>, ecc. per usarlo.</p>
 <p><strong>Un file <code>Parquet</code> è interrogabile con <code>SQL</code></strong>, quindi tutti possono usarlo per interrogare e analizzare i dati in questo formato.</p>
 <p>Un’<strong>applicazione SQL “visuale”</strong>, <em>open source</em> e multi-piattaforma, che puoi usare per interrogare un file Parquet è <a href="https://dbeaver.io/"><strong>DBeaver</strong></a>. Questi i passi che dovrai seguire per interrogare un file Parquet con DBeaver:</p>
 <ul>
@@ -455,8 +455,12 @@ Figura&nbsp;4: DBeaver - la prima query
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="kw">GROUP</span> <span class="kw">BY</span> oc_descr_ciclo</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="kw">ORDER</span> <span class="kw">BY</span> ciclo;</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
-<section id="shell" class="level3">
-<h3 class="anchored" data-anchor-id="shell">Shell</h3>
+<section id="a-riga-di-comando-con-duckdb" class="level3">
+<h3 class="anchored" data-anchor-id="a-riga-di-comando-con-duckdb">A riga di comando con DuckDB</h3>
+<p>Se preferisci lavorare da riga di comando, puoi usare lo straordinario <a href="https://duckdb.org/"><strong>DuckDB</strong></a>, un sistema di gestione di database relazionali (RDBMS), che supporta il formato Parquet.</p>
+<p>Per installarlo, puoi seguire le istruzioni disponibili qui: <a href="https://duckdb.org/docs/installation" class="uri">https://duckdb.org/docs/installation</a>.</p>
+<p>Per usarlo non ti resta che lanciare il comando <code>duckdb</code> e scrivere la tua prima <em>query</em>:</p>
+<p>```bash</p>
 </section>
 <section id="duckdb" class="level3">
 <h3 class="anchored" data-anchor-id="duckdb">DuckDB</h3>
@@ -802,7 +806,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"selector":".lightbox","closeEffect":"zoom","loop":false,"openEffect":"zoom","descPosition":"bottom"});
+<script>var lightboxQuarto = GLightbox({"descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox","closeEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

@@ -36,8 +36,7 @@ image: opencup.png
 ## Nota successiva alla pubblicazione
 Questo post ci ha consentito di fare una prima lettura di questa importante banca dati e sono **emerse** alcune **criticità**. Una è quelle citata nel post, sulle righe con numero di colonne errato.<br>
 Quella che ci sembra critica è relativa alla **natura dei progetti**, che era la novità più importante: sul `CSV` **ci sono soltanto 3 tipologie**, quindi nulla è cambiato. Le altre tipologie al momento sono visibili soltanto sul *front-end* del sito.<br>
-Sottolineiamo inoltre come i **dati** **PNRR** **non** sembra siano stati **aggiornati**, così come non è presente un attributo nel file complessivo che contraddistingua i progetti PNRR.
-<br>Abbiamo chiesto spiegazioni a OpenCUP e appena avremo risposte aggiorneremo questo post.
+È stato annunciato che i dati saranno aggiornati in tal senso entro la fine di febbraio 2024.
 :::
 
 Da pochissimo, dal 14 febbraio 2024, è andato online il [**nuovo portale OpenCUP**](https://www.opencup.gov.it/).
