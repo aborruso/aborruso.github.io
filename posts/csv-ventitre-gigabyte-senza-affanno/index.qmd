@@ -35,8 +35,8 @@ image: opencup.png
 ::: {.callout-warning}
 ## Nota successiva alla pubblicazione
 Questo post ci ha consentito di fare una prima lettura di questa importante banca dati e sono **emerse** alcune **criticità**. Una è quelle citata nel post, sulle righe con numero di colonne errato.<br>
-Quella che ci sembra critica è relativa alla **natura dei progetti**, che era la novità più importante: sul `CSV` **ci sono soltanto 3 tipologie**, quindi nulla è cambiato. Le altre tipologie al momento sono visibili soltanto sul *front-end* del sito.<br>
-È stato annunciato che i dati saranno aggiornati in tal senso entro la fine di febbraio 2024.
+Quella che ci sembra più importante è relativa alla **natura dei progetti**, che era la novità più importante: sul `CSV` **ci sono soltanto 3 tipologie**, quindi nulla è cambiato. Le altre tipologie al momento sono visibili soltanto sul *front-end* del sito.<br>
+È stato annunciato, anche dopo una nostra segnalazione, che i dati saranno aggiornati in tal senso entro la fine di febbraio 2024.
 :::
 
 Da pochissimo, dal 14 febbraio 2024, è andato online il [**nuovo portale OpenCUP**](https://www.opencup.gov.it/).
