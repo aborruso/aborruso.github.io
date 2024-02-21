@@ -8,7 +8,7 @@
 
 <meta name="author" content="Andrea Borruso">
 <meta name="author" content="Davide Taibi">
-<meta name="description" content="Un esempio con i dati di OpenCoesione">
+<meta name="description" content="Tanti modi a partire dai dati di OpenCoesione">
 
 <title>aborruso’s website - Come leggere un file Parquet</title>
 <style>
@@ -186,7 +186,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <h1 class="title">Come leggere un file Parquet</h1>
                   <div>
         <div class="description">
-          Un esempio con i dati di OpenCoesione
+          Tanti modi a partire dai dati di OpenCoesione
         </div>
       </div>
                           <div class="quarto-categories">
@@ -229,7 +229,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <div>
       <div class="quarto-title-meta-heading">Data di Pubblicazione</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">15 febbraio 2024</p>
+        <p class="date">22 febbraio 2024</p>
       </div>
     </div>
     
@@ -255,6 +255,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#accesso-tramite-python" id="toc-accesso-tramite-python" class="nav-link" data-scroll-target="#accesso-tramite-python">Accesso tramite Python</a></li>
   <li><a href="#accesso-observable" id="toc-accesso-observable" class="nav-link" data-scroll-target="#accesso-observable">Accesso Observable</a></li>
   </ul></li>
+  <li><a href="#note-finali" id="toc-note-finali" class="nav-link" data-scroll-target="#note-finali">Note finali</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/aborruso/aborruso.github.io/edit/main/posts/leggere-interrogare-file-parquet/index.qmd" class="toc-action"><i class="bi bi-github"></i>Modifica questa pagina</a></li><li><a href="https://github.com/aborruso/aborruso.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Segnala un problema</a></li></ul></div></nav>
 </nav>
@@ -313,37 +314,37 @@ Tabella&nbsp;1: totale di finanziamento pubblico per ciclo di finanziamento
 <div aria-describedby="tbl-cicli-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-display" data-execution_count="2">
 <style type="text/css">
-#T_58070 th.col1 {
+#T_6ae06 th.col1 {
   text-align: right;
 }
-#T_58070_row0_col1, #T_58070_row1_col1, #T_58070_row2_col1, #T_58070_row3_col1 {
+#T_6ae06_row0_col1, #T_6ae06_row1_col1, #T_6ae06_row2_col1, #T_6ae06_row3_col1 {
   text-align: right;
 }
 </style>
 
-<table id="T_58070" class="do-not-create-environment cell table table-sm table-striped small" data-quarto-postprocess="true">
+<table id="T_6ae06" class="do-not-create-environment cell table table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
-<th id="T_58070_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Ciclo</th>
-<th id="T_58070_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Totale finanziamento pubblico (€)</th>
+<th id="T_6ae06_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Ciclo</th>
+<th id="T_6ae06_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Totale finanziamento pubblico (€)</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_58070_row0_col0" class="data row0 col0">Ciclo di programmazione 2000-2006</td>
-<td id="T_58070_row0_col1" class="data row0 col1">17.667.666.307,18</td>
+<td id="T_6ae06_row0_col0" class="data row0 col0">Ciclo di programmazione 2000-2006</td>
+<td id="T_6ae06_row0_col1" class="data row0 col1">17.667.666.307,18</td>
 </tr>
 <tr class="even">
-<td id="T_58070_row1_col0" class="data row1 col0">Ciclo di programmazione 2007-2013</td>
-<td id="T_58070_row1_col1" class="data row1 col1">101.629.942.347,96</td>
+<td id="T_6ae06_row1_col0" class="data row1 col0">Ciclo di programmazione 2007-2013</td>
+<td id="T_6ae06_row1_col1" class="data row1 col1">101.629.942.347,96</td>
 </tr>
 <tr class="odd">
-<td id="T_58070_row2_col0" class="data row2 col0">Ciclo di programmazione 2014-2020</td>
-<td id="T_58070_row2_col1" class="data row2 col1">154.061.098.680,89</td>
+<td id="T_6ae06_row2_col0" class="data row2 col0">Ciclo di programmazione 2014-2020</td>
+<td id="T_6ae06_row2_col1" class="data row2 col1">154.061.098.680,89</td>
 </tr>
 <tr class="even">
-<td id="T_58070_row3_col0" class="data row3 col0">Ciclo di programmazione 2021-2027</td>
-<td id="T_58070_row3_col1" class="data row3 col1">7.465.189.173,71</td>
+<td id="T_6ae06_row3_col0" class="data row3 col0">Ciclo di programmazione 2021-2027</td>
+<td id="T_6ae06_row3_col1" class="data row3 col1">7.465.189.173,71</td>
 </tr>
 </tbody>
 </table>
@@ -377,7 +378,7 @@ Nota bene
 <div id="fig-tad" class="lightbox quarto-figure quarto-figure-center quarto-float anchored" alt="esempio di visualizzazione e filtro dati con Tad">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-tad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="images/tad_02.png" class="lightbox" data-glightbox="description: .lightbox-desc-1" data-gallery="quarto-lightbox-gallery-1"><img src="images/tad_02.png" class="img-fluid figure-img" alt="esempio di visualizzazione e filtro dati con Tad"></a>
+<a href="images/tad_02.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" data-glightbox="description: .lightbox-desc-1"><img src="images/tad_02.png" class="img-fluid figure-img" alt="esempio di visualizzazione e filtro dati con Tad"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;1: esempio di visualizzazione e filtro dati con <a href="https://www.tadviewer.com/">TAD</a>
@@ -422,7 +423,7 @@ Figura&nbsp;2: DBeaver - impostazione path DuckDB
 <div id="fig-dbeaver" class="lightbox quarto-figure quarto-figure-center quarto-float anchored" alt="DBeaver - riquadro Database">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-dbeaver-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="images/dbeaver_04.png" class="lightbox" data-glightbox="description: .lightbox-desc-2" data-gallery="quarto-lightbox-gallery-2"><img src="images/dbeaver_04.png" class="img-fluid figure-img" alt="DBeaver - riquadro Database"></a>
+<a href="images/dbeaver_04.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" data-glightbox="description: .lightbox-desc-2"><img src="images/dbeaver_04.png" class="img-fluid figure-img" alt="DBeaver - riquadro Database"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dbeaver-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;3: DBeaver - riquadro Database
@@ -442,7 +443,7 @@ Figura&nbsp;3: DBeaver - riquadro Database
 <div id="fig-dbeaver" class="lightbox quarto-figure quarto-figure-center quarto-float anchored" alt="DBeaver - la prima query">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-dbeaver-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="images/dbeaver_05.png" class="lightbox" data-glightbox="description: .lightbox-desc-3" data-gallery="quarto-lightbox-gallery-3"><img src="images/dbeaver_05.png" class="img-fluid figure-img" alt="DBeaver - la prima query"></a>
+<a href="images/dbeaver_05.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" data-glightbox="description: .lightbox-desc-3"><img src="images/dbeaver_05.png" class="img-fluid figure-img" alt="DBeaver - la prima query"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dbeaver-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;4: DBeaver - la prima query
@@ -465,7 +466,7 @@ Figura&nbsp;4: DBeaver - la prima query
 <div id="fig-duckdb" class="lightbox quarto-figure quarto-figure-center quarto-float anchored" alt="Esempio di output del comando SUMMARIZE">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-duckdb-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="images/duckdb-summarize.png" class="lightbox" data-glightbox="description: .lightbox-desc-4" data-gallery="quarto-lightbox-gallery-4"><img src="images/duckdb-summarize.png" class="img-fluid figure-img" alt="Esempio di output del comando SUMMARIZE"></a>
+<a href="images/duckdb-summarize.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" data-glightbox="description: .lightbox-desc-4"><img src="images/duckdb-summarize.png" class="img-fluid figure-img" alt="Esempio di output del comando SUMMARIZE"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-duckdb-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;5: Esempio di <em>output</em> del comando <code>SUMMARIZE</code>
@@ -546,13 +547,13 @@ Nota
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Nella versione di Observable gratuita e <em>online</em>, il limite delle dimensioni di un file è di 50 MB. Ma utilizzando <a href="https://observablehq.com/framework/">Observable Framework</a> o con <a href="https://quarto.org/docs/computations/ojs.html">Quarto</a>, le dimensioni dei file non sono un problema.</p>
+<p>Nella versione di Observable gratuita e <em>online</em>, il limite delle dimensioni di un file è di 50 MB. Ma utilizzando <a href="https://observablehq.com/framework/">Observable Framework</a> o con <a href="https://quarto.org/docs/computations/ojs.html">Quarto</a>, le dimensioni dei file non sono un problema.<br> In ogni caso, è bene evitare di fare caricare nel <code>DOM</code> della pagina web <em>array</em> di dati molto grandi.</p>
 </div>
 </div>
-<p>In output</p>
+<p>In output:</p>
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb9" data-startfrom="269" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 268;"><span id="cb9-269"><a href="#cb9-269" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> <span class="fu">FileAttachment</span>(<span class="st">"observable.csv"</span>)<span class="op">.</span><span class="fu">csv</span>({ <span class="dt">typed</span><span class="op">:</span> <span class="kw">true</span> })</span>
-<span id="cb9-270"><a href="#cb9-270" aria-hidden="true" tabindex="-1"></a>Inputs<span class="op">.</span><span class="fu">table</span>(data<span class="op">,</span>{<span class="dt">locale</span><span class="op">:</span> <span class="st">"it-IT"</span>})</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb9" data-startfrom="270" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 269;"><span id="cb9-270"><a href="#cb9-270" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> <span class="fu">FileAttachment</span>(<span class="st">"observable.csv"</span>)<span class="op">.</span><span class="fu">csv</span>({ <span class="dt">typed</span><span class="op">:</span> <span class="kw">true</span> })</span>
+<span id="cb9-271"><a href="#cb9-271" aria-hidden="true" tabindex="-1"></a>Inputs<span class="op">.</span><span class="fu">table</span>(data<span class="op">,</span>{<span class="dt">locale</span><span class="op">:</span> <span class="st">"it-IT"</span>})</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-1-1" data-nodetype="declaration">
@@ -612,41 +613,48 @@ Nota
 <span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>In output:</p>
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb12" data-startfrom="326" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 325;"><span id="cb12-326"><a href="#cb12-326" aria-hidden="true" tabindex="-1"></a>viewof graficoStatoProgetti <span class="op">=</span> {</span>
-<span id="cb12-327"><a href="#cb12-327" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-328"><a href="#cb12-328" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Definisci una funzione di formattazione per il locale "it-IT"</span></span>
-<span id="cb12-329"><a href="#cb12-329" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> formatter <span class="op">=</span> <span class="kw">new</span> <span class="bu">Intl</span><span class="op">.</span><span class="fu">NumberFormat</span>(<span class="st">"it-IT"</span>)<span class="op">.</span><span class="at">format</span><span class="op">;</span></span>
-<span id="cb12-330"><a href="#cb12-330" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-331"><a href="#cb12-331" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Crea il grafico a barre utilizzando Plot con formattazione personalizzata</span></span>
-<span id="cb12-332"><a href="#cb12-332" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> Plot<span class="op">.</span><span class="fu">plot</span>({</span>
-<span id="cb12-333"><a href="#cb12-333" aria-hidden="true" tabindex="-1"></a>    <span class="dt">marks</span><span class="op">:</span> [</span>
-<span id="cb12-334"><a href="#cb12-334" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">barY</span>(data<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"Stato Progetto"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"Conteggio"</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"Stato Progetto"</span>})<span class="op">,</span></span>
-<span id="cb12-335"><a href="#cb12-335" aria-hidden="true" tabindex="-1"></a>    ]<span class="op">,</span></span>
-<span id="cb12-336"><a href="#cb12-336" aria-hidden="true" tabindex="-1"></a>    <span class="dt">width</span><span class="op">:</span> <span class="dv">600</span><span class="op">,</span></span>
-<span id="cb12-337"><a href="#cb12-337" aria-hidden="true" tabindex="-1"></a>    <span class="dt">height</span><span class="op">:</span> <span class="dv">400</span><span class="op">,</span></span>
-<span id="cb12-338"><a href="#cb12-338" aria-hidden="true" tabindex="-1"></a>    <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">50</span><span class="op">,</span> <span class="co">// Aumenta il margine sinistro se necessario</span></span>
-<span id="cb12-339"><a href="#cb12-339" aria-hidden="true" tabindex="-1"></a>    <span class="dt">color</span><span class="op">:</span> {</span>
-<span id="cb12-340"><a href="#cb12-340" aria-hidden="true" tabindex="-1"></a>      <span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span></span>
-<span id="cb12-341"><a href="#cb12-341" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
-<span id="cb12-342"><a href="#cb12-342" aria-hidden="true" tabindex="-1"></a>    <span class="dt">x</span><span class="op">:</span> {</span>
-<span id="cb12-343"><a href="#cb12-343" aria-hidden="true" tabindex="-1"></a>      <span class="dt">label</span><span class="op">:</span> <span class="st">"Stato Progetto"</span></span>
-<span id="cb12-344"><a href="#cb12-344" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
-<span id="cb12-345"><a href="#cb12-345" aria-hidden="true" tabindex="-1"></a>    <span class="dt">y</span><span class="op">:</span> {</span>
-<span id="cb12-346"><a href="#cb12-346" aria-hidden="true" tabindex="-1"></a>      <span class="dt">label</span><span class="op">:</span> <span class="st">"Conteggio"</span><span class="op">,</span></span>
-<span id="cb12-347"><a href="#cb12-347" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Usa la funzione di formattazione per le etichette dell'asse Y</span></span>
-<span id="cb12-348"><a href="#cb12-348" aria-hidden="true" tabindex="-1"></a>      <span class="dt">tickFormat</span><span class="op">:</span> formatter</span>
-<span id="cb12-349"><a href="#cb12-349" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
-<span id="cb12-350"><a href="#cb12-350" aria-hidden="true" tabindex="-1"></a>    <span class="dt">style</span><span class="op">:</span> {</span>
-<span id="cb12-351"><a href="#cb12-351" aria-hidden="true" tabindex="-1"></a>      <span class="dt">overflow</span><span class="op">:</span> <span class="st">"visible"</span></span>
-<span id="cb12-352"><a href="#cb12-352" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb12-353"><a href="#cb12-353" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
-<span id="cb12-354"><a href="#cb12-354" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb12" data-startfrom="327" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 326;"><span id="cb12-327"><a href="#cb12-327" aria-hidden="true" tabindex="-1"></a>viewof graficoStatoProgetti <span class="op">=</span> {</span>
+<span id="cb12-328"><a href="#cb12-328" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-329"><a href="#cb12-329" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Definisci una funzione di formattazione per il locale "it-IT"</span></span>
+<span id="cb12-330"><a href="#cb12-330" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> formatter <span class="op">=</span> <span class="kw">new</span> <span class="bu">Intl</span><span class="op">.</span><span class="fu">NumberFormat</span>(<span class="st">"it-IT"</span>)<span class="op">.</span><span class="at">format</span><span class="op">;</span></span>
+<span id="cb12-331"><a href="#cb12-331" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-332"><a href="#cb12-332" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Crea il grafico a barre utilizzando Plot con formattazione personalizzata</span></span>
+<span id="cb12-333"><a href="#cb12-333" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> Plot<span class="op">.</span><span class="fu">plot</span>({</span>
+<span id="cb12-334"><a href="#cb12-334" aria-hidden="true" tabindex="-1"></a>    <span class="dt">marks</span><span class="op">:</span> [</span>
+<span id="cb12-335"><a href="#cb12-335" aria-hidden="true" tabindex="-1"></a>      Plot<span class="op">.</span><span class="fu">barY</span>(data<span class="op">,</span> {<span class="dt">x</span><span class="op">:</span> <span class="st">"Stato Progetto"</span><span class="op">,</span> <span class="dt">y</span><span class="op">:</span> <span class="st">"Conteggio"</span><span class="op">,</span> <span class="dt">fill</span><span class="op">:</span> <span class="st">"Stato Progetto"</span>})<span class="op">,</span></span>
+<span id="cb12-336"><a href="#cb12-336" aria-hidden="true" tabindex="-1"></a>    ]<span class="op">,</span></span>
+<span id="cb12-337"><a href="#cb12-337" aria-hidden="true" tabindex="-1"></a>    <span class="dt">width</span><span class="op">:</span> <span class="dv">600</span><span class="op">,</span></span>
+<span id="cb12-338"><a href="#cb12-338" aria-hidden="true" tabindex="-1"></a>    <span class="dt">height</span><span class="op">:</span> <span class="dv">400</span><span class="op">,</span></span>
+<span id="cb12-339"><a href="#cb12-339" aria-hidden="true" tabindex="-1"></a>    <span class="dt">marginLeft</span><span class="op">:</span> <span class="dv">50</span><span class="op">,</span> <span class="co">// Aumenta il margine sinistro se necessario</span></span>
+<span id="cb12-340"><a href="#cb12-340" aria-hidden="true" tabindex="-1"></a>    <span class="dt">color</span><span class="op">:</span> {</span>
+<span id="cb12-341"><a href="#cb12-341" aria-hidden="true" tabindex="-1"></a>      <span class="dt">legend</span><span class="op">:</span> <span class="kw">true</span></span>
+<span id="cb12-342"><a href="#cb12-342" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb12-343"><a href="#cb12-343" aria-hidden="true" tabindex="-1"></a>    <span class="dt">x</span><span class="op">:</span> {</span>
+<span id="cb12-344"><a href="#cb12-344" aria-hidden="true" tabindex="-1"></a>      <span class="dt">label</span><span class="op">:</span> <span class="st">"Stato Progetto"</span></span>
+<span id="cb12-345"><a href="#cb12-345" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb12-346"><a href="#cb12-346" aria-hidden="true" tabindex="-1"></a>    <span class="dt">y</span><span class="op">:</span> {</span>
+<span id="cb12-347"><a href="#cb12-347" aria-hidden="true" tabindex="-1"></a>      <span class="dt">label</span><span class="op">:</span> <span class="st">"Conteggio"</span><span class="op">,</span></span>
+<span id="cb12-348"><a href="#cb12-348" aria-hidden="true" tabindex="-1"></a>      <span class="co">// Usa la funzione di formattazione per le etichette dell'asse Y</span></span>
+<span id="cb12-349"><a href="#cb12-349" aria-hidden="true" tabindex="-1"></a>      <span class="dt">tickFormat</span><span class="op">:</span> formatter</span>
+<span id="cb12-350"><a href="#cb12-350" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb12-351"><a href="#cb12-351" aria-hidden="true" tabindex="-1"></a>    <span class="dt">style</span><span class="op">:</span> {</span>
+<span id="cb12-352"><a href="#cb12-352" aria-hidden="true" tabindex="-1"></a>      <span class="dt">overflow</span><span class="op">:</span> <span class="st">"visible"</span></span>
+<span id="cb12-353"><a href="#cb12-353" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb12-354"><a href="#cb12-354" aria-hidden="true" tabindex="-1"></a>  })<span class="op">;</span></span>
+<span id="cb12-355"><a href="#cb12-355" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div id="ojs-cell-2" data-nodetype="declaration">
 
 </div>
 </div>
 </div>
+</section>
+</section>
+<section id="note-finali" class="level2">
+<h2 class="anchored" data-anchor-id="note-finali">Note finali</h2>
+<p>Abbiamo scritto questo post, perché crediamo che il formato Parquet sia un’opportunità per <strong>molter persone</strong> di <strong>migliorare</strong> la <strong>propria esperienza</strong> con i <strong>dati</strong>. E non solo per chi è “esperto”, ma anche per chi ha delle competenze di base con <code>SQL</code>. Perché come è evidente le modalità di accesso sono molteplici e adatte a diversi livelli di competenza.</p>
+<p>Il fatto che <strong>OpenCoesione</strong> sia stato <strong>il primo progetto</strong> a scegliere di pubblicare i propri dati in formato Parquet è un <strong>segnale</strong> molto <strong>importante</strong>: siamo confidenti che possa essere seguito presto da altre amministrazioni e organizzazioni.</p>
+<p>Infine gli autori del post e tutta l’<strong>associazione onData</strong> ringraziano OpenCoesione e il suo <em>staff</em> per essere stati prima in ascolto e poi protagonisti di questa scelta.</p>
 
 
 <div class="hidden" aria-hidden="true">
@@ -655,7 +663,6 @@ Nota
 <span class="glightbox-desc lightbox-desc-3">Figura&nbsp;4: DBeaver - la prima query</span>
 <span class="glightbox-desc lightbox-desc-4">Figura&nbsp;5: Esempio di <em>output</em> del comando <code>SUMMARIZE</code></span>
 </div>
-</section>
 </section>
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Torna in cima</a></main> <!-- /main -->
@@ -989,7 +996,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"descPosition":"bottom","selector":".lightbox","loop":false,"closeEffect":"zoom","openEffect":"zoom"});
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","loop":false,"descPosition":"bottom","selector":".lightbox","openEffect":"zoom"});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

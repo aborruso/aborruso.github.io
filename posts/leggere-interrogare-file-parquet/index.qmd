@@ -1,9 +1,9 @@
 ---
 title: "Come leggere un file Parquet"
-description: "Un esempio con i dati di OpenCoesione"
-date: "2024-02-15"
-draft: true
-search: false
+description: "Tanti modi a partire dai dati di OpenCoesione"
+date: "2024-02-22"
+draft: false
+search: true
 author:
   - name: "Andrea Borruso"
     affiliation:
@@ -259,10 +259,11 @@ db = DuckDBClient.of({
 ```
 
 ::: {.callout-note}
-Nella versione di Observable gratuita e *online*, il limite delle dimensioni di un file è di 50 MB. Ma utilizzando [Observable Framework](https://observablehq.com/framework/) o con [Quarto](https://quarto.org/docs/computations/ojs.html), le dimensioni dei file non sono un problema.
+Nella versione di Observable gratuita e *online*, il limite delle dimensioni di un file è di 50 MB. Ma utilizzando [Observable Framework](https://observablehq.com/framework/) o con [Quarto](https://quarto.org/docs/computations/ojs.html), le dimensioni dei file non sono un problema.<br>
+In ogni caso, è bene evitare di fare caricare nel `DOM` della pagina web *array* di dati molto grandi.
 :::
 
-In output
+In output:
 
 ```{ojs}
 //| echo: false
@@ -354,3 +355,13 @@ viewof graficoStatoProgetti = {
   });
 }
 ```
+
+## Note finali
+
+Abbiamo scritto questo post, perché crediamo che il formato Parquet sia un'opportunità per **molter persone** di **migliorare** la **propria esperienza** con i **dati**. E non solo per chi è "esperto", ma anche per chi ha delle competenze di base con `SQL`. Perché come è evidente le modalità di accesso sono molteplici e adatte a diversi livelli di competenza.
+
+Il fatto che **OpenCoesione** sia stato **il primo progetto** a scegliere di pubblicare i propri dati in formato Parquet è un **segnale** molto **importante**: siamo confidenti che possa essere seguito presto da altre amministrazioni e organizzazioni.
+
+Infine gli autori del post e tutta l'**associazione onData** ringraziano OpenCoesione e il suo *staff* per essere stati prima in ascolto  e poi protagonisti di questa scelta.
+
+
