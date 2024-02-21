@@ -283,7 +283,7 @@ viewof tbl_stato_proggetti = {
 }
 ```
 
-E visto che siamo in un ambiente specializzato per la visualizzazione e l'analisi dei dati, si può anche visualizzare il risultato con un grafico a barre.
+E visto che siamo in un ambiente specializzato per la visualizzazione e l'analisi dei dati, si può anche visualizzare il risultato con un **grafico a barre**.
 
 ```javascript
 viewof graficoStatoProgetti = {
