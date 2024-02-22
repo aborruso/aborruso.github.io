@@ -241,7 +241,7 @@ query= """
 riepilogo_finanziamento=duckdb.query(query).df()
 ```
 
-Ti consiglio di approfondire nella [documentazione ufficiale dedicata](https://duckdb.org/docs/api/python/overview.html).
+Ti consigliamo di approfondire nella [documentazione ufficiale dedicata](https://duckdb.org/docs/api/python/overview.html).
 
 ### Accesso Observable
 
