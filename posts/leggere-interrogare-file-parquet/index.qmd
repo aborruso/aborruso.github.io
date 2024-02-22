@@ -302,7 +302,7 @@ viewof graficoStatoProgetti = {
     ],
     width: 600,
     height: 400,
-    marginLeft: 50, // Aumenta il margine sinistro se necessario
+    marginLeft: 50,
     color: {
       legend: true
     },
@@ -337,7 +337,7 @@ viewof graficoStatoProgetti = {
     ],
     width: 600,
     height: 400,
-    marginLeft: 50, // Aumenta il margine sinistro se necessario
+    marginLeft: 50,
     color: {
       legend: true
     },
