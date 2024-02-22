@@ -24,6 +24,12 @@ website:
 image: atutorial.png
 ---
 
+::: {.callout-note}
+## Prima di continuare a leggere
+In questo post si parla dei dati in formato CSV di **OpenCoesione**. Ha suscitato il loro interesse e ci siamo confrontati sull'opportunità di pubblicare i loro dati anche in  21 febbraio 2024.<br>
+🏅 Ebbene, dal 22 febbraio 2024 **hanno pubblicato i loro dati in questo formato**. I dettagli e un lungo tutorial in [questo post](../leggere-interrogare-file-parquet/index.qmd).
+:::
+
 
 ## TL;DR (una breve introduzione)
 
