@@ -245,7 +245,7 @@ Ti consigliamo di approfondire nella [documentazione ufficiale dedicata](https:/
 
 ### Accesso Observable
 
-L'ultima modalità di accesso che ti proponiamo è tramite [**Observable**](https://observablehq.com/), una delle più importanti e belle piattaforme/framework per la visualizzazione e l'analisi dei dati.
+L'ultima modalità di accesso che ti proponiamo è tramite [**Observable**](https://observablehq.com/), una delle più importanti e belle piattaforme/*framework* per la visualizzazione e l'analisi dei dati.
 
 È un esempio a nostro avviso significativo, perché mostra come il Parquet sia un formato pronto all'uso per una grandissima varietà di ambienti, linguaggi e strumenti.
 
