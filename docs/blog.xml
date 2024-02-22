@@ -83,37 +83,37 @@ Tabella&nbsp;1: totale di finanziamento pubblico per ciclo di finanziamento
 <div aria-describedby="tbl-cicli-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-display" data-execution_count="2">
 <style type="text/css">
-#T_b8b52 th.col1 {
+#T_a9e84 th.col1 {
   text-align: right;
 }
-#T_b8b52_row0_col1, #T_b8b52_row1_col1, #T_b8b52_row2_col1, #T_b8b52_row3_col1 {
+#T_a9e84_row0_col1, #T_a9e84_row1_col1, #T_a9e84_row2_col1, #T_a9e84_row3_col1 {
   text-align: right;
 }
 </style>
 
-<table id="T_b8b52" class="do-not-create-environment cell table table-sm table-striped small" data-quarto-postprocess="true">
+<table id="T_a9e84" class="do-not-create-environment cell table table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
-<th id="T_b8b52_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Ciclo</th>
-<th id="T_b8b52_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Totale finanziamento pubblico (€)</th>
+<th id="T_a9e84_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Ciclo</th>
+<th id="T_a9e84_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Totale finanziamento pubblico (€)</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_b8b52_row0_col0" class="data row0 col0">Ciclo di programmazione 2000-2006</td>
-<td id="T_b8b52_row0_col1" class="data row0 col1">17.667.666.307,18</td>
+<td id="T_a9e84_row0_col0" class="data row0 col0">Ciclo di programmazione 2000-2006</td>
+<td id="T_a9e84_row0_col1" class="data row0 col1">17.667.666.307,18</td>
 </tr>
 <tr class="even">
-<td id="T_b8b52_row1_col0" class="data row1 col0">Ciclo di programmazione 2007-2013</td>
-<td id="T_b8b52_row1_col1" class="data row1 col1">101.629.942.347,96</td>
+<td id="T_a9e84_row1_col0" class="data row1 col0">Ciclo di programmazione 2007-2013</td>
+<td id="T_a9e84_row1_col1" class="data row1 col1">101.629.942.347,96</td>
 </tr>
 <tr class="odd">
-<td id="T_b8b52_row2_col0" class="data row2 col0">Ciclo di programmazione 2014-2020</td>
-<td id="T_b8b52_row2_col1" class="data row2 col1">154.061.098.680,89</td>
+<td id="T_a9e84_row2_col0" class="data row2 col0">Ciclo di programmazione 2014-2020</td>
+<td id="T_a9e84_row2_col1" class="data row2 col1">154.061.098.680,89</td>
 </tr>
 <tr class="even">
-<td id="T_b8b52_row3_col0" class="data row3 col0">Ciclo di programmazione 2021-2027</td>
-<td id="T_b8b52_row3_col1" class="data row3 col1">7.465.189.173,71</td>
+<td id="T_a9e84_row3_col0" class="data row3 col0">Ciclo di programmazione 2021-2027</td>
+<td id="T_a9e84_row3_col1" class="data row3 col1">7.465.189.173,71</td>
 </tr>
 </tbody>
 </table>
@@ -147,7 +147,7 @@ Nota bene
 <div id="fig-tad" class="lightbox quarto-figure quarto-figure-center quarto-float anchored" alt="esempio di visualizzazione e filtro dati con Tad">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-tad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="images/tad_02.png" class="lightbox" data-glightbox="description: .lightbox-desc-1" data-gallery="quarto-lightbox-gallery-1"><img src="https://aborruso.github.io/posts/leggere-interrogare-file-parquet/images/tad_02.png" class="img-fluid figure-img" alt="esempio di visualizzazione e filtro dati con Tad"></a>
+<a href="images/tad_02.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" data-glightbox="description: .lightbox-desc-1"><img src="https://aborruso.github.io/posts/leggere-interrogare-file-parquet/images/tad_02.png" class="img-fluid figure-img" alt="esempio di visualizzazione e filtro dati con Tad"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;1: esempio di visualizzazione e filtro dati con <a href="https://www.tadviewer.com/">TAD</a>
@@ -201,7 +201,7 @@ Figura&nbsp;3: DBeaver - impostazione path DuckDB
 <div id="fig-dbeaver" class="lightbox quarto-figure quarto-figure-center quarto-float anchored" alt="DBeaver - riquadro Database">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-dbeaver-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="images/dbeaver_04.png" class="lightbox" data-glightbox="description: .lightbox-desc-2" data-gallery="quarto-lightbox-gallery-2"><img src="https://aborruso.github.io/posts/leggere-interrogare-file-parquet/images/dbeaver_04.png" class="img-fluid figure-img" alt="DBeaver - riquadro Database"></a>
+<a href="images/dbeaver_04.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" data-glightbox="description: .lightbox-desc-2"><img src="https://aborruso.github.io/posts/leggere-interrogare-file-parquet/images/dbeaver_04.png" class="img-fluid figure-img" alt="DBeaver - riquadro Database"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dbeaver-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;4: DBeaver - riquadro Database
@@ -233,7 +233,7 @@ font-style: inherit;">5</span></span><div class="code-annotation-gutter-bg"></di
 <div id="fig-dbeaver" class="lightbox quarto-figure quarto-figure-center quarto-float anchored" alt="DBeaver - la prima query">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-dbeaver-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="images/dbeaver_05.png" class="lightbox" data-glightbox="description: .lightbox-desc-3" data-gallery="quarto-lightbox-gallery-3"><img src="https://aborruso.github.io/posts/leggere-interrogare-file-parquet/images/dbeaver_05.png" class="img-fluid figure-img" alt="DBeaver - la prima query"></a>
+<a href="images/dbeaver_05.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" data-glightbox="description: .lightbox-desc-3"><img src="https://aborruso.github.io/posts/leggere-interrogare-file-parquet/images/dbeaver_05.png" class="img-fluid figure-img" alt="DBeaver - la prima query"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dbeaver-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;5: DBeaver - la prima query
@@ -282,7 +282,7 @@ font-style: inherit;">'progetti_esteso_20231231.parquet'</span>;</span></code></
 <div id="fig-duckdb" class="lightbox quarto-figure quarto-figure-center quarto-float anchored" alt="Esempio di output del comando SUMMARIZE">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-duckdb-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="images/duckdb-summarize.png" class="lightbox" data-glightbox="description: .lightbox-desc-4" data-gallery="quarto-lightbox-gallery-4"><img src="https://aborruso.github.io/posts/leggere-interrogare-file-parquet/images/duckdb-summarize.png" class="img-fluid figure-img" alt="Esempio di output del comando SUMMARIZE"></a>
+<a href="images/duckdb-summarize.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" data-glightbox="description: .lightbox-desc-4"><img src="https://aborruso.github.io/posts/leggere-interrogare-file-parquet/images/duckdb-summarize.png" class="img-fluid figure-img" alt="Esempio di output del comando SUMMARIZE"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-duckdb-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;6: Esempio di <em>output</em> del comando <code>SUMMARIZE</code>
@@ -444,58 +444,11 @@ Nota
 <p>Nella versione di Observable gratuita e <em>online</em>, il limite delle dimensioni di un file è di 50 MB. Ma utilizzando <a href="https://observablehq.com/framework/">Observable Framework</a> o con <a href="https://quarto.org/docs/computations/ojs.html">Quarto</a>, le dimensioni dei file non sono un problema.<br> In ogni caso, è bene evitare di fare caricare nel <code>DOM</code> della pagina web <em>array</em> di dati molto grandi.</p>
 </div>
 </div>
-<p>In output:</p>
-<div class="cell">
-<div class="sourceCode cell-code hidden" id="cb9" data-startfrom="270" data-source-offset="-0" style="background: #f1f3f5;"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 269;"><span id="cb9-270">data <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">FileAttachment</span>(<span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"observable.csv"</span>)<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">csv</span>({ <span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">typed</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">:</span> <span class="kw" style="color: #003B4F;
-background-color: null;
-font-style: inherit;">true</span> })</span>
-<span id="cb9-271">Inputs<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">table</span>(data<span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">,</span>{<span class="dt" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">locale</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">:</span> <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"it-IT"</span>})</span></code></pre></div>
-<div class="cell-output cell-output-display">
-<div>
-<div id="ojs-cell-1-1" data-nodetype="declaration">
-
-</div>
-</div>
-</div>
-<div class="cell-output cell-output-display">
-<div>
-<div id="ojs-cell-1-2" data-nodetype="expression">
-
-</div>
-</div>
-</div>
-</div>
-<p>Poi ad esempio si può fare interrogare il file, ancora una volta con una <em>query</em> <code>SQL</code>, per avere ad esempio il conteggio dei progetti, per stato progetto:</p>
-<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode javascript code-with-copy"><code class="sourceCode javascript"><span id="cb10-1">viewof tbl_stato_proggetti <span class="op" style="color: #5E5E5E;
+<p>Poi ad esempio si può interrogare il file, ancora una volta con una <em>query</em> <code>SQL</code>, per avere ad esempio il conteggio dei progetti, per stato progetto:</p>
+<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode javascript code-with-copy"><code class="sourceCode javascript"><span id="cb9-1">viewof tbl_stato_proggetti <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> {</span>
-<span id="cb10-2">  <span class="kw" style="color: #003B4F;
+<span id="cb9-2">  <span class="kw" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">const</span> data <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -508,16 +461,16 @@ background-color: null;
 font-style: inherit;">query</span>(<span class="vs" style="color: #20794D;
 background-color: null;
 font-style: inherit;">`SELECT</span></span>
-<span id="cb10-3"><span class="vs" style="color: #20794D;
+<span id="cb9-3"><span class="vs" style="color: #20794D;
 background-color: null;
 font-style: inherit;">  OC_STATO_PROGETTO AS "Stato Progetto", count(*) Conteggio FROM progetti</span></span>
-<span id="cb10-4"><span class="vs" style="color: #20794D;
+<span id="cb9-4"><span class="vs" style="color: #20794D;
 background-color: null;
 font-style: inherit;">  GROUP BY OC_STATO_PROGETTO</span></span>
-<span id="cb10-5"><span class="vs" style="color: #20794D;
+<span id="cb9-5"><span class="vs" style="color: #20794D;
 background-color: null;
 font-style: inherit;">  ORDER BY Conteggio DESC`</span>)</span>
-<span id="cb10-6">  <span class="cf" style="color: #003B4F;
+<span id="cb9-6">  <span class="cf" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">return</span> Inputs<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -548,7 +501,54 @@ background-color: null;
 font-style: inherit;">:</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"it-IT"</span>})</span>
-<span id="cb10-7">}</span></code></pre></div>
+<span id="cb9-7">}</span></code></pre></div>
+<p>In output:</p>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb10" data-startfrom="282" data-source-offset="-0" style="background: #f1f3f5;"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 281;"><span id="cb10-282">data <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">FileAttachment</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"observable.csv"</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">csv</span>({ <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">typed</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">true</span> })</span>
+<span id="cb10-283">Inputs<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">table</span>(data<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">,</span>{<span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">locale</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"it-IT"</span>})</span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-2" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</div>
 <p>E visto che siamo in un ambiente specializzato per la visualizzazione e l’analisi dei dati, si può anche visualizzare il risultato con un <strong>grafico a barre</strong>.</p>
 <div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode javascript code-with-copy"><code class="sourceCode javascript"><span id="cb11-1">viewof graficoStatoProgetti <span class="op" style="color: #5E5E5E;
 background-color: null;

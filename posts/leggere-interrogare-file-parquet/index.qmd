@@ -263,15 +263,7 @@ Nella versione di Observable gratuita e *online*, il limite delle dimensioni di 
 In ogni caso, è bene evitare di fare caricare nel `DOM` della pagina web *array* di dati molto grandi.
 :::
 
-In output:
-
-```{ojs}
-//| echo: false
-data = FileAttachment("observable.csv").csv({ typed: true })
-Inputs.table(data,{locale: "it-IT"})
-```
-
-Poi ad esempio si può fare interrogare il file, ancora una volta con una *query* `SQL`, per avere ad esempio il conteggio dei progetti, per stato progetto:
+Poi ad esempio si può interrogare il file, ancora una volta con una *query* `SQL`, per avere ad esempio il conteggio dei progetti, per stato progetto:
 
 ```javascript
 viewof tbl_stato_proggetti = {
@@ -281,6 +273,14 @@ viewof tbl_stato_proggetti = {
   ORDER BY Conteggio DESC`)
   return Inputs.table(data, {height: 200, layout: "auto",locale: "it-IT"})
 }
+```
+
+In output:
+
+```{ojs}
+//| echo: false
+data = FileAttachment("observable.csv").csv({ typed: true })
+Inputs.table(data,{locale: "it-IT"})
 ```
 
 E visto che siamo in un ambiente specializzato per la visualizzazione e l'analisi dei dati, si può anche visualizzare il risultato con un **grafico a barre**.
