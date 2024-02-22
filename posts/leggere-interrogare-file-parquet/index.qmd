@@ -69,7 +69,7 @@ Questo rende l'accesso ai dati molto più veloce ed efficiente.
 [**OpenCoesione**](https://opencoesione.gov.it/) è un progetto nazionale il cui obiettivo è **promuovere** **trasparenza**, **collaborazione** e **partecipazione** riguardo alle **politiche** di **coesione** nel paese.
 
 È da sempre uno dei progetti di riferimento per l'**apertura dei dati** in Italia, che **ha fatto sempre scuola**.<br>
-E lo ha fatto ancora una volta: dal 21 febbraio 2024 ha iniziato a **pubblicare** la **propria banca dati** anche in **formato** **Parquet**.
+E lo ha fatto ancora una volta: dal [21 febbraio 2024 ha iniziato a **pubblicare**](https://opencoesione.gov.it/it/news/opendata-rilasciati-dataset-formato-parquet/) la **propria banca dati** anche in **formato** **Parquet**.
 
 Ed è probabilmente il **primo progetto italiano di una Pubblica Amministrazione a farlo**, e sicuramente il primo con una banca dati di questa ricchezza e dimensione.
 
