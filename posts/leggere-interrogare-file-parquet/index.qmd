@@ -263,7 +263,7 @@ Nella versione di Observable gratuita e *online*, il limite delle dimensioni di 
 In ogni caso, è bene evitare di fare caricare nel `DOM` della pagina web *array* di dati molto grandi.
 :::
 
-Poi ad esempio si può interrogare il file, ancora una volta con una *query* `SQL`, per avere ad esempio il conteggio dei progetti, per stato progetto:
+Poi ad esempio si può interrogare il file, ancora una volta con una *query* `SQL`, per avere ad esempio il conteggio dei progetti, per stato del progetto:
 
 ```javascript
 viewof tbl_stato_proggetti = {
