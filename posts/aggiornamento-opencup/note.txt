@@ -1,0 +1,15 @@
+duckdb -c "SET preserve_insertion_order=false;COPY (select * from read_csv_auto('Opendata*.csv',parallel=FALSE,dateformat='%d-%b-%Y',filename=true,types={'DATA_ULTIMA_MODIFICA_SSC':'DATE','DATA_ULTIMA_MODIFICA_UTENTE':'DATE','DATA_CHIUSURA_REVOCA':'DATE','DATA_GENERAZIONE_CUP':'DATE'})) TO 'tmp.parquet' (FORMAT 'parquet', COMPRESSION 'zstd', ROW_GROUP_SIZE 100_000)"
+
+- le date non sono più 02-DEC-21, ma 02-DEC-2021
+- filename=true per il debug
+- normalizzare con Miller mlrgo -I --csv --ifs ";" cat Opendata164.csv
+- rimuovere NBSP
+
+find ./ -name '*.csv' -type f | parallel "awk '{gsub(/\\xc2\\xa0/, \" \"); print > \"{}.tmp\"}' {} && mv \"{}.tmp\" {}"
+
+- sostituire &apos; con '
+
+find ./ -name '*.csv' -type f | parallel "sed -i 's/&apos;/'\''/g' {}"
+
+- ci sono file completamente sbagliati, con righe composti da due campi (vedi e-mail a opencup)
+- analizzare i 6 cancellati e capire perché e se si possono modificare

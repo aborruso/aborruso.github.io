@@ -1,0 +1,19 @@
+---
+title: "Fuzzy matching with DuckDB"
+description: "Maledetti comuni"
+date: "2023-07-30"
+draft: true
+search: false
+categories:
+  - duckdb
+  - fuzzy
+---
+
+Bla
+
+```
+duckdb -csv -c "SELECT *,LEVENSHTEIN(t1.Regione, t2.DenominazioneRegione) distanza
+FROM read_csv_auto('"$folder"/tmp/accoglienza_regioni.csv',header=true) t1
+JOIN read_csv_auto('"$folder"/../../risorse/Elenco-regioni.csv',header=true) t2
+ON LEVENSHTEIN(t1.Regione, t2.DenominazioneRegione) < 40;" | mlr --csv top --min -a -f distanza -g DenominazioneRegione then cut -x -f distanza >"$folder"/tmp/accoglienza_regioni_stele.csv
+```
