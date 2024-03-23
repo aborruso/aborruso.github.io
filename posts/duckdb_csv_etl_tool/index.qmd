@@ -1,0 +1,52 @@
+---
+title: "duckdb etl tool"
+description: "bla bla bla"
+date: "2023-07-30"
+draft: true
+search: false
+categories:
+  - duckdb
+  - csv
+  - etl
+---
+
+Bla
+
+```{.markdown filename="01.csv"}
+Lore ipsum,  Peace and LOVE
+1,Guido
+2,Maria
+```
+
+```{.markdown filename="02.csv"}
+Lore ipsum,Peace and LOVE,Quanto
+7,Ciccia,
+9,Gigi,poco
+```
+
+```bash
+duckdb --csv -c "select * from read_csv('*.csv',filename=true,delim=',',normalize_names=true,union_by_name=true)" >output.csv
+```
+
+
+```{.markdown filename="output.csv"}
+lore_ipsum,peace_and_love,quanto,filename
+1,Guido,,01.csv
+2,Maria,,01.csv
+7,Ciccia,,02.csv
+9,Gigi,poco,02.csv
+```
+
+| lore_ipsum | peace_and_love | quanto | filename |
+|-----------:|----------------|--------|----------|
+| 1          | Guido          |        | 01.csv   |
+| 2          | Maria          |        | 01.csv   |
+| 7          | Ciccia         |        | 02.csv   |
+| 9          | Gigi           | poco   | 02.csv   |
+
+
+Note:
+
+- inserisco il nome dei file
+- normalizzo i nomi delle colonne
+- unisco i risultati, senza che sia un problema che i file abbiano colonne diverse
