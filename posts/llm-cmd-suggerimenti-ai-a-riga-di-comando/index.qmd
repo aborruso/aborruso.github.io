@@ -1,0 +1,41 @@
+---
+title: "I suggerimenti dell'intelligenza artificiale per la riga di comando"
+description: "In modo che non esploda la bomba ..."
+date: "2024-03-27"
+draft: false
+search: true
+categories:
+  - cmd
+  - ai
+website:
+  twitter-card:
+    description: "I suggerimenti dell'intelligenza artificiale per la riga di comando"
+    image: tar.png
+  open-graph:
+    description: "I suggerimenti dell'intelligenza artificiale per la riga di comando"
+    image: tar.png
+image: tar.png
+---
+
+Una delle vignette più famose e (da me) amate di **xkcd** è quella che mostra una persona che deve disattivare una bomba, ma per farlo deve ricordarsi la sintassi di `tar`.<br>
+Ma l'impresa è ardua, perché è uno di quei comandi della `cli`, di cui spesso **non ricordiamo la sintassi**.
+
+[!["**tar**", una meravigliosa vignetta di xkcd](tar.png){fig-alt="A drawing of an elephant."}](https://xkcd.com/1168/)
+
+Con l'"uscita" quotidiana di "cose" legate all'intelligenza artificiale, stanno arrivando soluzioni anche per questo problema: una ce la dà il bellissimo progetto di quel genio di **Simon Willison**, che ha creato il [***plugin* *llm-cmd***](https://github.com/simonw/llm-cmd) per la sua [straordinaria applicazione **LLM**](https://llm.datasette.io/en/stable/).
+
+Una volta installato, si apre la `shell` e si digita il comando `llm cmd` seguito da una richiesta, da un *prompt*, su ciò che si vuole fare.
+
+Sotto ad esempio chiedo `come decomprimo il file data.tar.gz dalla cartella corrente alla cartella /home/tmp?`.
+
+E in risposta ho `tar -xzvf data.tar.gz -C /home/tmp`. E se lo valuto corretto, posso premere <kbd>INVIO</kbd> e il comando verrà eseguito.
+
+👏 A Simon!!
+
+![Esempio di utilizzo di `llm-cmd`](llm-cmd.gif)
+
+::: {.callout-note}
+`LLM` di default utilizza il modello `gpt-3.5-turbo` di OpenAI, ma è possibile configurare il proprio modello.
+:::
+
+
