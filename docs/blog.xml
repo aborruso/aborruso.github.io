@@ -9,8 +9,59 @@
 <link>https://aborruso.github.io/blog.html</link>
 <atom:link href="https://aborruso.github.io/blog.xml" rel="self" type="application/rss+xml"/>
 <description></description>
-<generator>quarto-1.4.549</generator>
-<lastBuildDate>Wed, 21 Feb 2024 23:00:00 GMT</lastBuildDate>
+<generator>quarto-1.4.551</generator>
+<lastBuildDate>Tue, 26 Mar 2024 23:00:00 GMT</lastBuildDate>
+<item>
+  <title>I suggerimenti dell’intelligenza artificiale per la riga di comando</title>
+  <dc:creator>Andrea Borruso</dc:creator>
+  <link>https://aborruso.github.io/posts/llm-cmd-suggerimenti-ai-a-riga-di-comando/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>Una delle vignette più famose e (da me) amate di <strong>xkcd</strong> è quella che mostra una persona che deve disattivare una bomba, ma per farlo deve ricordarsi la sintassi di <code>tar</code>.<br> Ma l’impresa è ardua, perché è uno di quei comandi della <code>cli</code>, di cui spesso <strong>non ricordiamo la sintassi</strong>.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="https://xkcd.com/1168/"><img src="https://aborruso.github.io/posts/llm-cmd-suggerimenti-ai-a-riga-di-comando/tar.png" class="img-fluid figure-img" alt="A drawing of an elephant."></a></p>
+<figcaption>“<strong>tar</strong>”, una meravigliosa vignetta di xkcd</figcaption>
+</figure>
+</div>
+<p>Con l’“uscita” quotidiana di “cose” legate all’intelligenza artificiale, stanno arrivando soluzioni anche per questo problema: una ce la dà il bellissimo progetto di quel genio di <strong>Simon Willison</strong>, che ha creato il <a href="https://github.com/simonw/llm-cmd"><strong><em>plugin</em> <em>llm-cmd</em></strong></a> per la sua <a href="https://llm.datasette.io/en/stable/">straordinaria applicazione <strong>LLM</strong></a>.</p>
+<p>Una volta installato, si apre la <code>shell</code> e si digita il comando <code>llm cmd</code> seguito da una richiesta, da un <em>prompt</em>, su ciò che si vuole fare.</p>
+<p>Sotto ad esempio chiedo <code>come decomprimo il file data.tar.gz dalla cartella corrente alla cartella /home/tmp?</code>.</p>
+<p>E in risposta ho <code>tar -xzvf data.tar.gz -C /home/tmp</code>. E se lo valuto corretto, posso premere <kbd>INVIO</kbd> e il comando verrà eseguito.</p>
+<p>👏 A Simon!!</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://aborruso.github.io/posts/llm-cmd-suggerimenti-ai-a-riga-di-comando/llm-cmd.gif" class="img-fluid figure-img"></p>
+<figcaption>Esempio di utilizzo di <code>llm-cmd</code></figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Nota
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><code>LLM</code> di default utilizza il modello <code>gpt-3.5-turbo</code> di OpenAI, ma è possibile configurare il proprio modello.</p>
+</div>
+</div>
+
+
+
+<a onclick="window.scrollTo(0, 0); return false;" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Torna in cima</a> ]]></description>
+  <category>cmd</category>
+  <category>ai</category>
+  <guid>https://aborruso.github.io/posts/llm-cmd-suggerimenti-ai-a-riga-di-comando/</guid>
+  <pubDate>Tue, 26 Mar 2024 23:00:00 GMT</pubDate>
+  <media:content url="https://aborruso.github.io/posts/llm-cmd-suggerimenti-ai-a-riga-di-comando/tar.png" medium="image" type="image/png" height="188" width="144"/>
+</item>
 <item>
   <title>Come leggere un file Parquet</title>
   <dc:creator>Andrea Borruso</dc:creator>
@@ -82,41 +133,43 @@ Tabella&nbsp;1: totale di finanziamento pubblico per ciclo di finanziamento
 </figcaption>
 <div aria-describedby="tbl-cicli-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-display" data-execution_count="2">
+<div>
 <style type="text/css">
-#T_0f361 th.col1 {
+#T_07539 th.col1 {
   text-align: right;
 }
-#T_0f361_row0_col1, #T_0f361_row1_col1, #T_0f361_row2_col1, #T_0f361_row3_col1 {
+#T_07539_row0_col1, #T_07539_row1_col1, #T_07539_row2_col1, #T_07539_row3_col1 {
   text-align: right;
 }
 </style>
 
-<table id="T_0f361" class="do-not-create-environment cell table table-sm table-striped small" data-quarto-postprocess="true">
+<table id="T_07539" class="do-not-create-environment cell table table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
-<th id="T_0f361_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Ciclo</th>
-<th id="T_0f361_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Totale finanziamento pubblico (€)</th>
+<th id="T_07539_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Ciclo</th>
+<th id="T_07539_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Totale finanziamento pubblico (€)</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_0f361_row0_col0" class="data row0 col0">Ciclo di programmazione 2000-2006</td>
-<td id="T_0f361_row0_col1" class="data row0 col1">17.667.666.307,18</td>
+<td id="T_07539_row0_col0" class="data row0 col0">Ciclo di programmazione 2000-2006</td>
+<td id="T_07539_row0_col1" class="data row0 col1">17.667.666.307,18</td>
 </tr>
 <tr class="even">
-<td id="T_0f361_row1_col0" class="data row1 col0">Ciclo di programmazione 2007-2013</td>
-<td id="T_0f361_row1_col1" class="data row1 col1">101.629.942.347,96</td>
+<td id="T_07539_row1_col0" class="data row1 col0">Ciclo di programmazione 2007-2013</td>
+<td id="T_07539_row1_col1" class="data row1 col1">101.629.942.347,96</td>
 </tr>
 <tr class="odd">
-<td id="T_0f361_row2_col0" class="data row2 col0">Ciclo di programmazione 2014-2020</td>
-<td id="T_0f361_row2_col1" class="data row2 col1">154.061.098.680,89</td>
+<td id="T_07539_row2_col0" class="data row2 col0">Ciclo di programmazione 2014-2020</td>
+<td id="T_07539_row2_col1" class="data row2 col1">154.061.098.680,89</td>
 </tr>
 <tr class="even">
-<td id="T_0f361_row3_col0" class="data row3 col0">Ciclo di programmazione 2021-2027</td>
-<td id="T_0f361_row3_col1" class="data row3 col1">7.465.189.173,71</td>
+<td id="T_07539_row3_col0" class="data row3 col0">Ciclo di programmazione 2021-2027</td>
+<td id="T_07539_row3_col1" class="data row3 col1">7.465.189.173,71</td>
 </tr>
 </tbody>
 </table>
+</div>
 </div>
 </div>
 </figure>
@@ -4420,6 +4473,7 @@ Tabella&nbsp;6: Finanziamento pubblico per macro aree
 </figcaption>
 <div aria-describedby="tbl-aree-sum-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-display" data-execution_count="2">
+<div>
 <style type="text/css">
 #T_474f4 th:nth-child(1) {
   text-align: left;
@@ -4466,6 +4520,7 @@ Tabella&nbsp;6: Finanziamento pubblico per macro aree
 </tr>
 </tbody>
 </table>
+</div>
 </div>
 </div>
 </div>

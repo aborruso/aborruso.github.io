@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="it" xml:lang="it" dir="ltr"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.549">
+<meta name="generator" content="quarto-1.4.551">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -313,41 +313,43 @@ Tabella&nbsp;1: totale di finanziamento pubblico per ciclo di finanziamento
 </figcaption>
 <div aria-describedby="tbl-cicli-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-display" data-execution_count="2">
+<div>
 <style type="text/css">
-#T_0f361 th.col1 {
+#T_07539 th.col1 {
   text-align: right;
 }
-#T_0f361_row0_col1, #T_0f361_row1_col1, #T_0f361_row2_col1, #T_0f361_row3_col1 {
+#T_07539_row0_col1, #T_07539_row1_col1, #T_07539_row2_col1, #T_07539_row3_col1 {
   text-align: right;
 }
 </style>
 
-<table id="T_0f361" class="do-not-create-environment cell table table-sm table-striped small" data-quarto-postprocess="true">
+<table id="T_07539" class="do-not-create-environment cell table table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
-<th id="T_0f361_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Ciclo</th>
-<th id="T_0f361_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Totale finanziamento pubblico (€)</th>
+<th id="T_07539_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Ciclo</th>
+<th id="T_07539_level0_col1" class="col_heading level0 col1" data-quarto-table-cell-role="th">Totale finanziamento pubblico (€)</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td id="T_0f361_row0_col0" class="data row0 col0">Ciclo di programmazione 2000-2006</td>
-<td id="T_0f361_row0_col1" class="data row0 col1">17.667.666.307,18</td>
+<td id="T_07539_row0_col0" class="data row0 col0">Ciclo di programmazione 2000-2006</td>
+<td id="T_07539_row0_col1" class="data row0 col1">17.667.666.307,18</td>
 </tr>
 <tr class="even">
-<td id="T_0f361_row1_col0" class="data row1 col0">Ciclo di programmazione 2007-2013</td>
-<td id="T_0f361_row1_col1" class="data row1 col1">101.629.942.347,96</td>
+<td id="T_07539_row1_col0" class="data row1 col0">Ciclo di programmazione 2007-2013</td>
+<td id="T_07539_row1_col1" class="data row1 col1">101.629.942.347,96</td>
 </tr>
 <tr class="odd">
-<td id="T_0f361_row2_col0" class="data row2 col0">Ciclo di programmazione 2014-2020</td>
-<td id="T_0f361_row2_col1" class="data row2 col1">154.061.098.680,89</td>
+<td id="T_07539_row2_col0" class="data row2 col0">Ciclo di programmazione 2014-2020</td>
+<td id="T_07539_row2_col1" class="data row2 col1">154.061.098.680,89</td>
 </tr>
 <tr class="even">
-<td id="T_0f361_row3_col0" class="data row3 col0">Ciclo di programmazione 2021-2027</td>
-<td id="T_0f361_row3_col1" class="data row3 col1">7.465.189.173,71</td>
+<td id="T_07539_row3_col0" class="data row3 col0">Ciclo di programmazione 2021-2027</td>
+<td id="T_07539_row3_col1" class="data row3 col1">7.465.189.173,71</td>
 </tr>
 </tbody>
 </table>
+</div>
 </div>
 </div>
 </figure>
@@ -776,6 +778,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
           // target, if specified
           link.setAttribute("target", "_blank");
           if (link.getAttribute("rel") === null) {
@@ -817,7 +824,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
       let selectedAnnoteEl;
@@ -1005,7 +1016,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"selector":".lightbox","descPosition":"bottom","openEffect":"zoom","loop":false,"closeEffect":"zoom"});
+<script>var lightboxQuarto = GLightbox({"openEffect":"zoom","descPosition":"bottom","selector":".lightbox","closeEffect":"zoom","loop":false});
 window.onload = () => {
   lightboxQuarto.on('slide_before_load', (data) => {
     const { slideIndex, slideNode, slideConfig, player, trigger } = data;

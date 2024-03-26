@@ -2,6 +2,7 @@
   {
     "listing": "/blog.html",
     "items": [
+      "/posts/llm-cmd-suggerimenti-ai-a-riga-di-comando/index.html",
       "/posts/leggere-interrogare-file-parquet/index.html",
       "/posts/csv-ventitre-gigabyte-senza-affanno/index.html",
       "/posts/accedere-google-ai-riga-di-comando/index.html",

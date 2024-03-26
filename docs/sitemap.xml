@@ -33,6 +33,14 @@
     <lastmod>2024-02-03T11:20:28.306Z</lastmod>
   </url>
   <url>
+    <loc>https://aborruso.github.io/posts/leggere-interrogare-file-parquet/index.html</loc>
+    <lastmod>2024-02-23T14:36:51.914Z</lastmod>
+  </url>
+  <url>
+    <loc>https://aborruso.github.io/posts/duckdb-intro-csv/index.html</loc>
+    <lastmod>2024-02-22T09:50:05.084Z</lastmod>
+  </url>
+  <url>
     <loc>https://aborruso.github.io/posts/accedere-google-ai-riga-di-comando/index.html</loc>
     <lastmod>2023-12-18T07:33:23.945Z</lastmod>
   </url>
@@ -49,8 +57,8 @@
     <lastmod>2024-02-21T16:00:07.220Z</lastmod>
   </url>
   <url>
-    <loc>https://aborruso.github.io/posts/duckdb-intro-csv/index.html</loc>
-    <lastmod>2024-02-22T09:50:05.084Z</lastmod>
+    <loc>https://aborruso.github.io/posts/llm-cmd-suggerimenti-ai-a-riga-di-comando/index.html</loc>
+    <lastmod>2024-03-26T19:06:20.114Z</lastmod>
   </url>
   <url>
     <loc>https://aborruso.github.io/til.html</loc>
@@ -75,9 +83,5 @@
   <url>
     <loc>https://aborruso.github.io/til/renderizzare-csv-quarto-observable/index.html</loc>
     <lastmod>2024-01-14T15:18:51.055Z</lastmod>
-  </url>
-  <url>
-    <loc>https://aborruso.github.io/posts/leggere-interrogare-file-parquet/index.html</loc>
-    <lastmod>2024-02-22T10:37:42.723Z</lastmod>
   </url>
 </urlset>
