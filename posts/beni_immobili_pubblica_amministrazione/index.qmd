@@ -332,6 +332,8 @@ Questi preziosi dati inoltre **non** sono ancora **disponibili** anche nel [**po
 
 Interrogando la banca dati si ha evidenza di alcuni bene con **coordinate geografiche** **incoerenti** con gli **attributi territoriali** dichiarati in altri campi. Ad esempio il bene con `id_bene=2442321`, ha coordinate YX `37.926914` e `15.28337`, ovvero in provincia di Messina; ma nel campo `comune_del_bene` il valore è "Frascati".
 
-Infine un'ultima nota su un **formato** **aggiuntivo** di **pubblicazione**: il tante volte nominato formato **`Parquet`**.<br>
+Aggiungo una nota anche su un **formato** **aggiuntivo** di **pubblicazione**: il tante volte nominato formato **`Parquet`**.<br>
 È diventato uno dei formati standard per consentire a chiunque di fare **analisi** **rapide** ed **efficienti**, anche su **grandi** **quantità** di **dati**, quasi su **qualsiasi** **PC**. E sarebbe ideale **pubblicare la banca dati degli immobili pubblici in formato `Parquet`**.<br>
 Un buon esempio da emulare è quello di **OpenCoesione** - uno dei portali di dati aperti più importanti in Italia - che da febbraio 2024 pubblica anche in [questo formato](https://opencoesione.gov.it/it/news/opendata-rilasciati-dataset-formato-parquet/).
+
+Sono **dati** al **2019**, ma sarebbe interessante che fossero aggiornati con una **frequenza** **maggiore**, magari **annualmente**. Sul portale del Tesoso [si legge](https://portaletesoro.mef.gov.it/it/singlenewspublic.wp?contentId=NWS245) "Fissata al 27 settembre 2024 la chiusura della rilevazione dei dati dei beni immobili pubblici riferiti al 31/12/2023" e quindi c'è da aspettarsi un prossimo aggiornamento.
