@@ -33,7 +33,7 @@ Questo dipartimento infatti gestisce la **banca dati degli immobili pubblici**, 
 
 "In considerazione dell'elevato numero di record" - circa **2,8 milioni** -  il Dipartimento ha suddiviso la pubblicazione di questi dati in circa **30 file `CSV` compressi** (`zip`). Per fortuna tutti con **un solo schema**.
 
-In questo articolo voglio mostrare come **metterli insieme**, in modo da poter **fare** **elaborazioni** e **sintesi** come quelle dell'ENEA. Tenuti compressi, separati e in questo formato, non sono infatti molto comodi da gestire.<br>
+In questo articolo voglio mostrare come **metterli di nuovo insieme**, in modo da poter **fare** **elaborazioni** e **sintesi** come quelle dell'ENEA. Tenuti compressi, separati e in questo formato, non sono infatti molto comodi da gestire.<br>
 **DuckDB** si rivela nuovamente uno strumento prezioso per questo compito  (vedi l'articolo "[Gestire file CSV grandi, brutti e cattivi](../duckdb-intro-csv/index.qmd)").
 
 Ancora volta una sarà l'occasione - lo farò in rappresentanza dell'associazione onData - di **proporre** al Dipartimento di **pubblicare** i **dati** anche in **altre modalità**. E magari andrà bene, così come è avvenuto con [OpenCoesione](https://opencoesione.gov.it/it/news/opendata-rilasciati-dataset-formato-parquet/).
