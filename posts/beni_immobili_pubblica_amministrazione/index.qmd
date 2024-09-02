@@ -147,7 +147,7 @@ Se si vuole conciliare un'**ottima compressione**, con una **grande** **velocit√
 
 Il comando per creare un file in questo formato √® molto simile a quello per il `CSV`:
 
-```{.bash .code-overflow-wrap}
+```{.sql .code-overflow-wrap}
 duckdb -c "COPY (
   SELECT
     *
@@ -185,7 +185,7 @@ Mettendo tutto insieme, il comando per creare un file `Parquet` diventa:
 :::{#lst-duckdb-parquet}
 
 ```{.bash .code-overflow-wrap}
-duckdb --csv -c "COPY (
+duckdb -c "COPY (
   SELECT
     * REPLACE (regexp_replace(filename, '^.+/', '') AS filename)
   FROM
