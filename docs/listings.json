@@ -1,15 +1,5 @@
 [
   {
-    "listing": "/blog.html",
-    "items": [
-      "/posts/llm-cmd-suggerimenti-ai-a-riga-di-comando/index.html",
-      "/posts/leggere-interrogare-file-parquet/index.html",
-      "/posts/csv-ventitre-gigabyte-senza-affanno/index.html",
-      "/posts/accedere-google-ai-riga-di-comando/index.html",
-      "/posts/duckdb-intro-csv/index.html"
-    ]
-  },
-  {
     "listing": "/til.html",
     "items": [
       "/til/compilare-qsv/index.html",
@@ -25,6 +15,23 @@
       "/til/renderizzare-csv-quarto-observable/index.html",
       "/til/filtrare-file-elenco-file-esterno/index.html",
       "/til/un-sito-in-quarto/index.html"
+    ]
+  },
+  {
+    "listing": "/blog.html",
+    "items": [
+      "/posts/beni_immobili_pubblica_amministrazione/index.html",
+      "/posts/llm-cmd-suggerimenti-ai-a-riga-di-comando/index.html",
+      "/posts/leggere-interrogare-file-parquet/index.html",
+      "/posts/csv-ventitre-gigabyte-senza-affanno/index.html",
+      "/posts/dot-cartogram/index.html",
+      "/posts/accedere-google-ai-riga-di-comando/index.html",
+      "/posts/duckdb-intro-csv/index.html",
+      "/posts/duckdb-fuzzy-maledetti-comuni/index.html",
+      "/posts/duckdb_csv_etl_tool/index.html",
+      "/posts/eurostat-api/index.html",
+      "/posts/incidenti-palermo/index.html",
+      "/posts/opencoesione-formato-parquet/index.html"
     ]
   }
 ]

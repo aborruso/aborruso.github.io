@@ -9,8 +9,775 @@
 <link>https://aborruso.github.io/blog.html</link>
 <atom:link href="https://aborruso.github.io/blog.xml" rel="self" type="application/rss+xml"/>
 <description></description>
-<generator>quarto-1.4.551</generator>
-<lastBuildDate>Tue, 26 Mar 2024 23:00:00 GMT</lastBuildDate>
+<generator>quarto-1.5.56</generator>
+<lastBuildDate>Sun, 01 Sep 2024 22:00:00 GMT</lastBuildDate>
+<item>
+  <title>I (quasi) tre milioni di beni immobili della Pubblica Amministrazione</title>
+  <dc:creator>Andrea Borruso</dc:creator>
+  <link>https://aborruso.github.io/posts/beni_immobili_pubblica_amministrazione/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<section id="introduzione" class="level2">
+<h2 class="anchored" data-anchor-id="introduzione">Introduzione</h2>
+<p>L’<strong>ENEA</strong> - Agenzia nazionale per le nuove tecnologie, l’energia e lo sviluppo economico sostenibile - ha <a href="https://www.pubblicazioni.enea.it/le-pubblicazioni-enea/edizioni-enea/anno-2024/la-consistenza-del-parco-immobiliare-nazionale.html">pubblicato</a> a fine luglio del 2024 il rapporto “<strong><a href="https://www.pubblicazioni.enea.it/download.html?task=download.send&amp;id=698:la-consistenza-del-parco-immobiliare-nazionale&amp;catid=3">La consistenza del parco immobiliare nazionale</a></strong>”.<br> Per la parte relativa ai <strong>fabbricati di proprietà pubblica</strong> è stato realizzato con il contributo dei dati forniti dal Dipartimento dell’Economia (DE) – Direzione III Valorizzazione del patrimonio pubblico.</p>
+<p>Questo dipartimento infatti gestisce la <strong>banca dati degli immobili pubblici</strong>, alla quale è associata la pubblicazione dei dati aperti in formato <strong><code>CSV</code></strong>, con licenza <a href="https://creativecommons.org/licenses/by/4.0/deed.it">CC-BY 4.0</a>: <br><a href="https://www.de.mef.gov.it/it/attivita_istituzionali/patrimonio_pubblico/censimento_immobili_pubblici/open_data_immobili/dati_immobili_2019.html"><strong>Elenco dei beni immobili dichiarati dalle Amministrazioni Pubbliche</strong> per l’anno 2019, ai sensi dell’art. 2, comma 222, legge 23 dicembre 2009, n.&nbsp;191</a></p>
+<blockquote class="blockquote">
+<p>Per ciascuna Amministrazione sono riportate le seguenti informazioni sui beni immobili dichiarati: identificativo univoco del bene (unità immobiliare, u.i.), identificativi catastali (o codice bene nel caso di immobili non accatastati), titolo e quota di proprietà, localizzazione, tipologia immobiliare, dimensione (superficie/cubatura), epoca di costruzione, natura giuridica, vincolo culturale paesaggistico, appartenenza a un compendio, tipo di utilizzo e finalità, indicazione se l’unità immobiliare è data in uso a terzi, totalmente o in parte. Per beni non di proprietà, sono riportati: titolo di detenzione, superficie detenuta (se non si detiene l’intera u.i.), Amministrazione da cui si è ricevuto il bene (Amministrazione cedente). Le informazioni sulle detenzioni a favore di terzi, relative all’intera u.i. o ad una parte, sono contenute nel corrispondente file .csv Detenzioni a favore di terzi.</p>
+</blockquote>
+<p>“In considerazione dell’elevato numero di record” - circa <strong>2,8 milioni</strong> - il Dipartimento ha suddiviso la pubblicazione di questi dati in circa <strong>30 file <code>CSV</code> compressi</strong> (<code>zip</code>). Per fortuna tutti con <strong>un solo schema</strong>.</p>
+<p>In questo articolo voglio mostrare come <strong>metterli insieme</strong>, in modo da poter <strong>fare</strong> <strong>elaborazioni</strong> e <strong>sintesi</strong> come quelle dell’ENEA. Tenuti compressi, separati e in questo formato, non sono infatti molto comodi da gestire.<br> Ancora una volta <strong>duckdb</strong> è uno strumento può essere uno strumento utile per fare questo (si veda l’articolo “<a href="../../posts/duckdb-intro-csv/index.html">Gestire file CSV grandi, brutti e cattivi</a>”).</p>
+<p>Ancora volta una sarà l’occasione - lo farò in rappresentanza dell’associazione onData - di <strong>proporre</strong> al Dipartimento di <strong>pubblicare</strong> i <strong>dati</strong> anche in <strong>altre modalità</strong>. E magari andrà bene, così come è avvenuto con <a href="https://opencoesione.gov.it/it/news/opendata-rilasciati-dataset-formato-parquet/">OpenCoesione</a>.</p>
+<p>Prima di passare all’“azione”, una nota sulla sottostante Figura&nbsp;1. È una mappa che rappresenta la densità degli immobili pubblici in Italia: è una cosiddetta <em>heatmap</em>, più scura dove c’è più densità di immobili.<br> Nella <strong><a href="https://xkcd.com/1138/">geniale vignetta di xkcd</a></strong>, si mostra come le <em>heatmap</em> siano inutili, perché sono essenzialmente mappe della popolazione: le “cose” esistono dove ci sono le persone.<br> Anche qui sotto è così, però ci sono degli stranamente dei colori tenui anche in alcune aree densamente popolate del Sud Italia. Ma è un’analisi che farà qualche altra persona.</p>
+<div id="fig-heatmap" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Heatmap della posizione degli immobili">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-heatmap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://aborruso.github.io/posts/beni_immobili_pubblica_amministrazione/heat_map.png" class="img-fluid figure-img" alt="Heatmap della posizione degli immobili">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-heatmap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;1: heatmap della posizione degli immobili
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="scaricare-i-file" class="level2">
+<h2 class="anchored" data-anchor-id="scaricare-i-file">Scaricare i file</h2>
+<p>L’ho fatto in blocco. Ho prima esplorato un po’ <a href="https://www.de.mef.gov.it/it/attivita_istituzionali/patrimonio_pubblico/censimento_immobili_pubblici/open_data_immobili/dati_immobili_2019.html">la pagina</a> e ho notato che tutti i file hanno un <code>URL</code> che inizia con la stringa <code>/modules</code> e termina per <code>.zip</code>. Allora ho iniziato dall’estrarre la lista di questi file, usando l’espressione regolare <code>/modules.+.zip</code>:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">URL</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"https://www.de.mef.gov.it/it/attivita_istituzionali/patrimonio_pubblico/censimento_immobili_pubblici/open_data_immobili/dati_immobili_2019.html"</span></span>
+<span id="cb1-2"></span>
+<span id="cb1-3"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">curl</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-s</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-b</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$folder</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>/tmp/cookies.txt <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-H</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36'</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$URL</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">grep</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-P</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-o</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'/modules.+.zip'</span></span></code></pre></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Nota
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>è necessario generare prima il file <code>cookies.txt</code> con il comando <code>curl -c "$folder"/tmp/cookies.txt "$URL"</code> e poi leggerlo;</li>
+<li><code>grep -P -o</code> è per usare le espressioni regolari Perl ed estrarre solo la parte che interessa;</li>
+<li><code>$folder</code> è la mia cartella di lavoro dello script;</li>
+</ul>
+</div>
+</div>
+<p>In output si ottiene (ne metto soltanto una piccola parte):</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1">/modules/documenti_it/attivo_patrimonio/2019/open_data_imm/Imm_Camere_di_commercio_ed_Unioni_di_Camere_di_Commercio_2019.zip</span>
+<span id="cb2-2">/modules/documenti_it/attivo_patrimonio/2019/open_data_imm/Imm_Province_e_Citta_Metropolitane_2019.zip</span>
+<span id="cb2-3">/modules/documenti_it/attivo_patrimonio/2019/open_data_imm/Imm_Enti_Locali_del_Servizio_Sanitario_Nazionale_2019.zip</span>
+<span id="cb2-4">/modules/documenti_it/attivo_patrimonio/2019/open_data_imm/Imm_Amministrazioni_Regionali_2019.zip</span>
+<span id="cb2-5">/modules/documenti_it/attivo_patrimonio/2019/open_data_imm/Imm_Universita_2019.zip</span>
+<span id="cb2-6">/modules/documenti_it/attivo_patrimonio/2019/open_data_imm/Imm_Amministrazioni_Comunali_ABRUZZO_2019.zip</span>
+<span id="cb2-7">/modules/documenti_it/attivo_patrimonio/2019/open_data_imm/Imm_Amministrazioni_Comunali_BASILICATA_2019.zip</span></code></pre></div>
+<p>Con la lista degli URL dei file disponibile, basta generare un <code>while loop</code> per scaricarli tutti (sempre con <code>curl</code> o <code>wget</code>).</p>
+</section>
+<section id="elaborazione-dei-file-scaricati" class="level2">
+<h2 class="anchored" data-anchor-id="elaborazione-dei-file-scaricati">Elaborazione dei file scaricati</h2>
+<p>A partire dalla lista dei file <code>zip</code> scaricati, ancora una volta si può generare un <code>while loop</code> per estrarli tutti in una cartella temporanea.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Avviso
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Facendolo è emerso un primo piccolo problema: uno dei file <code>zip</code> ha una struttura diversa: contiene il <code>CSV</code> in una sotto cartella. Quindi era necessario creare un processo di <em>unzip</em> automatico che non tenesse della eventuale struttura a cartelle presente.</p>
+</div>
+</div>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">find</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$folder</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>/../data/raw <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-type</span> f <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-name</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"*.zip"</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">|</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">while</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">IFS</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">read</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-r</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">file</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">;</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">do</span></span>
+<span id="cb3-2">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">unzip</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-j</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$file</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-d</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$folder</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>/../data/raw</span>
+<span id="cb3-3"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">done</span></span></code></pre></div>
+<p>Una volta estratti tutti i file e in presenza di uno schema dati comune, è molto semplice creare un unico file di output, usando <code>duckdb</code>.<br> Il comando di base è:</p>
+<div id="lst-duckdb-merge" class="listing quarto-float quarto-figure quarto-figure-left anchored">
+<figure class="quarto-float quarto-float-lst figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-duckdb-merge-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Lista&nbsp;1: esempio di unione di più file <code>CSV</code> a partire da una cartella che li contiene.
+</figcaption>
+<div aria-describedby="lst-duckdb-merge-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="sourceCode" id="lst-duckdb-merge" style="background: #f1f3f5;"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="lst-duckdb-merge-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">duckdb</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--csv</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-c</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"SELECT * FROM read_csv_auto('</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$folder</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">/../data/raw/*.csv')"</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span>output.csv</span></code></pre></div>
+</div>
+</figure>
+</div>
+<p>Al primo tentativo però <code>duckdb</code> è andato in errore, per ragioni legate all’<em>encoding</em> dei caratteri dei file <code>CSV</code>, perché DuckDB <a href="https://duckdb.org/docs/data/csv/overview#limitations">supporta solo file <code>CSV</code> con <em>encoding</em> <code>UTF-8</code></a>.</p>
+<p>Ma <strong>qual</strong> è l’<strong><em>encoding</em></strong> dei file <code>CSV</code> dell’Elenco dei beni immobili dichiarati dalle Amministrazioni Pubbliche? Purtroppo sul sito del Dipartimento <strong>non c’è traccia di questa informazione</strong>.<br> Nelle <strong>linee guida open data</strong> dell’Agenzia per l’Italia Digitale (AgID) è <a href="https://ondata.github.io/linee-guida-opendata/allegato-B.html#formati-aperti">riportato</a>:</p>
+<blockquote class="blockquote">
+<p>è sempre necessario utilizzare una codifica standardizzata dei caratteri. In genere, UTF-8 è la codifica utilizzata nel web. È <strong>utile</strong>, in ogni caso, <strong>indicare</strong> qual è la <strong>codifica</strong> dei caratteri <strong>utilizzata</strong>.</p>
+</blockquote>
+<p>In assenza dell’informazione si può provare a estrarre l’<em>encoding</em> facendo inferenza dai dati. Io in questi casi uso l’ottimo <a href="https://github.com/chardet/chardet"><code>chardet</code></a>, che per questi file ha dato come risultato la codifica <a href="https://www.wikiwand.com/it/articles/Windows-1252"><code>Windows-1252</code></a>.</p>
+<p>Mappata la codifica di input li ho convertiti in <code>UTF-8</code> con <code>iconv</code>:</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">iconv</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-f</span> Windows-1252 <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-t</span> UTF-8 input.csv <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span>output.csv</span></code></pre></div>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb5" data-startfrom="122" data-source-offset="-0" style="background: #f1f3f5;"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 121;"><span id="cb5-122">r<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2830855</span></span>
+<span id="cb5-123">r_ita<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>r<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">toLocaleString</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'it-IT'</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-124">c<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">51</span></span>
+<span id="cb5-125">c_ita<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>c<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">toLocaleString</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'it-IT'</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span>
+<span id="cb5-126">celle<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>(r<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>c)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">toLocaleString</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'it-IT'</span>)<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">;</span></span></code></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-4" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-5" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<p>Con la conversione di <em>encoding</em> fatta, si può lanciare il comando visibile in Lista&nbsp;1 e ottenere il file <code>output.csv</code> con tutti i dati “uniti”.<br> Ma sono <span><span id="ojs-element-id-1"></span></span> righe per <span><span id="ojs-element-id-2"></span></span> colonne, ovvero <span><span id="ojs-element-id-3"></span></span> di celle ed è meglio <strong>comprimere</strong> l’<em>output</em>, così come <a href="../../posts/duckdb-intro-csv/index.html#compressione-dei-file-csv">consigliato qui</a>.</p>
+<p>Si può modificare il comando di Lista&nbsp;1 in questo modo:</p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">duckdb</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-c</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"COPY (SELECT * FROM read_csv_auto('</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$folder</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">/../data/raw/*.csv'))</span></span>
+<span id="cb6-2"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">TO 'beni_immobili_pubblici.csv.gz'"</span></span></code></pre></div>
+<p>In 20 secondi si ottiene un file <code>CSV</code> compresso di circa <strong>68</strong> MB. Non è un formato comodo per rapide elaborazioni, ma con gli strumenti giusti può sempre sorprendere.<br> Il <a href="https://duckdb.org/docs/guides/meta/summarize"><code>summarize</code></a> di duckdb viene eseguito ad esempio in <strong>2 secondi</strong>, con una comodissima sintesi su <strong><span><span id="ojs-element-id-4"></span></span></strong> di <strong>celle</strong>. Il file <code>csv.gz</code> di <em>output</em> è <a href="https://github.com/aborruso/beni_immobili_pubblica_amministrazione/raw/main/data/beni_immobili_pubblici.csv.gz?download=">disponibile qui</a>.</p>
+<div id="fig-summarize" class="lightbox quarto-float quarto-figure quarto-figure-center anchored" alt="Esempio di output del comando summarize di duckdb">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-summarize-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="summarize.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figura&nbsp;2: Esempio di output del comando summarize duckdb"><img src="https://aborruso.github.io/posts/beni_immobili_pubblica_amministrazione/summarize.png" class="img-fluid figure-img" alt="Esempio di output del comando summarize di duckdb"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-summarize-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2: Esempio di <em>output</em> del comando <code>summarize</code> duckdb
+</figcaption>
+</figure>
+</div>
+<p>Per altri tipi di <em>query</em>, i tempi sarebbero molto più lunghi.</p>
+<p>Se si vuole conciliare un’<strong>ottima compressione</strong>, con una <strong>grande</strong> <strong>velocità</strong> di interrogazione e <strong>analisi</strong> dei dati, si può scegliere come formato di output il <strong><a href="../../posts/duckdb-intro-csv/index.html#parquet"><code>Parquet</code></a></strong>.</p>
+<p>Il comando per creare un file in questo formato è molto simile a quello per il <code>CSV</code>:</p>
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">duckdb</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-c</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"COPY (</span></span>
+<span id="cb7-2"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  SELECT</span></span>
+<span id="cb7-3"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    *</span></span>
+<span id="cb7-4"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  FROM</span></span>
+<span id="cb7-5"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    read_csv_auto('</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$folder</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">/../data/raw/*.csv')</span></span>
+<span id="cb7-6"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">) TO 'beni_immobili_pubblici.parquet'</span></span>
+<span id="cb7-7"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span id="cb7-8"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  FORMAT PARQUET,</span></span>
+<span id="cb7-9"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  COMPRESSION 'zstd',</span></span>
+<span id="cb7-10"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  ROW_GROUP_SIZE 100_000</span></span>
+<span id="cb7-11"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">)"</span></span></code></pre></div>
+<p>In circa 25 secondi si ha in output un file <code>Parquet</code> di circa <strong>55</strong> MB, che si può interrogare molto rapidamente con tanti strumenti ed essenzialmente da tutti i linguaggi di programmazione; su questo Davide Taibi e io abbiamo scritto <a href="../../posts/leggere-interrogare-file-parquet/index.html">un articolo di approfondimento</a>.</p>
+<p>Creato il file <code>Parquet</code>, ho iniziato a fare le prime <em>query</em> e subito mi hanno dato fastidio tre cose:</p>
+<ol type="1">
+<li>i <strong>nomi</strong> delle <strong>colonne</strong> sono troppo <strong><em>human readable</em></strong>, con spazi, caratteri speciali e mescola di maiuscole e minuscole;</li>
+<li>alcuni <strong>campi numerici</strong>, come <code>superficie</code> e <code>cubatura</code> dei beni, sono <strong>definiti come stringhe</strong>;</li>
+<li>si <strong>perde</strong> la <strong>traccia</strong> dei <strong>file di origine</strong>.</li>
+</ol>
+<p>Per il punto <strong><code>1</code></strong>, c’è l’eccezionale <a href="https://duckdb.org/docs/data/csv/overview#parameters">parametro</a> <code>normalize_names</code>, che se impostato a <code>TRUE</code> converte i nome delle colonne in <code>snake_case</code>, con tutte le lettere minuscole, gli spazi sostituiti da <code>_</code> e con rimossi i caratteri speciali.</p>
+<p>Per il punto <strong><code>2</code></strong>, si possono forzare i tipi di campo (parametro <code>types</code>) e il separatore dei decimali (parametro <code>decimal_separator</code> che per questi <em>file</em> di <em>input</em> è la <code>,</code>).</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Nota bene
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Nella <a href="https://github.com/duckdb/duckdb/discussions/13295#discussioncomment-10251603">prossima versione</a> di duckdb, basterà dichiarare che il separatore decimale sia la virgola e <code>duckdb</code> sarà in grado di inferire correttamente i tipi campo <code>FLOAT</code>; non sarà più necessario dichiararlo esplicitamente per ognuno.</p>
+</div>
+</div>
+<p>Per il punto <strong><code>3</code></strong> si può usare il parametro <code>filename</code>, che se impostato a <code>TRUE</code> aggiunge una colonna con il nome del file di origine.</p>
+<p>Mettendo tutto insieme, il comando per creare un file <code>Parquet</code> diventa:</p>
+<div id="lst-duckdb-parquet" class="listing quarto-float quarto-figure quarto-figure-left anchored">
+<figure class="quarto-float quarto-float-lst figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-duckdb-parquet-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Lista&nbsp;2: comando finale per creare al meglio il file <code>Parquet</code>.
+</figcaption>
+<div aria-describedby="lst-duckdb-parquet-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="sourceCode" id="lst-duckdb-parquet" style="background: #f1f3f5;"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="lst-duckdb-parquet-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">duckdb</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">--csv</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-c</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"COPY (</span></span>
+<span id="lst-duckdb-parquet-2"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  SELECT</span></span>
+<span id="lst-duckdb-parquet-3"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    * REPLACE (regexp_replace(filename, '^.+/', '') AS filename)</span></span>
+<span id="lst-duckdb-parquet-4"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  FROM</span></span>
+<span id="lst-duckdb-parquet-5"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    read_csv_auto(</span></span>
+<span id="lst-duckdb-parquet-6"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">      '</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$folder</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">/../data/raw/*.csv',</span></span>
+<span id="lst-duckdb-parquet-7"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">      filename = TRUE,</span></span>
+<span id="lst-duckdb-parquet-8"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">      types = { 'id_bene': 'VARCHAR',</span></span>
+<span id="lst-duckdb-parquet-9"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">      'id_compendio': 'VARCHAR',</span></span>
+<span id="lst-duckdb-parquet-10"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">      'latitudine': 'FLOAT',</span></span>
+<span id="lst-duckdb-parquet-11"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">      'longitudine': 'FLOAT',</span></span>
+<span id="lst-duckdb-parquet-12"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">      'superficie_mq': 'FLOAT',</span></span>
+<span id="lst-duckdb-parquet-13"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">      'cubatura_mc': 'FLOAT',</span></span>
+<span id="lst-duckdb-parquet-14"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">      'sup_aree_pertinenziali_mq': 'FLOAT',</span></span>
+<span id="lst-duckdb-parquet-15"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">      'superficie_di_riferimento_mq': 'FLOAT' },</span></span>
+<span id="lst-duckdb-parquet-16"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">      normalize_names = TRUE,</span></span>
+<span id="lst-duckdb-parquet-17"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">      decimal_separator = ','</span></span>
+<span id="lst-duckdb-parquet-18"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    )</span></span>
+<span id="lst-duckdb-parquet-19"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">) TO 'beni_immobili_pubblici.parquet' (</span></span>
+<span id="lst-duckdb-parquet-20"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  FORMAT PARQUET,</span></span>
+<span id="lst-duckdb-parquet-21"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  COMPRESSION 'zstd',</span></span>
+<span id="lst-duckdb-parquet-22"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  ROW_GROUP_SIZE 100_000</span></span>
+<span id="lst-duckdb-parquet-23"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">)"</span></span></code></pre></div>
+</div>
+</figure>
+</div>
+<p>Nella Lista&nbsp;2 è stato aggiunto il comando <code>REPLACE (regexp_replace(filename, '^.+/', '') AS filename)</code>. Questo comando rimuove il percorso del file e lascia solo il suo nome.</p>
+<p>Il file <code>parquet</code> di <em>output</em> è <a href="https://github.com/aborruso/beni_immobili_pubblica_amministrazione/raw/main/data/beni_immobili_pubblici.parquet?download=">disponibile qui</a>.</p>
+</section>
+<section id="analisi-geografica-dei-dati" class="level2">
+<h2 class="anchored" data-anchor-id="analisi-geografica-dei-dati">Analisi geografica dei dati</h2>
+<p>Il 99% dei dati è associato a una coppia di coordinate geografiche, con le colonne <code>latitudine</code> e <code>longitudine</code>. Non entro qui nel merito sulla qualità (tutta da verificare) di questi dati, ma voglio mostrare come può esser comodo anche in questo caso <strong>duckdb</strong>.<br> Questa applicazione ha infatti anche l’<a href="https://duckdb.org/docs/extensions/spatial.html">estensione spaziale</a> ed è quindi possibile fare delle interrogazioni geografiche.</p>
+<p><strong>Quanti</strong> sono ad esempio i <strong>beni</strong> immobili che ricadono in <strong>provincia</strong> di <strong>Bergamo</strong>?</p>
+<p>Con questa banca dati c’è un modo “tradizionale” per farlo, perché è presente la colonna <code>provincia_del_bene</code> e basta fare una <em>query</em> come quella di sotto, per sapere in 0,1 secondi che sono 39.154:</p>
+<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">duckdb</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-c</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"SELECT count(*) conteggio</span></span>
+<span id="cb8-2"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">FROM read_parquet('beni_immobili_pubblici.parquet')</span></span>
+<span id="cb8-3"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">WHERE provincia_del_bene = 'BERGAMO'"</span></span></code></pre></div>
+<p>Ma immaginiamo di non avere la colonna <code>provincia_del_bene</code> e avere soltanto le coordinate dei beni e il poligono che rappresenta la provincia di Bergamo.<br> Questo poligono si può ottenere in formato <code>geojson</code> dal comodo <a href="https://confini-amministrativi.it/"><strong>confini-amministrativi.it</strong></a> e ha questo URL:<br> <a href="https://confini-amministrativi.it/api/v2/it/20240101/unita-territoriali-sovracomunali/16.geo.json" class="uri">https://confini-amministrativi.it/api/v2/it/20240101/unita-territoriali-sovracomunali/16.geo.json</a></p>
+<p>Voglio arricchire il risultato e <strong>conteggiare</strong> i <strong>beni</strong> <strong>per</strong> <strong>epoca</strong> di <strong>costruzione</strong> e <strong>suddividerli</strong> per <strong>utilizzo</strong> del bene. La <em>query</em> spaziale che in pochi secondi restituisce il risultato è la seguente:</p>
+<div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">duckdb</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-c</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"PIVOT (</span></span>
+<span id="cb9-2"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  SELECT</span></span>
+<span id="cb9-3"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    id_bene,</span></span>
+<span id="cb9-4"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    epoca_costruzione,</span></span>
+<span id="cb9-5"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    utilizzo_del_bene</span></span>
+<span id="cb9-6"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  FROM</span></span>
+<span id="cb9-7"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    'beni_immobili_pubblici.parquet' AS immobili</span></span>
+<span id="cb9-8"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    JOIN ST_READ(</span></span>
+<span id="cb9-9"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">      'https://confini-amministrativi.it/api/v2/it/20240101/unita-territoriali-sovracomunali/16.geo.json'</span></span>
+<span id="cb9-10"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    ) AS bergamo ON ST_Within(ST_POINT(longitudine, latitudine), bergamo.geom)</span></span>
+<span id="cb9-11"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">) ON utilizzo_del_bene USING COUNT(id_bene)</span></span>
+<span id="cb9-12"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">GROUP BY epoca_costruzione</span></span>
+<span id="cb9-13"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">ORDER BY epoca_costruzione"</span></span></code></pre></div>
+<p>A partire da un sottoinsieme di colonne - <code>id_bene</code>, <code>epoca_costruzione</code> e <code>utilizzo_del_bene</code> - viene creata una <a href="https://duckdb.org/docs/sql/statements/pivot.html">tabella pivot</a> (vedi Tabella&nbsp;1). Questa organizza i dati in modo che ogni tipologia di utilizzo dei beni (<code>utilizzo_del_bene</code>) diventi una colonna separata. Le celle della tabella mostrano il numero di beni per ciascuna combinazione di epoca di costruzione (<code>epoca_costruzione</code>) e utilizzo, utilizzando la funzione di aggregazione <code>COUNT(id_bene)</code>. Infine, i risultati vengono raggruppati per epoca di costruzione e ordinati in base a questa colonna.</p>
+<div id="tbl-bergamo" class="striped table table-responsive table-sm table-bordered quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-bergamo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabella&nbsp;1: numero di beni immobili pubblici per epoca di costruzione e utilizzo, all’interno della provincia di Bergamo
+</figcaption>
+<div aria-describedby="tbl-bergamo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="table-responsive">
+<table class="table-striped table table-sm table-bordered small caption-top">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 30%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 22%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">epoca_costruzione</th>
+<th style="text-align: right;">In ristrutturazione/manutenzione</th>
+<th style="text-align: right;">Inutilizzabile</th>
+<th style="text-align: right;">Non utilizzato</th>
+<th style="text-align: right;">Utilizzato direttamente</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Dal 1919 al 1945</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">145</td>
+<td style="text-align: right;">637</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Dal 1946 al 1960</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">53</td>
+<td style="text-align: right;">83</td>
+<td style="text-align: right;">441</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Dal 1961 al 1970</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">214</td>
+<td style="text-align: right;">650</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Dal 1971 al 1980</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">392</td>
+<td style="text-align: right;">685</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Dal 1981 al 1990</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">190</td>
+<td style="text-align: right;">1585</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Dal 1991 al 2000</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">176</td>
+<td style="text-align: right;">1018</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Dal 2001 al 2010</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">104</td>
+<td style="text-align: right;">868</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Dopo il 2010</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">43</td>
+<td style="text-align: right;">195</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ND</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">469</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Prima del 1919</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">78</td>
+<td style="text-align: right;">226</td>
+<td style="text-align: right;">993</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">256</td>
+<td style="text-align: right;">9294</td>
+<td style="text-align: right;">11510</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+<p>È un esempio di base, in cui è evidente come è possibile <strong>combinare</strong> <strong>dati</strong> <strong>geografici</strong> e <strong>non</strong>, in modo molto semplice e veloce, anche da <strong>fonti</strong> <strong>remote</strong> da raggiungere in <code>HTTP</code>.</p>
+<p>Nel contesto “spaziale” può essere utile creare un file in formato geografico, da usare su un sistema GIS.<br> Ad esempio per creare un file in <a href="https://github.com/flatgeobuf/flatgeobuf">formato <code>FlatGeobuf</code></a>, progettato per memorizzare dati geografici in modo efficiente e compatto, si può usare una sintassi simile a quella vista sopra:</p>
+<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">duckdb</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-c</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"COPY (</span></span>
+<span id="cb10-2"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  SELECT</span></span>
+<span id="cb10-3"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    *,</span></span>
+<span id="cb10-4"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    ST_POINT(longitudine, latitudine) geom</span></span>
+<span id="cb10-5"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  FROM</span></span>
+<span id="cb10-6"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    'beni_immobili_pubblici.parquet'</span></span>
+<span id="cb10-7"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  WHERE</span></span>
+<span id="cb10-8"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    longitudine IS NOT NULL</span></span>
+<span id="cb10-9"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    OR latitudine IS NOT NULL</span></span>
+<span id="cb10-10"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">) TO 'output.fgb' WITH (FORMAT GDAL, DRIVER 'FlatGeobuf', SRS 'EPSG:4326')"</span></span></code></pre></div>
+<p>Il formato <code>parquet</code> ha anche la sua versione geografica, il <a href="https://geoparquet.org/"><code>GeoParquet</code></a>, molto compresso e molto veloce da interrogare. Per crearlo non si può ancora usare <code>duckdb</code>, ma si può usare il comando <a href="https://gdal.org/en/latest/programs/ogr2ogr.html"><code>ogr2ogr</code></a> di <code>GDAL</code>:</p>
+<div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">ogr2ogr</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-f</span> parquet <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-lco</span> COMPRESSION=ZSTD beni_immobili_pubblici_geo.parquet output.fgb</span></code></pre></div>
+<p>Il file GeoParquet è <a href="https://github.com/aborruso/beni_immobili_pubblica_amministrazione/raw/main/data/beni_immobili_pubblici_geo.parquet?download=">disponibile qui</a>, pesa soltanto 80 MB, ed è visualizzabile con <a href="https://www.qgis.org/"><code>QGIS</code></a> e altre applicazioni GIS.</p>
+<div id="fig-qgis" class="lightbox quarto-float quarto-figure quarto-figure-center anchored" alt="File GeoParquet visualizzato in QGIS">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-qgis-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="qgis.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Figura&nbsp;3: File GeoParquet visualizzato in QGIS"><img src="https://aborruso.github.io/posts/beni_immobili_pubblica_amministrazione/qgis.png" class="img-fluid figure-img" alt="File GeoParquet visualizzato in QGIS"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-qgis-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;3: File <code>GeoParquet</code> visualizzato in QGIS
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="alcune-considerazioni-sui-dati" class="level2">
+<h2 class="anchored" data-anchor-id="alcune-considerazioni-sui-dati">Alcune considerazioni sui dati</h2>
+<p>È possibile <strong>combinare</strong> <strong>rapidamente</strong> e <strong>facilmente</strong> <strong>questi file</strong> per <strong>creare</strong> una <strong>base di dati efficiente</strong> e pronta per l’<strong>analisi</strong> e le <strong>interrogazioni</strong>. Questo avviene non solo grazie a strumenti come DuckDB, ma anche perché i file di <em>input</em> condividono uno schema unico, che permette di unire i file <code>CSV</code> senza difficoltà.</p>
+<p>E come scritto nelle conclusioni di un <a href="../../posts/duckdb-intro-csv/index.html#in-conclusione">“famoso” articolo</a>:</p>
+<blockquote class="blockquote">
+<p>Con le dovute precauzioni, con gli <strong>strumenti giusti</strong>, con un corredo informativo adeguato e per dimensioni non eccessive, (il CSV) può essere un formato comodo e pratico. <a href="https://aborruso.github.io/posts/duckdb-intro-csv/#descrivere-i-csv"><strong>Descrivendolo</strong></a>, <a href="https://aborruso.github.io/posts/duckdb-intro-csv/#csv-standard">“<strong>standardizzandolo</strong>”</a> e <a href="https://aborruso.github.io/posts/duckdb-intro-csv/#compressione-dei-file-csv"><strong>comprimendolo</strong></a>, diventa molto più usabile.</p>
+</blockquote>
+<p>A proposito di “descrizione”, il Dipartimento dell’Economia pubblica un file <a href="https://www.de.mef.gov.it/export/sites/sitodt/modules/documenti_it/attivo_patrimonio/2019/Dizionario_Immobili_2019.pdf" title="PDF, 200 Kb">dizionario</a>, uno schema, ma soltanto in formato <code>PDF</code>. Quindi non è possibile creare una procedura automatica di importazione dei dati, in cui sono ad esempio impostati correttamente i tipi di campo (testuali, numerici, ecc.).</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+📌 Importante
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La <strong>pubblicazione</strong> non si dovrebbe limitare a rendere disponibile dei file, ma essere <strong>accompagnata da una descrizione del file stesso</strong>, leggibile dalle persone e <strong>dalle applicazioni</strong>.</p>
+</div>
+</div>
+<p>Sui CSV sarebbe ideale:</p>
+<ul>
+<li><strong>documentare</strong> qual è l’<strong><em>encoding</em></strong> dei caratteri;</li>
+<li>avere come <em>encoding</em> l’<code>UTF-8</code>;</li>
+<li>evitare l’utilizzo di spazi, virgolette o altri caratteri speciali nei <strong>nomi dei campi</strong>;</li>
+<li><strong>dichiarare</strong> quali sono i <strong>separatori</strong> di <strong>campo</strong> e dei <strong>decimali</strong>;</li>
+<li><strong>pubblicarli</strong> anche <strong>non separati</strong> in 30 file, ma in unico file compresso <code>gzip</code>.</li>
+</ul>
+<p>Questi preziosi dati inoltre <strong>non</strong> sono ancora <strong>disponibili</strong> anche nel <a href="https://www.dati.gov.it/"><strong>portale</strong> <strong>nazionale</strong> dei <strong>dati</strong> aperti</a>. Ed è un peccato in termini di valorizzazione e diffusione degli stessi. Questo è anche un <a href="https://ondata.github.io/linee-guida-opendata/capitolo-7.html#req-29"><strong>requisito</strong></a> previsto dalle linee guida nazionali sui dati aperti.</p>
+<p>Interrogando la banca dati si ha evidenza di alcuni bene con <strong>coordinate geografiche</strong> <strong>incoerenti</strong> con gli <strong>attributi territoriali</strong> dichiarati in altri campi. Ad esempio il bene con <code>id_bene=2442321</code>, ha coordinate YX <code>37.926914</code> e <code>15.28337</code>, ovvero in provincia di Messina; ma nel campo <code>comune_del_bene</code> il valore è “Frascati”.</p>
+<p>Infine un’ultima nota su un <strong>formato</strong> <strong>aggiuntivo</strong> di <strong>pubblicazione</strong>: il tante volte nominato formato <strong><code>Parquet</code></strong>.<br> È diventato uno dei formati standard per consentire a chiunque di fare <strong>analisi</strong> <strong>rapide</strong> ed <strong>efficienti</strong>, anche su <strong>grandi</strong> <strong>quantità</strong> di <strong>dati</strong>, quasi su <strong>qualsiasi</strong> <strong>PC</strong>. E sarebbe ideale <strong>pubblicare la banca dati degli immobili pubblici in formato <code>Parquet</code></strong>.<br> Un buon esempio da emulare è quello di <strong>OpenCoesione</strong> - uno dei portali di dati aperti più importanti in Italia - che da febbraio 2024 pubblica anche in <a href="https://opencoesione.gov.it/it/news/opendata-rilasciati-dataset-formato-parquet/">questo formato</a>.</p>
+
+
+<div class="ojs-auto-generated hidden">
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6WyAgeyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiaW5saW5lIjoidHJ1ZSIsInNvdXJjZSI6Imh0bC5odG1sYDxzcGFuPiR7cl9pdGF9PC9zcGFuPmAiLCAiY2VsbE5hbWUiOiJvanMtZWxlbWVudC1pZC0xIn0sICB7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJpbmxpbmUiOiJ0cnVlIiwic291cmNlIjoiaHRsLmh0bWxgPHNwYW4+JHtjfTwvc3Bhbj5gIiwgImNlbGxOYW1lIjoib2pzLWVsZW1lbnQtaWQtMiJ9LCAgeyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiaW5saW5lIjoidHJ1ZSIsInNvdXJjZSI6Imh0bC5odG1sYDxzcGFuPiR7Y2VsbGV9PC9zcGFuPmAiLCAiY2VsbE5hbWUiOiJvanMtZWxlbWVudC1pZC0zIn0sICB7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJpbmxpbmUiOiJ0cnVlIiwic291cmNlIjoiaHRsLmh0bWxgPHNwYW4+JHtjZWxsZX08L3NwYW4+YCIsICJjZWxsTmFtZSI6Im9qcy1lbGVtZW50LWlkLTQifV19
+</script>
+</div>
+</section>
+
+<a onclick="window.scrollTo(0, 0); return false;" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Torna in cima</a> ]]></description>
+  <category>duckdb</category>
+  <category>open-data</category>
+  <category>cli</category>
+  <category>parquet</category>
+  <guid>https://aborruso.github.io/posts/beni_immobili_pubblica_amministrazione/</guid>
+  <pubDate>Sun, 01 Sep 2024 22:00:00 GMT</pubDate>
+  <media:content url="https://aborruso.github.io/posts/beni_immobili_pubblica_amministrazione/heat_map.png" medium="image" type="image/png" height="85" width="144"/>
+</item>
 <item>
   <title>I suggerimenti dell’intelligenza artificiale per la riga di comando</title>
   <dc:creator>Andrea Borruso</dc:creator>
@@ -64,7 +831,6 @@ Nota
 </item>
 <item>
   <title>Come leggere un file Parquet</title>
-  <dc:creator>Andrea Borruso</dc:creator>
   <dc:creator>Andrea Borruso</dc:creator>
   <dc:creator>Davide Taibi</dc:creator>
   <link>https://aborruso.github.io/posts/leggere-interrogare-file-parquet/</link>
@@ -126,14 +892,13 @@ font-style: inherit;"> mario.rossi@email.com,laura.bianchi@email.com,...</span><
 <p>Abbiamo sottolineato come il <strong>formato <code>Parquet</code></strong> sia molto <strong>più efficiente</strong> per l’accesso e l’analisi dei dati, rispetto al <strong><code>CSV</code></strong>.<br> Questa caratteristica è molto evidente, soprattutto per tabelle molto grandi, come questa dei <strong>progetti</strong> di <a href="https://opencoesione.gov.it/it/opendata/#!progetti_section"><strong>OpenCoesione</strong></a>, composta da circa <code>2.000.000 di righe x 200 colonne</code>.</p>
 <p>È possibile ad esempio interrogarla, per avere restituito il <strong>totale di finanziamento pubblico</strong> per ogni <strong>ciclo di finanziamento</strong> (vedi Tabella&nbsp;1), e avere la risposta <strong>in 0,07 secondi</strong>.</p>
 <div class="cell" data-execution_count="2">
-<div id="tbl-cicli" class="cell quarto-float anchored" data-execution_count="2">
+<div id="tbl-cicli" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="2">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-cicli-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Tabella&nbsp;1: totale di finanziamento pubblico per ciclo di finanziamento
 </figcaption>
 <div aria-describedby="tbl-cicli-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-display" data-execution_count="2">
-<div>
 <style type="text/css">
 #T_07539 th.col1 {
   text-align: right;
@@ -143,7 +908,7 @@ Tabella&nbsp;1: totale di finanziamento pubblico per ciclo di finanziamento
 }
 </style>
 
-<table id="T_07539" class="do-not-create-environment cell table table-sm table-striped small" data-quarto-postprocess="true">
+<table id="T_07539" class="do-not-create-environment cell caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
 <th id="T_07539_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Ciclo</th>
@@ -171,7 +936,6 @@ Tabella&nbsp;1: totale di finanziamento pubblico per ciclo di finanziamento
 </table>
 </div>
 </div>
-</div>
 </figure>
 </div>
 </div>
@@ -197,10 +961,10 @@ Nota bene
 <h3 class="anchored" data-anchor-id="al-doppio-click">Al doppio click</h3>
 <p>Per visualizzare un file Parquet con un semplice doppio click, puoi usare <a href="https://www.tadviewer.com/"><strong>Tad</strong></a>, un visualizzatore di file Parquet (e anche <code>CSV</code>, <a href="https://www.sqlite.org"><code>SQLite</code></a> e <a href="http://duckdb.org/"><code>DuckDB</code></a>) <em>open source</em>, gratuito e disponibile per Windows, Mac e Linux.</p>
 <p>Una volta installato, basterà fare doppio click sul file per aprirlo e visualizzarne il contenuto (vedi Figura&nbsp;1). Questo di OpenCoesione è un file grande e sarà necessario qualche secondo.</p>
-<div id="fig-tad" class="lightbox quarto-figure quarto-figure-center quarto-float anchored" alt="esempio di visualizzazione e filtro dati con Tad">
+<div id="fig-tad" class="lightbox quarto-float quarto-figure quarto-figure-center anchored" alt="esempio di visualizzazione e filtro dati con Tad">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-tad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="images/tad_02.png" class="lightbox" data-glightbox="description: .lightbox-desc-1" data-gallery="quarto-lightbox-gallery-1"><img src="https://aborruso.github.io/posts/leggere-interrogare-file-parquet/images/tad_02.png" class="img-fluid figure-img" alt="esempio di visualizzazione e filtro dati con Tad"></a>
+<a href="images/tad_02.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figura&nbsp;1: esempio di visualizzazione e filtro dati con TAD"><img src="https://aborruso.github.io/posts/leggere-interrogare-file-parquet/images/tad_02.png" class="img-fluid figure-img" alt="esempio di visualizzazione e filtro dati con Tad"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;1: esempio di visualizzazione e filtro dati con <a href="https://www.tadviewer.com/">TAD</a>
@@ -224,7 +988,7 @@ Figura&nbsp;1: esempio di visualizzazione e filtro dati con <a href="https://www
 <li>lanciarla, aprire il menu <code>Database</code> e selezionare <code>New Database Connection</code>;</li>
 <li>cercare <code>DuckDB</code>, selezionarlo e fare click su <code>Next</code>;</li>
 </ul>
-<div id="fig-dbeaver" class="quarto-figure quarto-figure-center quarto-float anchored" alt="DBeaver - selezionare DuckDB come database">
+<div id="fig-dbeaver" class="quarto-float quarto-figure quarto-figure-center anchored" alt="DBeaver - selezionare DuckDB come database">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-dbeaver-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://aborruso.github.io/posts/leggere-interrogare-file-parquet/images/dbeaver_01.png" class="img-fluid figure-img" alt="DBeaver - selezionare DuckDB come database">
@@ -237,7 +1001,7 @@ Figura&nbsp;2: DBeaver - selezionare DuckDB come database
 <ul>
 <li>impostare <code>:memory:</code> come <code>Path</code>;</li>
 </ul>
-<div id="fig-dbeaver" class="quarto-figure quarto-figure-center quarto-float anchored" alt="DBeaver - impostazione path DuckDB">
+<div id="fig-dbeaver" class="quarto-float quarto-figure quarto-figure-center anchored" alt="DBeaver - impostazione path DuckDB">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-dbeaver-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://aborruso.github.io/posts/leggere-interrogare-file-parquet/images/dbeaver_02.png" class="img-fluid figure-img" alt="DBeaver - impostazione path DuckDB">
@@ -251,10 +1015,10 @@ Figura&nbsp;3: DBeaver - impostazione path DuckDB
 <li>fare click su <code>Test Connection</code>, che verificherà la necessità di installare eventuali componenti mancanti. Se manca qualcosa, installarla facendo click su <code>Download</code>.</li>
 </ul>
 <p>A questo punto, nel riquadro di sinistra “<em>Database Navigator</em>” dovrebbe apparire una connessione al database DuckDB <code>memory</code>.</p>
-<div id="fig-dbeaver" class="lightbox quarto-figure quarto-figure-center quarto-float anchored" alt="DBeaver - riquadro Database">
+<div id="fig-dbeaver" class="lightbox quarto-float quarto-figure quarto-figure-center anchored" alt="DBeaver - riquadro Database">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-dbeaver-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="images/dbeaver_04.png" class="lightbox" data-glightbox="description: .lightbox-desc-2" data-gallery="quarto-lightbox-gallery-2"><img src="https://aborruso.github.io/posts/leggere-interrogare-file-parquet/images/dbeaver_04.png" class="img-fluid figure-img" alt="DBeaver - riquadro Database"></a>
+<a href="images/dbeaver_04.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Figura&nbsp;4: DBeaver - riquadro Database"><img src="https://aborruso.github.io/posts/leggere-interrogare-file-parquet/images/dbeaver_04.png" class="img-fluid figure-img" alt="DBeaver - riquadro Database"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dbeaver-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;4: DBeaver - riquadro Database
@@ -264,16 +1028,19 @@ Figura&nbsp;4: DBeaver - riquadro Database
 <p>Per lanciare una <em>query</em> non ti resta che fare <em>click</em> con il pulsante destro del <em>mouse</em> su <code>memory</code>, selezionare <code>SQL Editor</code>, poi <code>New SQL script</code> e scrivere la tua prima <em>query</em>, per leggere ad esempio le prime 5 righe del file <code>Parquet</code>:</p>
 <div class="sourceCode" id="annotated-cell-3" style="background: #f1f3f5;"><pre class="sourceCode sql code-annotation-code code-with-copy code-annotated"><code class="sourceCode sql"><span id="annotated-cell-3-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">SELECT</span>  <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">*</span></span>
 <a class="code-annotation-anchor" data-target-cell="annotated-cell-3" data-target-annotation="1" onclick="event.preventDefault();">1</a><span id="annotated-cell-3-2" class="code-annotation-target"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">FROM</span> <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">"c:\tmp\progetti_esteso_20230831.parquet"</span></span>
 <span id="annotated-cell-3-3"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">LIMIT</span> <span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">5</span></span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div>
@@ -283,10 +1050,10 @@ font-style: inherit;">5</span></span><div class="code-annotation-gutter-bg"></di
 <span data-code-cell="annotated-cell-3" data-code-lines="2" data-code-annotation="1">Per puntare al file, è stato inserito il percorso del file Parquet.</span>
 </dd>
 </dl>
-<div id="fig-dbeaver" class="lightbox quarto-figure quarto-figure-center quarto-float anchored" alt="DBeaver - la prima query">
+<div id="fig-dbeaver" class="lightbox quarto-float quarto-figure quarto-figure-center anchored" alt="DBeaver - la prima query">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-dbeaver-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="images/dbeaver_05.png" class="lightbox" data-glightbox="description: .lightbox-desc-3" data-gallery="quarto-lightbox-gallery-3"><img src="https://aborruso.github.io/posts/leggere-interrogare-file-parquet/images/dbeaver_05.png" class="img-fluid figure-img" alt="DBeaver - la prima query"></a>
+<a href="images/dbeaver_05.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Figura&nbsp;5: DBeaver - la prima query"><img src="https://aborruso.github.io/posts/leggere-interrogare-file-parquet/images/dbeaver_05.png" class="img-fluid figure-img" alt="DBeaver - la prima query"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dbeaver-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;5: DBeaver - la prima query
@@ -296,6 +1063,7 @@ Figura&nbsp;5: DBeaver - la prima query
 <p>La <em>query</em> di esempio di sopra, con i dati per ciclo di finanziamento di Tabella&nbsp;1, è invece il risultato di questa <em>query</em>, che puoi provare a lanciare in DBeaver:</p>
 <div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">SELECT</span> oc_descr_ciclo Ciclo, <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">SUM</span>(finanz_totale_pubblico) <span class="ot" style="color: #003B4F;
@@ -303,18 +1071,23 @@ background-color: null;
 font-style: inherit;">"Totale finanziamento pubblico (€)"</span></span>
 <span id="cb3-2"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">FROM</span> <span class="ot" style="color: #003B4F;
 background-color: null;
 font-style: inherit;">"C\tmp\progetti_esteso_20230831.parquet"</span></span>
 <span id="cb3-3"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">GROUP</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">BY</span> oc_descr_ciclo</span>
 <span id="cb3-4"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">ORDER</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">BY</span> ciclo;</span></code></pre></div>
 </section>
 <section id="a-riga-di-comando-con-duckdb" class="level3">
@@ -325,17 +1098,19 @@ font-style: inherit;">BY</span> ciclo;</span></code></pre></div>
 <p>Potrebbe essere diversa dalle precedenti, come quella <strong>comodissima</strong> per avere un <strong>riepilogo rapido</strong> dei <strong>dati</strong>, basata sul comando <a href="https://duckdb.org/docs/guides/meta/summarize.html"><code>SUMMARIZE</code></a> di DuckDB: restituisce per ogni campo, il tipo di campo e una ricca serie di calcoli, il numero di valori distinti, la percentuali di valori nulli, il minimo, il massimo, la media, ecc..<br> Qui sotto la sintassi della <em>query</em> e un esempio di <em>output</em> in Figura&nbsp;6.</p>
 <div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb4-1">SUMMARIZE <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">select</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">*</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">from</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'progetti_esteso_20231231.parquet'</span>;</span></code></pre></div>
-<div id="fig-duckdb" class="lightbox quarto-figure quarto-figure-center quarto-float anchored" alt="Esempio di output del comando SUMMARIZE">
+<div id="fig-duckdb" class="lightbox quarto-float quarto-figure quarto-figure-center anchored" alt="Esempio di output del comando SUMMARIZE">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-duckdb-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="images/duckdb-summarize.png" class="lightbox" data-glightbox="description: .lightbox-desc-4" data-gallery="quarto-lightbox-gallery-4"><img src="https://aborruso.github.io/posts/leggere-interrogare-file-parquet/images/duckdb-summarize.png" class="img-fluid figure-img" alt="Esempio di output del comando SUMMARIZE"></a>
+<a href="images/duckdb-summarize.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Figura&nbsp;6: Esempio di output del comando SUMMARIZE"><img src="https://aborruso.github.io/posts/leggere-interrogare-file-parquet/images/duckdb-summarize.png" class="img-fluid figure-img" alt="Esempio di output del comando SUMMARIZE"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-duckdb-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;6: Esempio di <em>output</em> del comando <code>SUMMARIZE</code>
@@ -345,21 +1120,26 @@ Figura&nbsp;6: Esempio di <em>output</em> del comando <code>SUMMARIZE</code>
 <p>È un comando di grande comodità, che si può usare ad esempio per sapere <strong>quali</strong> sono le <strong>colonne</strong> che hanno <strong>meno del 10% di valori nulli</strong>:</p>
 <div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">SELECT</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">*</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">FROM</span> (summarize <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">select</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">*</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">from</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'progetti_esteso_20231231.parquet'</span>)</span>
 <span id="cb5-2"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">WHERE</span></span>
 <span id="cb5-3">null_percentage <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -370,21 +1150,26 @@ font-style: inherit;">10</span>;</span></code></pre></div>
 <p>E sempre da <code>SUMMARIZE</code> ci si può fare un’idea delle colonne più “datose”, ovvero quelle con <strong>meno valori distinti</strong>, che sono spesso quelle più interessanti per fare analisi e visualizzazioni, perché consentono di definire categorie (le regioni, il settore, la natura, ecc.).</p>
 <div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb6-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">SELECT</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">*</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">FROM</span> (summarize <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">select</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">*</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">from</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'progetti_esteso_20231231.parquet'</span>)</span>
 <span id="cb6-2"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">WHERE</span></span>
 <span id="cb6-3">approx_unique <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -409,7 +1194,7 @@ Nota
 <h3 class="anchored" data-anchor-id="a-riga-di-comando-con-visidata">A riga di comando con VisiData</h3>
 <p><a href="https://ondata.github.io/guidaVisiData/"><strong>VisiData</strong></a> è “il coltellino svizzero per i dati, che probabilmente non conosci”. E proprio con il formato Parquet se ne ha un’idea.</p>
 <p>Basta scrivere <code>vd nome_file.parquet</code> e premere <kbd>INVIO</kbd>, per aprire il file e iniziare a esplorarlo, filtrarlo, analizzarlo, ecc..<br> Con il file di OpenCoesione ci mette qualche secondo, perché è un file grande, ma poi si può iniziare a esplorarlo e ad esempio avere restituito il totale di finanziamento pubblico per regione.</p>
-<div id="fig-visidata" class="quarto-figure quarto-figure-center quarto-float anchored" alt="VisiData - esplorare un file Parquet">
+<div id="fig-visidata" class="quarto-float quarto-figure quarto-figure-center anchored" alt="VisiData - esplorare un file Parquet">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-visidata-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://aborruso.github.io/posts/leggere-interrogare-file-parquet/images/visidata.png" class="img-fluid figure-img" alt="VisiData - esplorare un file Parquet">
@@ -503,10 +1288,12 @@ background-color: null;
 font-style: inherit;">=</span> {</span>
 <span id="cb9-2">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">const</span> data <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">await</span> db<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
@@ -525,6 +1312,7 @@ background-color: null;
 font-style: inherit;">  ORDER BY Conteggio DESC`</span>)</span>
 <span id="cb9-6">  <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> Inputs<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
@@ -573,6 +1361,7 @@ font-style: inherit;">typed</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">:</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">true</span> })</span>
 <span id="cb10-283">Inputs<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -608,10 +1397,12 @@ background-color: null;
 font-style: inherit;">=</span> {</span>
 <span id="cb11-2">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">const</span> data <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">await</span> db<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
@@ -636,10 +1427,12 @@ background-color: null;
 font-style: inherit;">// Definisci una funzione di formattazione per il locale "it-IT"</span></span>
 <span id="cb11-8">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">const</span> formatter <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">new</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">Intl</span><span class="op" style="color: #5E5E5E;
@@ -661,6 +1454,7 @@ background-color: null;
 font-style: inherit;">// Crea il grafico a barre utilizzando Plot con formattazione personalizzata</span></span>
 <span id="cb11-11">  <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> Plot<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
@@ -743,6 +1537,7 @@ font-style: inherit;">legend</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">:</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">true</span></span>
 <span id="cb11-20">    }<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -815,10 +1610,12 @@ background-color: null;
 font-style: inherit;">// Definisci una funzione di formattazione per il locale "it-IT"</span></span>
 <span id="cb12-330">  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">const</span> formatter <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">new</span> <span class="bu" style="color: null;
 background-color: null;
 font-style: inherit;">Intl</span><span class="op" style="color: #5E5E5E;
@@ -840,6 +1637,7 @@ background-color: null;
 font-style: inherit;">// Crea il grafico a barre utilizzando Plot con formattazione personalizzata</span></span>
 <span id="cb12-333">  <span class="cf" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">return</span> Plot<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">.</span><span class="fu" style="color: #4758AB;
@@ -922,6 +1720,7 @@ font-style: inherit;">legend</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">:</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">true</span></span>
 <span id="cb12-342">    }<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -998,7 +1797,6 @@ font-style: inherit;">;</span></span>
 <p>Non avremmo mai immaginato che la <a href="../../posts/duckdb-intro-csv/index.html"><strong>scrittura di questo altro post</strong></a> avrebbe contribuito a generare questa bella conseguenza. E per questo gli autori del post e tutta l’<strong>associazione onData</strong> ringraziano OpenCoesione e il suo <em>staff</em> per essere stati prima in ascolto e poi protagonisti di questa scelta.</p>
 
 
-
 </section>
 
 <a onclick="window.scrollTo(0, 0); return false;" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Torna in cima</a> ]]></description>
@@ -1011,7 +1809,6 @@ font-style: inherit;">;</span></span>
 </item>
 <item>
   <title>Lavorare con grandi file CSV compressi</title>
-  <dc:creator>Andrea Borruso</dc:creator>
   <dc:creator>Andrea Borruso</dc:creator>
   <dc:creator>Matteo Fortini</dc:creator>
   <link>https://aborruso.github.io/posts/csv-ventitre-gigabyte-senza-affanno/</link>
@@ -1036,7 +1833,7 @@ Nota successiva alla pubblicazione
 </div>
 <p>Da pochissimo, dal 14 febbraio 2024, è andato online il <a href="https://www.opencup.gov.it/"><strong>nuovo portale OpenCUP</strong></a>.</p>
 <p>OpenCUP mette a disposizione di tutti - cittadini, istituzioni ed altri enti - i dati, in formato aperto, sulle <strong>decisioni di investimento pubblico</strong> finanziate con fondi pubblici nazionali, comunitarie o regionali o con risorse private registrate con il Codice Unico di Progetto.</p>
-<div id="fig-opencup" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-opencup" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-opencup-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <a href="https://www.opencup.gov.it/"><img src="https://aborruso.github.io/posts/csv-ventitre-gigabyte-senza-affanno/opencup.png" class="img-fluid figure-img"></a>
@@ -1073,6 +1870,7 @@ font-style: inherit;">-p</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"OpenData Complessivo.zip"</span>  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">awk</span> <span class="st" style="color: #20794D;
@@ -1096,6 +1894,7 @@ font-style: inherit;">-p</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"OpenData Complessivo.zip"</span>  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">head</span></span></code></pre></div>
@@ -1104,10 +1903,10 @@ font-style: inherit;">head</span></span></code></pre></div>
 <li>i nomi dei campi;</li>
 <li>il separatore è il <code>|</code></li>
 </ul>
-<div id="fig-head" class="lightbox quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-head" class="lightbox quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-head-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="immagini/head.png" class="lightbox" data-glightbox="description: .lightbox-desc-1" data-gallery="quarto-lightbox-gallery-1"><img src="https://aborruso.github.io/posts/csv-ventitre-gigabyte-senza-affanno/immagini/head.png" class="img-fluid figure-img"></a>
+<a href="immagini/head.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figura&nbsp;2: Le prime righe del file con i progetti"><img src="https://aborruso.github.io/posts/csv-ventitre-gigabyte-senza-affanno/immagini/head.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-head-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;2: Le prime righe del file con i progetti
@@ -1126,6 +1925,7 @@ font-style: inherit;">-p</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"OpenData Complessivo.zip"</span>  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">head</span> <span class="at" style="color: #657422;
@@ -1134,10 +1934,10 @@ font-style: inherit;">-n</span> 10000 <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">&gt;</span> campione.csv</span></code></pre></div>
 <p>E questo nuovo file sarà esplorabile con <strong>foglio elettronico</strong> o con altri strumenti. A me ad esempio piace usare <a href="https://ondata.github.io/guidaVisiData/"><strong>VisiData</strong></a> per queste cose, con cui di solito subito osservo un po’ di dati sui campi (i valori nulli, i valori distinti, ecc.).</p>
-<div id="fig-vd" class="lightbox quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-vd" class="lightbox quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-vd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="immagini/vd.png" class="lightbox" data-glightbox="description: .lightbox-desc-2" data-gallery="quarto-lightbox-gallery-2"><img src="https://aborruso.github.io/posts/csv-ventitre-gigabyte-senza-affanno/immagini/vd.png" class="img-fluid figure-img"></a>
+<a href="immagini/vd.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Figura&nbsp;3: Esplorazione dei dati campione con VisiData"><img src="https://aborruso.github.io/posts/csv-ventitre-gigabyte-senza-affanno/immagini/vd.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-vd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;3: Esplorazione dei dati campione con VisiData
@@ -1170,6 +1970,7 @@ font-style: inherit;">-p</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"OpenData Complessivo.zip"</span>  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">grep</span> <span class="at" style="color: #657422;
@@ -1189,6 +1990,7 @@ font-style: inherit;">-p</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"OpenData Complessivo.zip"</span>  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">\</span></span>
@@ -1215,6 +2017,7 @@ font-style: inherit;">-p</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"OpenData Complessivo.zip"</span>  <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">\</span></span>
@@ -1226,6 +2029,7 @@ font-style: inherit;">-P</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'(ANNO_DECISIONE|\|REGIONE AUTONOMA DELLA SICILIA\|)'</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">\</span></span>
@@ -1364,7 +2168,7 @@ font-style: inherit;">sys</span> 0m0,043s</span></code></pre></div>
     Thread(s) per core:  2
     Core(s) per socket:  10</code></pre>
 <p>Questa la tabella riassuntiva dei tempi di esecuzione:</p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 63%">
 <col style="width: 36%">
@@ -1420,7 +2224,6 @@ font-style: inherit;">"SET preserve_insertion_order=false;COPY(SELECT * FROM rea
 <p>Ma sono dati grandi, e in produzione bisognerà andare un po’ oltre l’utilizzo delle eccezionali <em>utility</em> a riga di comando. In ogni caso <strong>DuckDB</strong>, se <strong>usato bene</strong>, fa già tanta tanta roba (partizionando il dataset originario in più file <code>parquet</code>, si ha disposizione tutto il dataset con una grandissima facilità di accesso e lettura).</p>
 
 
-
 </section>
 
 
@@ -1436,6 +2239,16 @@ font-style: inherit;">"SET preserve_insertion_order=false;COPY(SELECT * FROM rea
   <guid>https://aborruso.github.io/posts/csv-ventitre-gigabyte-senza-affanno/</guid>
   <pubDate>Wed, 14 Feb 2024 23:00:00 GMT</pubDate>
   <media:content url="https://aborruso.github.io/posts/csv-ventitre-gigabyte-senza-affanno/opencup.png" medium="image" type="image/png" height="106" width="144"/>
+</item>
+<item>
+  <title></title>
+  <dc:creator>Andrea Borruso</dc:creator>
+  <link>https://aborruso.github.io/posts/dot-cartogram/</link>
+  <description><![CDATA[ undefined ]]></description>
+  <category>observable</category>
+  <category>javascript</category>
+  <guid>https://aborruso.github.io/posts/dot-cartogram/</guid>
+  <pubDate>Fri, 02 Feb 2024 23:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Usare la nuova intelligenza artificiale di Google</title>
@@ -1872,6 +2685,7 @@ font-style: inherit;">-d</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'{"contents": [{"parts":[{"text": "Creami tre nomi buffi per un gatto siamese con le orecchie molto grandi"}]}]}'</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">\</span></span>
@@ -1948,6 +2762,7 @@ font-style: inherit;">echo</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'Dieci nomi per un blog che parla della riga di comando'</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">llm</span> <span class="at" style="color: #657422;
@@ -2076,7 +2891,7 @@ font-style: inherit;">llm</span> chat <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">-m</span> gemini-pro</span></code></pre></div>
 <p>Una volta attivato, si potrà attivare il dialogo in modalità <em>chat</em> (vedi Figura&nbsp;1).</p>
-<div id="fig-llm-chat" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-llm-chat" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-llm-chat-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://aborruso.github.io/posts/accedere-google-ai-riga-di-comando/images/linux_date.gif" class="img-fluid figure-img">
@@ -2199,6 +3014,7 @@ Ambiente di lavoro utilizzato
 background-color: null;
 font-style: inherit;">zcat</span> PNRR_Progetti-Universo_REGIS_v2.1.csv.gz <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">head</span> <span class="at" style="color: #657422;
@@ -2208,7 +3024,7 @@ font-style: inherit;">-n</span> 5</span></code></pre></div>
 <div class="no-row-height column-margin column-container"><div class="">
 <p><code>head</code> estrae le prime 5 righe.</p>
 </div></div><p>Mi verrà restituito l’<em>output</em> di Lista&nbsp;1, e potrò constatare che c’è una <strong>riga di intestazione</strong> (non è obbligatoria nei <code>CSV</code>), che il <strong>separatore di campo</strong> è il <code>;</code>, che il <strong>separatore dei decimali</strong> è la <code>,</code> e soprattutto farmi un’idea dei contenuti.</p>
-<div id="lst-zcat-head" class="markdown listing quarto-float">
+<div id="lst-zcat-head" class="markdown listing quarto-float quarto-figure quarto-figure-left anchored">
 <figure class="quarto-float quarto-float-lst figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-zcat-head-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Lista&nbsp;1: Prime righe del file
@@ -2247,14 +3063,14 @@ font-style: inherit;">\</span></span>
 background-color: null;
 font-style: inherit;">-a</span> count,null_count,distinct_count PNRR_Progetti-Universo_REGIS_v2.1.csv.gz</span></code></pre></div>
 <p>In output avrò:</p>
-<div id="tbl-mlr-output" class="striped responsive small quarto-float anchored">
+<div id="tbl-mlr-output" class="striped responsive small quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-mlr-output-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Tabella&nbsp;1: <em>Output</em> di <code>summary</code> di Miller
 </figcaption>
 <div aria-describedby="tbl-mlr-output-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="table-responsive">
-<table class="table-striped small table-sm table">
+<table class="table-striped small table-sm caption-top table">
 <thead>
 <tr class="header">
 <th>field_name</th>
@@ -2336,7 +3152,7 @@ Informazioni utili
 
 <div class="no-row-height column-margin column-container"><div class="">
 <p><code>delim</code> e <code>header</code> sono riconosciuti automaticamente da DuckDB. Sono inseriti a scopo didattico.</p>
-</div></div><div id="lst-query-duckdb" class="bash listing quarto-float">
+</div></div><div id="lst-query-duckdb" class="bash listing quarto-float quarto-figure quarto-figure-left anchored">
 <figure class="quarto-float quarto-float-lst figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-query-duckdb-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Lista&nbsp;2: Query SQL tramite DuckDB su un CSV compresso
@@ -2405,7 +3221,7 @@ Il vantaggio di un CSV standard
 </div>
 <p>In output, in mezzo secondo (di fatto, non per dire “in breve tempo”), queste righe di output (per un CSV di circa 200.000 righe per 50 colonne, che è pure compresso):</p>
 <div class="table-responsive">
-<table class="table-striped small table-sm table">
+<table class="table-striped small table-sm caption-top table">
 <caption><em>Output</em> della <em>query</em> SQL</caption>
 <thead>
 <tr class="header">
@@ -2455,7 +3271,7 @@ Il vantaggio di un CSV standard
 </ul>
 <p>L’<em>utility</em> a riga di comando per gestire i file <code>ZSTD</code> si chiama <code>zstd</code> e si può installare in (quasi) tutti i sistemi operativi. Un’applicazione <em>open source</em>, multipiattaforma, con interfaccia grafica, che supporta questa compressione è <a href="https://peazip.github.io/index.html">PeaZip</a>.<br> Molte applicazioni e librerie <em>software</em> di accesso ai dati, come DuckDB, <a href="https://arrow.apache.org/">Apache Arrow</a> e <a href="https://spark.apache.org/">Apache Spark</a>, lo supportano nativamente.</p>
 <p>In DuckDB, si può leggere un file <code>CSV</code> compresso in formato <code>ZSTD</code>, semplicemente puntando ad esso (l’estensione <code>.zst</code> fa in modo che venga interpretato come file compresso in formato <code>ZSTD</code>):</p>
-<div id="lst-select-count" class="bash listing quarto-float">
+<div id="lst-select-count" class="bash listing quarto-float quarto-figure quarto-figure-left anchored">
 <figure class="quarto-float quarto-float-lst figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-select-count-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Lista&nbsp;3: Esempio di conteggio delle righe
@@ -2519,6 +3335,7 @@ File di esempio
 background-color: null;
 font-style: inherit;">zstdcat</span> PNRR_Progetti-Universo_REGIS_v2.1.csv.zst <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">head</span> <span class="at" style="color: #657422;
@@ -2529,6 +3346,7 @@ font-style: inherit;">-n</span> 5</span></code></pre></div>
 background-color: null;
 font-style: inherit;">zstdcat</span> PNRR_Progetti-Universo_REGIS_v2.1.csv.zst <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">\</span></span>
@@ -2683,6 +3501,7 @@ font-style: inherit;">types={'OC_COD_ARTICOLAZ_PROGRAMMA':'VARCHAR','FINANZ_UE':
 background-color: null;
 font-style: inherit;">)) TO 'progetti_esteso_20230430_standard.csv.gz' (HEADER, timestampformat '%Y-%m-%d');"</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span>  <span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">duckdb</span></span></code></pre></div>
@@ -2738,8 +3557,10 @@ Schema <code>SQL</code> tabella progetti di OpenCoesione
 <div class="callout-body-container callout-body">
 <div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode sql code-overflow-wrap code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">CREATE</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">TABLE</span> progetti(COD_LOCALE_PROGETTO <span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">VARCHAR</span>, CUP <span class="dt" style="color: #AD0000;
@@ -3144,14 +3965,14 @@ font-style: inherit;">INTEGER</span>);</span></code></pre></div>
 <section id="formato-colonnare" class="level3">
 <h3 class="anchored" data-anchor-id="formato-colonnare">Formato colonnare</h3>
 <p>In molti dei formati tabellari più noti e comuni, i dati sono archiviati come sequenze di righe. Avviene per i <code>CSV</code>, ma anche per importanti database relazionali come <code>PostgreSQL</code> e <code>MySQL</code>.</p>
-<div id="tbl-parquet_colonne_start" class="striped responsive small quarto-float anchored">
+<div id="tbl-parquet_colonne_start" class="striped responsive small quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-parquet_colonne_start-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Tabella&nbsp;2: Tabella dati di esempio
 </figcaption>
 <div aria-describedby="tbl-parquet_colonne_start-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="table-responsive">
-<table class="table-striped small table-sm table">
+<table class="table-striped small table-sm caption-top table">
 <thead>
 <tr class="header">
 <th>Pizza</th>
@@ -3218,7 +4039,7 @@ Tabella&nbsp;2: Tabella dati di esempio
 <li>quante vendite sono state fatte il 2 gennaio 2023?</li>
 </ul>
 <p>Per rispondere a queste domande, un motore di “tabelle” basato su righe, dovrà leggere tutte le righe della tabella, dall’inizio alla fine. Per sapere quanti utenti che vengono dalla Sicilia hanno ordinato una pizza Parmigiana, si dovrà scorrere la tabella come in Figura&nbsp;1.</p>
-<div id="fig-row-based" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-row-based" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-row-based-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://aborruso.github.io/posts/duckdb-intro-csv/images/row-based.png" class="img-fluid figure-img" style="width:100.0%">
@@ -3230,7 +4051,7 @@ Figura&nbsp;1: Flusso lettura dati, in archivi basati su righe
 </div>
 <p>Basterebbe leggere soltanto i valori delle colonne <code>Pizza</code> e <code>Regione</code>, ma in uno schema di archiviazione basato su righe vengono lette anche le altre colonne.</p>
 <p>Per rispondere a questa <em>query</em> è molto più efficiente un’<strong>archiviazione a colonne</strong>.<br> In questo caso, ogni colonna è un’entità, il che significa che ogni colonna è fisicamente separata dalle altre. <br> Tornando alla nostra precedente domanda: in uno schema a colonne il motore di analisi può leggere soltanto le colonne necessarie per la <em>query</em> (<code>Pizza</code> e <code>Regione</code>). E, nella maggior parte dei casi, questo migliorerà le prestazioni delle <em>query</em> analitiche.</p>
-<table class="striped-table small table-sm table">
+<table class="striped-table small table-sm caption-top table">
 <thead>
 <tr class="header">
 <th>Pizza</th>
@@ -3286,7 +4107,7 @@ Figura&nbsp;1: Flusso lettura dati, in archivi basati su righe
 </tbody>
 </table>
 <p>Il formato <code>Parquet</code> è proprio un <strong>formato</strong> di <strong>archiviazione</strong> a <strong>colonne</strong>, anzi è più correttamente un formato di archiviazione <strong>a colonne</strong>, <strong>per gruppi di righe</strong>.<br></p>
-<div id="fig-row-groups" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-row-groups" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-row-groups-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://aborruso.github.io/posts/duckdb-intro-csv/images/row-groups.png" class="img-fluid figure-img" style="width:100.0%">
@@ -3298,7 +4119,7 @@ Figura&nbsp;2: Struttura a colonne per gruppi di righe
 </div>
 <p>Le colonne sono memorizzate sempre come unità separate, ma Parquet introduce delle strutture aggiuntive chiamate “<strong><em>Row group</em></strong>” (vedi Figura&nbsp;2).</p>
 <p>Perché sono un vantaggio? Nella <em>query</em> di esempio di sopra, non solo bastano due colonne, ma il <code>Gruppo 2</code> di righe è inutile (non c’è la “Parmigiana”).<br> Con questa struttura a gruppi di righe (qui semplificata per fini didattici) sarà possibile non tenere conto del “Gruppo 2” e la <em>query</em> sarà più rapida.</p>
-<div id="fig-row-groups-skip" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-row-groups-skip" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-row-groups-skip-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://aborruso.github.io/posts/duckdb-intro-csv/images/row-groups-skip.png" class="img-fluid figure-img" style="width:100.0%">
@@ -3377,6 +4198,7 @@ font-style: inherit;">types={'OC_COD_ARTICOLAZ_PROGRAMMA':'VARCHAR','FINANZ_UE':
 background-color: null;
 font-style: inherit;">)) TO 'progetti_esteso_20230430.parquet' (FORMAT 'PARQUET', CODEC 'ZSTD');"</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span>  <span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">duckdb</span></span></code></pre></div>
@@ -3416,14 +4238,14 @@ font-style: inherit;">ORDER BY finanziamento_pnrr desc;</span></span>
 background-color: null;
 font-style: inherit;">'</span></span></code></pre></div>
 <p>E in circa 1 secondo (al primo lancio e in molto meno dal secondo in poi) ottengo:</p>
-<div id="tbl-parquet-api" class="striped responsive small quarto-float anchored">
+<div id="tbl-parquet-api" class="striped responsive small quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-parquet-api-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Tabella&nbsp;3: Output della <em>query</em>
 </figcaption>
 <div aria-describedby="tbl-parquet-api-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="table-responsive">
-<table class="table-striped small table-sm table">
+<table class="table-striped small table-sm caption-top table">
 <colgroup>
 <col style="width: 27%">
 <col style="width: 36%">
@@ -3474,7 +4296,7 @@ Tabella&nbsp;3: Output della <em>query</em>
 </figure>
 </div>
 <p>E posso farlo anche da una <a href="https://shell.duckdb.org/">pagina web</a> che includa DuckDb come <em>WebAssembly</em> (vedi Figura&nbsp;4).</p>
-<div id="fig-duckdb-wasm" class="quarto-figure quarto-figure-center quarto-float anchored" width="100%">
+<div id="fig-duckdb-wasm" class="quarto-float quarto-figure quarto-figure-center anchored" width="100%">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-duckdb-wasm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <a href="https://shell.duckdb.org/"><img src="https://aborruso.github.io/posts/duckdb-intro-csv/images/ddb-wasm.png" class="img-fluid figure-img" style="width:100.0%"></a>
@@ -3504,7 +4326,7 @@ Non è la soluzione definitiva
 <p>In contesti applicativi in cui le <em>performance</em>, lo spazio di archiviazione, le modalità di accesso sono parametri da tenere in alta considerazione, è già molto usato.<br> Un esempio per tutti è quello dei dataset di <a href="https://huggingface.co/datasets">Hugging Face</a>.</p>
 <p>I dati aperti globali sugli edifici del progetto <a href="https://github.com/microsoft/GlobalMLBuildingFootprints/">GlobalMLBuildingFootprints</a> (1.2 miliardi di edifici), sono in formato parquet, nella sua estensione spaziale.<br> Anche i dataset geografici del progetto <a href="https://overturemaps.org/download/">Overture Maps Foundation</a>, sono in formato parquet.<br> I dati aperti sulle <a href="https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page">corse di taxi e veicoli con conducente di New York</a>, sono anch’essi in questo formato.</p>
 <p>L’ultimo esempio, per chiudere in bellezza, è quello dell’impareggiabile <a href="https://www.data.gouv.fr/"><strong>portale Open Data della Francia</strong></a>.<br> Pubblica un dataset in formato <code>parquet</code>, sono disponibili gli URL statici dei file, ed è possibile fare <em>query</em> in modo comodissimo, come se fossero disponibili delle API.<br> Ad esempio posso interrogare il <a href="https://www.data.gouv.fr/fr/datasets/bureaux-de-vote-et-adresses-de-leurs-electeurs/">file da 470 MB degli indirizzi</a>, di 15 milioni di righe, per avere il numero di indirizzi per comune con questa semplicità (vedi Lista&nbsp;4):</p>
-<div id="lst-query-francia" class="bash listing quarto-float">
+<div id="lst-query-francia" class="bash listing quarto-float quarto-figure quarto-figure-left anchored">
 <figure class="quarto-float quarto-float-lst figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-query-francia-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Lista&nbsp;4: Esempio di <em>query</em> da <em>shell</em>
@@ -3536,7 +4358,7 @@ font-style: inherit;">'</span></span></code></pre></div>
 </figure>
 </div>
 <p>E in pochi secondi si ha restituito il risultato (vedi Figura&nbsp;5).</p>
-<div id="fig-portale-opendata-francia" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-portale-opendata-francia" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-portale-opendata-francia-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://aborruso.github.io/posts/duckdb-intro-csv/images/portale-opendata-francia.png" class="img-fluid figure-img" style="width:100.0%">
@@ -3574,7 +4396,7 @@ Figura&nbsp;5: Output da shell
 <li>vengono restituite le istruzioni per l’installazione.</li>
 </ol>
 <p>E in pochissimo tempo si è pronti all’uso.</p>
-<div id="fig-duckdb-install" class="quarto-figure quarto-figure-center quarto-float anchored" width="100%">
+<div id="fig-duckdb-install" class="quarto-float quarto-figure quarto-figure-center anchored" width="100%">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-duckdb-install-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <a href="https://duckdb.org/docs/installation/index"><img src="https://aborruso.github.io/posts/duckdb-intro-csv/images/duckdb_install.png" class="img-fluid figure-img" style="width:100.0%"></a>
@@ -3672,30 +4494,37 @@ font-style: inherit;">) test;'</span></span><div class="code-annotation-gutter-b
 <p>Se ho una tabella con 199 colonne, come quella dei progetti di OpenCoesione, e voglio selezionarle tutte tranne due, dovrei scrivere per esteso le 196 che voglio. Qui posso usare <code>EXCLUDE</code> e scrivere soltanto le due che non voglio:</p>
 <div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode sql code-overflow-wrap code-with-copy"><code class="sourceCode sql"><span id="cb11-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">SELECT</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">*</span> EXCLUDE (codice_progetto, codice_progetto_originale) <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">FROM</span> progetti;</span></code></pre></div>
 <p>Lo stesso avviene nel comune <code>SQL</code>, quando devo applicare delle modifiche soltanto a una parte dei campi di una tabella. Qui ho <code>REPLACE</code>:</p>
 <div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode sql code-overflow-wrap code-with-copy"><code class="sourceCode sql"><span id="cb12-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">SELECT</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">*</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">REPLACE</span> (FINANZ_TOTALE_PUBBLICO<span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">100</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">AS</span> FINANZ_NORM) <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">FROM</span> miatabella;</span></code></pre></div>
 <p>Ma il <code>SQL</code> “speciale” di DuckDB che mi ha fatto più piacere usare è il <code>GROUP BY ALL</code>. Normalmente, infatti specificare le colonne sia nella clausola <code>SELECT</code> che nella clausola <code>GROUP BY</code>. Qui, con <code>GROUP BY ALL</code>, il raggruppamento viene fatto per tutte le colonne nella clausola SELECT che non sono incluse in una funzione di aggregazione.</p>
 <div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode sql code-overflow-wrap code-with-copy"><code class="sourceCode sql"><span id="cb13-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">SELECT</span> missione,regione, <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">COUNT</span>(<span class="op" style="color: #5E5E5E;
@@ -3703,19 +4532,24 @@ background-color: null;
 font-style: inherit;">*</span>) numero_progetti</span>
 <span id="cb13-2"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">FROM</span> progetti</span>
 <span id="cb13-3"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">GROUP</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">BY</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">ALL</span></span></code></pre></div>
 <p>E in modo simile funziona l’<code>ORDER BY ALL</code>.</p>
 <p>In molti dialetti <code>SQL</code>, non è possibile utilizzare un alias definito nella clausola <code>SELECT</code> in nessun altro punto, tranne che nella clausola <code>ORDER BY</code> di quella stessa <em>query</em>. Questo spesso porta a lunghe <em>subquery</em>.<br>In DuckDB, un alias non di aggregazione nella clausola <code>SELECT</code> può essere immediatamente utilizzato nelle clausole <code>WHERE</code> e <code>GROUP BY</code>, mentre gli alias di aggregazione possono essere utilizzati nella clausola <code>HAVING</code>. Nessuna <em>subquery</em> necessaria!</p>
 <p>È possibile fare lo <em>slicing</em> delle stringhe in modo simile ai linguaggi di scripting, senza necessariamente usare <code>SUBSTRING</code>:</p>
 <div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode sql code-overflow-wrap code-with-copy"><code class="sourceCode sql"><span id="cb14-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">SELECT</span> <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'Quanto è bello DuckDB'</span>[:<span class="op" style="color: #5E5E5E;
@@ -3724,6 +4558,7 @@ font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">7</span>] <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">as</span> slice;</span></code></pre></div>
 <div class="sourceCode" id="cb15" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb15-1">┌────────────────┐</span>
 <span id="cb15-2">│     slice      │</span>
@@ -3737,10 +4572,12 @@ font-style: inherit;">as</span> slice;</span></code></pre></div>
 <p>Con l’estensione <code>sqlite</code>, legge un in modo diretto un <em>database</em> <code>sqlite</code>:<br></p>
 <div class="sourceCode" id="cb16" style="background: #f1f3f5;"><pre class="sourceCode sql code-overflow-wrap code-with-copy"><code class="sourceCode sql"><span id="cb16-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">SELECT</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">*</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">FROM</span> sqlite_scan(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'test.db'</span>, <span class="st" style="color: #20794D;
@@ -3749,14 +4586,17 @@ font-style: inherit;">'tbl_name'</span>);</span></code></pre></div>
 <p>Con l’estensione spaziale legge file in formato <code>EXCEL</code>:</p>
 <div class="sourceCode" id="cb17" style="background: #f1f3f5;"><pre class="sourceCode sql code-overflow-wrap code-with-copy"><code class="sourceCode sql"><span id="cb17-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">SELECT</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">*</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">FROM</span> st_read(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">'test_excel.xlsx'</span>, <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">layer</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span><span class="st" style="color: #20794D;
@@ -3768,10 +4608,12 @@ background-color: null;
 font-style: inherit;">-- usando la stringa di connessione vuota, di default</span></span>
 <span id="cb18-2"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">SELECT</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">*</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">FROM</span> postgres_scan(<span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">''</span>, <span class="st" style="color: #20794D;
@@ -3966,6 +4808,7 @@ font-style: inherit;">unzip</span> <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">-p</span> progetti_esteso_20230430.zip <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">head</span></span></code></pre></div>
@@ -3978,7 +4821,7 @@ font-style: inherit;">head</span></span></code></pre></div>
 <p>Con qualche sforzo in più di scorrimento a schermo, riesco a vedere che il separatore dei decimali è la <code>,</code> e che i campi con le date sono in un formato che sembra un numero intero, ma in realtà è <code>YYYYMMDD</code> (<code>23 agosto 2021</code> è espresso come <code>20210823</code>).</p>
 <p>Modificando un po’ il comando di sopra, con <code>unzip -p progetti_esteso_20230430.zip | wc -l</code>, leggo che il file è composto da 1.936.840 righe.</p>
 <p>Fatta questa prima esplorazione grezza, di solito voglio “guardare” in modo più “comodo” la tabella dei dati. Potrei salvare le prime 10 righe in un file, aggiungendo al comando di sopra <code>&gt; prime_dieci_righe.csv</code>, e infine aprirlo con un foglio elettronico; io preferisco usare lo <a href="https://ondata.github.io/guidaVisiData/">straordinario <strong>VisiData</strong></a> per farlo.<br> Con <code>unzip -p progetti_esteso_20230430.zip | head | vd -f csv --csv-delimiter=";"</code> ad esempio visualizzo le 10 righe di <em>output</em> e tutte le colonne (constatando che sono 199), ma soprattutto mi faccio una prima idea dei contenuti.</p>
-<div id="fig-duckdb-preview-vd" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-duckdb-preview-vd" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-duckdb-preview-vd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://aborruso.github.io/posts/duckdb-intro-csv/images/visidata_explore.png" class="img-fluid figure-img">
@@ -3995,10 +4838,12 @@ font-style: inherit;">unzip</span> <span class="at" style="color: #657422;
 background-color: null;
 font-style: inherit;">-p</span> progetti_esteso_20230430.zip <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">head</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="dt" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">\</span></span>
@@ -4020,6 +4865,7 @@ font-style: inherit;">select * from read_csv_auto("/dev/stdin");</span></span>
 background-color: null;
 font-style: inherit;">'</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">less</span> <span class="at" style="color: #657422;
@@ -4040,7 +4886,7 @@ font-style: inherit;">-S</span></span><div class="code-annotation-gutter-bg"></d
 </dd>
 </dl>
 <p>A schermo ho un’anteprima leggibile e navigabile, come questa di Figura&nbsp;8.</p>
-<div id="fig-duckdb-preview-box" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-duckdb-preview-box" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-duckdb-preview-box-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://aborruso.github.io/posts/duckdb-intro-csv/images/duckdb-preview-box.gif" class="img-fluid figure-img">
@@ -4066,7 +4912,7 @@ font-style: inherit;">SELECT * from read_csv_auto("progetti_esteso_20230430.csv.
 background-color: null;
 font-style: inherit;">'</span></span></code></pre></div>
 <p>In output ho un’anteprima ben leggibile a schermo, in cui vedo 10 righe, alcuni dei campi e il loro tipo e il numero di colonne.</p>
-<div id="fig-duckdb-standard-output" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-duckdb-standard-output" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-duckdb-standard-output-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="https://aborruso.github.io/posts/duckdb-intro-csv/images/duck-standard-output.png" class="img-fluid figure-img">
@@ -4093,6 +4939,7 @@ font-style: inherit;">SELECT * from read_csv_auto("progetti_esteso_20230430.csv.
 background-color: null;
 font-style: inherit;">'</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">|</span> <span class="ex" style="color: null;
 background-color: null;
 font-style: inherit;">vd</span> <span class="at" style="color: #657422;
@@ -4110,14 +4957,14 @@ font-style: inherit;">-f</span> csv</span></code></pre></div>
 <li>conteggio dei valori.</li>
 </ul>
 <p>Qui sotto in Tabella&nbsp;4 un esempio di output per alcune delle colonne del dataset di OpenCoesione.<br> È una tabella di gran valore, perché consente di fare delle prime scelte di analisi e di trasformazione dei dati e avere restituito degli elementi di qualità dei dati.</p>
-<div id="tbl-summarize-output" class="striped responsive small quarto-float anchored">
+<div id="tbl-summarize-output" class="striped responsive small quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-summarize-output-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Tabella&nbsp;4: <em>Output</em> di esempio di SUMMARIZE
 </figcaption>
 <div aria-describedby="tbl-summarize-output-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="table-responsive">
-<table class="table-striped small table-sm table">
+<table class="table-striped small table-sm caption-top table">
 <colgroup>
 <col style="width: 6%">
 <col style="width: 6%">
@@ -4349,14 +5196,14 @@ font-style: inherit;">&gt;</span>summarize.csv</span></code></pre></div>
 </div>
 </div>
 <p>Con questi dati di sintesi emerge ad esempio che circa 36 campi hanno almeno il 90% dei <strong>valori nulli</strong>.<br> O che in alcuni campi con le <strong>date</strong> ci sono <strong>valori</strong> (di minimo o di massimo) <strong>strani</strong> e probabilmente errati, come quelli in Tabella&nbsp;5.</p>
-<div id="tbl-strange-date" class="striped responsive small quarto-float anchored">
+<div id="tbl-strange-date" class="striped responsive small quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-strange-date-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Tabella&nbsp;5: Campi con valori di date “strani”
 </figcaption>
 <div aria-describedby="tbl-strange-date-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="table-responsive">
-<table class="table-striped small table-sm table">
+<table class="table-striped small table-sm caption-top table">
 <thead>
 <tr class="header">
 <th>column_name</th>
@@ -4433,7 +5280,7 @@ Tabella&nbsp;5: Campi con valori di date “strani”
 </div>
 <p>Ma soprattutto è possibile constatare quali siano <strong>i campi “categorici”</strong>, quelli con un <strong>numero limitato di valori univoci</strong>, che possono essere usati per raggruppare e aggregare i dati e fare emergere elementi interessanti.</p>
 <p>Tra i campi categorici <code>OC_MACROAREA</code>, che definisce le macroaree geografiche italiane. E per sapere ad esempio qual è il finanziamento pubblico totale per ciascuna, si può usare la query <code>SQL</code>:</p>
-<div id="lst-query-macroarea" class="sql listing quarto-float">
+<div id="lst-query-macroarea" class="sql listing quarto-float quarto-figure quarto-figure-left anchored">
 <figure class="quarto-float quarto-float-lst figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-query-macroarea-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Lista&nbsp;5: Query SQL: totale dei finanziamenti pubblici per macroaree
@@ -4441,6 +5288,7 @@ Lista&nbsp;5: Query SQL: totale dei finanziamenti pubblici per macroaree
 <div aria-describedby="lst-query-macroarea-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="sourceCode" id="lst-query-macroarea" style="background: #f1f3f5;"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="lst-query-macroarea-1"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">SELECT</span> OC_MACROAREA,</span>
 <span id="lst-query-macroarea-2"><span class="fu" style="color: #4758AB;
 background-color: null;
@@ -4448,32 +5296,37 @@ font-style: inherit;">CAST</span>(<span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">SUM</span>(FINANZ_TOTALE_PUBBLICO) <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">AS</span> BIGINT) FINANZ_TOTALE_PUBBLICO</span>
 <span id="lst-query-macroarea-3"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">GROUP</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">BY</span> OC_MACROAREA</span>
 <span id="lst-query-macroarea-4"><span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">ORDER</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">BY</span> FINANZ_TOTALE_PUBBLICO <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">DESC</span></span></code></pre></div>
 </div>
 </figure>
 </div>
 <p>Restituirà qualcosa come in Tabella&nbsp;6.</p>
 <div class="cell" data-execution_count="2">
-<div id="tbl-aree-sum" class="cell quarto-float anchored" data-execution_count="2">
+<div id="tbl-aree-sum" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="2">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-aree-sum-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Tabella&nbsp;6: Finanziamento pubblico per macro aree
 </figcaption>
 <div aria-describedby="tbl-aree-sum-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-display" data-execution_count="2">
-<div>
 <style type="text/css">
 #T_474f4 th:nth-child(1) {
   text-align: left;
@@ -4490,7 +5343,7 @@ Tabella&nbsp;6: Finanziamento pubblico per macro aree
 </style>
 
 <div class="table-responsive">
-<table id="T_474f4" class="table-bordered table-striped small do-not-create-environment cell table table-sm" data-quarto-postprocess="true">
+<table id="T_474f4" class="table-bordered table-striped small do-not-create-environment cell caption-top table table-sm" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
 <th id="T_474f4_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Macro area</th>
@@ -4523,7 +5376,6 @@ Tabella&nbsp;6: Finanziamento pubblico per macro aree
 </div>
 </div>
 </div>
-</div>
 </figure>
 </div>
 </div>
@@ -4544,6 +5396,7 @@ font-style: inherit;">typed</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">:</span> <span class="kw" style="color: #003B4F;
 background-color: null;
+font-weight: bold;
 font-style: inherit;">true</span> })</span>
 <span id="cb30-990">Inputs<span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -4682,6 +5535,57 @@ Chi ha parlato di questo articolo
   <guid>https://aborruso.github.io/posts/duckdb-intro-csv/</guid>
   <pubDate>Sun, 20 Aug 2023 22:00:00 GMT</pubDate>
   <media:content url="https://aborruso.github.io/posts/duckdb-intro-csv/atutorial.png" medium="image" type="image/png" height="97" width="144"/>
+</item>
+<item>
+  <title></title>
+  <dc:creator>Andrea Borruso</dc:creator>
+  <link>https://aborruso.github.io/posts/duckdb-fuzzy-maledetti-comuni/</link>
+  <description><![CDATA[ undefined ]]></description>
+  <category>duckdb</category>
+  <category>fuzzy</category>
+  <guid>https://aborruso.github.io/posts/duckdb-fuzzy-maledetti-comuni/</guid>
+  <pubDate>Sat, 29 Jul 2023 22:00:00 GMT</pubDate>
+</item>
+<item>
+  <title></title>
+  <dc:creator>Andrea Borruso</dc:creator>
+  <link>https://aborruso.github.io/posts/duckdb_csv_etl_tool/</link>
+  <description><![CDATA[ undefined ]]></description>
+  <category>duckdb</category>
+  <category>csv</category>
+  <category>etl</category>
+  <guid>https://aborruso.github.io/posts/duckdb_csv_etl_tool/</guid>
+  <pubDate>Sat, 29 Jul 2023 22:00:00 GMT</pubDate>
+</item>
+<item>
+  <title></title>
+  <dc:creator>Andrea Borruso</dc:creator>
+  <link>https://aborruso.github.io/posts/eurostat-api/</link>
+  <description><![CDATA[ undefined ]]></description>
+  <category>duckdb</category>
+  <category>spatial</category>
+  <guid>https://aborruso.github.io/posts/eurostat-api/</guid>
+  <pubDate>Sat, 29 Jul 2023 22:00:00 GMT</pubDate>
+</item>
+<item>
+  <title></title>
+  <dc:creator>Andrea Borruso</dc:creator>
+  <link>https://aborruso.github.io/posts/incidenti-palermo/</link>
+  <description><![CDATA[ undefined ]]></description>
+  <category>duckdb</category>
+  <category>spatial</category>
+  <guid>https://aborruso.github.io/posts/incidenti-palermo/</guid>
+  <pubDate>Sat, 29 Jul 2023 22:00:00 GMT</pubDate>
+</item>
+<item>
+  <title></title>
+  <dc:creator>Andrea Borruso</dc:creator>
+  <link>https://aborruso.github.io/posts/opencoesione-formato-parquet/</link>
+  <description><![CDATA[ undefined ]]></description>
+  <category>duckdb</category>
+  <category>parquet</category>
+  <guid>https://aborruso.github.io/posts/opencoesione-formato-parquet/</guid>
+  <pubDate>Sat, 29 Jul 2023 22:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>

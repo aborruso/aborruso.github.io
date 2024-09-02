@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="it" xml:lang="it" dir="ltr"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.56">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Andrea Borruso">
+<meta name="description" content="Un dataset “grosso”, comodo da gestire e interrogare con duckdb">
+
+<title>I (quasi) tre milioni di beni immobili della Pubblica Amministrazione – aborruso’s website</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../risorse/favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Nessun risultato",
+    "search-matching-documents-text": "documenti trovati",
+    "search-copy-link-title": "Copiare il link nella ricerca",
+    "search-hide-matches-text": "Nascondere i risultati aggiuntivi",
+    "search-more-match-text": "ci sono altri risultati in questo documento",
+    "search-more-matches-text": "ulteriori risultati in questo documento",
+    "search-clear-button-title": "Pulire",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancellare",
+    "search-submit-button-title": "Inviare",
+    "search-label": "Ricerca"
+  }
+}</script>
+<style>
+
+      .quarto-title-block .quarto-title-banner h1,
+      .quarto-title-block .quarto-title-banner h2,
+      .quarto-title-block .quarto-title-banner h3,
+      .quarto-title-block .quarto-title-banner h4,
+      .quarto-title-block .quarto-title-banner h5,
+      .quarto-title-block .quarto-title-banner h6
+      {
+        color: #ffffff;
+      }
+
+      .quarto-title-block .quarto-title-banner {
+        color: #ffffff;
+      }
+</style>
+<link rel="alternate" type="application/rss+xml" title="Il blog del sito di Andrea Borruso" href="https://aborruso.github.io/blog.xml">
+<script type="module" src="../../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="../../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="I (quasi) tre milioni di beni immobili della Pubblica Amministrazione – aborruso’s website">
+<meta property="og:description" content="Un dataset “grosso”, comodo da gestire e interrogare con duckdb">
+<meta property="og:image" content="https://aborruso.github.io/posts/beni_immobili_pubblica_amministrazione/heat_map.png">
+<meta property="og:site_name" content="aborruso's website">
+<meta property="og:locale" content="it_IT">
+<meta property="og:image:height" content="502">
+<meta property="og:image:width" content="852">
+<meta name="twitter:title" content="I (quasi) tre milioni di beni immobili della Pubblica Amministrazione – aborruso’s website">
+<meta name="twitter:description" content="Un dataset “grosso”, comodo da gestire e interrogare con duckdb">
+<meta name="twitter:image" content="https://aborruso.github.io/posts/beni_immobili_pubblica_amministrazione/heat_map.png">
+<meta name="twitter:creator" content="@aborruso">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image-height" content="502">
+<meta name="twitter:image-width" content="852">
+</head>
+
+<body class="floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+            <div id="quarto-search" class="" title="Ricerca"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Attiva/disattiva la navigazione" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../til.html"> 
+<span class="menu-text">TIL</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">I (quasi) tre milioni di beni immobili della Pubblica Amministrazione</h1>
+                  <div>
+        <div class="description">
+          Un dataset “grosso”, comodo da gestire e interrogare con duckdb
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">duckdb</div>
+                <div class="quarto-category">open-data</div>
+                <div class="quarto-category">cli</div>
+                <div class="quarto-category">parquet</div>
+              </div>
+                  </div>
+  </div>
+    
+  <div class="quarto-title-meta-author">
+    <div class="quarto-title-meta-heading">Autore/Autrice</div>
+    <div class="quarto-title-meta-heading">Affiliazione</div>
+    
+      <div class="quarto-title-meta-contents">
+      <p class="author"><a href="https://twitter.com/aborruso">Andrea Borruso</a> </p>
+    </div>
+    <div class="quarto-title-meta-contents">
+          <p class="affiliation">
+              <a href="https://ondata.it">
+              Associazione onData
+              </a>
+            </p>
+        </div>
+    </div>
+
+  <div class="quarto-title-meta">
+
+        
+      <div>
+      <div class="quarto-title-meta-heading">Data di Pubblicazione</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">2 settembre 2024</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">In questa pagina</h2>
+   
+  <ul>
+  <li><a href="#introduzione" id="toc-introduzione" class="nav-link active" data-scroll-target="#introduzione">Introduzione</a></li>
+  <li><a href="#scaricare-i-file" id="toc-scaricare-i-file" class="nav-link" data-scroll-target="#scaricare-i-file">Scaricare i file</a></li>
+  <li><a href="#elaborazione-dei-file-scaricati" id="toc-elaborazione-dei-file-scaricati" class="nav-link" data-scroll-target="#elaborazione-dei-file-scaricati">Elaborazione dei file scaricati</a></li>
+  <li><a href="#analisi-geografica-dei-dati" id="toc-analisi-geografica-dei-dati" class="nav-link" data-scroll-target="#analisi-geografica-dei-dati">Analisi geografica dei dati</a></li>
+  <li><a href="#alcune-considerazioni-sui-dati" id="toc-alcune-considerazioni-sui-dati" class="nav-link" data-scroll-target="#alcune-considerazioni-sui-dati">Alcune considerazioni sui dati</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/aborruso/aborruso.github.io/edit/main/posts/beni_immobili_pubblica_amministrazione/index.qmd" class="toc-action"><i class="bi bi-github"></i>Modifica questa pagina</a></li><li><a href="https://github.com/aborruso/aborruso.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Segnala un problema</a></li></ul></div></nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<section id="introduzione" class="level2">
+<h2 class="anchored" data-anchor-id="introduzione">Introduzione</h2>
+<p>L’<strong>ENEA</strong> - Agenzia nazionale per le nuove tecnologie, l’energia e lo sviluppo economico sostenibile - ha <a href="https://www.pubblicazioni.enea.it/le-pubblicazioni-enea/edizioni-enea/anno-2024/la-consistenza-del-parco-immobiliare-nazionale.html">pubblicato</a> a fine luglio del 2024 il rapporto “<strong><a href="https://www.pubblicazioni.enea.it/download.html?task=download.send&amp;id=698:la-consistenza-del-parco-immobiliare-nazionale&amp;catid=3">La consistenza del parco immobiliare nazionale</a></strong>”.<br> Per la parte relativa ai <strong>fabbricati di proprietà pubblica</strong> è stato realizzato con il contributo dei dati forniti dal Dipartimento dell’Economia (DE) – Direzione III Valorizzazione del patrimonio pubblico.</p>
+<p>Questo dipartimento infatti gestisce la <strong>banca dati degli immobili pubblici</strong>, alla quale è associata la pubblicazione dei dati aperti in formato <strong><code>CSV</code></strong>, con licenza <a href="https://creativecommons.org/licenses/by/4.0/deed.it">CC-BY 4.0</a>: <br><a href="https://www.de.mef.gov.it/it/attivita_istituzionali/patrimonio_pubblico/censimento_immobili_pubblici/open_data_immobili/dati_immobili_2019.html"><strong>Elenco dei beni immobili dichiarati dalle Amministrazioni Pubbliche</strong> per l’anno 2019, ai sensi dell’art. 2, comma 222, legge 23 dicembre 2009, n.&nbsp;191</a></p>
+<blockquote class="blockquote">
+<p>Per ciascuna Amministrazione sono riportate le seguenti informazioni sui beni immobili dichiarati: identificativo univoco del bene (unità immobiliare, u.i.), identificativi catastali (o codice bene nel caso di immobili non accatastati), titolo e quota di proprietà, localizzazione, tipologia immobiliare, dimensione (superficie/cubatura), epoca di costruzione, natura giuridica, vincolo culturale paesaggistico, appartenenza a un compendio, tipo di utilizzo e finalità, indicazione se l’unità immobiliare è data in uso a terzi, totalmente o in parte. Per beni non di proprietà, sono riportati: titolo di detenzione, superficie detenuta (se non si detiene l’intera u.i.), Amministrazione da cui si è ricevuto il bene (Amministrazione cedente). Le informazioni sulle detenzioni a favore di terzi, relative all’intera u.i. o ad una parte, sono contenute nel corrispondente file .csv Detenzioni a favore di terzi.</p>
+</blockquote>
+<p>“In considerazione dell’elevato numero di record” - circa <strong>2,8 milioni</strong> - il Dipartimento ha suddiviso la pubblicazione di questi dati in circa <strong>30 file <code>CSV</code> compressi</strong> (<code>zip</code>). Per fortuna tutti con <strong>un solo schema</strong>.</p>
+<p>In questo articolo voglio mostrare come <strong>metterli insieme</strong>, in modo da poter <strong>fare</strong> <strong>elaborazioni</strong> e <strong>sintesi</strong> come quelle dell’ENEA. Tenuti compressi, separati e in questo formato, non sono infatti molto comodi da gestire.<br> Ancora una volta <strong>duckdb</strong> è uno strumento può essere uno strumento utile per fare questo (si veda l’articolo “<a href="../../posts/duckdb-intro-csv/index.html">Gestire file CSV grandi, brutti e cattivi</a>”).</p>
+<p>Ancora volta una sarà l’occasione - lo farò in rappresentanza dell’associazione onData - di <strong>proporre</strong> al Dipartimento di <strong>pubblicare</strong> i <strong>dati</strong> anche in <strong>altre modalità</strong>. E magari andrà bene, così come è avvenuto con <a href="https://opencoesione.gov.it/it/news/opendata-rilasciati-dataset-formato-parquet/">OpenCoesione</a>.</p>
+<p>Prima di passare all’“azione”, una nota sulla sottostante <a href="#fig-heatmap" class="quarto-xref">Figura&nbsp;1</a>. È una mappa che rappresenta la densità degli immobili pubblici in Italia: è una cosiddetta <em>heatmap</em>, più scura dove c’è più densità di immobili.<br> Nella <strong><a href="https://xkcd.com/1138/">geniale vignetta di xkcd</a></strong>, si mostra come le <em>heatmap</em> siano inutili, perché sono essenzialmente mappe della popolazione: le “cose” esistono dove ci sono le persone.<br> Anche qui sotto è così, però ci sono degli stranamente dei colori tenui anche in alcune aree densamente popolate del Sud Italia. Ma è un’analisi che farà qualche altra persona.</p>
+<div id="fig-heatmap" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Heatmap della posizione degli immobili">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-heatmap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="heat_map.png" class="img-fluid figure-img" alt="Heatmap della posizione degli immobili">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-heatmap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;1: heatmap della posizione degli immobili
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="scaricare-i-file" class="level2">
+<h2 class="anchored" data-anchor-id="scaricare-i-file">Scaricare i file</h2>
+<p>L’ho fatto in blocco. Ho prima esplorato un po’ <a href="https://www.de.mef.gov.it/it/attivita_istituzionali/patrimonio_pubblico/censimento_immobili_pubblici/open_data_immobili/dati_immobili_2019.html">la pagina</a> e ho notato che tutti i file hanno un <code>URL</code> che inizia con la stringa <code>/modules</code> e termina per <code>.zip</code>. Allora ho iniziato dall’estrarre la lista di questi file, usando l’espressione regolare <code>/modules.+.zip</code>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="va">URL</span><span class="op">=</span><span class="st">"https://www.de.mef.gov.it/it/attivita_istituzionali/patrimonio_pubblico/censimento_immobili_pubblici/open_data_immobili/dati_immobili_2019.html"</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-s</span> <span class="at">-b</span> <span class="st">"</span><span class="va">$folder</span><span class="st">"</span>/tmp/cookies.txt <span class="at">-H</span> <span class="st">'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36'</span> <span class="st">"</span><span class="va">$URL</span><span class="st">"</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-P</span> <span class="at">-o</span> <span class="st">'/modules.+.zip'</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Nota
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>è necessario generare prima il file <code>cookies.txt</code> con il comando <code>curl -c "$folder"/tmp/cookies.txt "$URL"</code> e poi leggerlo;</li>
+<li><code>grep -P -o</code> è per usare le espressioni regolari Perl ed estrarre solo la parte che interessa;</li>
+<li><code>$folder</code> è la mia cartella di lavoro dello script;</li>
+</ul>
+</div>
+</div>
+<p>In output si ottiene (ne metto soltanto una piccola parte):</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>/modules/documenti_it/attivo_patrimonio/2019/open_data_imm/Imm_Camere_di_commercio_ed_Unioni_di_Camere_di_Commercio_2019.zip</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>/modules/documenti_it/attivo_patrimonio/2019/open_data_imm/Imm_Province_e_Citta_Metropolitane_2019.zip</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>/modules/documenti_it/attivo_patrimonio/2019/open_data_imm/Imm_Enti_Locali_del_Servizio_Sanitario_Nazionale_2019.zip</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>/modules/documenti_it/attivo_patrimonio/2019/open_data_imm/Imm_Amministrazioni_Regionali_2019.zip</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>/modules/documenti_it/attivo_patrimonio/2019/open_data_imm/Imm_Universita_2019.zip</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>/modules/documenti_it/attivo_patrimonio/2019/open_data_imm/Imm_Amministrazioni_Comunali_ABRUZZO_2019.zip</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>/modules/documenti_it/attivo_patrimonio/2019/open_data_imm/Imm_Amministrazioni_Comunali_BASILICATA_2019.zip</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Con la lista degli URL dei file disponibile, basta generare un <code>while loop</code> per scaricarli tutti (sempre con <code>curl</code> o <code>wget</code>).</p>
+</section>
+<section id="elaborazione-dei-file-scaricati" class="level2">
+<h2 class="anchored" data-anchor-id="elaborazione-dei-file-scaricati">Elaborazione dei file scaricati</h2>
+<p>A partire dalla lista dei file <code>zip</code> scaricati, ancora una volta si può generare un <code>while loop</code> per estrarli tutti in una cartella temporanea.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Avviso
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Facendolo è emerso un primo piccolo problema: uno dei file <code>zip</code> ha una struttura diversa: contiene il <code>CSV</code> in una sotto cartella. Quindi era necessario creare un processo di <em>unzip</em> automatico che non tenesse della eventuale struttura a cartelle presente.</p>
+</div>
+</div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> <span class="st">"</span><span class="va">$folder</span><span class="st">"</span>/../data/raw <span class="at">-type</span> f <span class="at">-name</span> <span class="st">"*.zip"</span> <span class="kw">|</span> <span class="cf">while</span> <span class="va">IFS</span><span class="op">=</span> <span class="bu">read</span> <span class="at">-r</span> <span class="va">file</span><span class="kw">;</span> <span class="cf">do</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">unzip</span> <span class="at">-j</span> <span class="st">"</span><span class="va">$file</span><span class="st">"</span> <span class="at">-d</span> <span class="st">"</span><span class="va">$folder</span><span class="st">"</span>/../data/raw</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">done</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Una volta estratti tutti i file e in presenza di uno schema dati comune, è molto semplice creare un unico file di output, usando <code>duckdb</code>.<br> Il comando di base è:</p>
+<div id="lst-duckdb-merge" class="listing quarto-float quarto-figure quarto-figure-left anchored">
+<figure class="quarto-float quarto-float-lst figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-duckdb-merge-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Lista&nbsp;1: esempio di unione di più file <code>CSV</code> a partire da una cartella che li contiene.
+</figcaption>
+<div aria-describedby="lst-duckdb-merge-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="sourceCode" id="lst-duckdb-merge"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="lst-duckdb-merge-1"><a href="#lst-duckdb-merge-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> <span class="at">--csv</span> <span class="at">-c</span> <span class="st">"SELECT * FROM read_csv_auto('</span><span class="va">$folder</span><span class="st">/../data/raw/*.csv')"</span> <span class="op">&gt;</span>output.csv</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</figure>
+</div>
+<p>Al primo tentativo però <code>duckdb</code> è andato in errore, per ragioni legate all’<em>encoding</em> dei caratteri dei file <code>CSV</code>, perché DuckDB <a href="https://duckdb.org/docs/data/csv/overview#limitations">supporta solo file <code>CSV</code> con <em>encoding</em> <code>UTF-8</code></a>.</p>
+<p>Ma <strong>qual</strong> è l’<strong><em>encoding</em></strong> dei file <code>CSV</code> dell’Elenco dei beni immobili dichiarati dalle Amministrazioni Pubbliche? Purtroppo sul sito del Dipartimento <strong>non c’è traccia di questa informazione</strong>.<br> Nelle <strong>linee guida open data</strong> dell’Agenzia per l’Italia Digitale (AgID) è <a href="https://ondata.github.io/linee-guida-opendata/allegato-B.html#formati-aperti">riportato</a>:</p>
+<blockquote class="blockquote">
+<p>è sempre necessario utilizzare una codifica standardizzata dei caratteri. In genere, UTF-8 è la codifica utilizzata nel web. È <strong>utile</strong>, in ogni caso, <strong>indicare</strong> qual è la <strong>codifica</strong> dei caratteri <strong>utilizzata</strong>.</p>
+</blockquote>
+<p>In assenza dell’informazione si può provare a estrarre l’<em>encoding</em> facendo inferenza dai dati. Io in questi casi uso l’ottimo <a href="https://github.com/chardet/chardet"><code>chardet</code></a>, che per questi file ha dato come risultato la codifica <a href="https://www.wikiwand.com/it/articles/Windows-1252"><code>Windows-1252</code></a>.</p>
+<p>Mappata la codifica di input li ho convertiti in <code>UTF-8</code> con <code>iconv</code>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">iconv</span> <span class="at">-f</span> Windows-1252 <span class="at">-t</span> UTF-8 input.csv <span class="op">&gt;</span>output.csv</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="sourceCode cell-code hidden" id="cb5" data-startfrom="122" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 121;"><span id="cb5-122"><a href="#cb5-122" aria-hidden="true" tabindex="-1"></a>r<span class="op">=</span><span class="dv">2830855</span></span>
+<span id="cb5-123"><a href="#cb5-123" aria-hidden="true" tabindex="-1"></a>r_ita<span class="op">=</span>r<span class="op">.</span><span class="fu">toLocaleString</span>(<span class="st">'it-IT'</span>)<span class="op">;</span></span>
+<span id="cb5-124"><a href="#cb5-124" aria-hidden="true" tabindex="-1"></a>c<span class="op">=</span><span class="dv">51</span></span>
+<span id="cb5-125"><a href="#cb5-125" aria-hidden="true" tabindex="-1"></a>c_ita<span class="op">=</span>c<span class="op">.</span><span class="fu">toLocaleString</span>(<span class="st">'it-IT'</span>)<span class="op">;</span></span>
+<span id="cb5-126"><a href="#cb5-126" aria-hidden="true" tabindex="-1"></a>celle<span class="op">=</span>(r<span class="op">*</span>c)<span class="op">.</span><span class="fu">toLocaleString</span>(<span class="st">'it-IT'</span>)<span class="op">;</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-4" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<div id="ojs-cell-1-5" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<p>Con la conversione di <em>encoding</em> fatta, si può lanciare il comando visibile in <a href="#lst-duckdb-merge" class="quarto-xref">Lista&nbsp;1</a> e ottenere il file <code>output.csv</code> con tutti i dati “uniti”.<br> Ma sono <span><span id="ojs-element-id-1"></span></span> righe per <span><span id="ojs-element-id-2"></span></span> colonne, ovvero <span><span id="ojs-element-id-3"></span></span> di celle ed è meglio <strong>comprimere</strong> l’<em>output</em>, così come <a href="../../posts/duckdb-intro-csv/index.html#compressione-dei-file-csv">consigliato qui</a>.</p>
+<p>Si può modificare il comando di <a href="#lst-duckdb-merge" class="quarto-xref">Lista&nbsp;1</a> in questo modo:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> <span class="at">-c</span> <span class="st">"COPY (SELECT * FROM read_csv_auto('</span><span class="va">$folder</span><span class="st">/../data/raw/*.csv'))</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="st">TO 'beni_immobili_pubblici.csv.gz'"</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In 20 secondi si ottiene un file <code>CSV</code> compresso di circa <strong>68</strong> MB. Non è un formato comodo per rapide elaborazioni, ma con gli strumenti giusti può sempre sorprendere.<br> Il <a href="https://duckdb.org/docs/guides/meta/summarize"><code>summarize</code></a> di duckdb viene eseguito ad esempio in <strong>2 secondi</strong>, con una comodissima sintesi su <strong><span><span id="ojs-element-id-4"></span></span></strong> di <strong>celle</strong>. Il file <code>csv.gz</code> di <em>output</em> è <a href="https://github.com/aborruso/beni_immobili_pubblica_amministrazione/raw/main/data/beni_immobili_pubblici.csv.gz?download=">disponibile qui</a>.</p>
+<div id="fig-summarize" class="lightbox quarto-float quarto-figure quarto-figure-center anchored" alt="Esempio di output del comando summarize di duckdb">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-summarize-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="summarize.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figura&nbsp;2: Esempio di output del comando summarize duckdb"><img src="summarize.png" class="img-fluid figure-img" alt="Esempio di output del comando summarize di duckdb"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-summarize-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2: Esempio di <em>output</em> del comando <code>summarize</code> duckdb
+</figcaption>
+</figure>
+</div>
+<p>Per altri tipi di <em>query</em>, i tempi sarebbero molto più lunghi.</p>
+<p>Se si vuole conciliare un’<strong>ottima compressione</strong>, con una <strong>grande</strong> <strong>velocità</strong> di interrogazione e <strong>analisi</strong> dei dati, si può scegliere come formato di output il <strong><a href="../../posts/duckdb-intro-csv/index.html#parquet"><code>Parquet</code></a></strong>.</p>
+<p>Il comando per creare un file in questo formato è molto simile a quello per il <code>CSV</code>:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> <span class="at">-c</span> <span class="st">"COPY (</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="st">  SELECT</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="st">    *</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="st">  FROM</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="st">    read_csv_auto('</span><span class="va">$folder</span><span class="st">/../data/raw/*.csv')</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="st">) TO 'beni_immobili_pubblici.parquet'</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="st">(</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="st">  FORMAT PARQUET,</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="st">  COMPRESSION 'zstd',</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="st">  ROW_GROUP_SIZE 100_000</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="st">)"</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In circa 25 secondi si ha in output un file <code>Parquet</code> di circa <strong>55</strong> MB, che si può interrogare molto rapidamente con tanti strumenti ed essenzialmente da tutti i linguaggi di programmazione; su questo Davide Taibi e io abbiamo scritto <a href="../../posts/leggere-interrogare-file-parquet/index.html">un articolo di approfondimento</a>.</p>
+<p>Creato il file <code>Parquet</code>, ho iniziato a fare le prime <em>query</em> e subito mi hanno dato fastidio tre cose:</p>
+<ol type="1">
+<li>i <strong>nomi</strong> delle <strong>colonne</strong> sono troppo <strong><em>human readable</em></strong>, con spazi, caratteri speciali e mescola di maiuscole e minuscole;</li>
+<li>alcuni <strong>campi numerici</strong>, come <code>superficie</code> e <code>cubatura</code> dei beni, sono <strong>definiti come stringhe</strong>;</li>
+<li>si <strong>perde</strong> la <strong>traccia</strong> dei <strong>file di origine</strong>.</li>
+</ol>
+<p>Per il punto <strong><code>1</code></strong>, c’è l’eccezionale <a href="https://duckdb.org/docs/data/csv/overview#parameters">parametro</a> <code>normalize_names</code>, che se impostato a <code>TRUE</code> converte i nome delle colonne in <code>snake_case</code>, con tutte le lettere minuscole, gli spazi sostituiti da <code>_</code> e con rimossi i caratteri speciali.</p>
+<p>Per il punto <strong><code>2</code></strong>, si possono forzare i tipi di campo (parametro <code>types</code>) e il separatore dei decimali (parametro <code>decimal_separator</code> che per questi <em>file</em> di <em>input</em> è la <code>,</code>).</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Nota bene
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Nella <a href="https://github.com/duckdb/duckdb/discussions/13295#discussioncomment-10251603">prossima versione</a> di duckdb, basterà dichiarare che il separatore decimale sia la virgola e <code>duckdb</code> sarà in grado di inferire correttamente i tipi campo <code>FLOAT</code>; non sarà più necessario dichiararlo esplicitamente per ognuno.</p>
+</div>
+</div>
+<p>Per il punto <strong><code>3</code></strong> si può usare il parametro <code>filename</code>, che se impostato a <code>TRUE</code> aggiunge una colonna con il nome del file di origine.</p>
+<p>Mettendo tutto insieme, il comando per creare un file <code>Parquet</code> diventa:</p>
+<div id="lst-duckdb-parquet" class="listing quarto-float quarto-figure quarto-figure-left anchored">
+<figure class="quarto-float quarto-float-lst figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-lst" id="lst-duckdb-parquet-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Lista&nbsp;2: comando finale per creare al meglio il file <code>Parquet</code>.
+</figcaption>
+<div aria-describedby="lst-duckdb-parquet-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="sourceCode" id="lst-duckdb-parquet"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="lst-duckdb-parquet-1"><a href="#lst-duckdb-parquet-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> <span class="at">--csv</span> <span class="at">-c</span> <span class="st">"COPY (</span></span>
+<span id="lst-duckdb-parquet-2"><a href="#lst-duckdb-parquet-2" aria-hidden="true" tabindex="-1"></a><span class="st">  SELECT</span></span>
+<span id="lst-duckdb-parquet-3"><a href="#lst-duckdb-parquet-3" aria-hidden="true" tabindex="-1"></a><span class="st">    * REPLACE (regexp_replace(filename, '^.+/', '') AS filename)</span></span>
+<span id="lst-duckdb-parquet-4"><a href="#lst-duckdb-parquet-4" aria-hidden="true" tabindex="-1"></a><span class="st">  FROM</span></span>
+<span id="lst-duckdb-parquet-5"><a href="#lst-duckdb-parquet-5" aria-hidden="true" tabindex="-1"></a><span class="st">    read_csv_auto(</span></span>
+<span id="lst-duckdb-parquet-6"><a href="#lst-duckdb-parquet-6" aria-hidden="true" tabindex="-1"></a><span class="st">      '</span><span class="va">$folder</span><span class="st">/../data/raw/*.csv',</span></span>
+<span id="lst-duckdb-parquet-7"><a href="#lst-duckdb-parquet-7" aria-hidden="true" tabindex="-1"></a><span class="st">      filename = TRUE,</span></span>
+<span id="lst-duckdb-parquet-8"><a href="#lst-duckdb-parquet-8" aria-hidden="true" tabindex="-1"></a><span class="st">      types = { 'id_bene': 'VARCHAR',</span></span>
+<span id="lst-duckdb-parquet-9"><a href="#lst-duckdb-parquet-9" aria-hidden="true" tabindex="-1"></a><span class="st">      'id_compendio': 'VARCHAR',</span></span>
+<span id="lst-duckdb-parquet-10"><a href="#lst-duckdb-parquet-10" aria-hidden="true" tabindex="-1"></a><span class="st">      'latitudine': 'FLOAT',</span></span>
+<span id="lst-duckdb-parquet-11"><a href="#lst-duckdb-parquet-11" aria-hidden="true" tabindex="-1"></a><span class="st">      'longitudine': 'FLOAT',</span></span>
+<span id="lst-duckdb-parquet-12"><a href="#lst-duckdb-parquet-12" aria-hidden="true" tabindex="-1"></a><span class="st">      'superficie_mq': 'FLOAT',</span></span>
+<span id="lst-duckdb-parquet-13"><a href="#lst-duckdb-parquet-13" aria-hidden="true" tabindex="-1"></a><span class="st">      'cubatura_mc': 'FLOAT',</span></span>
+<span id="lst-duckdb-parquet-14"><a href="#lst-duckdb-parquet-14" aria-hidden="true" tabindex="-1"></a><span class="st">      'sup_aree_pertinenziali_mq': 'FLOAT',</span></span>
+<span id="lst-duckdb-parquet-15"><a href="#lst-duckdb-parquet-15" aria-hidden="true" tabindex="-1"></a><span class="st">      'superficie_di_riferimento_mq': 'FLOAT' },</span></span>
+<span id="lst-duckdb-parquet-16"><a href="#lst-duckdb-parquet-16" aria-hidden="true" tabindex="-1"></a><span class="st">      normalize_names = TRUE,</span></span>
+<span id="lst-duckdb-parquet-17"><a href="#lst-duckdb-parquet-17" aria-hidden="true" tabindex="-1"></a><span class="st">      decimal_separator = ','</span></span>
+<span id="lst-duckdb-parquet-18"><a href="#lst-duckdb-parquet-18" aria-hidden="true" tabindex="-1"></a><span class="st">    )</span></span>
+<span id="lst-duckdb-parquet-19"><a href="#lst-duckdb-parquet-19" aria-hidden="true" tabindex="-1"></a><span class="st">) TO 'beni_immobili_pubblici.parquet' (</span></span>
+<span id="lst-duckdb-parquet-20"><a href="#lst-duckdb-parquet-20" aria-hidden="true" tabindex="-1"></a><span class="st">  FORMAT PARQUET,</span></span>
+<span id="lst-duckdb-parquet-21"><a href="#lst-duckdb-parquet-21" aria-hidden="true" tabindex="-1"></a><span class="st">  COMPRESSION 'zstd',</span></span>
+<span id="lst-duckdb-parquet-22"><a href="#lst-duckdb-parquet-22" aria-hidden="true" tabindex="-1"></a><span class="st">  ROW_GROUP_SIZE 100_000</span></span>
+<span id="lst-duckdb-parquet-23"><a href="#lst-duckdb-parquet-23" aria-hidden="true" tabindex="-1"></a><span class="st">)"</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</figure>
+</div>
+<p>Nella <a href="#lst-duckdb-parquet" class="quarto-xref">Lista&nbsp;2</a> è stato aggiunto il comando <code>REPLACE (regexp_replace(filename, '^.+/', '') AS filename)</code>. Questo comando rimuove il percorso del file e lascia solo il suo nome.</p>
+<p>Il file <code>parquet</code> di <em>output</em> è <a href="https://github.com/aborruso/beni_immobili_pubblica_amministrazione/raw/main/data/beni_immobili_pubblici.parquet?download=">disponibile qui</a>.</p>
+</section>
+<section id="analisi-geografica-dei-dati" class="level2">
+<h2 class="anchored" data-anchor-id="analisi-geografica-dei-dati">Analisi geografica dei dati</h2>
+<p>Il 99% dei dati è associato a una coppia di coordinate geografiche, con le colonne <code>latitudine</code> e <code>longitudine</code>. Non entro qui nel merito sulla qualità (tutta da verificare) di questi dati, ma voglio mostrare come può esser comodo anche in questo caso <strong>duckdb</strong>.<br> Questa applicazione ha infatti anche l’<a href="https://duckdb.org/docs/extensions/spatial.html">estensione spaziale</a> ed è quindi possibile fare delle interrogazioni geografiche.</p>
+<p><strong>Quanti</strong> sono ad esempio i <strong>beni</strong> immobili che ricadono in <strong>provincia</strong> di <strong>Bergamo</strong>?</p>
+<p>Con questa banca dati c’è un modo “tradizionale” per farlo, perché è presente la colonna <code>provincia_del_bene</code> e basta fare una <em>query</em> come quella di sotto, per sapere in 0,1 secondi che sono 39.154:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> <span class="at">-c</span> <span class="st">"SELECT count(*) conteggio</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="st">FROM read_parquet('beni_immobili_pubblici.parquet')</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="st">WHERE provincia_del_bene = 'BERGAMO'"</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Ma immaginiamo di non avere la colonna <code>provincia_del_bene</code> e avere soltanto le coordinate dei beni e il poligono che rappresenta la provincia di Bergamo.<br> Questo poligono si può ottenere in formato <code>geojson</code> dal comodo <a href="https://confini-amministrativi.it/"><strong>confini-amministrativi.it</strong></a> e ha questo URL:<br> <a href="https://confini-amministrativi.it/api/v2/it/20240101/unita-territoriali-sovracomunali/16.geo.json" class="uri">https://confini-amministrativi.it/api/v2/it/20240101/unita-territoriali-sovracomunali/16.geo.json</a></p>
+<p>Voglio arricchire il risultato e <strong>conteggiare</strong> i <strong>beni</strong> <strong>per</strong> <strong>epoca</strong> di <strong>costruzione</strong> e <strong>suddividerli</strong> per <strong>utilizzo</strong> del bene. La <em>query</em> spaziale che in pochi secondi restituisce il risultato è la seguente:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> <span class="at">-c</span> <span class="st">"PIVOT (</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="st">  SELECT</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="st">    id_bene,</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="st">    epoca_costruzione,</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="st">    utilizzo_del_bene</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="st">  FROM</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="st">    'beni_immobili_pubblici.parquet' AS immobili</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="st">    JOIN ST_READ(</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="st">      'https://confini-amministrativi.it/api/v2/it/20240101/unita-territoriali-sovracomunali/16.geo.json'</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="st">    ) AS bergamo ON ST_Within(ST_POINT(longitudine, latitudine), bergamo.geom)</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="st">) ON utilizzo_del_bene USING COUNT(id_bene)</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="st">GROUP BY epoca_costruzione</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="st">ORDER BY epoca_costruzione"</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>A partire da un sottoinsieme di colonne - <code>id_bene</code>, <code>epoca_costruzione</code> e <code>utilizzo_del_bene</code> - viene creata una <a href="https://duckdb.org/docs/sql/statements/pivot.html">tabella pivot</a> (vedi <a href="#tbl-bergamo" class="quarto-xref">Tabella&nbsp;1</a>). Questa organizza i dati in modo che ogni tipologia di utilizzo dei beni (<code>utilizzo_del_bene</code>) diventi una colonna separata. Le celle della tabella mostrano il numero di beni per ciascuna combinazione di epoca di costruzione (<code>epoca_costruzione</code>) e utilizzo, utilizzando la funzione di aggregazione <code>COUNT(id_bene)</code>. Infine, i risultati vengono raggruppati per epoca di costruzione e ordinati in base a questa colonna.</p>
+<div id="tbl-bergamo" class="striped table table-responsive table-sm table-bordered quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-bergamo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabella&nbsp;1: numero di beni immobili pubblici per epoca di costruzione e utilizzo, all’interno della provincia di Bergamo
+</figcaption>
+<div aria-describedby="tbl-bergamo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="table-responsive">
+<table class="table-striped table table-sm table-bordered small caption-top">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 30%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 22%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">epoca_costruzione</th>
+<th style="text-align: right;">In ristrutturazione/manutenzione</th>
+<th style="text-align: right;">Inutilizzabile</th>
+<th style="text-align: right;">Non utilizzato</th>
+<th style="text-align: right;">Utilizzato direttamente</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Dal 1919 al 1945</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">145</td>
+<td style="text-align: right;">637</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Dal 1946 al 1960</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">53</td>
+<td style="text-align: right;">83</td>
+<td style="text-align: right;">441</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Dal 1961 al 1970</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: right;">214</td>
+<td style="text-align: right;">650</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Dal 1971 al 1980</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">392</td>
+<td style="text-align: right;">685</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Dal 1981 al 1990</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">190</td>
+<td style="text-align: right;">1585</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Dal 1991 al 2000</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">176</td>
+<td style="text-align: right;">1018</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Dal 2001 al 2010</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">104</td>
+<td style="text-align: right;">868</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Dopo il 2010</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">43</td>
+<td style="text-align: right;">195</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">ND</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">469</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Prima del 1919</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">78</td>
+<td style="text-align: right;">226</td>
+<td style="text-align: right;">993</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: right;">15</td>
+<td style="text-align: right;">256</td>
+<td style="text-align: right;">9294</td>
+<td style="text-align: right;">11510</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+<p>È un esempio di base, in cui è evidente come è possibile <strong>combinare</strong> <strong>dati</strong> <strong>geografici</strong> e <strong>non</strong>, in modo molto semplice e veloce, anche da <strong>fonti</strong> <strong>remote</strong> da raggiungere in <code>HTTP</code>.</p>
+<p>Nel contesto “spaziale” può essere utile creare un file in formato geografico, da usare su un sistema GIS.<br> Ad esempio per creare un file in <a href="https://github.com/flatgeobuf/flatgeobuf">formato <code>FlatGeobuf</code></a>, progettato per memorizzare dati geografici in modo efficiente e compatto, si può usare una sintassi simile a quella vista sopra:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> <span class="at">-c</span> <span class="st">"COPY (</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="st">  SELECT</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="st">    *,</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="st">    ST_POINT(longitudine, latitudine) geom</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="st">  FROM</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="st">    'beni_immobili_pubblici.parquet'</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="st">  WHERE</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="st">    longitudine IS NOT NULL</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="st">    OR latitudine IS NOT NULL</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="st">) TO 'output.fgb' WITH (FORMAT GDAL, DRIVER 'FlatGeobuf', SRS 'EPSG:4326')"</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Il formato <code>parquet</code> ha anche la sua versione geografica, il <a href="https://geoparquet.org/"><code>GeoParquet</code></a>, molto compresso e molto veloce da interrogare. Per crearlo non si può ancora usare <code>duckdb</code>, ma si può usare il comando <a href="https://gdal.org/en/latest/programs/ogr2ogr.html"><code>ogr2ogr</code></a> di <code>GDAL</code>:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ogr2ogr</span> <span class="at">-f</span> parquet <span class="at">-lco</span> COMPRESSION=ZSTD beni_immobili_pubblici_geo.parquet output.fgb</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Il file GeoParquet è <a href="https://github.com/aborruso/beni_immobili_pubblica_amministrazione/raw/main/data/beni_immobili_pubblici_geo.parquet?download=">disponibile qui</a>, pesa soltanto 80 MB, ed è visualizzabile con <a href="https://www.qgis.org/"><code>QGIS</code></a> e altre applicazioni GIS.</p>
+<div id="fig-qgis" class="lightbox quarto-float quarto-figure quarto-figure-center anchored" alt="File GeoParquet visualizzato in QGIS">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-qgis-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="qgis.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Figura&nbsp;3: File GeoParquet visualizzato in QGIS"><img src="qgis.png" class="img-fluid figure-img" alt="File GeoParquet visualizzato in QGIS"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-qgis-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;3: File <code>GeoParquet</code> visualizzato in QGIS
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="alcune-considerazioni-sui-dati" class="level2">
+<h2 class="anchored" data-anchor-id="alcune-considerazioni-sui-dati">Alcune considerazioni sui dati</h2>
+<p>È possibile <strong>combinare</strong> <strong>rapidamente</strong> e <strong>facilmente</strong> <strong>questi file</strong> per <strong>creare</strong> una <strong>base di dati efficiente</strong> e pronta per l’<strong>analisi</strong> e le <strong>interrogazioni</strong>. Questo avviene non solo grazie a strumenti come DuckDB, ma anche perché i file di <em>input</em> condividono uno schema unico, che permette di unire i file <code>CSV</code> senza difficoltà.</p>
+<p>E come scritto nelle conclusioni di un <a href="../../posts/duckdb-intro-csv/index.html#in-conclusione">“famoso” articolo</a>:</p>
+<blockquote class="blockquote">
+<p>Con le dovute precauzioni, con gli <strong>strumenti giusti</strong>, con un corredo informativo adeguato e per dimensioni non eccessive, (il CSV) può essere un formato comodo e pratico. <a href="https://aborruso.github.io/posts/duckdb-intro-csv/#descrivere-i-csv"><strong>Descrivendolo</strong></a>, <a href="https://aborruso.github.io/posts/duckdb-intro-csv/#csv-standard">“<strong>standardizzandolo</strong>”</a> e <a href="https://aborruso.github.io/posts/duckdb-intro-csv/#compressione-dei-file-csv"><strong>comprimendolo</strong></a>, diventa molto più usabile.</p>
+</blockquote>
+<p>A proposito di “descrizione”, il Dipartimento dell’Economia pubblica un file <a href="https://www.de.mef.gov.it/export/sites/sitodt/modules/documenti_it/attivo_patrimonio/2019/Dizionario_Immobili_2019.pdf" title="PDF, 200 Kb">dizionario</a>, uno schema, ma soltanto in formato <code>PDF</code>. Quindi non è possibile creare una procedura automatica di importazione dei dati, in cui sono ad esempio impostati correttamente i tipi di campo (testuali, numerici, ecc.).</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+📌 Importante
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>La <strong>pubblicazione</strong> non si dovrebbe limitare a rendere disponibile dei file, ma essere <strong>accompagnata da una descrizione del file stesso</strong>, leggibile dalle persone e <strong>dalle applicazioni</strong>.</p>
+</div>
+</div>
+<p>Sui CSV sarebbe ideale:</p>
+<ul>
+<li><strong>documentare</strong> qual è l’<strong><em>encoding</em></strong> dei caratteri;</li>
+<li>avere come <em>encoding</em> l’<code>UTF-8</code>;</li>
+<li>evitare l’utilizzo di spazi, virgolette o altri caratteri speciali nei <strong>nomi dei campi</strong>;</li>
+<li><strong>dichiarare</strong> quali sono i <strong>separatori</strong> di <strong>campo</strong> e dei <strong>decimali</strong>;</li>
+<li><strong>pubblicarli</strong> anche <strong>non separati</strong> in 30 file, ma in unico file compresso <code>gzip</code>.</li>
+</ul>
+<p>Questi preziosi dati inoltre <strong>non</strong> sono ancora <strong>disponibili</strong> anche nel <a href="https://www.dati.gov.it/"><strong>portale</strong> <strong>nazionale</strong> dei <strong>dati</strong> aperti</a>. Ed è un peccato in termini di valorizzazione e diffusione degli stessi. Questo è anche un <a href="https://ondata.github.io/linee-guida-opendata/capitolo-7.html#req-29"><strong>requisito</strong></a> previsto dalle linee guida nazionali sui dati aperti.</p>
+<p>Interrogando la banca dati si ha evidenza di alcuni bene con <strong>coordinate geografiche</strong> <strong>incoerenti</strong> con gli <strong>attributi territoriali</strong> dichiarati in altri campi. Ad esempio il bene con <code>id_bene=2442321</code>, ha coordinate YX <code>37.926914</code> e <code>15.28337</code>, ovvero in provincia di Messina; ma nel campo <code>comune_del_bene</code> il valore è “Frascati”.</p>
+<p>Infine un’ultima nota su un <strong>formato</strong> <strong>aggiuntivo</strong> di <strong>pubblicazione</strong>: il tante volte nominato formato <strong><code>Parquet</code></strong>.<br> È diventato uno dei formati standard per consentire a chiunque di fare <strong>analisi</strong> <strong>rapide</strong> ed <strong>efficienti</strong>, anche su <strong>grandi</strong> <strong>quantità</strong> di <strong>dati</strong>, quasi su <strong>qualsiasi</strong> <strong>PC</strong>. E sarebbe ideale <strong>pubblicare la banca dati degli immobili pubblici in formato <code>Parquet</code></strong>.<br> Un buon esempio da emulare è quello di <strong>OpenCoesione</strong> - uno dei portali di dati aperti più importanti in Italia - che da febbraio 2024 pubblica anche in <a href="https://opencoesione.gov.it/it/news/opendata-rilasciati-dataset-formato-parquet/">questo formato</a>.</p>
+
+
+<div class="ojs-auto-generated hidden">
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6WyAgeyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiaW5saW5lIjoidHJ1ZSIsInNvdXJjZSI6Imh0bC5odG1sYDxzcGFuPiR7cl9pdGF9PC9zcGFuPmAiLCAiY2VsbE5hbWUiOiJvanMtZWxlbWVudC1pZC0xIn0sICB7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJpbmxpbmUiOiJ0cnVlIiwic291cmNlIjoiaHRsLmh0bWxgPHNwYW4+JHtjfTwvc3Bhbj5gIiwgImNlbGxOYW1lIjoib2pzLWVsZW1lbnQtaWQtMiJ9LCAgeyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiaW5saW5lIjoidHJ1ZSIsInNvdXJjZSI6Imh0bC5odG1sYDxzcGFuPiR7Y2VsbGV9PC9zcGFuPmAiLCAiY2VsbE5hbWUiOiJvanMtZWxlbWVudC1pZC0zIn0sICB7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJpbmxpbmUiOiJ0cnVlIiwic291cmNlIjoiaHRsLmh0bWxgPHNwYW4+JHtjZWxsZX08L3NwYW4+YCIsICJjZWxsTmFtZSI6Im9qcy1lbGVtZW50LWlkLTQifV19
+</script>
+</div>
+</section>
+
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Torna in cima</a></main> <!-- /main -->
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InI9MjgzMDg1NVxucl9pdGE9ci50b0xvY2FsZVN0cmluZygnaXQtSVQnKTtcbmM9NTFcbmNfaXRhPWMudG9Mb2NhbGVTdHJpbmcoJ2l0LUlUJyk7XG5jZWxsZT0ocipjKS50b0xvY2FsZVN0cmluZygnaXQtSVQnKTtcbiJ9XX0=
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../../posts/beni_immobili_pubblica_amministrazione";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "../..";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copiato!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copiato!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp(".*aborruso\.github\.io\.*");
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Costruito con <a href="https://quarto.org">quarto</a> 😍 | Contenuti in <a href="https://creativecommons.org/licenses/by/4.0/deed.it">CC BY 4.0</a></p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/aborruso/aborruso.github.io/edit/main/posts/beni_immobili_pubblica_amministrazione/index.qmd" class="toc-action"><i class="bi bi-github"></i>Modifica questa pagina</a></li><li><a href="https://github.com/aborruso/aborruso.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Segnala un problema</a></li></ul></div></div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/aborruso">
+      <i class="bi bi-twitter" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="../../blog.xml">
+      <i class="bi bi-rss" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/aborruso/aborruso.github.io">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","selector":".lightbox","loop":false,"descPosition":"bottom","openEffect":"zoom"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
+
+
+
+
+</body></html>

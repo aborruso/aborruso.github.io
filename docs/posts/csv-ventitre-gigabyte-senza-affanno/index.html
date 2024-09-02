@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="it" xml:lang="it" dir="ltr"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.551">
+<meta name="generator" content="quarto-1.5.56">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -10,7 +10,7 @@
 <meta name="author" content="Matteo Fortini">
 <meta name="description" content="L’esempio dei nuovi dati OpenCUP, da sfogliare a riga di comando">
 
-<title>aborruso’s website - Lavorare con grandi file CSV compressi</title>
+<title>Lavorare con grandi file CSV compressi – aborruso’s website</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -36,7 +36,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -127,14 +127,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <link rel="stylesheet" href="../../styles.css">
-<meta property="og:title" content="aborruso’s website - Lavorare con grandi file CSV compressi">
+<meta property="og:title" content="Lavorare con grandi file CSV compressi – aborruso’s website">
 <meta property="og:description" content="Lavorare con grandi file CSV compressi: l’esempio dei nuovi dati OpenCUP, da sfogliare a riga di comando">
 <meta property="og:image" content="https://aborruso.github.io/posts/csv-ventitre-gigabyte-senza-affanno/opencup.png">
 <meta property="og:site_name" content="aborruso's website">
 <meta property="og:locale" content="it_IT">
 <meta property="og:image:height" content="832">
 <meta property="og:image:width" content="1133">
-<meta name="twitter:title" content="aborruso’s website - Lavorare con grandi file CSV compressi">
+<meta name="twitter:title" content="Lavorare con grandi file CSV compressi – aborruso’s website">
 <meta name="twitter:description" content="Lavorare con grandi file CSV compressi: l’esempio dei nuovi dati OpenCUP, da sfogliare a riga di comando">
 <meta name="twitter:image" content="https://aborruso.github.io/posts/csv-ventitre-gigabyte-senza-affanno/opencup.png">
 <meta name="twitter:creator" content="@aborruso">
@@ -150,7 +150,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
             <div id="quarto-search" class="" title="Ricerca"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Attiva/disattiva la navigazione" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Attiva/disattiva la navigazione" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -169,7 +169,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
-          <div class="quarto-navbar-tools">
+            <div class="quarto-navbar-tools">
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -257,7 +257,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
     </div>
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content">
@@ -281,7 +281,7 @@ Nota successiva alla pubblicazione
 </div>
 <p>Da pochissimo, dal 14 febbraio 2024, è andato online il <a href="https://www.opencup.gov.it/"><strong>nuovo portale OpenCUP</strong></a>.</p>
 <p>OpenCUP mette a disposizione di tutti - cittadini, istituzioni ed altri enti - i dati, in formato aperto, sulle <strong>decisioni di investimento pubblico</strong> finanziate con fondi pubblici nazionali, comunitarie o regionali o con risorse private registrate con il Codice Unico di Progetto.</p>
-<div id="fig-opencup" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-opencup" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-opencup-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <a href="https://www.opencup.gov.it/"><img src="opencup.png" class="img-fluid figure-img"></a>
@@ -325,10 +325,10 @@ Avviso
 <li>i nomi dei campi;</li>
 <li>il separatore è il <code>|</code></li>
 </ul>
-<div id="fig-head" class="lightbox quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-head" class="lightbox quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-head-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="immagini/head.png" class="lightbox" data-glightbox="description: .lightbox-desc-1" data-gallery="quarto-lightbox-gallery-1"><img src="immagini/head.png" class="img-fluid figure-img"></a>
+<a href="immagini/head.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figura&nbsp;2: Le prime righe del file con i progetti"><img src="immagini/head.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-head-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;2: Le prime righe del file con i progetti
@@ -341,10 +341,10 @@ Figura&nbsp;2: Le prime righe del file con i progetti
 <p>Viste le prime 10 righe e mappate le caratteristiche del CSV, il passo consigliato successivo è quello dell’estrazione di un campione di righe più ampio, per fare un’analisi più approfondita.<br> Con una piccola modifica al comando soprastante, si possono ad esempio estrarre le prime 10.000 righe e salvarle in un nuovo file <code>CSV</code> (in <code>0.055</code> secondi):</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unzip</span> <span class="at">-p</span> <span class="st">"OpenData Complessivo.zip"</span>  <span class="kw">|</span> <span class="fu">head</span> <span class="at">-n</span> 10000 <span class="op">&gt;</span> campione.csv</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>E questo nuovo file sarà esplorabile con <strong>foglio elettronico</strong> o con altri strumenti. A me ad esempio piace usare <a href="https://ondata.github.io/guidaVisiData/"><strong>VisiData</strong></a> per queste cose, con cui di solito subito osservo un po’ di dati sui campi (i valori nulli, i valori distinti, ecc.).</p>
-<div id="fig-vd" class="lightbox quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-vd" class="lightbox quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-vd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="immagini/vd.png" class="lightbox" data-glightbox="description: .lightbox-desc-2" data-gallery="quarto-lightbox-gallery-2"><img src="immagini/vd.png" class="img-fluid figure-img"></a>
+<a href="immagini/vd.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Figura&nbsp;3: Esplorazione dei dati campione con VisiData"><img src="immagini/vd.png" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-vd-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;3: Esplorazione dei dati campione con VisiData
@@ -439,7 +439,7 @@ Nota
     Thread(s) per core:  2
     Core(s) per socket:  10</code></pre>
 <p>Questa la tabella riassuntiva dei tempi di esecuzione:</p>
-<table class="table">
+<table class="caption-top table">
 <colgroup>
 <col style="width: 63%">
 <col style="width: 36%">
@@ -489,10 +489,6 @@ Nota
 <p>Ma sono dati grandi, e in produzione bisognerà andare un po’ oltre l’utilizzo delle eccezionali <em>utility</em> a riga di comando. In ogni caso <strong>DuckDB</strong>, se <strong>usato bene</strong>, fa già tanta tanta roba (partizionando il dataset originario in più file <code>parquet</code>, si ha disposizione tutto il dataset con una grandissima facilità di accesso e lettura).</p>
 
 
-<div class="hidden" aria-hidden="true">
-<span class="glightbox-desc lightbox-desc-1">Figura&nbsp;2: Le prime righe del file con i progetti</span>
-<span class="glightbox-desc lightbox-desc-2">Figura&nbsp;3: Esplorazione dei dati campione con VisiData</span>
-</div>
 </section>
 
 
@@ -537,18 +533,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -580,7 +565,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp(".*aborruso\.github\.io\.*");
@@ -588,7 +595,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
@@ -830,30 +837,37 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"openEffect":"zoom","loop":false,"descPosition":"bottom","selector":".lightbox","closeEffect":"zoom"});
-window.onload = () => {
-  lightboxQuarto.on('slide_before_load', (data) => {
-    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
-    const href = trigger.getAttribute('href');
-    if (href !== null) {
-      const imgEl = window.document.querySelector(`a[href="${href}"] img`);
-      if (imgEl !== null) {
-        const srcAttr = imgEl.getAttribute("src");
-        if (srcAttr && srcAttr.startsWith("data:")) {
-          slideConfig.href = srcAttr;
-        }
-      }
-    } 
-  });
-
-  lightboxQuarto.on('slide_after_load', (data) => {
-    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
-    if (window.Quarto?.typesetMath) {
-      window.Quarto.typesetMath(slideNode);
+<script>var lightboxQuarto = GLightbox({"selector":".lightbox","closeEffect":"zoom","openEffect":"zoom","loop":false,"descPosition":"bottom"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
     }
-  });
-
-};
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
           </script>
 
 

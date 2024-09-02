@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="it" xml:lang="it" dir="ltr"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.551">
+<meta name="generator" content="quarto-1.5.56">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -10,7 +10,7 @@
 <meta name="author" content="Davide Taibi">
 <meta name="description" content="Tanti modi a partire dai dati di OpenCoesione">
 
-<title>aborruso’s website - Come leggere un file Parquet</title>
+<title>Come leggere un file Parquet – aborruso’s website</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -36,7 +36,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -132,14 +132,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <link rel="stylesheet" href="../../styles.css">
-<meta property="og:title" content="aborruso’s website - Come leggere un file Parquet">
+<meta property="og:title" content="Come leggere un file Parquet – aborruso’s website">
 <meta property="og:description" content="Un esempio con i dati di OpenCoesione">
 <meta property="og:image" content="https://aborruso.github.io/posts/leggere-interrogare-file-parquet/images/dbeaver_05.png">
 <meta property="og:site_name" content="aborruso's website">
 <meta property="og:locale" content="it_IT">
 <meta property="og:image:height" content="793">
 <meta property="og:image:width" content="1280">
-<meta name="twitter:title" content="aborruso’s website - Come leggere un file Parquet">
+<meta name="twitter:title" content="Come leggere un file Parquet – aborruso’s website">
 <meta name="twitter:description" content="Un esempio con i dati di OpenCoesione">
 <meta name="twitter:image" content="https://aborruso.github.io/posts/leggere-interrogare-file-parquet/images/dbeaver_05.png">
 <meta name="twitter:creator" content="@aborruso">
@@ -155,7 +155,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
             <div id="quarto-search" class="" title="Ricerca"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Attiva/disattiva la navigazione" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Attiva/disattiva la navigazione" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -174,7 +174,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
-          <div class="quarto-navbar-tools">
+            <div class="quarto-navbar-tools">
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -261,7 +261,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
     </div>
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content">
@@ -306,14 +306,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Abbiamo sottolineato come il <strong>formato <code>Parquet</code></strong> sia molto <strong>più efficiente</strong> per l’accesso e l’analisi dei dati, rispetto al <strong><code>CSV</code></strong>.<br> Questa caratteristica è molto evidente, soprattutto per tabelle molto grandi, come questa dei <strong>progetti</strong> di <a href="https://opencoesione.gov.it/it/opendata/#!progetti_section"><strong>OpenCoesione</strong></a>, composta da circa <code>2.000.000 di righe x 200 colonne</code>.</p>
 <p>È possibile ad esempio interrogarla, per avere restituito il <strong>totale di finanziamento pubblico</strong> per ogni <strong>ciclo di finanziamento</strong> (vedi <a href="#tbl-cicli" class="quarto-xref">Tabella&nbsp;1</a>), e avere la risposta <strong>in 0,07 secondi</strong>.</p>
 <div class="cell" data-execution_count="2">
-<div id="tbl-cicli" class="cell quarto-float anchored" data-execution_count="2">
+<div id="tbl-cicli" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="2">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-cicli-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Tabella&nbsp;1: totale di finanziamento pubblico per ciclo di finanziamento
 </figcaption>
 <div aria-describedby="tbl-cicli-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-display" data-execution_count="2">
-<div>
 <style type="text/css">
 #T_07539 th.col1 {
   text-align: right;
@@ -323,7 +322,7 @@ Tabella&nbsp;1: totale di finanziamento pubblico per ciclo di finanziamento
 }
 </style>
 
-<table id="T_07539" class="do-not-create-environment cell table table-sm table-striped small" data-quarto-postprocess="true">
+<table id="T_07539" class="do-not-create-environment cell caption-top table table-sm table-striped small" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
 <th id="T_07539_level0_col0" class="col_heading level0 col0" data-quarto-table-cell-role="th">Ciclo</th>
@@ -351,7 +350,6 @@ Tabella&nbsp;1: totale di finanziamento pubblico per ciclo di finanziamento
 </table>
 </div>
 </div>
-</div>
 </figure>
 </div>
 </div>
@@ -377,10 +375,10 @@ Nota bene
 <h3 class="anchored" data-anchor-id="al-doppio-click">Al doppio click</h3>
 <p>Per visualizzare un file Parquet con un semplice doppio click, puoi usare <a href="https://www.tadviewer.com/"><strong>Tad</strong></a>, un visualizzatore di file Parquet (e anche <code>CSV</code>, <a href="https://www.sqlite.org"><code>SQLite</code></a> e <a href="http://duckdb.org/"><code>DuckDB</code></a>) <em>open source</em>, gratuito e disponibile per Windows, Mac e Linux.</p>
 <p>Una volta installato, basterà fare doppio click sul file per aprirlo e visualizzarne il contenuto (vedi <a href="#fig-tad" class="quarto-xref">Figura&nbsp;1</a>). Questo di OpenCoesione è un file grande e sarà necessario qualche secondo.</p>
-<div id="fig-tad" class="lightbox quarto-figure quarto-figure-center quarto-float anchored" alt="esempio di visualizzazione e filtro dati con Tad">
+<div id="fig-tad" class="lightbox quarto-float quarto-figure quarto-figure-center anchored" alt="esempio di visualizzazione e filtro dati con Tad">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-tad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="images/tad_02.png" class="lightbox" data-glightbox="description: .lightbox-desc-1" data-gallery="quarto-lightbox-gallery-1"><img src="images/tad_02.png" class="img-fluid figure-img" alt="esempio di visualizzazione e filtro dati con Tad"></a>
+<a href="images/tad_02.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figura&nbsp;1: esempio di visualizzazione e filtro dati con TAD"><img src="images/tad_02.png" class="img-fluid figure-img" alt="esempio di visualizzazione e filtro dati con Tad"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-tad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;1: esempio di visualizzazione e filtro dati con <a href="https://www.tadviewer.com/">TAD</a>
@@ -404,7 +402,7 @@ Figura&nbsp;1: esempio di visualizzazione e filtro dati con <a href="https://www
 <li>lanciarla, aprire il menu <code>Database</code> e selezionare <code>New Database Connection</code>;</li>
 <li>cercare <code>DuckDB</code>, selezionarlo e fare click su <code>Next</code>;</li>
 </ul>
-<div id="fig-dbeaver" class="quarto-figure quarto-figure-center quarto-float anchored" alt="DBeaver - selezionare DuckDB come database">
+<div id="fig-dbeaver" class="quarto-float quarto-figure quarto-figure-center anchored" alt="DBeaver - selezionare DuckDB come database">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-dbeaver-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="images/dbeaver_01.png" class="img-fluid figure-img" alt="DBeaver - selezionare DuckDB come database">
@@ -417,7 +415,7 @@ Figura&nbsp;2: DBeaver - selezionare DuckDB come database
 <ul>
 <li>impostare <code>:memory:</code> come <code>Path</code>;</li>
 </ul>
-<div id="fig-dbeaver" class="quarto-figure quarto-figure-center quarto-float anchored" alt="DBeaver - impostazione path DuckDB">
+<div id="fig-dbeaver" class="quarto-float quarto-figure quarto-figure-center anchored" alt="DBeaver - impostazione path DuckDB">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-dbeaver-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="images/dbeaver_02.png" class="img-fluid figure-img" alt="DBeaver - impostazione path DuckDB">
@@ -431,10 +429,10 @@ Figura&nbsp;3: DBeaver - impostazione path DuckDB
 <li>fare click su <code>Test Connection</code>, che verificherà la necessità di installare eventuali componenti mancanti. Se manca qualcosa, installarla facendo click su <code>Download</code>.</li>
 </ul>
 <p>A questo punto, nel riquadro di sinistra “<em>Database Navigator</em>” dovrebbe apparire una connessione al database DuckDB <code>memory</code>.</p>
-<div id="fig-dbeaver" class="lightbox quarto-figure quarto-figure-center quarto-float anchored" alt="DBeaver - riquadro Database">
+<div id="fig-dbeaver" class="lightbox quarto-float quarto-figure quarto-figure-center anchored" alt="DBeaver - riquadro Database">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-dbeaver-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="images/dbeaver_04.png" class="lightbox" data-glightbox="description: .lightbox-desc-2" data-gallery="quarto-lightbox-gallery-2"><img src="images/dbeaver_04.png" class="img-fluid figure-img" alt="DBeaver - riquadro Database"></a>
+<a href="images/dbeaver_04.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Figura&nbsp;4: DBeaver - riquadro Database"><img src="images/dbeaver_04.png" class="img-fluid figure-img" alt="DBeaver - riquadro Database"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dbeaver-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;4: DBeaver - riquadro Database
@@ -451,10 +449,10 @@ Figura&nbsp;4: DBeaver - riquadro Database
 <span data-code-cell="annotated-cell-3" data-code-lines="2" data-code-annotation="1">Per puntare al file, è stato inserito il percorso del file Parquet.</span>
 </dd>
 </dl>
-<div id="fig-dbeaver" class="lightbox quarto-figure quarto-figure-center quarto-float anchored" alt="DBeaver - la prima query">
+<div id="fig-dbeaver" class="lightbox quarto-float quarto-figure quarto-figure-center anchored" alt="DBeaver - la prima query">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-dbeaver-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="images/dbeaver_05.png" class="lightbox" data-glightbox="description: .lightbox-desc-3" data-gallery="quarto-lightbox-gallery-3"><img src="images/dbeaver_05.png" class="img-fluid figure-img" alt="DBeaver - la prima query"></a>
+<a href="images/dbeaver_05.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Figura&nbsp;5: DBeaver - la prima query"><img src="images/dbeaver_05.png" class="img-fluid figure-img" alt="DBeaver - la prima query"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dbeaver-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;5: DBeaver - la prima query
@@ -474,10 +472,10 @@ Figura&nbsp;5: DBeaver - la prima query
 <p>Per usarlo non ti resta che lanciare il comando <code>duckdb</code> e scrivere la tua prima <em>query</em>.</p>
 <p>Potrebbe essere diversa dalle precedenti, come quella <strong>comodissima</strong> per avere un <strong>riepilogo rapido</strong> dei <strong>dati</strong>, basata sul comando <a href="https://duckdb.org/docs/guides/meta/summarize.html"><code>SUMMARIZE</code></a> di DuckDB: restituisce per ogni campo, il tipo di campo e una ricca serie di calcoli, il numero di valori distinti, la percentuali di valori nulli, il minimo, il massimo, la media, ecc..<br> Qui sotto la sintassi della <em>query</em> e un esempio di <em>output</em> in <a href="#fig-duckdb" class="quarto-xref">Figura&nbsp;6</a>.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>SUMMARIZE <span class="kw">select</span> <span class="op">*</span> <span class="kw">from</span> <span class="st">'progetti_esteso_20231231.parquet'</span>;</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div id="fig-duckdb" class="lightbox quarto-figure quarto-figure-center quarto-float anchored" alt="Esempio di output del comando SUMMARIZE">
+<div id="fig-duckdb" class="lightbox quarto-float quarto-figure quarto-figure-center anchored" alt="Esempio di output del comando SUMMARIZE">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-duckdb-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="images/duckdb-summarize.png" class="lightbox" data-glightbox="description: .lightbox-desc-4" data-gallery="quarto-lightbox-gallery-4"><img src="images/duckdb-summarize.png" class="img-fluid figure-img" alt="Esempio di output del comando SUMMARIZE"></a>
+<a href="images/duckdb-summarize.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Figura&nbsp;6: Esempio di output del comando SUMMARIZE"><img src="images/duckdb-summarize.png" class="img-fluid figure-img" alt="Esempio di output del comando SUMMARIZE"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-duckdb-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figura&nbsp;6: Esempio di <em>output</em> del comando <code>SUMMARIZE</code>
@@ -511,7 +509,7 @@ Nota
 <h3 class="anchored" data-anchor-id="a-riga-di-comando-con-visidata">A riga di comando con VisiData</h3>
 <p><a href="https://ondata.github.io/guidaVisiData/"><strong>VisiData</strong></a> è “il coltellino svizzero per i dati, che probabilmente non conosci”. E proprio con il formato Parquet se ne ha un’idea.</p>
 <p>Basta scrivere <code>vd nome_file.parquet</code> e premere <kbd>INVIO</kbd>, per aprire il file e iniziare a esplorarlo, filtrarlo, analizzarlo, ecc..<br> Con il file di OpenCoesione ci mette qualche secondo, perché è un file grande, ma poi si può iniziare a esplorarlo e ad esempio avere restituito il totale di finanziamento pubblico per regione.</p>
-<div id="fig-visidata" class="quarto-figure quarto-figure-center quarto-float anchored" alt="VisiData - esplorare un file Parquet">
+<div id="fig-visidata" class="quarto-float quarto-figure quarto-figure-center anchored" alt="VisiData - esplorare un file Parquet">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-visidata-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="images/visidata.png" class="img-fluid figure-img" alt="VisiData - esplorare un file Parquet">
@@ -668,12 +666,6 @@ Nota
 <p>Non avremmo mai immaginato che la <a href="../../posts/duckdb-intro-csv/index.html"><strong>scrittura di questo altro post</strong></a> avrebbe contribuito a generare questa bella conseguenza. E per questo gli autori del post e tutta l’<strong>associazione onData</strong> ringraziano OpenCoesione e il suo <em>staff</em> per essere stati prima in ascolto e poi protagonisti di questa scelta.</p>
 
 
-<div class="hidden" aria-hidden="true">
-<span class="glightbox-desc lightbox-desc-1">Figura&nbsp;1: esempio di visualizzazione e filtro dati con <a href="https://www.tadviewer.com/">TAD</a></span>
-<span class="glightbox-desc lightbox-desc-2">Figura&nbsp;4: DBeaver - riquadro Database</span>
-<span class="glightbox-desc lightbox-desc-3">Figura&nbsp;5: DBeaver - la prima query</span>
-<span class="glightbox-desc lightbox-desc-4">Figura&nbsp;6: Esempio di <em>output</em> del comando <code>SUMMARIZE</code></span>
-</div>
 </section>
 
 <a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Torna in cima</a></main> <!-- /main -->
@@ -723,18 +715,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -766,7 +747,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp(".*aborruso\.github\.io\.*");
@@ -774,7 +777,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
@@ -1016,30 +1019,37 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","openEffect":"zoom","loop":false,"descPosition":"bottom","selector":".lightbox"});
-window.onload = () => {
-  lightboxQuarto.on('slide_before_load', (data) => {
-    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
-    const href = trigger.getAttribute('href');
-    if (href !== null) {
-      const imgEl = window.document.querySelector(`a[href="${href}"] img`);
-      if (imgEl !== null) {
-        const srcAttr = imgEl.getAttribute("src");
-        if (srcAttr && srcAttr.startsWith("data:")) {
-          slideConfig.href = srcAttr;
-        }
-      }
-    } 
-  });
-
-  lightboxQuarto.on('slide_after_load', (data) => {
-    const { slideIndex, slideNode, slideConfig, player, trigger } = data;
-    if (window.Quarto?.typesetMath) {
-      window.Quarto.typesetMath(slideNode);
+<script>var lightboxQuarto = GLightbox({"loop":false,"selector":".lightbox","closeEffect":"zoom","descPosition":"bottom","openEffect":"zoom"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
     }
-  });
-
-};
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
           </script>
 
 
