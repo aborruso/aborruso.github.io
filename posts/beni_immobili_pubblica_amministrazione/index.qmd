@@ -38,9 +38,9 @@ Ancora una volta **duckdb** è uno strumento può essere uno strumento utile per
 
 Ancora volta una sarà l'occasione - lo farò in rappresentanza dell'associazione onData - di **proporre** al Dipartimento di **pubblicare** i **dati** anche in **altre modalità**. E magari andrà bene, così come è avvenuto con [OpenCoesione](https://opencoesione.gov.it/it/news/opendata-rilasciati-dataset-formato-parquet/).
 
-Prima di passare all'"azione", una nota sulla sottostante @fig-heatmap. È una mappa che rappresenta la densità degli immobili pubblici in Italia: è una cosiddetta *heatmap*, più scura dove c'è più densità di immobili.<br>
-Nella **[geniale vignetta di xkcd](https://xkcd.com/1138/)**, si mostra come le *heatmap* siano inutili, perché sono essenzialmente  mappe della popolazione: le "cose" esistono dove ci sono le persone.<br>
-Anche qui sotto è così, però ci sono degli stranamente dei colori tenui anche in alcune aree densamente popolate del Sud Italia. Ma è un'analisi che farà qualche altra persona.
+Prima di passare all'"azione", una nota sulla sottostante @fig-heatmap. Si tratta di una mappa che rappresenta la densità degli immobili pubblici in Italia, una cosiddetta *heatmap*: le aree più scure indicano una maggiore densità di immobili.<br>
+Nella **[brillante vignetta di xkcd](https://xkcd.com/1138/)**, si mostra come le *heatmap* siano spesso inutili perché, in sostanza, riflettono la distribuzione della popolazione: le “cose” si trovano dove ci sono le persone.<br>
+Anche in questo caso è così, ma si notano colori insolitamente tenui anche in alcune aree densamente popolate del Sud Italia. Tuttavia, questa è un'analisi che spetterà a qualche altra persona.
 
 ![heatmap della posizione degli immobili](heat_map.png){#fig-heatmap fig-alt="Heatmap della posizione degli immobili"}
 

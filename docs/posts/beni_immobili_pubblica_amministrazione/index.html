@@ -260,7 +260,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>“In considerazione dell’elevato numero di record” - circa <strong>2,8 milioni</strong> - il Dipartimento ha suddiviso la pubblicazione di questi dati in circa <strong>30 file <code>CSV</code> compressi</strong> (<code>zip</code>). Per fortuna tutti con <strong>un solo schema</strong>.</p>
 <p>In questo articolo voglio mostrare come <strong>metterli insieme</strong>, in modo da poter <strong>fare</strong> <strong>elaborazioni</strong> e <strong>sintesi</strong> come quelle dell’ENEA. Tenuti compressi, separati e in questo formato, non sono infatti molto comodi da gestire.<br> Ancora una volta <strong>duckdb</strong> è uno strumento può essere uno strumento utile per fare questo (si veda l’articolo “<a href="../../posts/duckdb-intro-csv/index.html">Gestire file CSV grandi, brutti e cattivi</a>”).</p>
 <p>Ancora volta una sarà l’occasione - lo farò in rappresentanza dell’associazione onData - di <strong>proporre</strong> al Dipartimento di <strong>pubblicare</strong> i <strong>dati</strong> anche in <strong>altre modalità</strong>. E magari andrà bene, così come è avvenuto con <a href="https://opencoesione.gov.it/it/news/opendata-rilasciati-dataset-formato-parquet/">OpenCoesione</a>.</p>
-<p>Prima di passare all’“azione”, una nota sulla sottostante <a href="#fig-heatmap" class="quarto-xref">Figura&nbsp;1</a>. È una mappa che rappresenta la densità degli immobili pubblici in Italia: è una cosiddetta <em>heatmap</em>, più scura dove c’è più densità di immobili.<br> Nella <strong><a href="https://xkcd.com/1138/">geniale vignetta di xkcd</a></strong>, si mostra come le <em>heatmap</em> siano inutili, perché sono essenzialmente mappe della popolazione: le “cose” esistono dove ci sono le persone.<br> Anche qui sotto è così, però ci sono degli stranamente dei colori tenui anche in alcune aree densamente popolate del Sud Italia. Ma è un’analisi che farà qualche altra persona.</p>
+<p>Prima di passare all’“azione”, una nota sulla sottostante <a href="#fig-heatmap" class="quarto-xref">Figura&nbsp;1</a>. Si tratta di una mappa che rappresenta la densità degli immobili pubblici in Italia, una cosiddetta <em>heatmap</em>: le aree più scure indicano una maggiore densità di immobili.<br> Nella <strong><a href="https://xkcd.com/1138/">brillante vignetta di xkcd</a></strong>, si mostra come le <em>heatmap</em> siano spesso inutili perché, in sostanza, riflettono la distribuzione della popolazione: le “cose” si trovano dove ci sono le persone.<br> Anche in questo caso è così, ma si notano colori insolitamente tenui anche in alcune aree densamente popolate del Sud Italia. Tuttavia, questa è un’analisi che spetterà a qualche altra persona.</p>
 <div id="fig-heatmap" class="quarto-float quarto-figure quarto-figure-center anchored" alt="Heatmap della posizione degli immobili">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-heatmap-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1023,7 +1023,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","selector":".lightbox","loop":false,"descPosition":"bottom","openEffect":"zoom"});
+<script>var lightboxQuarto = GLightbox({"descPosition":"bottom","loop":false,"selector":".lightbox","closeEffect":"zoom","openEffect":"zoom"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {
