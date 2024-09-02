@@ -388,7 +388,7 @@ font-style: inherit;">)"</span></span></code></pre></div>
 <p>In circa 25 secondi si ha in output un file <code>Parquet</code> di circa <strong>55</strong> MB, che si può interrogare molto rapidamente con tanti strumenti ed essenzialmente da tutti i linguaggi di programmazione; su questo Davide Taibi e io abbiamo scritto <a href="../../posts/leggere-interrogare-file-parquet/index.html">un articolo di approfondimento</a>.</p>
 <p>Creato il file <code>Parquet</code>, ho iniziato a fare le prime <em>query</em> e subito mi hanno dato fastidio tre cose:</p>
 <ol type="1">
-<li>i <strong>nomi</strong> delle <strong>colonne</strong> sono troppo <strong><em>human readable</em></strong>, con spazi, caratteri speciali e mescola di maiuscole e minuscole;</li>
+<li>i <strong>nomi</strong> delle <strong>colonne</strong> sono troppo <strong><em>human readable</em></strong>, con spazi, caratteri speciali e mescola di maiuscole e minuscole (<code>Sup. aree pertinenziali (mq)</code>, <code>Vinc. culturale/paesaggistico</code>, <code>Immobile Geo-Ref.</code>, ecc.);</li>
 <li>alcuni <strong>campi numerici</strong>, come <code>superficie</code> e <code>cubatura</code> dei beni, sono <strong>definiti come stringhe</strong>;</li>
 <li>si <strong>perde</strong> la <strong>traccia</strong> dei <strong>file di origine</strong>.</li>
 </ol>

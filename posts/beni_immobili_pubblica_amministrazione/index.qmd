@@ -165,7 +165,7 @@ In circa 25 secondi si ha in output un file `Parquet` di circa **55** MB, che si
 
 Creato il file `Parquet`, ho iniziato a fare le prime *query* e subito mi hanno dato fastidio tre cose:
 
-1. i **nomi** delle **colonne** sono troppo **_human readable_**, con spazi, caratteri speciali e mescola di maiuscole e minuscole;
+1. i **nomi** delle **colonne** sono troppo **_human readable_**, con spazi, caratteri speciali e mescola di maiuscole e minuscole (`Sup. aree pertinenziali (mq)`, `Vinc. culturale/paesaggistico`, `Immobile Geo-Ref.`, ecc.);
 2. alcuni **campi numerici**, come `superficie` e `cubatura` dei beni, sono **definiti come stringhe**;
 3. si **perde** la **traccia** dei **file di origine**.
 
