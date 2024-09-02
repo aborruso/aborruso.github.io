@@ -330,7 +330,7 @@ Sui CSV sarebbe ideale:
 
 Questi preziosi dati inoltre **non** sono ancora **disponibili** anche nel [**portale** **nazionale** dei **dati** aperti](https://www.dati.gov.it/). Ed è un peccato in termini di valorizzazione e diffusione degli stessi. Questo è anche un [**requisito**](https://ondata.github.io/linee-guida-opendata/capitolo-7.html#req-29) previsto dalle linee guida nazionali sui dati aperti.
 
-Interrogando la banca dati si ha evidenza di alcuni bene con **coordinate geografiche** **incoerenti** con gli **attributi territoriali** dichiarati in altri campi. Ad esempio il bene con `id_bene=2442321`, ha coordinate YX `37.926914` e `15.28337`, ovvero in provincia di Messina; ma nel campo `comune_del_bene` il valore è "Frascati".
+Interrogando la banca dati si ha evidenza di alcuni beni con **coordinate geografiche** **incoerenti** con gli **attributi territoriali** dichiarati in altri campi. Ad esempio il bene con `id_bene=2442321`, ha coordinate YX `37.926914` e `15.28337`, ovvero in provincia di Messina; ma nel campo `comune_del_bene` il valore è "Frascati".
 
 Aggiungo una nota anche su un **formato** **aggiuntivo** di **pubblicazione**: il tante volte nominato formato **`Parquet`**.<br>
 È diventato uno dei formati standard per consentire a chiunque di fare **analisi** **rapide** ed **efficienti**, anche su **grandi** **quantità** di **dati**, quasi su **qualsiasi** **PC**. E sarebbe ideale **pubblicare la banca dati degli immobili pubblici in formato `Parquet`**.<br>
