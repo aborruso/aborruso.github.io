@@ -147,7 +147,7 @@ Se si vuole conciliare un'**ottima compressione**, con una **grande** **velocit√
 
 Il comando per creare un file in questo formato √® molto simile a quello per il `CSV`:
 
-```{.sql .code-overflow-wrap}
+```{.bash .code-overflow-wrap}
 duckdb -c "COPY (
   SELECT
     *

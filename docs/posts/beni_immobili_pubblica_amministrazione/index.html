@@ -403,17 +403,17 @@ Figura&nbsp;2: Esempio di <em>output</em> del comando <code>summarize</code> duc
 <p>Per altri tipi di <em>query</em>, i tempi sarebbero molto più lunghi.</p>
 <p>Se si vuole conciliare un’<strong>ottima compressione</strong>, con una <strong>grande</strong> <strong>velocità</strong> di interrogazione e <strong>analisi</strong> dei dati, si può scegliere come formato di output il <strong><a href="../../posts/duckdb-intro-csv/index.html#parquet"><code>Parquet</code></a></strong>.</p>
 <p>Il comando per creare un file in questo formato è molto simile a quello per il <code>CSV</code>:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode sql code-overflow-wrap code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>duckdb <span class="op">-</span>c <span class="ot">"COPY (</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">SELECT</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="op">*</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="kw">FROM</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    read_csv_auto(<span class="st">'$folder/../data/raw/*.csv'</span>)</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>) <span class="kw">TO</span> <span class="st">'beni_immobili_pubblici.parquet'</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>(</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  FORMAT PARQUET,</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  COMPRESSION <span class="st">'zstd'</span>,</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  ROW_GROUP_SIZE <span class="dv">100</span>_000</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>)<span class="ot">"</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> <span class="at">-c</span> <span class="st">"COPY (</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="st">  SELECT</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="st">    *</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="st">  FROM</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="st">    read_csv_auto('</span><span class="va">$folder</span><span class="st">/../data/raw/*.csv')</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="st">) TO 'beni_immobili_pubblici.parquet'</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="st">(</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="st">  FORMAT PARQUET,</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="st">  COMPRESSION 'zstd',</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="st">  ROW_GROUP_SIZE 100_000</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="st">)"</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>In circa 25 secondi si ha in output un file <code>Parquet</code> di circa <strong>55</strong> MB, che si può interrogare molto rapidamente con tanti strumenti ed essenzialmente da tutti i linguaggi di programmazione; su questo Davide Taibi e io abbiamo scritto <a href="../../posts/leggere-interrogare-file-parquet/index.html">un articolo di approfondimento</a>.</p>
 <p>Creato il file <code>Parquet</code>, ho iniziato a fare le prime <em>query</em> e subito mi hanno dato fastidio tre cose:</p>
 <ol type="1">
@@ -1024,7 +1024,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"selector":".lightbox","loop":false,"openEffect":"zoom","closeEffect":"zoom","descPosition":"bottom"});
+<script>var lightboxQuarto = GLightbox({"loop":false,"descPosition":"bottom","closeEffect":"zoom","openEffect":"zoom","selector":".lightbox"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {
