@@ -139,7 +139,7 @@ TO 'beni_immobili_pubblici.csv.gz'"
 In 20 secondi si ottiene un file `CSV` compresso di circa **68** MB. Non è un formato comodo per rapide elaborazioni, ma con gli strumenti giusti può sempre sorprendere.<br>
 Il [`summarize`](https://duckdb.org/docs/guides/meta/summarize) di duckdb viene eseguito ad esempio in **2 secondi**, con una comodissima sintesi su **`{ojs} celle`** di **celle**. Il file `csv.gz` di *output* è [disponibile qui](https://github.com/aborruso/beni_immobili_pubblica_amministrazione/raw/main/data/beni_immobili_pubblici.csv.gz?download=).
 
-![Esempio di *output* del comando `summarize` duckdb](summarize.png){#fig-summarize .lightbox fig-alt="Esempio di output del comando summarize di duckdb" }
+![esempio di *output* del comando `summarize` duckdb](summarize.png){#fig-summarize .lightbox fig-alt="Esempio di output del comando summarize di duckdb" }
 
 Per altri tipi di *query*, i tempi sarebbero molto più lunghi.
 
@@ -302,7 +302,7 @@ ogr2ogr -f parquet -lco COMPRESSION=ZSTD beni_immobili_pubblici_geo.parquet outp
 
 Il file GeoParquet è [disponibile qui](https://github.com/aborruso/beni_immobili_pubblica_amministrazione/raw/main/data/beni_immobili_pubblici_geo.parquet?download=), pesa soltanto 80 MB, ed è visualizzabile con [`QGIS`](https://www.qgis.org/) e altre applicazioni GIS.
 
-![File `GeoParquet` visualizzato in QGIS](qgis.png){#fig-qgis .lightbox fig-alt="File GeoParquet visualizzato in QGIS" }
+![file `GeoParquet` visualizzato in QGIS](qgis.png){#fig-qgis .lightbox fig-alt="File GeoParquet visualizzato in QGIS" }
 
 ## Alcune considerazioni sui dati
 
