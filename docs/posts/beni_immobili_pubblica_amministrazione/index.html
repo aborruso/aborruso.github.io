@@ -318,7 +318,7 @@ Avviso
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Facendolo è emerso un primo piccolo problema: uno dei file <code>zip</code> ha una struttura diversa: contiene il <code>CSV</code> in una sotto cartella. Quindi era necessario creare un processo di <em>unzip</em> automatico che non tenesse della eventuale struttura a cartelle presente.</p>
+<p>Facendolo è emerso un primo piccolo problema: uno dei file <code>zip</code> ha una struttura diversa: contiene il <code>CSV</code> in una sotto cartella. Quindi era necessario creare un processo di <em>unzip</em> automatico che non tenesse conto della eventuale struttura a cartelle presente.</p>
 </div>
 </div>
 <div class="sourceCode" id="cb3"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> <span class="st">"</span><span class="va">$folder</span><span class="st">"</span>/../data/raw <span class="at">-type</span> f <span class="at">-name</span> <span class="st">"*.zip"</span> <span class="kw">|</span> <span class="cf">while</span> <span class="va">IFS</span><span class="op">=</span> <span class="bu">read</span> <span class="at">-r</span> <span class="va">file</span><span class="kw">;</span> <span class="cf">do</span></span>
@@ -1024,7 +1024,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"loop":false,"descPosition":"bottom","closeEffect":"zoom","openEffect":"zoom","selector":".lightbox"});
+<script>var lightboxQuarto = GLightbox({"descPosition":"bottom","closeEffect":"zoom","loop":false,"selector":".lightbox","openEffect":"zoom"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {
