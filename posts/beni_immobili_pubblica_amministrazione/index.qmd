@@ -79,7 +79,7 @@ Con la lista degli URL dei file disponibile, basta generare un `while loop` per 
 A partire dalla lista dei file `zip` scaricati, ancora una volta si può generare un `while loop` per estrarli tutti in una cartella temporanea.
 
 ::: {.callout-warning}
-Facendolo è emerso un primo piccolo problema: uno dei file `zip` ha una struttura diversa: contiene il `CSV` in una sotto cartella. Quindi era necessario creare un processo di *unzip* automatico che non tenesse della eventuale struttura a cartelle presente.
+Facendolo è emerso un primo piccolo problema: uno dei file `zip` ha una struttura diversa: contiene il `CSV` in una sotto cartella. Quindi era necessario creare un processo di *unzip* automatico che non tenesse conto della eventuale struttura a cartelle presente.
 :::
 
 ```{.bash .code-overflow-wrap}
