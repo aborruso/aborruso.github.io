@@ -258,7 +258,13 @@ ORDER BY epoca_costruzione"
 
 A partire da un sottoinsieme di colonne - `id_bene`, `epoca_costruzione` e `utilizzo_del_bene` - viene creata una [tabella pivot](https://duckdb.org/docs/sql/statements/pivot.html) (vedi @tbl-bergamo). Questa organizza i dati in modo che ogni tipologia di utilizzo dei beni (`utilizzo_del_bene`) diventi una colonna separata. Le celle della tabella mostrano il numero di beni per ciascuna combinazione di epoca di costruzione (`epoca_costruzione`) e utilizzo, utilizzando la funzione di aggregazione `COUNT(id_bene)`. Infine, i risultati vengono raggruppati per epoca di costruzione e ordinati in base a questa colonna.
 
+::: {.callout-tip}
+## La ricerca stavolta è geografica
+Nella *query* precedente si filtravano le righe per ricerca testuale, ovvero `provincia_del_bene = 'BERGAMO'`. In questa invece si filtrano le righe in base alla posizione geografica, ovvero `ST_Within(ST_POINT(longitudine, latitudine), bergamo.geom)`:
 
+- prima si trasformano le colonne `longitudine` e `latitudine` in un punto con `ST_POINT(longitudine, latitudine)`;
+- poi si verifica se il punto è all'interno del poligono `bergamo.geom` con `ST_Within()`.
+:::
 
 | epoca_costruzione | In ristrutturazione/manutenzione | Inutilizzabile | Non utilizzato | Utilizzato direttamente |
 |:-------------------|---------------------------------:|---------------:|---------------:|------------------------:|

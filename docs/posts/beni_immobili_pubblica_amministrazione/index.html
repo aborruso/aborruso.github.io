@@ -497,6 +497,23 @@ Lista&nbsp;2: comando finale per creare al meglio il file <code>Parquet</code>.
 <span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="st">GROUP BY epoca_costruzione</span></span>
 <span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="st">ORDER BY epoca_costruzione"</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>A partire da un sottoinsieme di colonne - <code>id_bene</code>, <code>epoca_costruzione</code> e <code>utilizzo_del_bene</code> - viene creata una <a href="https://duckdb.org/docs/sql/statements/pivot.html">tabella pivot</a> (vedi <a href="#tbl-bergamo" class="quarto-xref">Tabella&nbsp;1</a>). Questa organizza i dati in modo che ogni tipologia di utilizzo dei beni (<code>utilizzo_del_bene</code>) diventi una colonna separata. Le celle della tabella mostrano il numero di beni per ciascuna combinazione di epoca di costruzione (<code>epoca_costruzione</code>) e utilizzo, utilizzando la funzione di aggregazione <code>COUNT(id_bene)</code>. Infine, i risultati vengono raggruppati per epoca di costruzione e ordinati in base a questa colonna.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+La ricerca stavolta è geografica
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Nella <em>query</em> precedente si filtravano le righe per ricerca testuale, ovvero <code>provincia_del_bene = 'BERGAMO'</code>. In questa invece si filtrano le righe in base alla posizione geografica, ovvero <code>ST_Within(ST_POINT(longitudine, latitudine), bergamo.geom)</code>:</p>
+<ul>
+<li>prima si trasformano le colonne <code>longitudine</code> e <code>latitudine</code> in un punto con <code>ST_POINT(longitudine, latitudine)</code>;</li>
+<li>poi si verifica se il punto è all’interno del poligono <code>bergamo.geom</code> con <code>ST_Within()</code>.</li>
+</ul>
+</div>
+</div>
 <div id="tbl-bergamo" class="striped table table-responsive table-sm table-bordered quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-bergamo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1024,7 +1041,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"openEffect":"zoom","selector":".lightbox","closeEffect":"zoom","loop":false,"descPosition":"bottom"});
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","selector":".lightbox","loop":false,"openEffect":"zoom","descPosition":"bottom"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {
