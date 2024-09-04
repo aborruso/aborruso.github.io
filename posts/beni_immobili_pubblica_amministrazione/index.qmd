@@ -343,4 +343,4 @@ Aggiungo anche una nota sull'opportunità di un **formato** **aggiuntivo** di **
 Un buon esempio da emulare è quello di **OpenCoesione** - uno dei portali di dati aperti più importanti in Italia - che da febbraio 2024 pubblica anche in [questo formato](https://opencoesione.gov.it/it/news/opendata-rilasciati-dataset-formato-parquet/).
 
 Sono **dati** al **2019**. Sarebbe interessante che fossero aggiornati con una **frequenza** **maggiore**, magari **annuale**.<br>
-Sul portale del Tesoso [si legge](https://portaletesoro.mef.gov.it/it/singlenewspublic.wp?contentId=NWS245) "*Fissata al 27 settembre 2024 la chiusura della rilevazione dei dati dei beni immobili pubblici riferiti al 31/12/2023*" e quindi c'è da aspettarsi un prossimo aggiornamento.
+Sul portale del Tesoro [si legge](https://portaletesoro.mef.gov.it/it/singlenewspublic.wp?contentId=NWS245) "*Fissata al 27 settembre 2024 la chiusura della rilevazione dei dati dei beni immobili pubblici riferiti al 31/12/2023*" e quindi c'è da aspettarsi un prossimo aggiornamento.
