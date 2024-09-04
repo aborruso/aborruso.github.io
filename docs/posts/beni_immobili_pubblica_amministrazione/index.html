@@ -509,8 +509,8 @@ La ricerca stavolta è geografica
 <div class="callout-body-container callout-body">
 <p>Nella <em>query</em> precedente si filtravano le righe per ricerca testuale, ovvero <code>provincia_del_bene = 'BERGAMO'</code>. In questa invece si filtrano le righe in base alla posizione geografica, ovvero <code>ST_Within(ST_POINT(longitudine, latitudine), bergamo.geom)</code>:</p>
 <ul>
-<li>prima si trasformano le colonne <code>longitudine</code> e <code>latitudine</code> in un punto con <code>ST_POINT(longitudine, latitudine)</code>;</li>
-<li>poi si verifica se il punto è all’interno del poligono <code>bergamo.geom</code> con <code>ST_Within()</code>.</li>
+<li>prima si trasformano le colonne <code>longitudine</code> e <code>latitudine</code> in punti con <code>ST_POINT(longitudine, latitudine)</code>;</li>
+<li>poi si verifica quali sono i punti che ricadono dentro il poligono della provincia di Bergamo con la funzione <code>ST_Within()</code>.</li>
 </ul>
 </div>
 </div>
@@ -1041,7 +1041,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","selector":".lightbox","loop":false,"openEffect":"zoom","descPosition":"bottom"});
+<script>var lightboxQuarto = GLightbox({"openEffect":"zoom","loop":false,"descPosition":"bottom","selector":".lightbox","closeEffect":"zoom"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {

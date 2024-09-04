@@ -262,8 +262,8 @@ A partire da un sottoinsieme di colonne - `id_bene`, `epoca_costruzione` e `util
 ## La ricerca stavolta è geografica
 Nella *query* precedente si filtravano le righe per ricerca testuale, ovvero `provincia_del_bene = 'BERGAMO'`. In questa invece si filtrano le righe in base alla posizione geografica, ovvero `ST_Within(ST_POINT(longitudine, latitudine), bergamo.geom)`:
 
-- prima si trasformano le colonne `longitudine` e `latitudine` in un punto con `ST_POINT(longitudine, latitudine)`;
-- poi si verifica se il punto è all'interno del poligono `bergamo.geom` con `ST_Within()`.
+- prima si trasformano le colonne `longitudine` e `latitudine` in punti con `ST_POINT(longitudine, latitudine)`;
+- poi si verifica quali sono i punti che ricadono dentro il poligono della provincia di Bergamo con la funzione `ST_Within()`.
 :::
 
 | epoca_costruzione | In ristrutturazione/manutenzione | Inutilizzabile | Non utilizzato | Utilizzato direttamente |
