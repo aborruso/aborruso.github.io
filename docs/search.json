@@ -313,5 +313,12 @@
     "title": "Quarto: renderizzare una tabella a partire da un CSV",
     "section": "",
     "text": "Per prima cosa carico delle librerie per leggere il CSV e per renderizzare la tabella, e carico la tabella:\n```{r}\nlibrary(tidyverse)\nlibrary(lubridate)\nlibrary(knitr)\n\nt = read_csv(\"input.csv\")\n```\nE poi la renderizzo in vari modi.\n\n```{r}\nkable(t)\n```\n\n\n\n\nyear\ni\nv\n\n\n\n\n2016\nF\n0.9599717\n\n\n2016\nG\n0.0382419\n\n\n2016\nNA\n0.0012658\n\n\n2016\nW\n0.0000122\n\n\n2016\nS\n0.0000454\n\n\n2016\nO\n0.0004631\n\n\n2017\nF\n0.9598036\n\n\n2017\nG\n0.0384042\n\n\n2017\nC\n0.0012674\n\n\n2017\nW\n0.0000153\n\n\n2017\nS\n0.0000486\n\n\n2017\nO\n0.0004608\n\n\n2018\nF\n0.9598013\n\n\n\n\n\n\n```{r}\n#| tbl-cap: \"Soltanto le prime righe\"\nkable(head(t))\n```\n\n\nSoltanto le prime righe\n\n\nyear\ni\nv\n\n\n\n\n2016\nF\n0.9599717\n\n\n2016\nG\n0.0382419\n\n\n2016\nNA\n0.0012658\n\n\n2016\nW\n0.0000122\n\n\n2016\nS\n0.0000454\n\n\n2016\nO\n0.0004631\n\n\n\n\n\n\n```{r}\n#| tbl-cap: \"Selezionare righe e colonne\"\nkable(t[1:4, 1:2])\n```\n\n\nSelezionare righe e colonne\n\n\nyear\ni\n\n\n\n\n2016\nF\n\n\n2016\nG\n\n\n2016\nNA\n\n\n2016\nW\n\n\n\n\n\n\n```{r}\n#| tbl-cap: \"Paginazione\"\n\nrmarkdown::paged_table(t)\n```\n\n Paginazione\n  \n\n\n\n\n\n\n Torna in cima"
+  },
+  {
+    "objectID": "til/fzf_base/index.html",
+    "href": "til/fzf_base/index.html",
+    "title": "Il meraviglioso fzf",
+    "section": "",
+    "text": "CTRL+R per cercare nella history dei comandi;\nALT+C per avere la lista delle cartelle nella cartella corrente;\nCTRL+T per avere la lista dei file della cartella corrente;\nALT+P per avere, da dentro fzf, la preview del file selezionato;\nzi in accoppiata con zoxide per navigare velocemente tra le cartelle più “usate”.\n\nA proposito della preview, è comoda questa configurazione, in cui si usa bat per la preview:\nexport FZF_DEFAULT_OPTS=\"--bind 'alt-p:toggle-preview' --preview-window=hidden --preview 'batcat --style=numbers --color=always --line-range :500 {}'\"\n\n\n\n Torna in cima"
   }
 ]

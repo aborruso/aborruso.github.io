@@ -2,7 +2,7 @@
 title: "Il meraviglioso fzf"
 description: "E gli shortcut che dimentico sempre"
 date: "2024-09-05"
-draft: true
+draft: false
 categories:
   - search
   - til
