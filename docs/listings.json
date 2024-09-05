@@ -14,8 +14,6 @@
     "listing": "/til.html",
     "items": [
       "/til/fzf_base/index.html",
-      "/til/postgis-docker/index.html",
-      "/til/duckdb-spatial/index.html",
       "/til/compilare-qsv/index.html",
       "/til/installare-duckdb-spatial/index.html",
       "/til/duckdb-ottimizzazione-performance-import-csv-jsonl-creazione-parquet/index.html",
