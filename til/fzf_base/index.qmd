@@ -1,0 +1,23 @@
+---
+title: "Il meraviglioso fzf"
+description: "E gli shortcut che dimentico sempre"
+date: "2024-09-05"
+draft: true
+categories:
+  - search
+  - til
+  - cli
+---
+
+
+- `CTRL+R` per cercare nella *history* dei comandi
+- `ALT+C` per avere la lista delle cartelle correnti
+- `CTRL+T` per avere la lista dei file della cartella corrente
+- `ALT+P` per avere, da dentro `fzf`, la preview del file selezionato
+- `zi` in accoppiata con zoxide per navigare velocemente tra le cartelle più "usate"
+
+A proposito della preview, è comoda questa configurazione, in cui si usa `bat` per la preview:
+
+```bash
+export FZF_DEFAULT_OPTS="--bind 'alt-p:toggle-preview' --preview-window=hidden --preview 'batcat --style=numbers --color=always --line-range :500 {}'"
+```
