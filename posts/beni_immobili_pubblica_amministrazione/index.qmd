@@ -317,7 +317,7 @@ Il file GeoParquet è [disponibile qui](https://github.com/aborruso/beni_immobil
 E come scritto nelle conclusioni di un ["famoso" articolo](../duckdb-intro-csv/index.qmd#in-conclusione):
 
 > Con le dovute precauzioni, con gli **strumenti giusti**, con un corredo informativo adeguato e per dimensioni non eccessive, (il CSV) può essere un formato comodo e pratico.
-> [**Descrivendolo**](https://aborruso.github.io/posts/duckdb-intro-csv/#descrivere-i-csv), [“**standardizzandolo**”](https://aborruso.github.io/posts/duckdb-intro-csv/#csv-standard) e [**comprimendolo**](https://aborruso.github.io/posts/duckdb-intro-csv/#compressione-dei-file-csv), diventa molto più usabile.
+> [**Descrivendolo**](https://aborruso.github.io/posts/duckdb-intro-csv/#descrivere-i-csv), ["**standardizzandolo**"](https://aborruso.github.io/posts/duckdb-intro-csv/#csv-standard) e [**comprimendolo**](https://aborruso.github.io/posts/duckdb-intro-csv/#compressione-dei-file-csv), diventa molto più usabile.
 
 A proposito di "descrizione", il Dipartimento dell'Economia pubblica un file [dizionario](https://www.de.mef.gov.it/export/sites/sitodt/modules/documenti_it/attivo_patrimonio/2019/Dizionario_Immobili_2019.pdf "PDF, 200 Kb"), uno schema, ma soltanto in formato `PDF`. Quindi non è possibile creare una procedura automatica di importazione dei dati, in cui sono ad esempio impostati correttamente i tipi di campo (testuali, numerici, ecc.).
 
