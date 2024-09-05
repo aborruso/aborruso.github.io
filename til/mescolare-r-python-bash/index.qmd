@@ -1,6 +1,6 @@
 ---
 title: "Pagina con codice R, Python e utility Bash"
-description: "Combinare le variabili tra blocchi di codice"
+description: "Combinare le variabili tra blocchi di codice, in Quarto"
 date: "2023-01-07"
 draft: false
 engine: knitr
