@@ -240,9 +240,9 @@ background: #75aadb;
 <li><code>ALT+C</code> per avere la lista delle cartelle nella cartella corrente;</li>
 <li><code>CTRL+T</code> per avere la lista dei file della cartella corrente;</li>
 <li><code>ALT+P</code> per avere, da dentro <code>fzf</code>, la preview del file selezionato;</li>
-<li><code>zi</code> in accoppiata con zoxide per navigare velocemente tra le cartelle più “usate”.</li>
+<li><code>zi</code> in accoppiata con <a href="https://github.com/ajeetdsouza/zoxide"><code>zoxide</code></a> per navigare velocemente tra le cartelle più “usate”.</li>
 </ul>
-<p>A proposito della <em>preview</em>, è comoda questa configurazione, in cui si usa <code>bat</code> per la preview:</p>
+<p>A proposito della <em>preview</em>, è comoda questa configurazione, in cui si usa <a href="https://github.com/sharkdp/bat"><code>bat</code></a> per la preview:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">FZF_DEFAULT_OPTS</span><span class="op">=</span><span class="st">"--bind 'alt-p:toggle-preview' --preview-window=hidden --preview 'batcat --style=numbers --color=always --line-range :500 {}'"</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 

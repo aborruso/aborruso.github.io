@@ -14,9 +14,9 @@ categories:
 - `ALT+C` per avere la lista delle cartelle nella cartella corrente;
 - `CTRL+T` per avere la lista dei file della cartella corrente;
 - `ALT+P` per avere, da dentro `fzf`, la preview del file selezionato;
-- `zi` in accoppiata con zoxide per navigare velocemente tra le cartelle più "usate".
+- `zi` in accoppiata con [`zoxide`](https://github.com/ajeetdsouza/zoxide) per navigare velocemente tra le cartelle più "usate".
 
-A proposito della *preview*, è comoda questa configurazione, in cui si usa `bat` per la preview:
+A proposito della *preview*, è comoda questa configurazione, in cui si usa [`bat`](https://github.com/sharkdp/bat) per la preview:
 
 ```bash
 export FZF_DEFAULT_OPTS="--bind 'alt-p:toggle-preview' --preview-window=hidden --preview 'batcat --style=numbers --color=always --line-range :500 {}'"
