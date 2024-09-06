@@ -221,7 +221,7 @@
     "href": "til/fzf_base/index.html",
     "title": "Il meraviglioso fzf",
     "section": "",
-    "text": "CTRL+R per cercare nella history dei comandi;\nALT+C per avere la lista delle cartelle nella cartella corrente;\nCTRL+T per avere la lista dei file della cartella corrente;\nALT+P per avere, da dentro fzf, la preview del file selezionato;\nzi in accoppiata con zoxide per navigare velocemente tra le cartelle più “usate”.\n\nA proposito della preview, è comoda questa configurazione, in cui si usa bat per la preview:\nexport FZF_DEFAULT_OPTS=\"--bind 'alt-p:toggle-preview' --preview-window=hidden --preview 'batcat --style=numbers --color=always --line-range :500 {}'\"\n\n\n\n Torna in cima"
+    "text": "CTRL+R per cercare nella history dei comandi;\nALT+C per avere la lista delle cartelle nella cartella corrente;\nCTRL+T per avere la lista dei file della cartella corrente;\nALT+P per avere, da dentro fzf, la preview del file selezionato;\nzi in accoppiata con zoxide per navigare velocemente tra le cartelle più “usate”.\n\nA proposito della preview, è comoda questa configurazione, in cui si usa bat per la preview:\nexport FZF_DEFAULT_OPTS=\"--bind 'alt-p:toggle-preview' --preview-window=hidden --preview 'batcat --style=numbers --color=always --line-range :500 {}'\"\nInoltre, quando si scrive un comando si può attivare un auto completamento globale inserendo ** e poi TAB. Qualche esempio:\n\nls ** e poi TAB per avere la lista di tutti i file e cartelle;\ncat ** e poi TAB per avere la lista di tutti i file.\n\n\n\n\n Torna in cima"
   },
   {
     "objectID": "til/nushell-installare-supporto-dataframe/index.html",

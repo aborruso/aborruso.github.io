@@ -244,6 +244,11 @@ background: #75aadb;
 </ul>
 <p>A proposito della <em>preview</em>, è comoda questa configurazione, in cui si usa <a href="https://github.com/sharkdp/bat"><code>bat</code></a> per la preview:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">FZF_DEFAULT_OPTS</span><span class="op">=</span><span class="st">"--bind 'alt-p:toggle-preview' --preview-window=hidden --preview 'batcat --style=numbers --color=always --line-range :500 {}'"</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Inoltre, quando si scrive un comando si può attivare un auto completamento globale inserendo <code>**</code> e poi <code>TAB</code>. Qualche esempio:</p>
+<ul>
+<li><code>ls **</code> e poi <code>TAB</code> per avere la lista di tutti i file e cartelle;</li>
+<li><code>cat **</code> e poi <code>TAB</code> per avere la lista di tutti i file.</li>
+</ul>
 
 
 

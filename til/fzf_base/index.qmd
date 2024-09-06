@@ -21,3 +21,8 @@ A proposito della *preview*, è comoda questa configurazione, in cui si usa [`ba
 ```bash
 export FZF_DEFAULT_OPTS="--bind 'alt-p:toggle-preview' --preview-window=hidden --preview 'batcat --style=numbers --color=always --line-range :500 {}'"
 ```
+
+Inoltre, quando si scrive un comando si può attivare un auto completamento globale inserendo `**` e poi `TAB`. Qualche esempio:
+
+- `ls **` e poi `TAB` per avere la lista di tutti i file e cartelle;
+- `cat **` e poi `TAB` per avere la lista di tutti i file.
