@@ -175,7 +175,7 @@ Per il punto **`2`**, si possono forzare i tipi di campo (parametro `types`) e i
 
 ::: {.callout-tip}
 ## Nota bene
-Nella [prossima versione](https://github.com/duckdb/duckdb/discussions/13295#discussioncomment-10251603) di duckdb, basterà dichiarare che il separatore decimale sia la virgola e `duckdb` sarà in grado di inferire correttamente i tipi campo `FLOAT`; non sarà più necessario dichiararlo esplicitamente per ognuno.
+Nella [prossima versione](https://github.com/duckdb/duckdb/discussions/13295#discussioncomment-10251603) di duckdb, basterà dichiarare che il separatore decimale sia la virgola e `duckdb` sarà in grado di inferire correttamente i tipi campo `FLOAT`; non sarà più necessario dichiararlo esplicitamente per ognuno (vedi [paragrafo in fondo](#cosa-cambia-con-duckdb-v1.1.0.)).
 :::
 
 Per il punto **`3`** si può usare il parametro `filename`, che se impostato a `TRUE` aggiunge una colonna con il nome del file di origine.
@@ -344,3 +344,70 @@ Un buon esempio da emulare è quello di **OpenCoesione** - uno dei portali di da
 
 Sono **dati** al **2019**. Sarebbe interessante che fossero aggiornati con una **frequenza** **maggiore**, magari **annuale**.<br>
 Sul portale del Tesoro [si legge](https://portaletesoro.mef.gov.it/it/singlenewspublic.wp?contentId=NWS245) "*Fissata al 27 settembre 2024 la chiusura della rilevazione dei dati dei beni immobili pubblici riferiti al 31/12/2023*" e quindi c'è da aspettarsi un prossimo aggiornamento.
+
+---
+
+## Cosa cambia con DuckDB v1.1.0.
+
+Oggi, 9 settembre 2024, a una settimana dalla pubblicazione di questo articolo, è stata rilasciata la [versione 1.1.0 di DuckDB](https://duckdb.org/2024/09/09/announcing-duckdb-110.html).
+
+Risolve un bug che non consentiva di utilizzare pienamente il comodissimo parametro `decimal_separator`. Sino alla versione precedente infatti, se io impostavo `decimal_separator = ','`, DuckDB non era in grado di inferire correttamente i tipi campo `FLOAT` e li considerava sempre delle stringhe.<br>
+Ora, con la versione 1.1.0, basta dichiarare il separatore decimale e DuckDB sarà in grado di inferire correttamente i tipi campo `FLOAT`.
+
+Prima in modo un po' più macchinoso era necessario definire sia il separatore decimale che il tipo di campo, adesso basta il primo.<br>
+Sotto le due versioni del comando per creare il file `Parquet`:
+
+
+
+::: {.panel-tabset}
+## Versione 1.1.0
+
+```{.bash .code-overflow-wrap}
+duckdb -c "COPY (
+  SELECT
+    * REPLACE (regexp_replace(filename, '^.+/', '') AS filename)
+  FROM
+    read_csv_auto(
+      '$folder/../data/raw/*.csv',
+      filename = TRUE,
+      normalize_names = TRUE,
+      decimal_separator = ','
+    )
+) TO 'beni_immobili_pubblici.parquet' (
+  FORMAT PARQUET,
+  COMPRESSION 'zstd',
+  ROW_GROUP_SIZE 100_000
+)"
+```
+
+## Versione 1.0.0
+
+```{.bash .code-overflow-wrap}
+duckdb -c "COPY (
+  SELECT
+    * REPLACE (regexp_replace(filename, '^.+/', '') AS filename)
+  FROM
+    read_csv_auto(
+      '$folder/../data/raw/*.csv',
+      filename = TRUE,
+      types = { 'id_bene': 'VARCHAR',
+      'id_compendio': 'VARCHAR',
+      'latitudine': 'FLOAT',
+      'longitudine': 'FLOAT',
+      'superficie_mq': 'FLOAT',
+      'cubatura_mc': 'FLOAT',
+      'sup_aree_pertinenziali_mq': 'FLOAT',
+      'superficie_di_riferimento_mq': 'FLOAT' },
+      normalize_names = TRUE,
+      decimal_separator = ','
+    )
+) TO 'beni_immobili_pubblici.parquet' (
+  FORMAT PARQUET,
+  COMPRESSION 'zstd',
+  ROW_GROUP_SIZE 100_000
+)"
+```
+
+
+
+:::

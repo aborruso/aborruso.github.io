@@ -236,6 +236,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#elaborazione-dei-file-scaricati" id="toc-elaborazione-dei-file-scaricati" class="nav-link" data-scroll-target="#elaborazione-dei-file-scaricati">Elaborazione dei file scaricati</a></li>
   <li><a href="#analisi-geografica-dei-dati" id="toc-analisi-geografica-dei-dati" class="nav-link" data-scroll-target="#analisi-geografica-dei-dati">Analisi geografica dei dati</a></li>
   <li><a href="#alcune-considerazioni-sui-dati" id="toc-alcune-considerazioni-sui-dati" class="nav-link" data-scroll-target="#alcune-considerazioni-sui-dati">Alcune considerazioni sui dati</a></li>
+  <li><a href="#cosa-cambia-con-duckdb-v1.1.0." id="toc-cosa-cambia-con-duckdb-v1.1.0." class="nav-link" data-scroll-target="#cosa-cambia-con-duckdb-v1.1.0.">Cosa cambia con DuckDB v1.1.0.</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/aborruso/aborruso.github.io/edit/main/posts/beni_immobili_pubblica_amministrazione/index.qmd" class="toc-action"><i class="bi bi-github"></i>Modifica questa pagina</a></li><li><a href="https://github.com/aborruso/aborruso.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Segnala un problema</a></li></ul></div></nav>
 </nav>
@@ -433,7 +434,7 @@ Nota bene
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Nella <a href="https://github.com/duckdb/duckdb/discussions/13295#discussioncomment-10251603">prossima versione</a> di duckdb, basterà dichiarare che il separatore decimale sia la virgola e <code>duckdb</code> sarà in grado di inferire correttamente i tipi campo <code>FLOAT</code>; non sarà più necessario dichiararlo esplicitamente per ognuno.</p>
+<p>Nella <a href="https://github.com/duckdb/duckdb/discussions/13295#discussioncomment-10251603">prossima versione</a> di duckdb, basterà dichiarare che il separatore decimale sia la virgola e <code>duckdb</code> sarà in grado di inferire correttamente i tipi campo <code>FLOAT</code>; non sarà più necessario dichiararlo esplicitamente per ognuno (vedi <a href="#cosa-cambia-con-duckdb-v1.1.0.">paragrafo in fondo</a>).</p>
 </div>
 </div>
 <p>Per il punto <strong><code>3</code></strong> si può usare il parametro <code>filename</code>, che se impostato a <code>TRUE</code> aggiunge una colonna con il nome del file di origine.</p>
@@ -681,6 +682,60 @@ Figura&nbsp;3: file <code>GeoParquet</code> visualizzato in QGIS
 <p>Interrogando la banca dati si ha evidenza di alcuni beni con <strong>coordinate geografiche</strong> <strong>incoerenti</strong> con gli <strong>attributi territoriali</strong> dichiarati in altri campi. Ad esempio il bene con <code>id_bene=2442321</code>, ha coordinate YX <code>37.926914</code> e <code>15.28337</code>, ovvero in provincia di Messina; ma nel campo <code>comune_del_bene</code> il valore è “Frascati”.</p>
 <p>Aggiungo anche una nota sull’opportunità di un <strong>formato</strong> <strong>aggiuntivo</strong> di <strong>pubblicazione</strong>: il tante volte citato <strong><code>Parquet</code></strong>.<br> È diventato uno dei formati standard per consentire a chiunque di fare <strong>analisi</strong> <strong>rapide</strong> ed <strong>efficienti</strong>, anche su <strong>grandi</strong> <strong>quantità</strong> di <strong>dati</strong>, quasi su <strong>qualsiasi</strong> <strong>PC</strong>. E sarebbe ideale <strong>pubblicare la banca dati degli immobili pubblici anche in formato <code>Parquet</code></strong>.<br> Un buon esempio da emulare è quello di <strong>OpenCoesione</strong> - uno dei portali di dati aperti più importanti in Italia - che da febbraio 2024 pubblica anche in <a href="https://opencoesione.gov.it/it/news/opendata-rilasciati-dataset-formato-parquet/">questo formato</a>.</p>
 <p>Sono <strong>dati</strong> al <strong>2019</strong>. Sarebbe interessante che fossero aggiornati con una <strong>frequenza</strong> <strong>maggiore</strong>, magari <strong>annuale</strong>.<br> Sul portale del Tesoro <a href="https://portaletesoro.mef.gov.it/it/singlenewspublic.wp?contentId=NWS245">si legge</a> “<em>Fissata al 27 settembre 2024 la chiusura della rilevazione dei dati dei beni immobili pubblici riferiti al 31/12/2023</em>” e quindi c’è da aspettarsi un prossimo aggiornamento.</p>
+<hr>
+</section>
+<section id="cosa-cambia-con-duckdb-v1.1.0." class="level2">
+<h2 class="anchored" data-anchor-id="cosa-cambia-con-duckdb-v1.1.0.">Cosa cambia con DuckDB v1.1.0.</h2>
+<p>Oggi, 9 settembre 2024, a una settimana dalla pubblicazione di questo articolo, è stata rilasciata la <a href="https://duckdb.org/2024/09/09/announcing-duckdb-110.html">versione 1.1.0 di DuckDB</a>.</p>
+<p>Risolve un bug che non consentiva di utilizzare pienamente il comodissimo parametro <code>decimal_separator</code>. Sino alla versione precedente infatti, se io impostavo <code>decimal_separator = ','</code>, DuckDB non era in grado di inferire correttamente i tipi campo <code>FLOAT</code> e li considerava sempre delle stringhe.<br> Ora, con la versione 1.1.0, basta dichiarare il separatore decimale e DuckDB sarà in grado di inferire correttamente i tipi campo <code>FLOAT</code>.</p>
+<p>Prima in modo un po’ più macchinoso era necessario definire sia il separatore decimale che il tipo di campo, adesso basta il primo.<br> Sotto le due versioni del comando per creare il file <code>Parquet</code>:</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">Versione 1.1.0</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Versione 1.0.0</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> <span class="at">-c</span> <span class="st">"COPY (</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="st">  SELECT</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="st">    * REPLACE (regexp_replace(filename, '^.+/', '') AS filename)</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="st">  FROM</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="st">    read_csv_auto(</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="st">      '</span><span class="va">$folder</span><span class="st">/../data/raw/*.csv',</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="st">      filename = TRUE,</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="st">      normalize_names = TRUE,</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="st">      decimal_separator = ','</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="st">    )</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="st">) TO 'beni_immobili_pubblici.parquet' (</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="st">  FORMAT PARQUET,</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="st">  COMPRESSION 'zstd',</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="st">  ROW_GROUP_SIZE 100_000</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="st">)"</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">duckdb</span> <span class="at">-c</span> <span class="st">"COPY (</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="st">  SELECT</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="st">    * REPLACE (regexp_replace(filename, '^.+/', '') AS filename)</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="st">  FROM</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="st">    read_csv_auto(</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="st">      '</span><span class="va">$folder</span><span class="st">/../data/raw/*.csv',</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="st">      filename = TRUE,</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="st">      types = { 'id_bene': 'VARCHAR',</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="st">      'id_compendio': 'VARCHAR',</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="st">      'latitudine': 'FLOAT',</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="st">      'longitudine': 'FLOAT',</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="st">      'superficie_mq': 'FLOAT',</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="st">      'cubatura_mc': 'FLOAT',</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="st">      'sup_aree_pertinenziali_mq': 'FLOAT',</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="st">      'superficie_di_riferimento_mq': 'FLOAT' },</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="st">      normalize_names = TRUE,</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="st">      decimal_separator = ','</span></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="st">    )</span></span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="st">) TO 'beni_immobili_pubblici.parquet' (</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="st">  FORMAT PARQUET,</span></span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a><span class="st">  COMPRESSION 'zstd',</span></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a><span class="st">  ROW_GROUP_SIZE 100_000</span></span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a><span class="st">)"</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
 
 
 <div class="ojs-auto-generated hidden">
@@ -1043,7 +1098,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"loop":false,"selector":".lightbox","openEffect":"zoom","descPosition":"bottom","closeEffect":"zoom"});
+<script>var lightboxQuarto = GLightbox({"selector":".lightbox","descPosition":"bottom","loop":false,"openEffect":"zoom","closeEffect":"zoom"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {

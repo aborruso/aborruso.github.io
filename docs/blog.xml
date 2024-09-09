@@ -404,7 +404,7 @@ Nota bene
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Nella <a href="https://github.com/duckdb/duckdb/discussions/13295#discussioncomment-10251603">prossima versione</a> di duckdb, basterà dichiarare che il separatore decimale sia la virgola e <code>duckdb</code> sarà in grado di inferire correttamente i tipi campo <code>FLOAT</code>; non sarà più necessario dichiararlo esplicitamente per ognuno.</p>
+<p>Nella <a href="https://github.com/duckdb/duckdb/discussions/13295#discussioncomment-10251603">prossima versione</a> di duckdb, basterà dichiarare che il separatore decimale sia la virgola e <code>duckdb</code> sarà in grado di inferire correttamente i tipi campo <code>FLOAT</code>; non sarà più necessario dichiararlo esplicitamente per ognuno (vedi paragrafo in fondo).</p>
 </div>
 </div>
 <p>Per il punto <strong><code>3</code></strong> si può usare il parametro <code>filename</code>, che se impostato a <code>TRUE</code> aggiunge una colonna con il nome del file di origine.</p>
@@ -776,6 +776,152 @@ Figura&nbsp;3: file <code>GeoParquet</code> visualizzato in QGIS
 <p>Interrogando la banca dati si ha evidenza di alcuni beni con <strong>coordinate geografiche</strong> <strong>incoerenti</strong> con gli <strong>attributi territoriali</strong> dichiarati in altri campi. Ad esempio il bene con <code>id_bene=2442321</code>, ha coordinate YX <code>37.926914</code> e <code>15.28337</code>, ovvero in provincia di Messina; ma nel campo <code>comune_del_bene</code> il valore è “Frascati”.</p>
 <p>Aggiungo anche una nota sull’opportunità di un <strong>formato</strong> <strong>aggiuntivo</strong> di <strong>pubblicazione</strong>: il tante volte citato <strong><code>Parquet</code></strong>.<br> È diventato uno dei formati standard per consentire a chiunque di fare <strong>analisi</strong> <strong>rapide</strong> ed <strong>efficienti</strong>, anche su <strong>grandi</strong> <strong>quantità</strong> di <strong>dati</strong>, quasi su <strong>qualsiasi</strong> <strong>PC</strong>. E sarebbe ideale <strong>pubblicare la banca dati degli immobili pubblici anche in formato <code>Parquet</code></strong>.<br> Un buon esempio da emulare è quello di <strong>OpenCoesione</strong> - uno dei portali di dati aperti più importanti in Italia - che da febbraio 2024 pubblica anche in <a href="https://opencoesione.gov.it/it/news/opendata-rilasciati-dataset-formato-parquet/">questo formato</a>.</p>
 <p>Sono <strong>dati</strong> al <strong>2019</strong>. Sarebbe interessante che fossero aggiornati con una <strong>frequenza</strong> <strong>maggiore</strong>, magari <strong>annuale</strong>.<br> Sul portale del Tesoro <a href="https://portaletesoro.mef.gov.it/it/singlenewspublic.wp?contentId=NWS245">si legge</a> “<em>Fissata al 27 settembre 2024 la chiusura della rilevazione dei dati dei beni immobili pubblici riferiti al 31/12/2023</em>” e quindi c’è da aspettarsi un prossimo aggiornamento.</p>
+<hr>
+</section>
+<section id="cosa-cambia-con-duckdb-v1.1.0." class="level2">
+<h2 class="anchored" data-anchor-id="cosa-cambia-con-duckdb-v1.1.0.">Cosa cambia con DuckDB v1.1.0.</h2>
+<p>Oggi, 9 settembre 2024, a una settimana dalla pubblicazione di questo articolo, è stata rilasciata la <a href="https://duckdb.org/2024/09/09/announcing-duckdb-110.html">versione 1.1.0 di DuckDB</a>.</p>
+<p>Risolve un bug che non consentiva di utilizzare pienamente il comodissimo parametro <code>decimal_separator</code>. Sino alla versione precedente infatti, se io impostavo <code>decimal_separator = ','</code>, DuckDB non era in grado di inferire correttamente i tipi campo <code>FLOAT</code> e li considerava sempre delle stringhe.<br> Ora, con la versione 1.1.0, basta dichiarare il separatore decimale e DuckDB sarà in grado di inferire correttamente i tipi campo <code>FLOAT</code>.</p>
+<p>Prima in modo un po’ più macchinoso era necessario definire sia il separatore decimale che il tipo di campo, adesso basta il primo.<br> Sotto le due versioni del comando per creare il file <code>Parquet</code>:</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs"><li class="nav-item"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" aria-controls="tabset-1-1" aria-selected="true">Versione 1.1.0</a></li><li class="nav-item"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" aria-controls="tabset-1-2" aria-selected="false">Versione 1.0.0</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" aria-labelledby="tabset-1-1-tab">
+<div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="cb12-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">duckdb</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-c</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"COPY (</span></span>
+<span id="cb12-2"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  SELECT</span></span>
+<span id="cb12-3"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    * REPLACE (regexp_replace(filename, '^.+/', '') AS filename)</span></span>
+<span id="cb12-4"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  FROM</span></span>
+<span id="cb12-5"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    read_csv_auto(</span></span>
+<span id="cb12-6"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">      '</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$folder</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">/../data/raw/*.csv',</span></span>
+<span id="cb12-7"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">      filename = TRUE,</span></span>
+<span id="cb12-8"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">      normalize_names = TRUE,</span></span>
+<span id="cb12-9"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">      decimal_separator = ','</span></span>
+<span id="cb12-10"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    )</span></span>
+<span id="cb12-11"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">) TO 'beni_immobili_pubblici.parquet' (</span></span>
+<span id="cb12-12"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  FORMAT PARQUET,</span></span>
+<span id="cb12-13"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  COMPRESSION 'zstd',</span></span>
+<span id="cb12-14"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  ROW_GROUP_SIZE 100_000</span></span>
+<span id="cb12-15"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">)"</span></span></code></pre></div>
+</div>
+<div id="tabset-1-2" class="tab-pane" aria-labelledby="tabset-1-2-tab">
+<div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode bash code-overflow-wrap code-with-copy"><code class="sourceCode bash"><span id="cb13-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">duckdb</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-c</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"COPY (</span></span>
+<span id="cb13-2"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  SELECT</span></span>
+<span id="cb13-3"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    * REPLACE (regexp_replace(filename, '^.+/', '') AS filename)</span></span>
+<span id="cb13-4"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  FROM</span></span>
+<span id="cb13-5"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    read_csv_auto(</span></span>
+<span id="cb13-6"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">      '</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">$folder</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">/../data/raw/*.csv',</span></span>
+<span id="cb13-7"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">      filename = TRUE,</span></span>
+<span id="cb13-8"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">      types = { 'id_bene': 'VARCHAR',</span></span>
+<span id="cb13-9"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">      'id_compendio': 'VARCHAR',</span></span>
+<span id="cb13-10"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">      'latitudine': 'FLOAT',</span></span>
+<span id="cb13-11"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">      'longitudine': 'FLOAT',</span></span>
+<span id="cb13-12"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">      'superficie_mq': 'FLOAT',</span></span>
+<span id="cb13-13"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">      'cubatura_mc': 'FLOAT',</span></span>
+<span id="cb13-14"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">      'sup_aree_pertinenziali_mq': 'FLOAT',</span></span>
+<span id="cb13-15"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">      'superficie_di_riferimento_mq': 'FLOAT' },</span></span>
+<span id="cb13-16"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">      normalize_names = TRUE,</span></span>
+<span id="cb13-17"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">      decimal_separator = ','</span></span>
+<span id="cb13-18"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">    )</span></span>
+<span id="cb13-19"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">) TO 'beni_immobili_pubblici.parquet' (</span></span>
+<span id="cb13-20"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  FORMAT PARQUET,</span></span>
+<span id="cb13-21"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  COMPRESSION 'zstd',</span></span>
+<span id="cb13-22"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">  ROW_GROUP_SIZE 100_000</span></span>
+<span id="cb13-23"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">)"</span></span></code></pre></div>
+</div>
+</div>
+</div>
 
 
 <div class="ojs-auto-generated hidden">
