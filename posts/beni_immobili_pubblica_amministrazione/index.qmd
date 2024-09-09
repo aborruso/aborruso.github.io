@@ -351,13 +351,11 @@ Sul portale del Tesoro [si legge](https://portaletesoro.mef.gov.it/it/singlenews
 
 Oggi, 9 settembre 2024, a una settimana dalla pubblicazione di questo articolo, è stata rilasciata la [versione 1.1.0 di DuckDB](https://duckdb.org/2024/09/09/announcing-duckdb-110.html).
 
-Risolve un [*bug*](https://github.com/duckdb/duckdb/discussions/13295#discussioncomment-10251603) che non consentiva di utilizzare pienamente il comodissimo parametro `decimal_separator`. Sino alla versione precedente infatti, se io impostavo `decimal_separator = ','`, DuckDB non era in grado di inferire correttamente i tipi campo `FLOAT` e li considerava sempre delle stringhe.<br>
+Risolve un [*bug*](https://github.com/duckdb/duckdb/discussions/13295#discussioncomment-10251603) che non consentiva di utilizzare pienamente il comodissimo parametro `decimal_separator`: si era costretti comunque a dichiarare esplicitamente il tipo di campo `FLOAT` come in @lst-duckdb-parquet.
+Se si impostava `decimal_separator = ','`, DuckDB non era in grado di inferire correttamente i tipi campo `FLOAT` e li considerava sempre delle stringhe.<br>
 Ora, con la versione 1.1.0, basta dichiarare il separatore decimale e DuckDB sarà in grado di inferire correttamente i tipi campo `FLOAT`.
 
-Prima in modo un po' più macchinoso era necessario definire sia il separatore decimale che il tipo di campo, adesso basta il primo.<br>
 Sotto le due versioni del comando per creare il file `Parquet`:
-
-
 
 ::: {.panel-tabset}
 ## Versione 1.1.0
