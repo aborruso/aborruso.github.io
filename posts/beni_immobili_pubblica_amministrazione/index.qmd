@@ -48,10 +48,28 @@ Anche in questo caso è così, ma si notano colori insolitamente tenui anche in 
 
 L'ho fatto in blocco. Ho prima esplorato un po' [la pagina](https://www.de.mef.gov.it/it/attivita_istituzionali/patrimonio_pubblico/censimento_immobili_pubblici/open_data_immobili/dati_immobili_2019.html) e ho notato che tutti i file hanno un `URL` che inizia con la stringa `/modules` e termina per `.zip`. Allora ho iniziato dall'estrarre la lista di questi file, usando l'espressione regolare `/modules.+.zip`:
 
+Supponiamo di lavorare in una cartella immobili_pubblici:
+
+```{.bash .code-overflow-wrap}
+
+mkdir immobili_pubblici
+cd immobili_pubblici
+
+# usiamo la variabile $folder per tener traccia della cartella di lavoro
+
+folder=$(pwd)
+```
+
+
+
 ```{.bash .code-overflow-wrap}
 URL="https://www.de.mef.gov.it/it/attivita_istituzionali/patrimonio_pubblico/censimento_immobili_pubblici/open_data_immobili/dati_immobili_2019.html"
 
-curl -s -b "$folder"/tmp/cookies.txt -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36' "$URL" | grep -P -o '/modules.+.zip'
+# Otteniamo il file con i cookies del sito per poter accedere successivamente
+mkdir tmp
+curl -c "${folder}/tmp/cookies.txt" "$URL"
+
+curl -s -b "${folder}/tmp/cookies.txt" -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36' "$URL" | grep -P -o '/modules.+.zip'
 ```
 
 ::: {.callout-note}
