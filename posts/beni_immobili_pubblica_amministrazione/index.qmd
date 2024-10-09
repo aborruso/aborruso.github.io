@@ -69,7 +69,7 @@ URL="https://www.de.mef.gov.it/it/attivita_istituzionali/patrimonio_pubblico/cen
 mkdir tmp
 curl -c "${folder}/tmp/cookies.txt" "$URL"
 
-curl -s -b "${folder}/tmp/cookies.txt" -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36' "$URL" | grep -P -o '/modules.+.zip'
+curl -s -b "${folder}/tmp/cookies.txt" -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36' "$URL" | grep -P -o '/modules.+.zip' | tee "${folder}/tmp/filelist.txt"
 ```
 
 ::: {.callout-note}
@@ -92,6 +92,15 @@ In output si ottiene (ne metto soltanto una piccola parte):
 
 Con la lista degli URL dei file disponibile, basta generare un `while loop` per scaricarli tutti (sempre con `curl` o `wget`).
 
+```{.bash .code-overflow-wrap}
+mkdir -p "${folder}/data/raw" && cd "${folder}/data/raw/"
+
+# Scarico tutti i file in filelist.txt
+xargs -I '{}'  wget -c 'https://www.de.mef.gov.it{}' < "${folder}/tmp/filelist.txt"
+
+cd "${folder}"
+``` 
+
 ## Elaborazione dei file scaricati
 
 A partire dalla lista dei file `zip` scaricati, ancora una volta si può generare un `while loop` per estrarli tutti in una cartella temporanea.
@@ -101,9 +110,7 @@ Facendolo è emerso un primo piccolo problema: uno dei file `zip` ha una struttu
 :::
 
 ```{.bash .code-overflow-wrap}
-find "$folder"/../data/raw -type f -name "*.zip" | while IFS= read -r file; do
-    unzip -j "$file" -d "$folder"/../data/raw
-done
+find "${folder}/data/raw" -type f -name "*.zip" -exec unzip -j '{}' -d "${folder}/data/raw" \;
 ```
 
 Una volta estratti tutti i file e in presenza di uno schema dati comune, è molto semplice creare un unico file di output, usando `duckdb`.<br>
@@ -112,7 +119,7 @@ Il comando di base è:
 ::: {#lst-duckdb-merge}
 
 ```{.bash .code-overflow-wrap}
-duckdb --csv -c "SELECT * FROM read_csv_auto('$folder/../data/raw/*.csv')" >output.csv
+duckdb --csv -c "SELECT * FROM read_csv_auto('${folder}/data/raw/*.csv')" >output.csv
 ```
 
 esempio di unione di più file `CSV` a partire da una cartella che li contiene.
@@ -132,7 +139,9 @@ In assenza dell'informazione si può provare a estrarre l'*encoding* facendo inf
 Mappata la codifica di input li ho convertiti in `UTF-8` con `iconv`:
 
 ```{.bash .code-overflow-wrap}
-iconv -f Windows-1252 -t UTF-8 input.csv >output.csv
+mkdir -p "${folder}/data/raw/utf8"
+cd "${folder}/data/raw"
+find -type f -name "*.csv" -exec iconv -f Windows-1252 -t UTF-8 '{}' >'utf8/{}' \;
 ```
 
 ```{ojs}
