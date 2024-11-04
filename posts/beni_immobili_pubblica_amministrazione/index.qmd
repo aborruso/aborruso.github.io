@@ -159,7 +159,7 @@ Ma sono `{ojs} r_ita` righe per `{ojs} c` colonne, ovvero `{ojs} celle` di celle
 Si può modificare il comando di @lst-duckdb-merge in questo modo:
 
 ```{.bash .code-overflow-wrap}
-duckdb -c "COPY (SELECT * FROM read_csv_auto('$folder/../data/raw/*.csv'))
+duckdb -c "COPY (SELECT * FROM read_csv_auto('${folder}/data/raw/utf8/*.csv'))
 TO 'beni_immobili_pubblici.csv.gz'"
 ```
 
@@ -179,7 +179,7 @@ duckdb -c "COPY (
   SELECT
     *
   FROM
-    read_csv_auto('$folder/../data/raw/*.csv')
+    read_csv_auto('${folder}/data/raw/utf8/*.csv')
 ) TO 'beni_immobili_pubblici.parquet'
 (
   FORMAT PARQUET,
@@ -217,7 +217,7 @@ duckdb -c "COPY (
     * REPLACE (regexp_replace(filename, '^.+/', '') AS filename)
   FROM
     read_csv_auto(
-      '$folder/../data/raw/*.csv',
+      '${folder}/data/raw/utf8/*.csv',
       filename = TRUE,
       types = { 'id_bene': 'VARCHAR',
       'id_compendio': 'VARCHAR',
@@ -393,7 +393,7 @@ duckdb -c "COPY (
     * REPLACE (regexp_replace(filename, '^.+/', '') AS filename)
   FROM
     read_csv_auto(
-      '$folder/../data/raw/*.csv',
+      '${folder}/data/raw/utf8/*.csv',
       filename = TRUE,
       normalize_names = TRUE,
       decimal_separator = ','
@@ -413,7 +413,7 @@ duckdb -c "COPY (
     * REPLACE (regexp_replace(filename, '^.+/', '') AS filename)
   FROM
     read_csv_auto(
-      '$folder/../data/raw/*.csv',
+      '${folder}/data/raw/utf8/*.csv',
       filename = TRUE,
       types = { 'id_bene': 'VARCHAR',
       'id_compendio': 'VARCHAR',
