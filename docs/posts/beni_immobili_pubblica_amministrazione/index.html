@@ -7,6 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Andrea Borruso">
+<meta name="author" content="Matteo Fortini">
 <meta name="description" content="Un dataset “grosso”, comodo da gestire e interrogare con duckdb">
 
 <title>I (quasi) tre milioni di beni immobili della Pubblica Amministrazione – aborruso’s website</title>
@@ -195,8 +196,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
     
   <div class="quarto-title-meta-author">
-    <div class="quarto-title-meta-heading">Autore/Autrice</div>
-    <div class="quarto-title-meta-heading">Affiliazione</div>
+    <div class="quarto-title-meta-heading">Autori</div>
+    <div class="quarto-title-meta-heading">Affiliazioni</div>
     
       <div class="quarto-title-meta-contents">
       <p class="author"><a href="https://twitter.com/aborruso">Andrea Borruso</a> </p>
@@ -205,6 +206,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <p class="affiliation">
               <a href="https://ondata.it">
               Associazione onData
+              </a>
+            </p>
+        </div>
+      <div class="quarto-title-meta-contents">
+      <p class="author"><a href="https://www.linkedin.com/in/matteofortini/">Matteo Fortini</a> </p>
+    </div>
+    <div class="quarto-title-meta-contents">
+          <p class="affiliation">
+              <a href="https://innovazione.gov.it/">
+              Dipartimento per la Trasformazione Digitale
               </a>
             </p>
         </div>
@@ -363,11 +374,11 @@ Lista&nbsp;1: esempio di unione di più file <code>CSV</code> a partire da una c
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> <span class="st">"</span><span class="va">${folder}</span><span class="st">/data/raw"</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> <span class="at">-type</span> f <span class="at">-name</span> <span class="st">"*.csv"</span> <span class="at">-exec</span> iconv <span class="at">-f</span> Windows-1252 <span class="at">-t</span> UTF-8 <span class="st">'{}'</span> <span class="op">&gt;</span><span class="st">'utf8/{}'</span> <span class="dt">\;</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell">
-<div class="sourceCode cell-code hidden" id="cb7" data-startfrom="149" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 148;"><span id="cb7-149"><a href="#cb7-149" aria-hidden="true" tabindex="-1"></a>r<span class="op">=</span><span class="dv">2830855</span></span>
-<span id="cb7-150"><a href="#cb7-150" aria-hidden="true" tabindex="-1"></a>r_ita<span class="op">=</span>r<span class="op">.</span><span class="fu">toLocaleString</span>(<span class="st">'it-IT'</span>)<span class="op">;</span></span>
-<span id="cb7-151"><a href="#cb7-151" aria-hidden="true" tabindex="-1"></a>c<span class="op">=</span><span class="dv">51</span></span>
-<span id="cb7-152"><a href="#cb7-152" aria-hidden="true" tabindex="-1"></a>c_ita<span class="op">=</span>c<span class="op">.</span><span class="fu">toLocaleString</span>(<span class="st">'it-IT'</span>)<span class="op">;</span></span>
-<span id="cb7-153"><a href="#cb7-153" aria-hidden="true" tabindex="-1"></a>celle<span class="op">=</span>(r<span class="op">*</span>c)<span class="op">.</span><span class="fu">toLocaleString</span>(<span class="st">'it-IT'</span>)<span class="op">;</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code hidden" id="cb7" data-startfrom="160" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 159;"><span id="cb7-160"><a href="#cb7-160" aria-hidden="true" tabindex="-1"></a>r<span class="op">=</span><span class="dv">2830855</span></span>
+<span id="cb7-161"><a href="#cb7-161" aria-hidden="true" tabindex="-1"></a>r_ita<span class="op">=</span>r<span class="op">.</span><span class="fu">toLocaleString</span>(<span class="st">'it-IT'</span>)<span class="op">;</span></span>
+<span id="cb7-162"><a href="#cb7-162" aria-hidden="true" tabindex="-1"></a>c<span class="op">=</span><span class="dv">51</span></span>
+<span id="cb7-163"><a href="#cb7-163" aria-hidden="true" tabindex="-1"></a>c_ita<span class="op">=</span>c<span class="op">.</span><span class="fu">toLocaleString</span>(<span class="st">'it-IT'</span>)<span class="op">;</span></span>
+<span id="cb7-164"><a href="#cb7-164" aria-hidden="true" tabindex="-1"></a>celle<span class="op">=</span>(r<span class="op">*</span>c)<span class="op">.</span><span class="fu">toLocaleString</span>(<span class="st">'it-IT'</span>)<span class="op">;</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-1-1" data-nodetype="declaration">
@@ -1116,7 +1127,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"selector":".lightbox","loop":false,"descPosition":"bottom","openEffect":"zoom","closeEffect":"zoom"});
+<script>var lightboxQuarto = GLightbox({"descPosition":"bottom","openEffect":"zoom","loop":false,"closeEffect":"zoom","selector":".lightbox"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {
