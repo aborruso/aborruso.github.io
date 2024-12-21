@@ -4,6 +4,17 @@ description: 'Un dataset "grosso", comodo da gestire e interrogare con duckdb'
 date: "2024-09-02"
 draft: false
 search: true
+author:
+  - name: "Andrea Borruso"
+    affiliation:
+      - name: Associazione onData
+        url: https://ondata.it
+    url: https://twitter.com/aborruso
+  - name: "Matteo Fortini"
+    affiliation:
+      - name: "Dipartimento per la Trasformazione Digitale"
+        url: https://innovazione.gov.it/
+    url: https://www.linkedin.com/in/matteofortini/
 categories:
   - duckdb
   - open-data
@@ -99,7 +110,7 @@ mkdir -p "${folder}/data/raw" && cd "${folder}/data/raw/"
 xargs -I '{}'  wget -c 'https://www.de.mef.gov.it{}' < "${folder}/tmp/filelist.txt"
 
 cd "${folder}"
-``` 
+```
 
 ## Elaborazione dei file scaricati
 
