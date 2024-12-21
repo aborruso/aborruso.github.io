@@ -10,12 +10,12 @@ categories:
   - html
 ---
 
-Avevo la necessità di pubblicare un file HTML in un sito Quarto, ma senza che fosse gestito da Quarto. Volevo che il file fosse pubblicato così com'era tramite GitHub Pages.<br>
-Il sito era questo e qui il *rendering* dei file viene fatto nella `docs` che fa da sorgente alle *GitHub Pages*. Di default, se li lancia il rendering del sito, la cartella `docs` viene cancellata e riscritta. Quindi, se metto un file HTML nella cartella `docs`, questo viene cancellato.<br>
+Avevo la necessità di pubblicare un file HTML in un sito Quarto, ma senza che fosse gestito da Quarto. Volevo che il file fosse pubblicato così com'era, tramite *GitHub Pages*.<br>
+Il sito era questo e qui il *rendering* dei file viene fatto nella cartella `docs`, che fa da sorgente alle *GitHub Pages*. Di *default*, se si lancia il rendering del sito, la cartella `docs` viene cancellata e riscritta. Quindi, se metto un file HTML nella cartella `docs`, questo viene cancellato.<br>
 
 Per evitarlo si può usare l'opzione `resources` in `_quarto.toml` e specificare quali file e/o cartelle non devono essere cancellati e copiati (in questo caso) nella cartella `docs`.
 
-Sotto un esempio, in cui ho una cartella `garage`, impostata con un opzione *glob* (`/*/`), che fa in modo di pubblicare tutti i contenuti che contiene al suo interno.
+Sotto un esempio di configurazione, in cui ho una cartella `garage`, impostata con un opzione *glob* (`/*/`), che fa in modo di pubblicare tutti i contenuti che contiene al suo interno.
 
 ```yaml
 project:
