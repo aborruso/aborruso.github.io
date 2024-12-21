@@ -2,13 +2,13 @@ project:
   type: website
   render:
     - "*.qmd"
-    - "!garage/"
     - "!tmp*qmd"
     - "!risorse/"
     - "!note-compilazione.md"
   output-dir: docs
   resources:
     - "googlecd08604f4edafe6e.html"
+    -  "garage/*/"
 
 website:
   site-url: https://aborruso.github.io

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub File Changes RSS Feed Bookmarklet</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #24292e;
+        }
+
+        h1 {
+            color: #2f363d;
+            border-bottom: 1px solid #e1e4e8;
+            padding-bottom: 0.3em;
+        }
+
+        .drag-link {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #2ea44f;
+            color: white !important;
+            text-decoration: none !important;
+            border-radius: 6px;
+            font-weight: 600;
+            margin: 20px 0;
+            cursor: move;
+        }
+
+        .instructions {
+            background: #f6f8fa;
+            border: 1px solid #e1e4e8;
+            border-radius: 6px;
+            padding: 16px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>GitHub File Changes RSS Feed Bookmarklet</h1>
+
+    <p>Every file on GitHub has an RSS feed for its changes. This bookmarklet helps you quickly get the RSS feed URL for any GitHub file you're viewing.</p>
+
+    <div class="instructions">
+        <h2>How to use:</h2>
+        <ol>
+            <li>Drag the button below to your browser's bookmarks bar</li>
+            <li>Navigate to any file on GitHub</li>
+            <li>Click the bookmarklet in your bookmarks bar</li>
+            <li>Copy the RSS feed URL from the popup</li>
+        </ol>
+    </div>
+
+    <p>Drag this button to your bookmarks bar: </p>
+
+    <a class="drag-link" href="javascript:void function(){if(!window.location.href.includes('github.com'))return void alert('This bookmarklet only works on GitHub pages');const e=window.location.pathname.split('/');if(e.length<5||'blob'!==e[3])return void alert('This does not appear to be a GitHub file page');const t=e[1],n=e[2],o=e[4],i=e.slice(5).join('/'),l=document.createElement('div');l.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);display:flex;justify-content:center;align-items:center;z-index:9999;';const d=document.createElement('div');d.style.cssText='background:white;padding:20px;border-radius:6px;max-width:500px;width:90%;position:relative;';const a=document.createElement('span');a.innerHTML='×',a.style.cssText='position:absolute;right:10px;top:5px;cursor:pointer;font-size:20px',a.onclick=function(){l.remove()},d.appendChild(a);const r='https://github.com/'+t+'/'+n+'/commits/'+o+'/'+i+'.atom';d.innerHTML+='<h3 style=\'margin-top:0\'>RSS Feed URL</h3><input type=\'text\' value=\''+r+'\' style=\'width:100%;padding:8px;margin:10px 0;border:1px solid #ddd;border-radius:4px;\' onclick=\'this.select()\'><p style=\'margin-bottom:0;color:#666;\'>Click the URL to select it, then copy to your clipboard.</p>',l.appendChild(d),document.body.appendChild(l),l.addEventListener('click',function(e){e.target===l&&l.remove()})}();">Get GitHub RSS Feed</a>
+
+    <p>Once installed, you can use this bookmarklet on any GitHub file page to quickly get its RSS feed URL.</p>
+
+    <div class="instructions">
+        <h3>Note:</h3>
+        <p>The RSS feed URL will be in the format: <code>https://github.com/[user]/[repo]/commits/[branch]/[path].atom</code></p>
+        <p>You can use this URL in any RSS reader to follow changes to the specific file.</p>
+    </div>
+</body>
+</html>
