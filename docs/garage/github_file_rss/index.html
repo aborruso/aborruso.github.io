@@ -39,6 +39,33 @@
             padding: 16px;
             margin: 20px 0;
         }
+
+        .credits {
+            font-size: 0.9em;
+            color: #586069;
+            margin-top: 20px;
+        }
+
+        .credits a {
+            color: #0366d6;
+            text-decoration: none;
+        }
+
+        .credits a:hover {
+            text-decoration: underline;
+        }
+
+        .example {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .example img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+        }
     </style>
 </head>
 <body>
@@ -67,5 +94,17 @@
         <p>The RSS feed URL will be in the format: <code>https://github.com/[user]/[repo]/commits/[branch]/[path].atom</code></p>
         <p>You can use this URL in any RSS reader to follow changes to the specific file.</p>
     </div>
+
+    <div class="example">
+        <p>Below is an example of how to use the bookmarklet to extract the RSS feed of a GitHub page:</p>
+        <img src="github_rss.gif" alt="Example usage of the GitHub RSS bookmarklet">
+    </div>
+
+    <hr>
+
+    <div class="credits">
+        <p>Created by <a href="https://aborruso.github.io/" target="_blank">Andrea Borruso</a> with <a href="https://claude.ai/chat" target="_blank">Claude</a>.</p>
+    </div>
+
 </body>
 </html>
