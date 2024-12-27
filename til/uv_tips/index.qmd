@@ -1,0 +1,25 @@
+---
+title: "uv: installare o lanciare un'applicazione python"
+description: "Come farlo"
+date: "2024-12-27"
+draft: false
+categories:
+  - python
+  - -sysadmin
+---
+
+[`uv`](https://github.com/astral-sh/uv) è un gestore di pacchetti e strumenti per Python, estremamente veloce e scritto in Rust. È progettato per sostituire strumenti comuni come pip, poetry e virtualenv, offrendo un'interfaccia familiare ma con prestazioni da 10 a 100 volte superiori. uv gestisce le versioni di Python, le dipendenze dei progetti e supporta script singoli con metadati inline, tutto in modo efficiente e scalabile. Disponibile su macOS, Linux e Windows, uv rappresenta una soluzione innovativa per la gestione dei progetti Python.
+
+Per **installare** un **pacchetto** e renderlo disponibile a tutto l'ambiente senza dover attivare un `virtualenv`, è possibile lanciare questo comando:
+
+```bash
+uv tool install nome_pacchetto
+```
+
+Per lanciarlo invece in modo temporaneo, è possibile usare il comando:
+
+```bash
+uvx pycowsay hello from uv
+```
+
+`uvx` è un alias del comando `uv tool run`. In questo caso verrà installato ed eseguito temporaneamente `pycowsay`, senza doverlo installare in modo permanente.

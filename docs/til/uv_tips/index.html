@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Andrea Borruso">
+<meta name="description" content="Come farlo">
 
-<title>TIL (Today I Learned) – aborruso’s website</title>
+<title>uv: installare o lanciare un’applicazione python – aborruso's website</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,28 +22,60 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./risorse/favicon.png" rel="icon" type="image/png">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../risorse/favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -69,75 +103,36 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Ricerca"
   }
 }</script>
-<script>
+<style>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
+      .quarto-title-block .quarto-title-banner h1,
+      .quarto-title-block .quarto-title-banner h2,
+      .quarto-title-block .quarto-title-banner h3,
+      .quarto-title-block .quarto-title-banner h4,
+      .quarto-title-block .quarto-title-banner h5,
+      .quarto-title-block .quarto-title-banner h6
+      {
+        color: #ffffff;
+      }
 
-    const options = {
-      valueNames: ['listing-date','listing-title',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-title-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
+      .quarto-title-block .quarto-title-banner {
+        color: #ffffff;
+background: #75aadb;
+      }
+</style>
 <link rel="alternate" type="application/rss+xml" title="Il blog del sito di Andrea Borruso" href="https://aborruso.github.io/blog.xml">
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
-
-<link rel="stylesheet" href="styles.css">
-<meta property="og:title" content="TIL (Today I Learned) – aborruso’s website">
+<link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="uv: installare o lanciare un’applicazione python – aborruso’s website">
+<meta property="og:description" content="Come farlo">
 <meta property="og:image" content="https://aborruso.github.io/risorse/opengraph.png">
 <meta property="og:site_name" content="aborruso's website">
 <meta property="og:locale" content="it_IT">
 <meta property="og:image:height" content="630">
 <meta property="og:image:width" content="1200">
-<meta name="twitter:title" content="TIL (Today I Learned) – aborruso’s website">
+<meta name="twitter:title" content="uv: installare o lanciare un’applicazione python – aborruso’s website">
+<meta name="twitter:description" content="Come farlo">
 <meta name="twitter:image" content="https://aborruso.github.io/risorse/twitter-card.png">
 <meta name="twitter:creator" content="@aborruso">
 <meta name="twitter:card" content="summary_large_image">
@@ -145,7 +140,7 @@ window.Quarto = {
 <meta name="twitter:image-width" content="1024">
 </head>
 
-<body class="nav-fixed">
+<body class="floating nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top quarto-banner">
@@ -158,15 +153,15 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html"> 
+    <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./blog.html"> 
+    <a class="nav-link" href="../../blog.html"> 
 <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./til.html" aria-current="page"> 
+    <a class="nav-link" href="../../til.html"> 
 <span class="menu-text">TIL</span></a>
   </li>  
 </ul>
@@ -177,222 +172,78 @@ window.Quarto = {
     </nav>
 </header>
 <!-- content -->
-<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+<header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-page">
-      <h1 class="title">TIL (Today I Learned)</h1>
-                      </div>
+    <div class="quarto-title column-body">
+      <h1 class="title">uv: installare o lanciare un’applicazione python</h1>
+                  <div>
+        <div class="description">
+          Come farlo
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">python</div>
+                <div class="quarto-category">-sysadmin</div>
+              </div>
+                  </div>
   </div>
     
-  
-  <div class="quarto-title-meta column-page">
+  <div class="quarto-title-meta-author">
+    <div class="quarto-title-meta-heading">Autore/Autrice</div>
+    <div class="quarto-title-meta-heading">Affiliazione</div>
+    
+      <div class="quarto-title-meta-contents">
+      <p class="author"><a href="https://twitter.com/aborruso">Andrea Borruso</a> </p>
+    </div>
+    <div class="quarto-title-meta-contents">
+          <p class="affiliation">
+              <a href="https://ondata.it">
+              Associazione onData
+              </a>
+            </p>
+        </div>
+    </div>
 
-      
+  <div class="quarto-title-meta">
+
+        
+      <div>
+      <div class="quarto-title-meta-heading">Data di Pubblicazione</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">27 dicembre 2024</p>
+      </div>
+    </div>
     
       
     </div>
     
   
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
     </div>
 <!-- main -->
-<main class="content quarto-banner-title-block column-page" id="quarto-document-content">
+<main class="content quarto-banner-title-block" id="quarto-document-content">
 
 
 
 
 
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Che vuol dire TIL?
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Mi piace quando le persone usano il loro sito web, per prendere appunti su alcune delle cose che imparano/scoprono. Come fa il mitico <a href="https://til.simonwillison.net/">Simon Willison</a>.<br> E Simon lo fa in modalità <strong>TIL</strong>, ovvero <em>Today I Learned</em>.</p>
-<p>I miei post qui saranno spesso “piccoli”, dei <code>TIL</code> in forma di appunti, con qualche possibile lacuna e/o bruttura.</p>
-</div>
-</div>
+<p><a href="https://github.com/astral-sh/uv"><code>uv</code></a> è un gestore di pacchetti e strumenti per Python, estremamente veloce e scritto in Rust. È progettato per sostituire strumenti comuni come pip, poetry e virtualenv, offrendo un’interfaccia familiare ma con prestazioni da 10 a 100 volte superiori. uv gestisce le versioni di Python, le dipendenze dei progetti e supporta script singoli con metadati inline, tutto in modo efficiente e scalabile. Disponibile su macOS, Linux e Windows, uv rappresenta una soluzione innovativa per la gestione dei progetti Python.</p>
+<p>Per <strong>installare</strong> un <strong>pacchetto</strong> e renderlo disponibile a tutto l’ambiente senza dover attivare un <code>virtualenv</code>, è possibile lanciare questo comando:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> tool install nome_pacchetto</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Per lanciarlo invece in modo temporaneo, è possibile usare il comando:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uvx</span> pycowsay hello from uv</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><code>uvx</code> è un alias del comando <code>uv tool run</code>. In questo caso verrà installato ed eseguito temporaneamente <code>pycowsay</code>, senza doverlo installare in modo permanente.</p>
 
 
 
-
-<div class="quarto-listing quarto-listing-container-table" id="listing-listing">
-<div class="listing-actions-group">
-   <div class="input-group input-group-sm quarto-listing-sort">
-     <span class="input-group-text"><i class="bi bi-sort-down"></i></span>
-     <select id="listing-listing-sort" class="form-select" aria-label="Ordinare per" onchange="window['quarto-listings']['listing-listing'].sort(this.options[this.selectedIndex].value, { order: this.options[this.selectedIndex].getAttribute('data-direction')})">
-       <option value="" disabled="" selected="" hidden="">Ordinare per</option>
-       <option value="index" data-direction="asc">Predefinito</option>
-         <option value="listing-date-sort" data-direction="asc">
-          Data - Meno recente
-        </option>
-         <option value="listing-date-sort" data-direction="desc">
-          Data - Più recente
-        </option>
-         <option value="listing-title-sort" data-direction="asc">
-          Titolo
-        </option>
-     </select>
-  </div>
-    <div class="input-group input-group-sm quarto-listing-filter">
-      <span class="input-group-text"><i class="bi bi-search"></i></span>
-      <input type="text" class="search form-control" placeholder="Filtro">
-    </div>
-</div>
-<table class="quarto-listing-table table">
-<thead>
-<tr>
-<th>
-<a class="sort" data-sort="listing-date-sort" onclick="if (this.classList.contains('sort-asc')) { this.classList.add('sort-desc'); this.classList.remove('sort-asc') } else { this.classList.add('sort-asc'); this.classList.remove('sort-desc')} return false;">Data</a>
-</th>
-<th>
-<a class="sort" data-sort="listing-title-sort" onclick="if (this.classList.contains('sort-asc')) { this.classList.add('sort-desc'); this.classList.remove('sort-asc') } else { this.classList.add('sort-asc'); this.classList.remove('sort-desc')} return false;">Titolo</a>
-</th>
-</tr>
-</thead>
-<tbody class="list">
-<tr data-index="0" data-categories="python,-sysadmin" data-listing-date-sort="1735254000000" data-listing-file-modified-sort="1735314560632" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="138" data-listing-title-sort="uv: installare o lanciare un'applicazione python" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">27 dic 2024</span>
-</td>
-<td>
-<a href="./til/uv_tips/index.html" class="title listing-title">uv: installare o lanciare un’applicazione python</a>
-</td>
-</tr>
-<tr data-index="1" data-categories="quarto,til,github,html" data-listing-date-sort="1734735600000" data-listing-file-modified-sort="1734795746084" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="149" data-listing-title-sort="GitHub pages e file HTML in un sito Quarto" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">21 dic 2024</span>
-</td>
-<td>
-<a href="./til/html-pages-with-quarto/index.html" class="title listing-title">GitHub pages e file HTML in un sito Quarto</a>
-</td>
-</tr>
-<tr data-index="2" data-categories="search,til,cli" data-listing-date-sort="1725487200000" data-listing-file-modified-sort="1726645536577" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="185" data-listing-title-sort="Il meraviglioso fzf" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">5 set 2024</span>
-</td>
-<td>
-<a href="./til/fzf_base/index.html" class="title listing-title">Il meraviglioso fzf</a>
-</td>
-</tr>
-<tr data-index="3" data-categories="qsv,til,cli" data-listing-date-sort="1687989600000" data-listing-file-modified-sort="1706959228306" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="133" data-listing-title-sort="Installazione QSV" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">29 giu 2023</span>
-</td>
-<td>
-<a href="./til/compilare-qsv/index.html" class="title listing-title">Installazione QSV</a>
-</td>
-</tr>
-<tr data-index="4" data-categories="duckdb,spatial,cli" data-listing-date-sort="1682200800000" data-listing-file-modified-sort="1681114605504" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="82" data-listing-title-sort="DuckDB: l'estensione spaziale" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">23 apr 2023</span>
-</td>
-<td>
-<a href="./til/installare-duckdb-spatial/index.html" class="title listing-title">DuckDB: l’estensione spaziale</a>
-</td>
-</tr>
-<tr data-index="5" data-categories="duckdb,csv,parquet,performance" data-listing-date-sort="1677884400000" data-listing-file-modified-sort="1725544526852" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="198" data-listing-title-sort="DuckDB: creare un file parquet a partire da file di testo di grandi dimensioni" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">4 mar 2023</span>
-</td>
-<td>
-<a href="./til/duckdb-ottimizzazione-performance-import-csv-jsonl-creazione-parquet/index.html" class="title listing-title">DuckDB: creare un file parquet a partire da file di testo di grandi dimensioni</a>
-</td>
-</tr>
-<tr data-index="6" data-categories="quarto,css" data-listing-date-sort="1677366000000" data-listing-file-modified-sort="1678636883576" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="82" data-listing-title-sort="Quarto: applicare stile CSS" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">26 feb 2023</span>
-</td>
-<td>
-<a href="./til/quarto-applicare-stili-span/index.html" class="title listing-title">Quarto: applicare stile CSS</a>
-</td>
-</tr>
-<tr data-index="7" data-categories="nushell,til" data-listing-date-sort="1674860400000" data-listing-file-modified-sort="1678636883546" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="122" data-listing-title-sort="Estrarre la lista dei file creati più di 30 giorni fa" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">28 gen 2023</span>
-</td>
-<td>
-<a href="./til/nushell-lista-file-piu-vecchi-di/index.html" class="title listing-title">Estrarre la lista dei file creati più di 30 giorni fa</a>
-</td>
-</tr>
-<tr data-index="8" data-categories="quarto,til" data-listing-date-sort="1673046000000" data-listing-file-modified-sort="1725544209052" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="117" data-listing-title-sort="Pagina con codice R, Python e utility Bash" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">7 gen 2023</span>
-</td>
-<td>
-<a href="./til/mescolare-r-python-bash/index.html" class="title listing-title">Pagina con codice R, Python e utility Bash</a>
-</td>
-</tr>
-<tr data-index="9" data-categories="nushell,dataframe,cli,til" data-listing-date-sort="1670022000000" data-listing-file-modified-sort="1678636883136" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="31" data-listing-title-sort="Nushell: installarlo con il supporto ai dataframe" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">3 dic 2022</span>
-</td>
-<td>
-<a href="./til/nushell-installare-supporto-dataframe/index.html" class="title listing-title">Nushell: installarlo con il supporto ai dataframe</a>
-</td>
-</tr>
-<tr data-index="10" data-categories="duckdb,csv,til,parquet,cli" data-listing-date-sort="1669590000000" data-listing-file-modified-sort="1678636882926" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="145" data-listing-title-sort="DuckDB: creare un file parquet a partire da un CSV" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">28 nov 2022</span>
-</td>
-<td>
-<a href="./til/duckdb-creare-parquet-csv/index.html" class="title listing-title">DuckDB: creare un file parquet a partire da un CSV</a>
-</td>
-</tr>
-<tr data-index="11" data-categories="quarto,csv,til,rstats" data-listing-date-sort="1669417200000" data-listing-file-modified-sort="1678636883306" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="52" data-listing-title-sort="Quarto: renderizzare una tabella a partire da un CSV" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">26 nov 2022</span>
-</td>
-<td>
-<a href="./til/quarto-renderizzare-tabelle-r/index.html" class="title listing-title">Quarto: renderizzare una tabella a partire da un CSV</a>
-</td>
-</tr>
-<tr data-index="12" data-categories="quarto,altair,grafici,observable,til" data-listing-date-sort="1669071600000" data-listing-file-modified-sort="1678636883246" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="141" data-listing-title-sort="Fare convivere una cella Observable e un grafico Altair in Quarto" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">22 nov 2022</span>
-</td>
-<td>
-<a href="./til/quarto-mescolare-observable-altair/index.html" class="title listing-title">Fare convivere una cella Observable e un grafico Altair in Quarto</a>
-</td>
-</tr>
-<tr data-index="13" data-categories="quarto,csv,observable,til" data-listing-date-sort="1668985200000" data-listing-file-modified-sort="1705245531055" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="92" data-listing-title-sort="Quarto: leggere un CSV via Obeservable e visualizzare i dati" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">21 nov 2022</span>
-</td>
-<td>
-<a href="./til/renderizzare-csv-quarto-observable/index.html" class="title listing-title">Quarto: leggere un CSV via Obeservable e visualizzare i dati</a>
-</td>
-</tr>
-<tr data-index="14" data-categories="cli,til,grep" data-listing-date-sort="1668898800000" data-listing-file-modified-sort="1678636883086" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="186" data-listing-title-sort="Come filtrare un file di testo a partire da una lista di stringhe" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">20 nov 2022</span>
-</td>
-<td>
-<a href="./til/filtrare-file-elenco-file-esterno/index.html" class="title listing-title">Come filtrare un file di testo a partire da una lista di stringhe</a>
-</td>
-</tr>
-<tr data-index="15" data-categories="quarto,til,github" data-listing-date-sort="1668812400000" data-listing-file-modified-sort="1678636883436" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="248" data-listing-title-sort="Il mio primo blog post" data-listing-filename-sort="index.qmd">
-<td>
-<span class="listing-date">19 nov 2022</span>
-</td>
-<td>
-<a href="./til/un-sito-in-quarto/index.html" class="title listing-title">Il mio primo blog post</a>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="listing-no-matching d-none">
-Nessun risultato
-</div>
-</div><a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Torna in cima</a></main> <!-- /main -->
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Torna in cima</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -828,7 +679,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><ul><li><a href="https://github.com/aborruso/aborruso.github.io/edit/main/til.qmd" class="toc-action"><i class="bi bi-github"></i>Modifica questa pagina</a></li><li><a href="https://github.com/aborruso/aborruso.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Segnala un problema</a></li></ul></div></div>
+    <div class="toc-actions"><ul><li><a href="https://github.com/aborruso/aborruso.github.io/edit/main/til/uv_tips/index.qmd" class="toc-action"><i class="bi bi-github"></i>Modifica questa pagina</a></li><li><a href="https://github.com/aborruso/aborruso.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Segnala un problema</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">
@@ -838,7 +689,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </a>
   </li>  
     <li class="nav-item compact">
-    <a class="nav-link" href="./blog.xml">
+    <a class="nav-link" href="../../blog.xml">
       <i class="bi bi-rss" role="img">
 </i> 
     </a>
