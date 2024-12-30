@@ -23,3 +23,23 @@ uvx pycowsay hello from uv
 ```
 
 `uvx` è un alias del comando `uv tool run`. In questo caso verrà installato ed eseguito temporaneamente `pycowsay`, senza doverlo installare in modo permanente.
+
+Se si vuole aggiungere una **dipendenza** a un progetto, è possibile farlo con il comando come:
+
+```bash
+uv add torch torchvision open-webui
+```
+
+Questo comando aggiungerà le dipendenze `torch` di `torchvision` al modulo `open-webui` già installato.
+
+Se si vuole fare l'update di un pacchetto già installato:
+
+```bash
+uv tool upgrade nome_pacchetto
+```
+
+Se si vuole disinstallare un pacchetto:
+
+```bash
+uv tool uninstall nome_pacchetto
+```
