@@ -311,7 +311,9 @@ font-weight: bold;
 font-style: inherit;">replace</span> <span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
-font-style: inherit;">view</span> PNRR_Progetti <span class="kw" style="color: #003B4F;
+font-style: inherit;">view</span> <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">"PNRR_Progetti"</span> <span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;">AS</span></span>

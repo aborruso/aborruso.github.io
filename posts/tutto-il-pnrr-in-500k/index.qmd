@@ -174,7 +174,7 @@ Il database DuckDB è stato implementato creando una vista per ogni file `parque
 
 ```sql
 CREATE
-OR replace view PNRR_Progetti AS
+OR replace view "PNRR_Progetti" AS
 SELECT
   *
 FROM
