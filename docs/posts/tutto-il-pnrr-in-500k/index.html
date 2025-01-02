@@ -387,7 +387,7 @@ Figura&nbsp;4: Tabella pivot con numero di progetti per Missione per Regione
 </section>
 <section id="come-è-stato-creato-il-database" class="level2">
 <h2 class="anchored" data-anchor-id="come-è-stato-creato-il-database">Come è stato creato il database</h2>
-<p>L’ispirazione per la creazione di questo modalità di accesso ai dati del PNRR, viene dalla lettura di <a href="https://motherduck.com/blog/from-data-lake-to-lakehouse-can-duckdb-be-the-best-portable-data-catalog/">questo ottimo articolo</a>, in cui si spiega come DuckDB possa diventare un <strong>catalogo portatile</strong> per la <strong>gestione</strong> dei <strong>dati</strong>, da fonti diverse (file <code>parquet</code> da fonti Amazon S3, database PostgreSQL, tabelle su Google Cloud, ecc.).</p>
+<p>L’ispirazione per la creazione di questo modalità di accesso ai dati del PNRR, viene dalla lettura di <a href="https://motherduck.com/blog/from-data-lake-to-lakehouse-duckdb-portable-catalog/">questo ottimo articolo</a>, in cui si spiega come DuckDB possa diventare un <strong>catalogo portatile</strong> per la <strong>gestione</strong> dei <strong>dati</strong>, da fonti diverse (file <code>parquet</code> da fonti Amazon S3, database PostgreSQL, tabelle su Google Cloud, ecc.).</p>
 <p>Per questo file è stata replicata la logica descritta nell’articolo, ma sono state <strong>necessarie</strong> delle <strong>pre lavorazioni</strong> dei dati.</p>
 <p>Sul sito Italiadomani i file sono disponibili in formato <code>CSV</code> (<code>JSON</code> e <code>XLSX</code>) e una query <code>SQL</code> tramite DuckDB si può fare puntando direttamente all’URL del file. Per sapere ad esempio quanti sono i progetti del PNRR la <code>query</code> sarebbe:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">FROM</span> read_csv_auto(<span class="st">'https://www.italiadomani.gov.it/content/dam/sogei-ng/opendata/PNRR_Progetti.csv'</span>)</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -870,7 +870,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"selector":".lightbox","closeEffect":"zoom","loop":false,"descPosition":"bottom","openEffect":"zoom"});
+<script>var lightboxQuarto = GLightbox({"selector":".lightbox","openEffect":"zoom","descPosition":"bottom","loop":false,"closeEffect":"zoom"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {
