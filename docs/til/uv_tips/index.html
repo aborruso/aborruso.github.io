@@ -240,6 +240,13 @@ background: #75aadb;
 <p>Per lanciarlo invece in modo temporaneo, è possibile usare il comando:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uvx</span> pycowsay hello from uv</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><code>uvx</code> è un alias del comando <code>uv tool run</code>. In questo caso verrà installato ed eseguito temporaneamente <code>pycowsay</code>, senza doverlo installare in modo permanente.</p>
+<p>Se si vuole aggiungere una <strong>dipendenza</strong> a un progetto, è possibile farlo con il comando come:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> add torch torchvision open-webui</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Questo comando aggiungerà le dipendenze <code>torch</code> di <code>torchvision</code> al modulo <code>open-webui</code> già installato.</p>
+<p>Se si vuole fare l’update di un pacchetto già installato:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> tool upgrade nome_pacchetto</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Se si vuole disinstallare un pacchetto:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> tool uninstall nome_pacchetto</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 

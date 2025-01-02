@@ -1,0 +1,263 @@
+---
+title: "Tutti i dati aperti del PNRR in 500 kB"
+description: 'Non è un titolo soltanto per farti fare click'
+date: "2025-01-02"
+draft: false
+search: true
+author:
+  - name: "Andrea Borruso"
+    affiliation:
+      - name: Associazione onData
+        url: https://ondata.it
+    url: https://bsky.app/profile/aborruso.bsky.social
+categories:
+  - duckdb
+  - open-data
+  - cli
+  - parquet
+  - pnrr
+format:
+  html:
+    crossrefs-hover: false
+website:
+  twitter-card:
+    description: 'Non è un titolo soltanto per farti fare click'
+    image: images/harlequin.png
+  open-graph:
+    description: 'Non è un titolo soltanto per farti fare click'
+    image: images/harlequin.png
+image: images/harlequin.png
+---
+
+## Introduzione
+
+**Strumenti** e **dati** "**giusti**" consentono di ottenere risultati sorprendenti, e sopratutto **allargano** la **platea** di chi può fare **analisi** e **ricerca** su certe informazioni.
+
+In questo post sarà illustrato come un piccolo **file** di **500 kB**, possa essere il punto di ingresso sui dati aperti del **Piano Nazionale di Ripresa e Resilienza** (**PNRR**).<br>
+Si tratta di un file, di un database [**DuckDB**](https://duckdb.org/), che "contiene" l'elenco delle principali tabelle del [Catalogo Open Data](https://www.italiadomani.gov.it/content/sogei-ng/it/it/catalogo-open-data.html) di Italiadomani, il portale del Governo che ospita i dati del PNRR.
+
+La parola "contiene" è tra virgolette perché il file non contiene realmente i dati, ma semplicemente delle viste, dei puntatori ai dati veri e propri. Ma per le modalità in cui è stato costruito, è possibile fare *query* e analisi senza quasi accorgersi di questo.
+
+In questo modo è possibile allargare il numero di persone che possono elaborare questi dati, ma c'è un **prerequisito**: **conoscere** il linguaggio **`SQL`**.<br>Il `SQL` è un linguaggio di programmazione che consente di interrogare le tabelle di un database.
+
+
+
+## Come interrogare il database
+
+Il **file** in formato DuckDB si può **scaricare** da [qui](https://raw.githubusercontent.com/ondata/italian-public-sector-pnrr-data-guide/refs/heads/main/data/italia-domani/parquet/pnrr.db). È leggibile con decine di *software*, per tutti i sistemi operativi.
+
+Uno degli strumenti che si possono utilizzare è [DBeaver](https://dbeaver.io/), un client `SQL` *open source* per tutte le principali piattaforme, che consente di interrogare database di diversi tipi, tra cui DuckDB.
+
+Una volta installato e lanciato, si potrà scegliere a che tipo di database connettersi: in questo caso DuckDB (vedi @fig-dbeaver_select).
+
+![Scegliere il database a cui connettersi](images/dbeaver_select.png){#fig-dbeaver_select}
+
+Nei passaggi successivi della configurazione si dovrà indicare a quale file `DuckDB` connettersi. Qui sarà il file [`pnrr.db`](https://raw.githubusercontent.com/ondata/italian-public-sector-pnrr-data-guide/refs/heads/main/data/italia-domani/parquet/pnrr.db) scaricato in precedenza.<br>
+Una volta connessi, il database sara visibile sulla sinistra, nel navigatore dei database. E facendo clic sui vari segni `>`, sarà possibile vere le 1️⃣ tabelle e le 2️⃣ viste, ecc. in cui è strutturato (vedi @fig-dbeaver_tree).
+
+![Database DuckDB in DBeaver](images/dbeaver_tree.png){#fig-dbeaver_tree .lightbox}
+
+La tabella è soltanto una, si chiama `info_viste` e contiene l'elenco di tutte le viste presenti nel database. In questa tabella, per ogni vista:
+
+- il nome della vista;
+- il titolo del dataset;
+- l'URL della pagina del dataset;
+- il file che ha fatto da sorgente;
+- la descrizione del dataset;
+- la data di osservazione dei dati che hanno fatto da sorgente.
+
+Questa tabella è quindi una **tabella di metadati**. Mentre per **accedere** ai **dati** bisogna utilizzare una o più delle **viste** presenti.
+
+E una prima *query* potrebbe essere quella per conteggiare il **numero di progetti del PNRR**:
+
+```sql
+SELECT COUNT() conteggio from pnrr.main.PNRR_Progetti;
+```
+Sono, al momento, **269.300 progetti**. La cosa interessante è che il risultato è molto rapido, nonostante il db non contenga i dati, ma solo dei puntatori.
+
+Ed è molto comodo, che strumenti come DBeaver abbiano l'auto-completamento delle *query*, come è possibile vedere in @fig-dbeaver_autocomplete.
+
+![Esempio di query con autocompletamento in DBeaver](images/select_autocomplete.gif){#fig-dbeaver_autocomplete}
+
+Il PNRR è suddiviso in Missioni e la *query* per conteggiare il numero di progetti per Missione - che viene eseguita in **0.5 secondi**, è:
+
+```sql
+SELECT
+  "Descrizione Missione",
+  COUNT() conteggio
+FROM
+  pnrr.main.PNRR_Progetti
+GROUP BY
+  ALL
+ORDER BY
+  conteggio DESC;
+```
+
+|Descrizione Missione|conteggio|
+|--------------------|---------:|
+|Digitalizzazione, innovazione, competitività e cultura|83661|
+|Rivoluzione verde e transizione ecologica|81486|
+|Istruzione e ricerca|75677|
+|Inclusione e coesione|18088|
+|Salute|10084|
+|Infrastrutture per una mobilità sostenibile|285|
+|REPowerEU|19|
+
+Ma per dare un'idea più efficace della comodità, di poter utilizzare un piccolo file da 500 kB, si può costruire una query più complessa che mette in relazione **due viste**, ovvero **due dataset**: quello dei **Progetti** e quello delle **Localizzazioni**.<br>
+L'obiettivo è quello di creare una tabella di sintesi, una tabella *pivot*, per restituisca il numero di progetti per Missione per ogni Regione.
+
+La query è
+
+```sql
+PIVOT (
+  SELECT
+    loc."Descrizione Regione" AS Regione,
+    p.Missione
+  FROM
+    "pnrr"."PNRR_Progetti" p
+    LEFT JOIN (
+      SELECT
+        DISTINCT CUP,
+        "CODICE Locale Progetto",
+        "Descrizione Regione"
+      FROM
+        "pnrr"."PNRR_Localizzazione"
+    ) loc ON p.CUP = loc.CUP
+    AND p."Codice Locale Progetto" = loc."CODICE Locale Progetto"
+) ON Missione
+```
+
+E in pochi secondi viene restituito il risultato (vedi @fig-pivot).
+
+![Tabella pivot con numero di progetti per Missione per Regione](images/pivot.png){#fig-pivot .lightbox}
+
+## Come è stato creato il database
+
+L'ispirazione per la creazione di questo modalità di accesso ai dati del PNRR, viene dalla lettura di [questo ottimo articolo](https://motherduck.com/blog/from-data-lake-to-lakehouse-can-duckdb-be-the-best-portable-data-catalog/), in cui si spiega come DuckDB possa diventare un **catalogo portatile** per la **gestione** dei **dati**, da fonti diverse (file `parquet` da fonti Amazon S3, database PostgreSQL, tabelle su Google Cloud, ecc.).
+
+Per questo file è stata replicata la logica descritta nell'articolo, ma sono state **necessarie** delle **pre lavorazioni** dei dati.
+
+Sul sito Italiadomani i file sono disponibili in formato `CSV` (`JSON` e `XLSX`) e una query `SQL` tramite DuckDB si può fare puntando direttamente all'URL del file. Per sapere ad esempio quanti sono i progetti del PNRR la `query` sarebbe:
+
+```sql
+SELECT COUNT(*) FROM read_csv_auto('https://www.italiadomani.gov.it/content/dam/sogei-ng/opendata/PNRR_Progetti.csv')
+```
+
+Questo è possibile grazie all'[estensione `httpfs`](https://duckdb.org/docs/extensions/httpfs/overview.html) di DuckDB, che consente di leggere file da URL HTTP o da Amazon S3. Ci sono però dei problemi:
+
+- alle volta il **server** di **Italiadomani non risponde in modo adeguato**, e la *query* fallisce;
+- il formato **`CSV`** **non** è **ottimizzato** per ***query* su file "grandi"**, che **non** risiadono sul **proprio** **PC**, perché è necessario scaricare tutto il file per fare la *query*.
+
+Entrambi i **punti** sono abbastanza **bloccanti** e per superarli sono state fatte due cose:
+
+1. pubblicare i file con i dati in uno spazio web che rispondesse meglio alle chiamate `HTTP`;
+2. convertire i file `CSV` in un formato più adatto per fare *query* su file "grandi" remoti, come il formato `parquet`.
+
+Lo spazio web creato, che ospita i file è GitHub, e la cartella è questa:<br>
+<https://github.com/ondata/italian-public-sector-pnrr-data-guide/tree/main/data/italia-domani/parquet>
+
+L'URL di accesso diretto ai file ha questa struttura:<br>
+`https://raw.githubusercontent.com/ondata/italian-public-sector-pnrr-data-guide/refs/heads/main/data/italia-domani/parquet/Nome_File.parquet`
+
+Quindi ad esempio l'URL del dataset dei progetti è:<br>
+<https://raw.githubusercontent.com/ondata/italian-public-sector-pnrr-data-guide/refs/heads/main/data/italia-domani/parquet/PNRR_Progetti.parquet>
+
+E la query per conteggiare i progetti è quindi:
+
+```sql
+SELECT COUNT(*) AS numero_progetti
+FROM
+'https://raw.githubusercontent.com/ondata/italian-public-sector-pnrr-data-guide/refs/heads/main/data/italia-domani/parquet/PNRR_Progetti.parquet';
+```
+
+Il database DuckDB è stato implementato creando una vista per ogni file `parquet` presente nella suddetta cartella:
+
+```sql
+CREATE
+OR replace view PNRR_Progetti AS
+SELECT
+  *
+FROM
+  read_parquet(
+    'https://raw.githubusercontent.com/ondata/italian-public-sector-pnrr-data-guide/refs/heads/main/data/italia-domani/parquet/PNRR_Progetti.parquet'
+  );
+```
+
+## Due esempi di accesso "live"
+
+Un database così fatto, dà la possibilità di abilitare l'accesso ai dati in modo "live", ovvero senza dover scaricare il file e interrogarlo in locale.
+
+Due applicazioni web, che consentono di accedere a risorse remote e interrogarle, lanciando una versione di DuckDB nel browser, senza dovere installare nulla sono queste due:
+
+- la [DuckDB Shell](https://shell.duckdb.org/);
+- il [SQL Workbench](https://sql-workbench.com/).
+
+In entrambi i casi basta prima dare il comando di `ATTACH` per collegare il database DuckDB remoto, e poi fare tutte le *query* che si vogliono.
+
+Ad esempio, per la tabella pivot vista sopra, basterà per entrambi i casi:
+
+```sql
+ATTACH 'https://raw.githubusercontent.com/ondata/italian-public-sector-pnrr-data-guide/refs/heads/main/data/italia-domani/parquet/pnrr.db' as pnrr (READ_ONLY);
+
+PIVOT (
+  SELECT
+    loc."Descrizione Regione" AS Regione,
+    p.Missione
+  FROM
+    "pnrr"."PNRR_Progetti" p
+    LEFT JOIN (
+      SELECT
+        DISTINCT CUP,
+        "CODICE Locale Progetto",
+        "Descrizione Regione"
+      FROM
+        "pnrr"."PNRR_Localizzazione"
+    ) loc ON p.CUP = loc.CUP
+    AND p."Codice Locale Progetto" = loc."CODICE Locale Progetto"
+) ON Missione ORDER BY REGIONE;
+```
+
+Ed è interessante il fatto che le **_query_** costruite in questo modo, possano essere **condivise** con altre persone con un *link*, come questi due (sotto le immagini con l'anteprima dei risultati):
+
+- [DuckDB shell](https://shell.duckdb.org/#queries=v0,ATTACH-'https%3A%2F%2Fraw.githubusercontent.com%2Fondata%2Fitalian%20public%20sector%20pnrr%20data%20guide%2Frefs%2Fheads%2Fmain%2Fdata%2Fitalia%20domani%2Fparquet%2Fpnrr.db'-as-pnrr-(READ_ONLY)~%0D%0A%0D%0APIVOT-(%0D%0A--SELECT%0D%0A----loc.%22Descrizione-Regione%22-AS-Regione%2C%0D%0A----p.Missione%0D%0A--FROM%0D%0A----%22pnrr%22.%22PNRR_Progetti%22-p%0D%0A----LEFT-JOIN-(%0D%0A------SELECT%0D%0A--------DISTINCT-CUP%2C%0D%0A--------%22CODICE-Locale-Progetto%22%2C%0D%0A--------%22Descrizione-Regione%22%0D%0A------FROM%0D%0A--------%22pnrr%22.%22PNRR_Localizzazione%22%0D%0A----)-loc-ON-p.CUP-%3D-loc.CUP%0D%0A----AND-p.%22Codice-Locale-Progetto%22-%3D-loc.%22CODICE-Locale-Progetto%22%0D%0A)-ON-Missione-ORDER-BY-REGIONE~);
+- [SQL Workbench](https://sql-workbench.com/#queries=v0,ATTACH-'https%3A%2F%2Fraw.githubusercontent.com%2Fondata%2Fitalian%20public%20sector%20pnrr%20data%20guide%2Frefs%2Fheads%2Fmain%2Fdata%2Fitalia%20domani%2Fparquet%2Fpnrr.db'-as-pnrr-(READ_ONLY)~,PIVOT-(--SELECT--loc.%22Descrizione-Regione%22-AS-Regione%2C--p.Missione--FROM--%22pnrr%22.%22PNRR_Progetti%22-p--LEFT-JOIN-(--SELECT--DISTINCT-CUP%2C--%22CODICE-Locale-Progetto%22%2C--%22Descrizione-Regione%22--FROM--%22pnrr%22.%22PNRR_Localizzazione%22--)-loc-ON-p.CUP-%3D-loc.CUP--AND-p.%22Codice-Locale-Progetto%22-%3D-loc.%22CODICE-Locale-Progetto%22-)-ON-Missione-ORDER-BY-REGIONE~).
+
+::: {layout-ncol=2}
+
+![DuckDB Shell](images/query_live_01.png){#fig-query_live_1 .lightbox group="query_live"}
+
+![SQL Workbench](images/query_live_02.png){#fig-query_live_2 .lightbox group="query_live"}
+
+:::
+
+## Lo strumento consigliato
+
+Una cosa comodissima di questa modalità di accesso ai dati PNRR, è che è possibile leggerli nel modo preferito: con un *client* `SQL` come DBeaver da installare sulla propria macchina, con un *client web* come DuckDB Shell o SQL Workbench, con un linguaggio di programmazione come Python o R, ecc. e anche da **riga di comando**.
+
+Per chi è abituato a lavorare da riga di comando, un ottimo strumento è il sorprendente e comodissimo [**Harlequin**](https://harlequin.sh/), gratuito e *open source*, installabile su qualsiasi sistema operativo, e in grado di accedere a decine di database, tra cui DuckDB.
+
+![Esempio d'uso di Harlequin](images/harlequin.png){#fig-harlequin .lightbox}
+
+## Note conclusive
+
+In questo post si vuole sottolineare la **comodità** di **accedere** a una **banca dati**, a partire da un file piccolo, e senza rinunciare alla possibilità di costruire analisi complesse e ricche.<br>
+Non è la modalità facile e unica con cui capire tutto sui numeri del PNRR, ma si ha la possibilità di fare un primo passo, e di farlo in modo molto più semplice di quanto si possa pensare.
+
+Ci sono alcuni **requisiti propedeutici**: **approfondire** come è strutturato il **PNRR**, **leggere** i **metadati** delle tabelle (in ogni pagina dei dati, c'è un link ai metadati, vedi @fig-metadati), e **conoscere** il **linguaggio `SQL`**.
+
+[![Metadati di una tabella](images/metadati.png){#fig-metadati}](https://www.italiadomani.gov.it/content/sogei-ng/it/it/catalogo-open-data/Progetti_del_PNRR.html)
+
+Questo è un primo rilascio del database, per mostrare un caso d'uso "tecnico". Non è al momento una risorsa su cui è pianificato un aggiornamento automatico e non è stato fatto alcun controllo di qualità.<br>
+In prospettiva è probabile che verrà creata una procedura automatica per aggiornare il database, e verrà migliorata la qualità dei dati con verifiche sulla coerenza dello schema dati.
+
+I file sorgente, pubblicati su Italiadomani hanno alcuni problemi, di facile risoluzione, a da conoscere:
+
+- l'**encoding** dei file `CSV`. È nella gran parte dei casi **`UTF-8`**, ma in alcuni casi non è così e bisogna fare attenzione per l'accesso e l'eventuale conversione;
+- l'importante file `CSV` sui "[Soggetti dei progetti del PNRR](https://www.italiadomani.gov.it/content/sogei-ng/it/it/catalogo-open-data/soggetti-dei-progetti-del-pnrr.html)" - che fra l'altro è uno di quelli di dimensioni maggiori - contiene **diverse righe** non corrette, con un **numero** di **colonne** **non compatibile con lo schema**.
+
+Riprendo infine una **riflessione** già fatta nell'apprezzato post "[**Gestire file CSV grandi, brutti e cattivi**](http://localhost:6074/posts/duckdb-intro-csv/)": con uno sforzo piccolo e un po' di cura, è possibile **pubblicare** dati in **modalità** che **ampliano** di molto il **numero** di **persone** che possono **accedervi** e **utilizzarli** in **modo efficace**.<br>
+Ad esempio:
+
+- questi *file* potrebbero pure essere **pubblicati** su un *bucket* di Amazon S3 (o altre modalità simili), e DuckDB (o altri *client*) potrebbe leggerli da lì, con grande rapidità;
+- si potrebbero pubblicare anche in **formato compresso**, ad esempio in `csv.gz`, o ancora meglio in **formati** efficienti e **specializzati per l'analisi**, come il **`parquet`**;
+- si potrebbe pubblicare anche **un unico file in formato DuckDB**, con tutte le tabelle del PNRR, con la corretta **definizione** dei **tipi di campo**, con **definite** le **chiavi** primarie, le chiavi esterne, ecc..

@@ -10,7 +10,514 @@
 <atom:link href="https://aborruso.github.io/blog.xml" rel="self" type="application/rss+xml"/>
 <description></description>
 <generator>quarto-1.5.56</generator>
-<lastBuildDate>Sun, 01 Sep 2024 22:00:00 GMT</lastBuildDate>
+<lastBuildDate>Wed, 01 Jan 2025 23:00:00 GMT</lastBuildDate>
+<item>
+  <title>Tutti i dati aperti del PNRR in 500 kB</title>
+  <dc:creator>Andrea Borruso</dc:creator>
+  <link>https://aborruso.github.io/posts/tutto-il-pnrr-in-500k/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<section id="introduzione" class="level2">
+<h2 class="anchored" data-anchor-id="introduzione">Introduzione</h2>
+<p><strong>Strumenti</strong> e <strong>dati</strong> “<strong>giusti</strong>” consentono di ottenere risultati sorprendenti, e sopratutto <strong>allargano</strong> la <strong>platea</strong> di chi può fare <strong>analisi</strong> e <strong>ricerca</strong> su certe informazioni.</p>
+<p>In questo post sarà illustrato come un piccolo <strong>file</strong> di <strong>500 kB</strong>, possa essere il punto di ingresso sui dati aperti del <strong>Piano Nazionale di Ripresa e Resilienza</strong> (<strong>PNRR</strong>).<br> Si tratta di un file, di un database <a href="https://duckdb.org/"><strong>DuckDB</strong></a>, che “contiene” l’elenco delle principali tabelle del <a href="https://www.italiadomani.gov.it/content/sogei-ng/it/it/catalogo-open-data.html">Catalogo Open Data</a> di Italiadomani, il portale del Governo che ospita i dati del PNRR.</p>
+<p>La parola “contiene” è tra virgolette perché il file non contiene realmente i dati, ma semplicemente delle viste, dei puntatori ai dati veri e propri. Ma per le modalità in cui è stato costruito, è possibile fare <em>query</em> e analisi senza quasi accorgersi di questo.</p>
+<p>In questo modo è possibile allargare il numero di persone che possono elaborare questi dati, ma c’è un <strong>prerequisito</strong>: <strong>conoscere</strong> il linguaggio <strong><code>SQL</code></strong>.<br>Il <code>SQL</code> è un linguaggio di programmazione che consente di interrogare le tabelle di un database.</p>
+</section>
+<section id="come-interrogare-il-database" class="level2">
+<h2 class="anchored" data-anchor-id="come-interrogare-il-database">Come interrogare il database</h2>
+<p>Il <strong>file</strong> in formato DuckDB si può <strong>scaricare</strong> da <a href="https://raw.githubusercontent.com/ondata/italian-public-sector-pnrr-data-guide/refs/heads/main/data/italia-domani/parquet/pnrr.db">qui</a>. È leggibile con decine di <em>software</em>, per tutti i sistemi operativi.</p>
+<p>Uno degli strumenti che si possono utilizzare è <a href="https://dbeaver.io/">DBeaver</a>, un client <code>SQL</code> <em>open source</em> per tutte le principali piattaforme, che consente di interrogare database di diversi tipi, tra cui DuckDB.</p>
+<p>Una volta installato e lanciato, si potrà scegliere a che tipo di database connettersi: in questo caso DuckDB (vedi Figura&nbsp;1).</p>
+<div id="fig-dbeaver_select" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-dbeaver_select-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://aborruso.github.io/posts/tutto-il-pnrr-in-500k/images/dbeaver_select.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dbeaver_select-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;1: Scegliere il database a cui connettersi
+</figcaption>
+</figure>
+</div>
+<p>Nei passaggi successivi della configurazione si dovrà indicare a quale file <code>DuckDB</code> connettersi. Qui sarà il file <a href="https://raw.githubusercontent.com/ondata/italian-public-sector-pnrr-data-guide/refs/heads/main/data/italia-domani/parquet/pnrr.db"><code>pnrr.db</code></a> scaricato in precedenza.<br> Una volta connessi, il database sara visibile sulla sinistra, nel navigatore dei database. E facendo clic sui vari segni <code>&gt;</code>, sarà possibile vere le 1️⃣ tabelle e le 2️⃣ viste, ecc. in cui è strutturato (vedi Figura&nbsp;2).</p>
+<div id="fig-dbeaver_tree" class="lightbox quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-dbeaver_tree-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/dbeaver_tree.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figura&nbsp;2: Database DuckDB in DBeaver"><img src="https://aborruso.github.io/posts/tutto-il-pnrr-in-500k/images/dbeaver_tree.png" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dbeaver_tree-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2: Database DuckDB in DBeaver
+</figcaption>
+</figure>
+</div>
+<p>La tabella è soltanto una, si chiama <code>info_viste</code> e contiene l’elenco di tutte le viste presenti nel database. In questa tabella, per ogni vista:</p>
+<ul>
+<li>il nome della vista;</li>
+<li>il titolo del dataset;</li>
+<li>l’URL della pagina del dataset;</li>
+<li>il file che ha fatto da sorgente;</li>
+<li>la descrizione del dataset;</li>
+<li>la data di osservazione dei dati che hanno fatto da sorgente.</li>
+</ul>
+<p>Questa tabella è quindi una <strong>tabella di metadati</strong>. Mentre per <strong>accedere</strong> ai <strong>dati</strong> bisogna utilizzare una o più delle <strong>viste</strong> presenti.</p>
+<p>E una prima <em>query</em> potrebbe essere quella per conteggiare il <strong>numero di progetti del PNRR</strong>:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb1-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">SELECT</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">COUNT</span>() conteggio <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">from</span> pnrr.main.PNRR_Progetti;</span></code></pre></div>
+<p>Sono, al momento, <strong>269.300 progetti</strong>. La cosa interessante è che il risultato è molto rapido, nonostante il db non contenga i dati, ma solo dei puntatori.</p>
+<p>Ed è molto comodo, che strumenti come DBeaver abbiano l’auto-completamento delle <em>query</em>, come è possibile vedere in Figura&nbsp;3.</p>
+<div id="fig-dbeaver_autocomplete" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-dbeaver_autocomplete-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="https://aborruso.github.io/posts/tutto-il-pnrr-in-500k/images/select_autocomplete.gif" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dbeaver_autocomplete-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;3: Esempio di query con autocompletamento in DBeaver
+</figcaption>
+</figure>
+</div>
+<p>Il PNRR è suddiviso in Missioni e la <em>query</em> per conteggiare il numero di progetti per Missione - che viene eseguita in <strong>0.5 secondi</strong>, è:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb2-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">SELECT</span></span>
+<span id="cb2-2">  <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">"Descrizione Missione"</span>,</span>
+<span id="cb2-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">COUNT</span>() conteggio</span>
+<span id="cb2-4"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">FROM</span></span>
+<span id="cb2-5">  pnrr.main.PNRR_Progetti</span>
+<span id="cb2-6"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">GROUP</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">BY</span></span>
+<span id="cb2-7">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">ALL</span></span>
+<span id="cb2-8"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">ORDER</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">BY</span></span>
+<span id="cb2-9">  conteggio <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">DESC</span>;</span></code></pre></div>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Descrizione Missione</th>
+<th style="text-align: right;">conteggio</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Digitalizzazione, innovazione, competitività e cultura</td>
+<td style="text-align: right;">83661</td>
+</tr>
+<tr class="even">
+<td>Rivoluzione verde e transizione ecologica</td>
+<td style="text-align: right;">81486</td>
+</tr>
+<tr class="odd">
+<td>Istruzione e ricerca</td>
+<td style="text-align: right;">75677</td>
+</tr>
+<tr class="even">
+<td>Inclusione e coesione</td>
+<td style="text-align: right;">18088</td>
+</tr>
+<tr class="odd">
+<td>Salute</td>
+<td style="text-align: right;">10084</td>
+</tr>
+<tr class="even">
+<td>Infrastrutture per una mobilità sostenibile</td>
+<td style="text-align: right;">285</td>
+</tr>
+<tr class="odd">
+<td>REPowerEU</td>
+<td style="text-align: right;">19</td>
+</tr>
+</tbody>
+</table>
+<p>Ma per dare un’idea più efficace della comodità, di poter utilizzare un piccolo file da 500 kB, si può costruire una query più complessa che mette in relazione <strong>due viste</strong>, ovvero <strong>due dataset</strong>: quello dei <strong>Progetti</strong> e quello delle <strong>Localizzazioni</strong>.<br> L’obiettivo è quello di creare una tabella di sintesi, una tabella <em>pivot</em>, per restituisca il numero di progetti per Missione per ogni Regione.</p>
+<p>La query è</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb3-1">PIVOT (</span>
+<span id="cb3-2">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">SELECT</span></span>
+<span id="cb3-3">    loc.<span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">"Descrizione Regione"</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">AS</span> Regione,</span>
+<span id="cb3-4">    p.Missione</span>
+<span id="cb3-5">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">FROM</span></span>
+<span id="cb3-6">    <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">"pnrr"</span>.<span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">"PNRR_Progetti"</span> p</span>
+<span id="cb3-7">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">LEFT</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">JOIN</span> (</span>
+<span id="cb3-8">      <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">SELECT</span></span>
+<span id="cb3-9">        <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">DISTINCT</span> CUP,</span>
+<span id="cb3-10">        <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">"CODICE Locale Progetto"</span>,</span>
+<span id="cb3-11">        <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">"Descrizione Regione"</span></span>
+<span id="cb3-12">      <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">FROM</span></span>
+<span id="cb3-13">        <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">"pnrr"</span>.<span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">"PNRR_Localizzazione"</span></span>
+<span id="cb3-14">    ) loc <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">ON</span> p.CUP <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> loc.CUP</span>
+<span id="cb3-15">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">AND</span> p.<span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">"Codice Locale Progetto"</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> loc.<span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">"CODICE Locale Progetto"</span></span>
+<span id="cb3-16">) <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">ON</span> Missione</span></code></pre></div>
+<p>E in pochi secondi viene restituito il risultato (vedi Figura&nbsp;4).</p>
+<div id="fig-pivot" class="lightbox quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pivot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/pivot.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Figura&nbsp;4: Tabella pivot con numero di progetti per Missione per Regione"><img src="https://aborruso.github.io/posts/tutto-il-pnrr-in-500k/images/pivot.png" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pivot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;4: Tabella pivot con numero di progetti per Missione per Regione
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="come-è-stato-creato-il-database" class="level2">
+<h2 class="anchored" data-anchor-id="come-è-stato-creato-il-database">Come è stato creato il database</h2>
+<p>L’ispirazione per la creazione di questo modalità di accesso ai dati del PNRR, viene dalla lettura di <a href="https://motherduck.com/blog/from-data-lake-to-lakehouse-can-duckdb-be-the-best-portable-data-catalog/">questo ottimo articolo</a>, in cui si spiega come DuckDB possa diventare un <strong>catalogo portatile</strong> per la <strong>gestione</strong> dei <strong>dati</strong>, da fonti diverse (file <code>parquet</code> da fonti Amazon S3, database PostgreSQL, tabelle su Google Cloud, ecc.).</p>
+<p>Per questo file è stata replicata la logica descritta nell’articolo, ma sono state <strong>necessarie</strong> delle <strong>pre lavorazioni</strong> dei dati.</p>
+<p>Sul sito Italiadomani i file sono disponibili in formato <code>CSV</code> (<code>JSON</code> e <code>XLSX</code>) e una query <code>SQL</code> tramite DuckDB si può fare puntando direttamente all’URL del file. Per sapere ad esempio quanti sono i progetti del PNRR la <code>query</code> sarebbe:</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">SELECT</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">COUNT</span>(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>) <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">FROM</span> read_csv_auto(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'https://www.italiadomani.gov.it/content/dam/sogei-ng/opendata/PNRR_Progetti.csv'</span>)</span></code></pre></div>
+<p>Questo è possibile grazie all’<a href="https://duckdb.org/docs/extensions/httpfs/overview.html">estensione <code>httpfs</code></a> di DuckDB, che consente di leggere file da URL HTTP o da Amazon S3. Ci sono però dei problemi:</p>
+<ul>
+<li>alle volta il <strong>server</strong> di <strong>Italiadomani non risponde in modo adeguato</strong>, e la <em>query</em> fallisce;</li>
+<li>il formato <strong><code>CSV</code></strong> <strong>non</strong> è <strong>ottimizzato</strong> per <strong><em>query</em> su file “grandi”</strong>, che <strong>non</strong> risiadono sul <strong>proprio</strong> <strong>PC</strong>, perché è necessario scaricare tutto il file per fare la <em>query</em>.</li>
+</ul>
+<p>Entrambi i <strong>punti</strong> sono abbastanza <strong>bloccanti</strong> e per superarli sono state fatte due cose:</p>
+<ol type="1">
+<li>pubblicare i file con i dati in uno spazio web che rispondesse meglio alle chiamate <code>HTTP</code>;</li>
+<li>convertire i file <code>CSV</code> in un formato più adatto per fare <em>query</em> su file “grandi” remoti, come il formato <code>parquet</code>.</li>
+</ol>
+<p>Lo spazio web creato, che ospita i file è GitHub, e la cartella è questa:<br> <a href="https://github.com/ondata/italian-public-sector-pnrr-data-guide/tree/main/data/italia-domani/parquet" class="uri">https://github.com/ondata/italian-public-sector-pnrr-data-guide/tree/main/data/italia-domani/parquet</a></p>
+<p>L’URL di accesso diretto ai file ha questa struttura:<br> <code>https://raw.githubusercontent.com/ondata/italian-public-sector-pnrr-data-guide/refs/heads/main/data/italia-domani/parquet/Nome_File.parquet</code></p>
+<p>Quindi ad esempio l’URL del dataset dei progetti è:<br> <a href="https://raw.githubusercontent.com/ondata/italian-public-sector-pnrr-data-guide/refs/heads/main/data/italia-domani/parquet/PNRR_Progetti.parquet" class="uri">https://raw.githubusercontent.com/ondata/italian-public-sector-pnrr-data-guide/refs/heads/main/data/italia-domani/parquet/PNRR_Progetti.parquet</a></p>
+<p>E la query per conteggiare i progetti è quindi:</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">SELECT</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">COUNT</span>(<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span>) <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">AS</span> numero_progetti</span>
+<span id="cb5-2"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">FROM</span></span>
+<span id="cb5-3"><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'https://raw.githubusercontent.com/ondata/italian-public-sector-pnrr-data-guide/refs/heads/main/data/italia-domani/parquet/PNRR_Progetti.parquet'</span>;</span></code></pre></div>
+<p>Il database DuckDB è stato implementato creando una vista per ogni file <code>parquet</code> presente nella suddetta cartella:</p>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb6-1"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">CREATE</span></span>
+<span id="cb6-2"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">OR</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">replace</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">view</span> PNRR_Progetti <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">AS</span></span>
+<span id="cb6-3"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">SELECT</span></span>
+<span id="cb6-4">  <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span></span>
+<span id="cb6-5"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">FROM</span></span>
+<span id="cb6-6">  read_parquet(</span>
+<span id="cb6-7">    <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'https://raw.githubusercontent.com/ondata/italian-public-sector-pnrr-data-guide/refs/heads/main/data/italia-domani/parquet/PNRR_Progetti.parquet'</span></span>
+<span id="cb6-8">  );</span></code></pre></div>
+</section>
+<section id="due-esempi-di-accesso-live" class="level2">
+<h2 class="anchored" data-anchor-id="due-esempi-di-accesso-live">Due esempi di accesso “live”</h2>
+<p>Un database così fatto, dà la possibilità di abilitare l’accesso ai dati in modo “live”, ovvero senza dover scaricare il file e interrogarlo in locale.</p>
+<p>Due applicazioni web, che consentono di accedere a risorse remote e interrogarle, lanciando una versione di DuckDB nel browser, senza dovere installare nulla sono queste due:</p>
+<ul>
+<li>la <a href="https://shell.duckdb.org/">DuckDB Shell</a>;</li>
+<li>il <a href="https://sql-workbench.com/">SQL Workbench</a>.</li>
+</ul>
+<p>In entrambi i casi basta prima dare il comando di <code>ATTACH</code> per collegare il database DuckDB remoto, e poi fare tutte le <em>query</em> che si vogliono.</p>
+<p>Ad esempio, per la tabella pivot vista sopra, basterà per entrambi i casi:</p>
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb7-1">ATTACH <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'https://raw.githubusercontent.com/ondata/italian-public-sector-pnrr-data-guide/refs/heads/main/data/italia-domani/parquet/pnrr.db'</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">as</span> pnrr (READ_ONLY);</span>
+<span id="cb7-2"></span>
+<span id="cb7-3">PIVOT (</span>
+<span id="cb7-4">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">SELECT</span></span>
+<span id="cb7-5">    loc.<span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">"Descrizione Regione"</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">AS</span> Regione,</span>
+<span id="cb7-6">    p.Missione</span>
+<span id="cb7-7">  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">FROM</span></span>
+<span id="cb7-8">    <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">"pnrr"</span>.<span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">"PNRR_Progetti"</span> p</span>
+<span id="cb7-9">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">LEFT</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">JOIN</span> (</span>
+<span id="cb7-10">      <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">SELECT</span></span>
+<span id="cb7-11">        <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">DISTINCT</span> CUP,</span>
+<span id="cb7-12">        <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">"CODICE Locale Progetto"</span>,</span>
+<span id="cb7-13">        <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">"Descrizione Regione"</span></span>
+<span id="cb7-14">      <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">FROM</span></span>
+<span id="cb7-15">        <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">"pnrr"</span>.<span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">"PNRR_Localizzazione"</span></span>
+<span id="cb7-16">    ) loc <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">ON</span> p.CUP <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> loc.CUP</span>
+<span id="cb7-17">    <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">AND</span> p.<span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">"Codice Locale Progetto"</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> loc.<span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">"CODICE Locale Progetto"</span></span>
+<span id="cb7-18">) <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">ON</span> Missione <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">ORDER</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">BY</span> REGIONE;</span></code></pre></div>
+<p>Ed è interessante il fatto che le <strong><em>query</em></strong> costruite in questo modo, possano essere <strong>condivise</strong> con altre persone con un <em>link</em>, come questi due (sotto le immagini con l’anteprima dei risultati):</p>
+<ul>
+<li><a href="https://shell.duckdb.org/#queries=v0,ATTACH-'https%3A%2F%2Fraw.githubusercontent.com%2Fondata%2Fitalian%20public%20sector%20pnrr%20data%20guide%2Frefs%2Fheads%2Fmain%2Fdata%2Fitalia%20domani%2Fparquet%2Fpnrr.db'-as-pnrr-(READ_ONLY)~%0D%0A%0D%0APIVOT-(%0D%0A--SELECT%0D%0A----loc.%22Descrizione-Regione%22-AS-Regione%2C%0D%0A----p.Missione%0D%0A--FROM%0D%0A----%22pnrr%22.%22PNRR_Progetti%22-p%0D%0A----LEFT-JOIN-(%0D%0A------SELECT%0D%0A--------DISTINCT-CUP%2C%0D%0A--------%22CODICE-Locale-Progetto%22%2C%0D%0A--------%22Descrizione-Regione%22%0D%0A------FROM%0D%0A--------%22pnrr%22.%22PNRR_Localizzazione%22%0D%0A----)-loc-ON-p.CUP-%3D-loc.CUP%0D%0A----AND-p.%22Codice-Locale-Progetto%22-%3D-loc.%22CODICE-Locale-Progetto%22%0D%0A)-ON-Missione-ORDER-BY-REGIONE~">DuckDB shell</a>;</li>
+<li><a href="https://sql-workbench.com/#queries=v0,ATTACH-'https%3A%2F%2Fraw.githubusercontent.com%2Fondata%2Fitalian%20public%20sector%20pnrr%20data%20guide%2Frefs%2Fheads%2Fmain%2Fdata%2Fitalia%20domani%2Fparquet%2Fpnrr.db'-as-pnrr-(READ_ONLY)~,PIVOT-(--SELECT--loc.%22Descrizione-Regione%22-AS-Regione%2C--p.Missione--FROM--%22pnrr%22.%22PNRR_Progetti%22-p--LEFT-JOIN-(--SELECT--DISTINCT-CUP%2C--%22CODICE-Locale-Progetto%22%2C--%22Descrizione-Regione%22--FROM--%22pnrr%22.%22PNRR_Localizzazione%22--)-loc-ON-p.CUP-%3D-loc.CUP--AND-p.%22Codice-Locale-Progetto%22-%3D-loc.%22CODICE-Locale-Progetto%22-)-ON-Missione-ORDER-BY-REGIONE~">SQL Workbench</a>.</li>
+</ul>
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-query_live_1" class="lightbox quarto-float quarto-figure quarto-figure-center anchored" data-group="query_live">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-query_live_1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/query_live_01.png" class="lightbox" data-gallery="query_live" title="Figura&nbsp;5: DuckDB Shell"><img src="https://aborruso.github.io/posts/tutto-il-pnrr-in-500k/images/query_live_01.png" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-query_live_1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;5: DuckDB Shell
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-query_live_2" class="lightbox quarto-float quarto-figure quarto-figure-center anchored" data-group="query_live">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-query_live_2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/query_live_02.png" class="lightbox" data-gallery="query_live" title="Figura&nbsp;6: SQL Workbench"><img src="https://aborruso.github.io/posts/tutto-il-pnrr-in-500k/images/query_live_02.png" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-query_live_2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;6: SQL Workbench
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="lo-strumento-consigliato" class="level2">
+<h2 class="anchored" data-anchor-id="lo-strumento-consigliato">Lo strumento consigliato</h2>
+<p>Una cosa comodissima di questa modalità di accesso ai dati PNRR, è che è possibile leggerli nel modo preferito: con un <em>client</em> <code>SQL</code> come DBeaver da installare sulla propria macchina, con un <em>client web</em> come DuckDB Shell o SQL Workbench, con un linguaggio di programmazione come Python o R, ecc. e anche da <strong>riga di comando</strong>.</p>
+<p>Per chi è abituato a lavorare da riga di comando, un ottimo strumento è il sorprendente e comodissimo <a href="https://harlequin.sh/"><strong>Harlequin</strong></a>, gratuito e <em>open source</em>, installabile su qualsiasi sistema operativo, e in grado di accedere a decine di database, tra cui DuckDB.</p>
+<div id="fig-harlequin" class="lightbox quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-harlequin-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="images/harlequin.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Figura&nbsp;7: Esempio d’uso di Harlequin"><img src="https://aborruso.github.io/posts/tutto-il-pnrr-in-500k/images/harlequin.png" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-harlequin-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;7: Esempio d’uso di Harlequin
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="note-conclusive" class="level2">
+<h2 class="anchored" data-anchor-id="note-conclusive">Note conclusive</h2>
+<p>In questo post si vuole sottolineare la <strong>comodità</strong> di <strong>accedere</strong> a una <strong>banca dati</strong>, a partire da un file piccolo, e senza rinunciare alla possibilità di costruire analisi complesse e ricche.<br> Non è la modalità facile e unica con cui capire tutto sui numeri del PNRR, ma si ha la possibilità di fare un primo passo, e di farlo in modo molto più semplice di quanto si possa pensare.</p>
+<p>Ci sono alcuni <strong>requisiti propedeutici</strong>: <strong>approfondire</strong> come è strutturato il <strong>PNRR</strong>, <strong>leggere</strong> i <strong>metadati</strong> delle tabelle (in ogni pagina dei dati, c’è un link ai metadati, vedi Figura&nbsp;8), e <strong>conoscere</strong> il <strong>linguaggio <code>SQL</code></strong>.</p>
+<div id="fig-metadati" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-metadati-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="https://www.italiadomani.gov.it/content/sogei-ng/it/it/catalogo-open-data/Progetti_del_PNRR.html"><img src="https://aborruso.github.io/posts/tutto-il-pnrr-in-500k/images/metadati.png" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-metadati-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;8: Metadati di una tabella
+</figcaption>
+</figure>
+</div>
+<p>Questo è un primo rilascio del database, per mostrare un caso d’uso “tecnico”. Non è al momento una risorsa su cui è pianificato un aggiornamento automatico e non è stato fatto alcun controllo di qualità.<br> In prospettiva è probabile che verrà creata una procedura automatica per aggiornare il database, e verrà migliorata la qualità dei dati con verifiche sulla coerenza dello schema dati.</p>
+<p>I file sorgente, pubblicati su Italiadomani hanno alcuni problemi, di facile risoluzione, a da conoscere:</p>
+<ul>
+<li>l’<strong>encoding</strong> dei file <code>CSV</code>. È nella gran parte dei casi <strong><code>UTF-8</code></strong>, ma in alcuni casi non è così e bisogna fare attenzione per l’accesso e l’eventuale conversione;</li>
+<li>l’importante file <code>CSV</code> sui “<a href="https://www.italiadomani.gov.it/content/sogei-ng/it/it/catalogo-open-data/soggetti-dei-progetti-del-pnrr.html">Soggetti dei progetti del PNRR</a>” - che fra l’altro è uno di quelli di dimensioni maggiori - contiene <strong>diverse righe</strong> non corrette, con un <strong>numero</strong> di <strong>colonne</strong> <strong>non compatibile con lo schema</strong>.</li>
+</ul>
+<p>Riprendo infine una <strong>riflessione</strong> già fatta nell’apprezzato post “<a href="http://localhost:6074/posts/duckdb-intro-csv/"><strong>Gestire file CSV grandi, brutti e cattivi</strong></a>”: con uno sforzo piccolo e un po’ di cura, è possibile <strong>pubblicare</strong> dati in <strong>modalità</strong> che <strong>ampliano</strong> di molto il <strong>numero</strong> di <strong>persone</strong> che possono <strong>accedervi</strong> e <strong>utilizzarli</strong> in <strong>modo efficace</strong>.<br> Ad esempio:</p>
+<ul>
+<li>questi <em>file</em> potrebbero pure essere <strong>pubblicati</strong> su un <em>bucket</em> di Amazon S3 (o altre modalità simili), e DuckDB (o altri <em>client</em>) potrebbe leggerli da lì, con grande rapidità;</li>
+<li>si potrebbero pubblicare anche in <strong>formato compresso</strong>, ad esempio in <code>csv.gz</code>, o ancora meglio in <strong>formati</strong> efficienti e <strong>specializzati per l’analisi</strong>, come il <strong><code>parquet</code></strong>;</li>
+<li>si potrebbe pubblicare anche <strong>un unico file in formato DuckDB</strong>, con tutte le tabelle del PNRR, con la corretta <strong>definizione</strong> dei <strong>tipi di campo</strong>, con <strong>definite</strong> le <strong>chiavi</strong> primarie, le chiavi esterne, ecc..</li>
+</ul>
+
+
+</section>
+
+<a onclick="window.scrollTo(0, 0); return false;" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Torna in cima</a> ]]></description>
+  <category>duckdb</category>
+  <category>open-data</category>
+  <category>cli</category>
+  <category>parquet</category>
+  <category>pnrr</category>
+  <guid>https://aborruso.github.io/posts/tutto-il-pnrr-in-500k/</guid>
+  <pubDate>Wed, 01 Jan 2025 23:00:00 GMT</pubDate>
+  <media:content url="https://aborruso.github.io/posts/tutto-il-pnrr-in-500k/images/harlequin.png" medium="image" type="image/png" height="104" width="144"/>
+</item>
 <item>
   <title>I (quasi) tre milioni di beni immobili della Pubblica Amministrazione</title>
   <dc:creator>Andrea Borruso</dc:creator>
