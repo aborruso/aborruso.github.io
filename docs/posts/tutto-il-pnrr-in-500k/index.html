@@ -394,7 +394,7 @@ Figura&nbsp;4: Tabella pivot con numero di progetti per Missione per Regione
 <p>Questo è possibile grazie all’<a href="https://duckdb.org/docs/extensions/httpfs/overview.html">estensione <code>httpfs</code></a> di DuckDB, che consente di leggere file da URL HTTP o da Amazon S3. Ci sono però dei problemi:</p>
 <ul>
 <li>alle volta il <strong>server</strong> di <strong>Italiadomani non risponde in modo adeguato</strong>, e la <em>query</em> fallisce;</li>
-<li>il formato <strong><code>CSV</code></strong> <strong>non</strong> è <strong>ottimizzato</strong> per <strong><em>query</em> su file “grandi”</strong>, che <strong>non</strong> risiadono sul <strong>proprio</strong> <strong>PC</strong>, perché è necessario scaricare tutto il file per fare la <em>query</em>.</li>
+<li>il formato <strong><code>CSV</code></strong> <strong>non</strong> è <strong>ottimizzato</strong> per <strong><em>query</em> su file “grandi”</strong>, che <strong>non</strong> risiedano sul <strong>proprio</strong> <strong>PC</strong>, perché è necessario scaricare tutto il file per fare la <em>query</em>.</li>
 </ul>
 <p>Entrambi i <strong>punti</strong> sono abbastanza <strong>bloccanti</strong> e per superarli sono state fatte due cose:</p>
 <ol type="1">
@@ -870,7 +870,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"selector":".lightbox","openEffect":"zoom","descPosition":"bottom","loop":false,"closeEffect":"zoom"});
+<script>var lightboxQuarto = GLightbox({"descPosition":"bottom","closeEffect":"zoom","selector":".lightbox","loop":false,"openEffect":"zoom"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {

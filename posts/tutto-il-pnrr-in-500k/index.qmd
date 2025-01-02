@@ -146,7 +146,7 @@ SELECT COUNT(*) FROM read_csv_auto('https://www.italiadomani.gov.it/content/dam/
 Questo è possibile grazie all'[estensione `httpfs`](https://duckdb.org/docs/extensions/httpfs/overview.html) di DuckDB, che consente di leggere file da URL HTTP o da Amazon S3. Ci sono però dei problemi:
 
 - alle volta il **server** di **Italiadomani non risponde in modo adeguato**, e la *query* fallisce;
-- il formato **`CSV`** **non** è **ottimizzato** per ***query* su file "grandi"**, che **non** risiadono sul **proprio** **PC**, perché è necessario scaricare tutto il file per fare la *query*.
+- il formato **`CSV`** **non** è **ottimizzato** per ***query* su file "grandi"**, che **non** risiedano sul **proprio** **PC**, perché è necessario scaricare tutto il file per fare la *query*.
 
 Entrambi i **punti** sono abbastanza **bloccanti** e per superarli sono state fatte due cose:
 
