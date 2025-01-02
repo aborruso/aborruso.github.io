@@ -53,7 +53,7 @@ Una volta installato e lanciato, si potrà scegliere a che tipo di database conn
 ![Scegliere il database a cui connettersi](images/dbeaver_select.png){#fig-dbeaver_select}
 
 Nei passaggi successivi della configurazione si dovrà indicare a quale file `DuckDB` connettersi. Qui sarà il file [`pnrr.db`](https://raw.githubusercontent.com/ondata/italian-public-sector-pnrr-data-guide/refs/heads/main/data/italia-domani/parquet/pnrr.db) scaricato in precedenza.<br>
-Una volta connessi, il database sara visibile sulla sinistra, nel navigatore dei database. E facendo clic sui vari segni `>`, sarà possibile vere le 1️⃣ tabelle e le 2️⃣ viste, ecc. in cui è strutturato (vedi @fig-dbeaver_tree).
+Una volta connessi, il database sarà visibile sulla sinistra, nel navigatore dei database. E facendo clic sui vari segni `>`, sarà possibile vedere le 1️⃣ tabelle e le 2️⃣ viste, ecc. in cui è strutturato (vedi @fig-dbeaver_tree).
 
 ![Database DuckDB in DBeaver](images/dbeaver_tree.png){#fig-dbeaver_tree .lightbox}
 
@@ -133,9 +133,9 @@ E in pochi secondi viene restituito il risultato (vedi @fig-pivot).
 
 ## Come è stato creato il database
 
-L'ispirazione per la creazione di questo modalità di accesso ai dati del PNRR, viene dalla lettura di [questo ottimo articolo](https://motherduck.com/blog/from-data-lake-to-lakehouse-duckdb-portable-catalog/), in cui si spiega come DuckDB possa diventare un **catalogo portatile** per la **gestione** dei **dati**, da fonti diverse (file `parquet` da fonti Amazon S3, database PostgreSQL, tabelle su Google Cloud, ecc.).
+L'ispirazione per la creazione di questa modalità di accesso ai dati del PNRR, viene dalla lettura di [questo ottimo articolo](https://motherduck.com/blog/from-data-lake-to-lakehouse-duckdb-portable-catalog/), in cui si spiega come DuckDB possa diventare un **catalogo portatile** per la **gestione** dei **dati**, da fonti diverse (file `parquet` da fonti Amazon S3, database PostgreSQL, tabelle su Google Cloud, ecc.).
 
-Per questo file è stata replicata la logica descritta nell'articolo, ma sono state **necessarie** delle **pre lavorazioni** dei dati.
+Per questo file è stata replicata la logica descritta nell'articolo, ma sono state **necessarie** delle **pre-lavorazioni** dei dati.
 
 Sul sito Italiadomani i file sono disponibili in formato `CSV` (`JSON` e `XLSX`) e una query `SQL` tramite DuckDB si può fare puntando direttamente all'URL del file. Per sapere ad esempio quanti sono i progetti del PNRR la `query` sarebbe:
 
@@ -145,10 +145,10 @@ SELECT COUNT(*) FROM read_csv_auto('https://www.italiadomani.gov.it/content/dam/
 
 Questo è possibile grazie all'[estensione `httpfs`](https://duckdb.org/docs/extensions/httpfs/overview.html) di DuckDB, che consente di leggere file da URL HTTP o da Amazon S3. Ci sono però dei problemi:
 
-- alle volta il **server** di **Italiadomani non risponde in modo adeguato**, e la *query* fallisce;
+- a volte il **server** di **Italiadomani non risponde in modo adeguato**, e la *query* fallisce;
 - il formato **`CSV`** **non** è **ottimizzato** per ***query* su file "grandi"**, che **non** risiedano sul **proprio** **PC**, perché è necessario scaricare tutto il file per fare la *query*.
 
-Entrambi i **punti** sono abbastanza **bloccanti** e per superarli sono state fatte due cose:
+Entrambi i **punti** sono abbastanza **bloccanti** e, per superarli, sono state fatte due cose:
 
 1. pubblicare i file con i dati in uno spazio web che rispondesse meglio alle chiamate `HTTP`;
 2. convertire i file `CSV` in un formato più adatto per fare *query* su file "grandi" remoti, come il formato `parquet`.
@@ -185,7 +185,7 @@ FROM
 
 ## Due esempi di accesso "live"
 
-Un database così fatto, dà la possibilità di abilitare l'accesso ai dati in modo "live", ovvero senza dover scaricare il file e interrogarlo in locale.
+Un database così strutturato, dà la possibilità di abilitare l'accesso ai dati in modo "live", ovvero senza dover scaricare il file e interrogarlo in locale.
 
 Due applicazioni web, che consentono di accedere a risorse remote e interrogarle, lanciando una versione di DuckDB nel browser, senza dovere installare nulla sono queste due:
 
@@ -240,14 +240,14 @@ Per chi è abituato a lavorare da riga di comando, un ottimo strumento è il sor
 
 ## Note conclusive
 
-In questo post si vuole sottolineare la **comodità** di **accedere** a una **banca dati**, a partire da un file piccolo, e senza rinunciare alla possibilità di costruire analisi complesse e ricche.<br>
+In questo post si vuole sottolineare la **comodità** di **accedere** a una **banca dati**, a partire da un file piccolo e senza rinunciare alla possibilità di costruire analisi complesse e ricche.<br>
 Non è la modalità facile e unica con cui capire tutto sui numeri del PNRR, ma si ha la possibilità di fare un primo passo, e di farlo in modo molto più semplice di quanto si possa pensare.
 
 Ci sono alcuni **requisiti propedeutici**: **approfondire** come è strutturato il **PNRR**, **leggere** i **metadati** delle tabelle (in ogni pagina dei dati, c'è un link ai metadati, vedi @fig-metadati), e **conoscere** il **linguaggio `SQL`**.
 
 [![Metadati di una tabella](images/metadati.png){#fig-metadati}](https://www.italiadomani.gov.it/content/sogei-ng/it/it/catalogo-open-data/Progetti_del_PNRR.html)
 
-Questo è un primo rilascio del database, per mostrare un caso d'uso "tecnico". Non è al momento una risorsa su cui è pianificato un aggiornamento automatico e non è stato fatto alcun controllo di qualità.<br>
+Questo è un primo rilascio del database, per mostrare un caso d'uso "tecnico". Al momento non è una risorsa su cui è pianificato un aggiornamento automatico e non è stato fatto alcun controllo di qualità.<br>
 In prospettiva è probabile che verrà creata una procedura automatica per aggiornare il database, e verrà migliorata la qualità dei dati con verifiche sulla coerenza dello schema dati.
 
 I file sorgente, pubblicati su Italiadomani hanno alcuni problemi, di facile risoluzione, a da conoscere:

@@ -272,7 +272,7 @@ Figura&nbsp;1: Scegliere il database a cui connettersi
 </figcaption>
 </figure>
 </div>
-<p>Nei passaggi successivi della configurazione si dovrà indicare a quale file <code>DuckDB</code> connettersi. Qui sarà il file <a href="https://raw.githubusercontent.com/ondata/italian-public-sector-pnrr-data-guide/refs/heads/main/data/italia-domani/parquet/pnrr.db"><code>pnrr.db</code></a> scaricato in precedenza.<br> Una volta connessi, il database sara visibile sulla sinistra, nel navigatore dei database. E facendo clic sui vari segni <code>&gt;</code>, sarà possibile vere le 1️⃣ tabelle e le 2️⃣ viste, ecc. in cui è strutturato (vedi <a href="#fig-dbeaver_tree" class="quarto-xref">Figura&nbsp;2</a>).</p>
+<p>Nei passaggi successivi della configurazione si dovrà indicare a quale file <code>DuckDB</code> connettersi. Qui sarà il file <a href="https://raw.githubusercontent.com/ondata/italian-public-sector-pnrr-data-guide/refs/heads/main/data/italia-domani/parquet/pnrr.db"><code>pnrr.db</code></a> scaricato in precedenza.<br> Una volta connessi, il database sarà visibile sulla sinistra, nel navigatore dei database. E facendo clic sui vari segni <code>&gt;</code>, sarà possibile vedere le 1️⃣ tabelle e le 2️⃣ viste, ecc. in cui è strutturato (vedi <a href="#fig-dbeaver_tree" class="quarto-xref">Figura&nbsp;2</a>).</p>
 <div id="fig-dbeaver_tree" class="lightbox quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-dbeaver_tree-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -387,16 +387,16 @@ Figura&nbsp;4: Tabella pivot con numero di progetti per Missione per Regione
 </section>
 <section id="come-è-stato-creato-il-database" class="level2">
 <h2 class="anchored" data-anchor-id="come-è-stato-creato-il-database">Come è stato creato il database</h2>
-<p>L’ispirazione per la creazione di questo modalità di accesso ai dati del PNRR, viene dalla lettura di <a href="https://motherduck.com/blog/from-data-lake-to-lakehouse-duckdb-portable-catalog/">questo ottimo articolo</a>, in cui si spiega come DuckDB possa diventare un <strong>catalogo portatile</strong> per la <strong>gestione</strong> dei <strong>dati</strong>, da fonti diverse (file <code>parquet</code> da fonti Amazon S3, database PostgreSQL, tabelle su Google Cloud, ecc.).</p>
-<p>Per questo file è stata replicata la logica descritta nell’articolo, ma sono state <strong>necessarie</strong> delle <strong>pre lavorazioni</strong> dei dati.</p>
+<p>L’ispirazione per la creazione di questa modalità di accesso ai dati del PNRR, viene dalla lettura di <a href="https://motherduck.com/blog/from-data-lake-to-lakehouse-duckdb-portable-catalog/">questo ottimo articolo</a>, in cui si spiega come DuckDB possa diventare un <strong>catalogo portatile</strong> per la <strong>gestione</strong> dei <strong>dati</strong>, da fonti diverse (file <code>parquet</code> da fonti Amazon S3, database PostgreSQL, tabelle su Google Cloud, ecc.).</p>
+<p>Per questo file è stata replicata la logica descritta nell’articolo, ma sono state <strong>necessarie</strong> delle <strong>pre-lavorazioni</strong> dei dati.</p>
 <p>Sul sito Italiadomani i file sono disponibili in formato <code>CSV</code> (<code>JSON</code> e <code>XLSX</code>) e una query <code>SQL</code> tramite DuckDB si può fare puntando direttamente all’URL del file. Per sapere ad esempio quanti sono i progetti del PNRR la <code>query</code> sarebbe:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode sql code-with-copy"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">SELECT</span> <span class="fu">COUNT</span>(<span class="op">*</span>) <span class="kw">FROM</span> read_csv_auto(<span class="st">'https://www.italiadomani.gov.it/content/dam/sogei-ng/opendata/PNRR_Progetti.csv'</span>)</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Questo è possibile grazie all’<a href="https://duckdb.org/docs/extensions/httpfs/overview.html">estensione <code>httpfs</code></a> di DuckDB, che consente di leggere file da URL HTTP o da Amazon S3. Ci sono però dei problemi:</p>
 <ul>
-<li>alle volta il <strong>server</strong> di <strong>Italiadomani non risponde in modo adeguato</strong>, e la <em>query</em> fallisce;</li>
+<li>a volte il <strong>server</strong> di <strong>Italiadomani non risponde in modo adeguato</strong>, e la <em>query</em> fallisce;</li>
 <li>il formato <strong><code>CSV</code></strong> <strong>non</strong> è <strong>ottimizzato</strong> per <strong><em>query</em> su file “grandi”</strong>, che <strong>non</strong> risiedano sul <strong>proprio</strong> <strong>PC</strong>, perché è necessario scaricare tutto il file per fare la <em>query</em>.</li>
 </ul>
-<p>Entrambi i <strong>punti</strong> sono abbastanza <strong>bloccanti</strong> e per superarli sono state fatte due cose:</p>
+<p>Entrambi i <strong>punti</strong> sono abbastanza <strong>bloccanti</strong> e, per superarli, sono state fatte due cose:</p>
 <ol type="1">
 <li>pubblicare i file con i dati in uno spazio web che rispondesse meglio alle chiamate <code>HTTP</code>;</li>
 <li>convertire i file <code>CSV</code> in un formato più adatto per fare <em>query</em> su file “grandi” remoti, come il formato <code>parquet</code>.</li>
@@ -420,7 +420,7 @@ Figura&nbsp;4: Tabella pivot con numero di progetti per Missione per Regione
 </section>
 <section id="due-esempi-di-accesso-live" class="level2">
 <h2 class="anchored" data-anchor-id="due-esempi-di-accesso-live">Due esempi di accesso “live”</h2>
-<p>Un database così fatto, dà la possibilità di abilitare l’accesso ai dati in modo “live”, ovvero senza dover scaricare il file e interrogarlo in locale.</p>
+<p>Un database così strutturato, dà la possibilità di abilitare l’accesso ai dati in modo “live”, ovvero senza dover scaricare il file e interrogarlo in locale.</p>
 <p>Due applicazioni web, che consentono di accedere a risorse remote e interrogarle, lanciando una versione di DuckDB nel browser, senza dovere installare nulla sono queste due:</p>
 <ul>
 <li>la <a href="https://shell.duckdb.org/">DuckDB Shell</a>;</li>
@@ -500,7 +500,7 @@ Figura&nbsp;7: Esempio d’uso di Harlequin
 </section>
 <section id="note-conclusive" class="level2">
 <h2 class="anchored" data-anchor-id="note-conclusive">Note conclusive</h2>
-<p>In questo post si vuole sottolineare la <strong>comodità</strong> di <strong>accedere</strong> a una <strong>banca dati</strong>, a partire da un file piccolo, e senza rinunciare alla possibilità di costruire analisi complesse e ricche.<br> Non è la modalità facile e unica con cui capire tutto sui numeri del PNRR, ma si ha la possibilità di fare un primo passo, e di farlo in modo molto più semplice di quanto si possa pensare.</p>
+<p>In questo post si vuole sottolineare la <strong>comodità</strong> di <strong>accedere</strong> a una <strong>banca dati</strong>, a partire da un file piccolo e senza rinunciare alla possibilità di costruire analisi complesse e ricche.<br> Non è la modalità facile e unica con cui capire tutto sui numeri del PNRR, ma si ha la possibilità di fare un primo passo, e di farlo in modo molto più semplice di quanto si possa pensare.</p>
 <p>Ci sono alcuni <strong>requisiti propedeutici</strong>: <strong>approfondire</strong> come è strutturato il <strong>PNRR</strong>, <strong>leggere</strong> i <strong>metadati</strong> delle tabelle (in ogni pagina dei dati, c’è un link ai metadati, vedi <a href="#fig-metadati" class="quarto-xref">Figura&nbsp;8</a>), e <strong>conoscere</strong> il <strong>linguaggio <code>SQL</code></strong>.</p>
 <div id="fig-metadati" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -512,7 +512,7 @@ Figura&nbsp;8: Metadati di una tabella
 </figcaption>
 </figure>
 </div>
-<p>Questo è un primo rilascio del database, per mostrare un caso d’uso “tecnico”. Non è al momento una risorsa su cui è pianificato un aggiornamento automatico e non è stato fatto alcun controllo di qualità.<br> In prospettiva è probabile che verrà creata una procedura automatica per aggiornare il database, e verrà migliorata la qualità dei dati con verifiche sulla coerenza dello schema dati.</p>
+<p>Questo è un primo rilascio del database, per mostrare un caso d’uso “tecnico”. Al momento non è una risorsa su cui è pianificato un aggiornamento automatico e non è stato fatto alcun controllo di qualità.<br> In prospettiva è probabile che verrà creata una procedura automatica per aggiornare il database, e verrà migliorata la qualità dei dati con verifiche sulla coerenza dello schema dati.</p>
 <p>I file sorgente, pubblicati su Italiadomani hanno alcuni problemi, di facile risoluzione, a da conoscere:</p>
 <ul>
 <li>l’<strong>encoding</strong> dei file <code>CSV</code>. È nella gran parte dei casi <strong><code>UTF-8</code></strong>, ma in alcuni casi non è così e bisogna fare attenzione per l’accesso e l’eventuale conversione;</li>
@@ -870,7 +870,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>
   </div>
 </footer>
-<script>var lightboxQuarto = GLightbox({"selector":".lightbox","loop":false,"descPosition":"bottom","closeEffect":"zoom","openEffect":"zoom"});
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","selector":".lightbox","loop":false,"descPosition":"bottom","openEffect":"zoom"});
 (function() {
   let previousOnload = window.onload;
   window.onload = () => {
