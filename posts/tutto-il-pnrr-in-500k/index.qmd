@@ -31,7 +31,7 @@ image: images/harlequin.png
 
 ## Introduzione
 
-**Strumenti** e **dati** "**giusti**" consentono di ottenere risultati sorprendenti, e sopratutto **allargano** la **platea** di chi può fare **analisi** e **ricerca** su certe informazioni.
+**Strumenti** e **dati** "**giusti**" consentono di ottenere risultati sorprendenti, e soprattutto **allargano** la **platea** di chi può fare **analisi** e **ricerca** su certe informazioni.
 
 In questo post sarà illustrato come un piccolo **file** di **500 kB**, possa essere il punto di ingresso sui dati aperti del **Piano Nazionale di Ripresa e Resilienza** (**PNRR**).<br>
 Si tratta di un file, di un database [**DuckDB**](https://duckdb.org/), che "contiene" l'elenco delle principali tabelle del [Catalogo Open Data](https://www.italiadomani.gov.it/content/sogei-ng/it/it/catalogo-open-data.html) di Italiadomani, il portale del Governo che ospita i dati del PNRR.
