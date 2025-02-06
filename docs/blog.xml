@@ -10,7 +10,364 @@
 <atom:link href="https://aborruso.github.io/blog.xml" rel="self" type="application/rss+xml"/>
 <description></description>
 <generator>quarto-1.5.56</generator>
-<lastBuildDate>Wed, 01 Jan 2025 23:00:00 GMT</lastBuildDate>
+<lastBuildDate>Wed, 05 Feb 2025 23:00:00 GMT</lastBuildDate>
+<item>
+  <title>Pubblicati i dati dell’Archivio Nazionale dei Numeri Civici e delle Strade Urbane</title>
+  <dc:creator>Andrea Borruso</dc:creator>
+  <link>https://aborruso.github.io/posts/accesso_archivio_nazionale_numeri_civici_e_strade_urbane/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<section id="introduzione" class="level2">
+<h2 class="anchored" data-anchor-id="introduzione">Introduzione</h2>
+<p>Il <a href="https://eur-lex.europa.eu/legal-content/IT/TXT/?uri=CELEX:32023R0138">Regolamento di esecuzione (UE) 2023/138 della Commissione del 21 dicembre 2022</a> prevede la pubblicazione di una serie di <strong>dati di alto valore</strong>.<br> Tra questi i dati che alimentano l’<a href="https://www.anncsu.gov.it/"><strong>Archivio Nazionale dei Numeri Civici e delle Strade Urbane</strong></a>.</p>
+<p>Da oggi sono disponibili in formato aperto e leggibili tramite API, e se ne ha evidenza dal dataset disponibili sul <a href="https://geodati.gov.it/geoportale/visualizzazione-metadati/scheda-metadati/?uuid=age:consultazioneANNCSU">Repertorio nazionale dei dati territoriali</a> (RNDT).</p>
+</section>
+<section id="come-accedere" class="level2">
+<h2 class="anchored" data-anchor-id="come-accedere">Come accedere</h2>
+<p>Leggendo la documentazione ufficiale è possibile costruire alcuni esempi base.</p>
+<p>Il primo tipo di <em>query</em> è per <strong>odonimi</strong> (l’odonimo è il nome di una strada) e si può fa a partire dal <a href="https://dait.interno.gov.it/territorio-e-autonomie-locali/sut/elenco_codici_comuni.php">codice Belfiore</a> del Comune di interesse (è un codice alfanumerico di 4 caratteri usato in Italia per identificare in modo univoco ogni comune). Quello di Palermo è ad esempio <code>G273</code>.</p>
+<p>Se si vuole cercare l’elenco delle strade che contengono <code>ROMA</code> nel nome, si può fare una richiesta come questa:</p>
+<div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">curl</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-X</span> GET <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"https://anncsu.open.agenziaentrate.gov.it/age-inspire/opendata/anncsu/querydata.php?resource=odonimi&amp;codicecomune=G273&amp;denominazione=ROMA"</span></span></code></pre></div>
+<p>Si può <a href="https://anncsu.open.agenziaentrate.gov.it/age-inspire/opendata/anncsu/querydata.php?resource=odonimi&amp;codicecomune=G273&amp;denominazione=ROMA">aprire anche nel browser</a> ed è composta da:</p>
+<ul>
+<li><code>resource=odonimi</code></li>
+<li><code>codicecomune=G273</code></li>
+<li><code>denominazione=ROMA</code></li>
+</ul>
+<p>In output un <code>JSON</code>, che per ogni strada ha questo tipo di schema:</p>
+<div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb2-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb2-2">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"Progressivo_nazionale"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"576388"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-3">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"Codice_comunale"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">""</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-4">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"DUG"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"VIA"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-5">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"DUF"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ROMA"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-6">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"Denominazione_localita"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">""</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-7">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"Denominazione_lingua1"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">""</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb2-8">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"Denominazione_lingua2"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">""</span></span>
+<span id="cb2-9"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">}</span></span></code></pre></div>
+<p>Se si vuole cercare l’elenco degli <strong>accessi</strong> (i numeri civici) di questa strada, si deve partire dal codice numerico della strada. La strada di sopra ha il codice <code>576388</code> e si può fare una richiesta come questa:</p>
+<div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">curl</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-X</span> GET <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"https://anncsu.open.agenziaentrate.gov.it/age-inspire/opendata/anncsu/querydata.php?resource=accessi&amp;progressivoodonimo=576388&amp;accesso=1"</span></span></code></pre></div>
+<p>Anche questa si può <a href="https://anncsu.open.agenziaentrate.gov.it/age-inspire/opendata/anncsu/querydata.php?resource=accessi&amp;progressivoodonimo=576388&amp;accesso=1">consultare via browser</a> e dà in output un <code>JSON</code> con questo schema:</p>
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb4-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span id="cb4-2">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"Progressivo_nazionale_accesso"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"1885499"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb4-3">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"Codice_comunale_accesso"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">""</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb4-4">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"Civico"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"179"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb4-5">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"Esponente"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">""</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb4-6">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"Specificita"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">""</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb4-7">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"Metrico"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">""</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb4-8">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"CoordX"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">""</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb4-9">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"CoordY"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">""</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb4-10">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"Quota"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">""</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span></span>
+<span id="cb4-11">  <span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"Metodo"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"4"</span></span>
+<span id="cb4-12"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">}</span></span></code></pre></div>
+</section>
+<section id="non-ci-sono-le-coordinate-geografiche" class="level2">
+<h2 class="anchored" data-anchor-id="non-ci-sono-le-coordinate-geografiche">Non ci sono le coordinate geografiche</h2>
+<p>Al momento <strong>non sono leggibili le coordinate geografiche dei numeri civici</strong>. E siccome non è possibile e non è sensato pubblicare questi dati senza queste informazioni, è ipotizzabile e sperabile che sia un errore e che a breve saranno leggibili.</p>
+<p>Del resto l’ANNCSU, deve ancora annunciare il rilascio del servizio.</p>
+</section>
+<section id="documentazione-ufficiale" class="level2">
+<h2 class="anchored" data-anchor-id="documentazione-ufficiale">Documentazione ufficiale</h2>
+<p>La documentazione ufficiale è leggibile in formato <code>JSON</code> in questa pagina:<br> <a href="https://anncsu.open.agenziaentrate.gov.it/age-inspire/opendata/anncsu/querydata.php?help_show" class="uri">https://anncsu.open.agenziaentrate.gov.it/age-inspire/opendata/anncsu/querydata.php?help_show</a></p>
+<p>Si riporta a seguire tradotta in italiano (fatto con un LLM).</p>
+<section id="descrizione" class="level3">
+<h3 class="anchored" data-anchor-id="descrizione">Descrizione</h3>
+<p>L’azione <code>querydata</code> consente di cercare dati relativi a <strong>odonimi</strong> e <strong>accessi</strong> nel database ANNCSU.</p>
+<p>Le richieste possono essere effettuate tramite <strong>GET</strong> o <strong>POST</strong>, utilizzando gli stessi parametri descritti di seguito.</p>
+</section>
+<section id="parametri-di-richiesta" class="level3">
+<h3 class="anchored" data-anchor-id="parametri-di-richiesta">Parametri di richiesta</h3>
+<section id="richiesta-di-odonimi" class="level4">
+<h4 class="anchored" data-anchor-id="richiesta-di-odonimi">Richiesta di <strong>ODONIMI</strong></h4>
+<ul>
+<li><code>resource</code>: valore fisso <code>'odonimi'</code></li>
+<li><code>codicecomune</code>: codice univoco del comune (codice “Belfiore”, ad es. H501, F205, …)</li>
+<li><code>denominazione</code>: nome dell’odonimo, anche parziale; se contiene più parole, è consigliato sostituire gli spazi con <code>%20</code> (URL encoding)</li>
+</ul>
+</section>
+<section id="richiesta-di-accessi" class="level4">
+<h4 class="anchored" data-anchor-id="richiesta-di-accessi">Richiesta di <strong>ACCESSI</strong></h4>
+<ul>
+<li><code>resource</code>: valore fisso <code>'accessi'</code></li>
+<li><code>codicecomune</code>: codice univoco del comune (codice “Belfiore”, ad es. H501, F205, …)</li>
+<li><code>denominazione</code>: nome dell’odonimo, anche parziale; se contiene più parole, è consigliato sostituire gli spazi con <code>%20</code> (URL encoding)</li>
+</ul>
+</section>
+</section>
+<section id="esempi-di-richieste" class="level3">
+<h3 class="anchored" data-anchor-id="esempi-di-richieste">Esempi di richieste</h3>
+<section id="esempi-con-get" class="level4">
+<h4 class="anchored" data-anchor-id="esempi-con-get">Esempi con <strong>GET</strong></h4>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb5-1">.../querydata.php?resource=odonimi&amp;codicecomune=H501&amp;denominazione=VIA%20MILANO</span>
+<span id="cb5-2">.../querydata.php?resource=accessi&amp;progressivoodonimo=2000083&amp;accesso=1</span></code></pre></div>
+</section>
+<section id="alternativa-con-get" class="level4">
+<h4 class="anchored" data-anchor-id="alternativa-con-get">Alternativa con <strong>GET</strong></h4>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb6-1">.../querydata.php/odonimi/H501/MILANO</span>
+<span id="cb6-2">.../querydata.php/accessi/2000083/1</span></code></pre></div>
+</section>
+<section id="esempi-con-post-contenuto-nel-corpo-della-richiesta" class="level4">
+<h4 class="anchored" data-anchor-id="esempi-con-post-contenuto-nel-corpo-della-richiesta">Esempi con <strong>POST</strong> (contenuto nel corpo della richiesta)</h4>
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb7-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"resource"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"odonimi"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"codicecomune"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"H501"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"denominazione"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"VIA MILANO"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span id="cb7-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">{</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"resource"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"accessi"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"progressivoodonimo"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"2000083"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">,</span><span class="dt" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">"accesso"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">:</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"1"</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">}</span></span></code></pre></div>
+</section>
+</section>
+<section id="struttura-della-risposta" class="level3">
+<h3 class="anchored" data-anchor-id="struttura-della-risposta">Struttura della risposta</h3>
+<section id="dati-relativi-agli-odonimi" class="level4">
+<h4 class="anchored" data-anchor-id="dati-relativi-agli-odonimi">Dati relativi agli <strong>ODONIMI</strong></h4>
+<ul>
+<li><code>Progressivo_nazionale</code>: Progressivo nazionale dell’odonimo in ANNCSU</li>
+<li><code>Codice_comunale</code>: Codice comunale dell’odonimo</li>
+<li><code>DUG</code>: Denominazione Urbanistica Generica (es. “via”, “piazza”)</li>
+<li><code>DUF</code>: Denominazione Urbanistica Ufficiale (es. “Dante Alighieri”, “Vittorio Emanuele Secondo”)</li>
+<li><code>Denominazione_localita</code>: Nome della località</li>
+<li><code>Denominazione_lingua1</code>: Prima denominazione in un’altra lingua</li>
+<li><code>Denominazione_lingua2</code>: Seconda denominazione in un’altra lingua</li>
+</ul>
+</section>
+<section id="dati-relativi-agli-accessi" class="level4">
+<h4 class="anchored" data-anchor-id="dati-relativi-agli-accessi">Dati relativi agli <strong>ACCESSI</strong></h4>
+<ul>
+<li><code>Progressivo_nazionale_accesso</code>: Progressivo nazionale dell’accesso in ANNCSU</li>
+<li><code>Codice_comunale_accesso</code>: Codice comunale dell’accesso</li>
+<li><code>Civico</code>: Numero civico (esclusivo rispetto al metrico)</li>
+<li><code>Esponente</code>: Esponente del civico</li>
+<li><code>Specificita</code>: Specificità dell’accesso</li>
+<li><code>Metrico</code>: Ubicazione metrica (esclusiva rispetto al civico)</li>
+<li><code>CoordX</code>: Coordinata geografica X (Longitudine) del civico, determinata dal Comune, espressa in gradi decimali</li>
+<li><code>CoordY</code>: Coordinata geografica Y (Latitudine) del civico, determinata dal Comune, espressa in gradi decimali</li>
+<li><code>Quota</code>: Coordinata geografica Z (Altitudine) del civico, determinata dal Comune, espressa in metri</li>
+<li><code>Metodo</code>: Metodo di rilevazione delle coordinate del civico usato dal Comune, con la seguente codifica:
+<ul>
+<li><strong>1</strong> = Rilevazione strumentale sul campo, accuratezza &lt; 5 m</li>
+<li><strong>2</strong> = Rilevazione strumentale sul campo, accuratezza ≥ 5 m</li>
+<li><strong>3</strong> = Derivazione indiretta da base dati territoriale, accuratezza stimabile &lt; 5 m</li>
+<li><strong>4</strong> = Derivazione indiretta da base dati territoriale, accuratezza stimabile ≥ 5 m</li>
+<li><strong>5</strong> = Derivazione indiretta tramite Portale per i Comuni, accuratezza stimabile ≥ 2 m</li>
+</ul></li>
+</ul>
+
+
+</section>
+</section>
+</section>
+
+<a onclick="window.scrollTo(0, 0); return false;" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Torna in cima</a> ]]></description>
+  <category>opendata</category>
+  <category>hvd</category>
+  <category>europa</category>
+  <guid>https://aborruso.github.io/posts/accesso_archivio_nazionale_numeri_civici_e_strade_urbane/</guid>
+  <pubDate>Wed, 05 Feb 2025 23:00:00 GMT</pubDate>
+  <media:content url="https://aborruso.github.io/posts/accesso_archivio_nazionale_numeri_civici_e_strade_urbane/images/anncsu.png" medium="image" type="image/png" height="93" width="144"/>
+</item>
 <item>
   <title>Tutti i dati aperti del PNRR in 500 kB</title>
   <dc:creator>Andrea Borruso</dc:creator>

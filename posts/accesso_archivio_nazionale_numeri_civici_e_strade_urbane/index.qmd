@@ -1,0 +1,170 @@
+---
+title: "Pubblicati i dati dell'Archivio Nazionale dei Numeri Civici e delle Strade Urbane"
+description: 'Ma non ci sono ancora le coordinate geografiche'
+date: "2025-02-06"
+draft: false
+search: true
+author:
+  - name: "Andrea Borruso"
+    affiliation:
+      - name: Associazione onData
+        url: https://ondata.it
+    url: https://bsky.app/profile/aborruso.bsky.social
+categories:
+  - opendata
+  - hvd
+  - europa
+format:
+  html:
+    crossrefs-hover: false
+website:
+  twitter-card:
+    description: 'Ecco come accedere ai dati. Purtroppo non ci sono ancora le coordinate geografiche'
+    image: images/anncsu.png
+  open-graph:
+    description: 'Ecco come accedere ai dati. Purtroppo non ci sono ancora le coordinate geografiche'
+    image: images/anncsu.png
+image: images/anncsu.png
+---
+
+## Introduzione
+
+Il [Regolamento di esecuzione (UE) 2023/138 della Commissione del 21 dicembre 2022](https://eur-lex.europa.eu/legal-content/IT/TXT/?uri=CELEX:32023R0138) prevede la pubblicazione di una serie di **dati di alto valore**.<br>
+Tra questi i dati che alimentano l'[**Archivio Nazionale dei Numeri Civici e delle Strade Urbane**](https://www.anncsu.gov.it/).
+
+Da oggi sono disponibili in formato aperto e leggibili tramite [API](#come-accedere), e se ne ha evidenza dal dataset disponibili sul [Repertorio nazionale dei dati territoriali](https://geodati.gov.it/geoportale/visualizzazione-metadati/scheda-metadati/?uuid=age:consultazioneANNCSU) (RNDT).
+
+
+## Come accedere
+
+Leggendo la [documentazione ufficiale](#documentazione-ufficiale) è possibile costruire alcuni esempi base.
+
+Il primo tipo di *query* è per **odonimi** (l'odonimo è il nome di una strada) e si può fa a partire dal [codice Belfiore](https://dait.interno.gov.it/territorio-e-autonomie-locali/sut/elenco_codici_comuni.php) del Comune di interesse (è un codice alfanumerico di 4 caratteri usato in Italia per identificare in modo univoco ogni comune). Quello di Palermo è ad esempio `G273`.
+
+Se si vuole cercare l'elenco delle strade che contengono `ROMA` nel nome, si può fare una richiesta come questa:
+
+```bash
+curl -X GET "https://anncsu.open.agenziaentrate.gov.it/age-inspire/opendata/anncsu/querydata.php?resource=odonimi&codicecomune=G273&denominazione=ROMA"
+```
+
+Si può [aprire anche nel browser](https://anncsu.open.agenziaentrate.gov.it/age-inspire/opendata/anncsu/querydata.php?resource=odonimi&codicecomune=G273&denominazione=ROMA) ed è composta da:
+
+- `resource=odonimi`
+- `codicecomune=G273`
+- `denominazione=ROMA`
+
+In output un `JSON`, che per ogni strada ha questo tipo di schema:
+
+```json
+{
+  "Progressivo_nazionale": "576388",
+  "Codice_comunale": "",
+  "DUG": "VIA",
+  "DUF": "ROMA",
+  "Denominazione_localita": "",
+  "Denominazione_lingua1": "",
+  "Denominazione_lingua2": ""
+}
+```
+
+Se si vuole cercare l'elenco degli **accessi** (i numeri civici) di questa strada, si deve partire dal codice numerico della strada. La strada di sopra ha il codice `576388` e si può fare una richiesta come questa:
+
+```bash
+curl -X GET "https://anncsu.open.agenziaentrate.gov.it/age-inspire/opendata/anncsu/querydata.php?resource=accessi&progressivoodonimo=576388&accesso=1"
+```
+
+Anche questa si può [consultare via browser](https://anncsu.open.agenziaentrate.gov.it/age-inspire/opendata/anncsu/querydata.php?resource=accessi&progressivoodonimo=576388&accesso=1) e dà in output un `JSON` con questo schema:
+
+```json
+{
+  "Progressivo_nazionale_accesso": "1885499",
+  "Codice_comunale_accesso": "",
+  "Civico": "179",
+  "Esponente": "",
+  "Specificita": "",
+  "Metrico": "",
+  "CoordX": "",
+  "CoordY": "",
+  "Quota": "",
+  "Metodo": "4"
+}
+```
+
+## Non ci sono le coordinate geografiche
+
+Al momento **non sono leggibili le coordinate geografiche dei numeri civici**. E siccome non è possibile e non è sensato pubblicare questi dati senza queste informazioni, è ipotizzabile e sperabile che sia un errore e che a breve saranno leggibili.
+
+Del resto l'ANNCSU, deve ancora annunciare il rilascio del servizio.
+
+## Documentazione ufficiale
+
+La documentazione ufficiale è leggibile in formato `JSON` in questa pagina:<br>
+<https://anncsu.open.agenziaentrate.gov.it/age-inspire/opendata/anncsu/querydata.php?help_show>
+
+Si riporta a seguire tradotta in italiano (fatto con un LLM).
+
+### Descrizione
+L'azione `querydata` consente di cercare dati relativi a **odonimi** e **accessi** nel database ANNCSU.
+
+Le richieste possono essere effettuate tramite **GET** o **POST**, utilizzando gli stessi parametri descritti di seguito.
+
+### Parametri di richiesta
+
+#### Richiesta di **ODONIMI**
+- `resource`: valore fisso `'odonimi'`
+- `codicecomune`: codice univoco del comune (codice "Belfiore", ad es. H501, F205, ...)
+- `denominazione`: nome dell'odonimo, anche parziale; se contiene più parole, è consigliato sostituire gli spazi con `%20` (URL encoding)
+
+#### Richiesta di **ACCESSI**
+- `resource`: valore fisso `'accessi'`
+- `codicecomune`: codice univoco del comune (codice "Belfiore", ad es. H501, F205, ...)
+- `denominazione`: nome dell'odonimo, anche parziale; se contiene più parole, è consigliato sostituire gli spazi con `%20` (URL encoding)
+
+### Esempi di richieste
+
+#### Esempi con **GET**
+```markdown
+.../querydata.php?resource=odonimi&codicecomune=H501&denominazione=VIA%20MILANO
+.../querydata.php?resource=accessi&progressivoodonimo=2000083&accesso=1
+```
+
+#### Alternativa con **GET**
+```markdown
+.../querydata.php/odonimi/H501/MILANO
+.../querydata.php/accessi/2000083/1
+```
+
+#### Esempi con **POST** (contenuto nel corpo della richiesta)
+```json
+{"resource":"odonimi","codicecomune":"H501","denominazione":"VIA MILANO"}
+{"resource":"accessi","progressivoodonimo":"2000083","accesso":"1"}
+```
+
+### Struttura della risposta
+
+#### Dati relativi agli **ODONIMI**
+- `Progressivo_nazionale`: Progressivo nazionale dell'odonimo in ANNCSU
+- `Codice_comunale`: Codice comunale dell'odonimo
+- `DUG`: Denominazione Urbanistica Generica (es. “via”, “piazza”)
+- `DUF`: Denominazione Urbanistica Ufficiale (es. “Dante Alighieri”, “Vittorio Emanuele Secondo”)
+- `Denominazione_localita`: Nome della località
+- `Denominazione_lingua1`: Prima denominazione in un'altra lingua
+- `Denominazione_lingua2`: Seconda denominazione in un'altra lingua
+
+#### Dati relativi agli **ACCESSI**
+- `Progressivo_nazionale_accesso`: Progressivo nazionale dell'accesso in ANNCSU
+- `Codice_comunale_accesso`: Codice comunale dell'accesso
+- `Civico`: Numero civico (esclusivo rispetto al metrico)
+- `Esponente`: Esponente del civico
+- `Specificita`: Specificità dell'accesso
+- `Metrico`: Ubicazione metrica (esclusiva rispetto al civico)
+- `CoordX`: Coordinata geografica X (Longitudine) del civico, determinata dal Comune, espressa in gradi decimali
+- `CoordY`: Coordinata geografica Y (Latitudine) del civico, determinata dal Comune, espressa in gradi decimali
+- `Quota`: Coordinata geografica Z (Altitudine) del civico, determinata dal Comune, espressa in metri
+- `Metodo`: Metodo di rilevazione delle coordinate del civico usato dal Comune, con la seguente codifica:
+  - **1** = Rilevazione strumentale sul campo, accuratezza < 5 m
+  - **2** = Rilevazione strumentale sul campo, accuratezza ≥ 5 m
+  - **3** = Derivazione indiretta da base dati territoriale, accuratezza stimabile < 5 m
+  - **4** = Derivazione indiretta da base dati territoriale, accuratezza stimabile ≥ 5 m
+  - **5** = Derivazione indiretta tramite Portale per i Comuni, accuratezza stimabile ≥ 2 m
+
