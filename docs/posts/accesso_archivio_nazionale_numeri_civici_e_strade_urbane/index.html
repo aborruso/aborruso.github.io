@@ -227,6 +227,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#introduzione" id="toc-introduzione" class="nav-link active" data-scroll-target="#introduzione">Introduzione</a></li>
   <li><a href="#come-accedere" id="toc-come-accedere" class="nav-link" data-scroll-target="#come-accedere">Come accedere</a></li>
+  <li><a href="#la-lista-delle-strade-di-una-città" id="toc-la-lista-delle-strade-di-una-città" class="nav-link" data-scroll-target="#la-lista-delle-strade-di-una-città">La lista delle strade di una città</a></li>
   <li><a href="#non-ci-sono-le-coordinate-geografiche" id="toc-non-ci-sono-le-coordinate-geografiche" class="nav-link" data-scroll-target="#non-ci-sono-le-coordinate-geografiche">Non ci sono le coordinate geografiche</a></li>
   <li><a href="#documentazione-ufficiale" id="toc-documentazione-ufficiale" class="nav-link" data-scroll-target="#documentazione-ufficiale">Documentazione ufficiale</a>
   <ul class="collapse">
@@ -292,6 +293,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="dt">"Metodo"</span><span class="fu">:</span> <span class="st">"4"</span></span>
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
+<section id="la-lista-delle-strade-di-una-città" class="level2">
+<h2 class="anchored" data-anchor-id="la-lista-delle-strade-di-una-città">La lista delle strade di una città</h2>
+<p>Guardando la documentazione non sembra possibile ottenerla. Però forse (da verificare) è possibile utilizzare questo <em>hack</em>: <code>denominazione=%20%20%20</code>.</p>
+<p>Quindi per Palermo, la query potrebbe essere:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-X</span> GET <span class="st">"https://anncsu.open.agenziaentrate.gov.it/age-inspire/opendata/anncsu/querydata.php?resource=odonimi&amp;codicecomune=G273&amp;denominazione=%20%20%20"</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
 <section id="non-ci-sono-le-coordinate-geografiche" class="level2">
 <h2 class="anchored" data-anchor-id="non-ci-sono-le-coordinate-geografiche">Non ci sono le coordinate geografiche</h2>
 <p>Al momento <strong>non sono leggibili le coordinate geografiche dei numeri civici</strong>. E siccome non è possibile e non è sensato pubblicare questi dati senza queste informazioni, è ipotizzabile e sperabile che sia un errore e che a breve saranno leggibili.</p>
@@ -329,18 +336,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="esempi-di-richieste">Esempi di richieste</h3>
 <section id="esempi-con-get" class="level4">
 <h4 class="anchored" data-anchor-id="esempi-con-get">Esempi con <strong>GET</strong></h4>
-<div class="sourceCode" id="cb5"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>.../querydata.php?resource=odonimi&amp;codicecomune=H501&amp;denominazione=VIA%20MILANO</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>.../querydata.php?resource=accessi&amp;progressivoodonimo=2000083&amp;accesso=1</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>.../querydata.php?resource=odonimi&amp;codicecomune=H501&amp;denominazione=VIA%20MILANO</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>.../querydata.php?resource=accessi&amp;progressivoodonimo=2000083&amp;accesso=1</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="alternativa-con-get" class="level4">
 <h4 class="anchored" data-anchor-id="alternativa-con-get">Alternativa con <strong>GET</strong></h4>
-<div class="sourceCode" id="cb6"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>.../querydata.php/odonimi/H501/MILANO</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>.../querydata.php/accessi/2000083/1</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>.../querydata.php/odonimi/H501/MILANO</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>.../querydata.php/accessi/2000083/1</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="esempi-con-post-contenuto-nel-corpo-della-richiesta" class="level4">
 <h4 class="anchored" data-anchor-id="esempi-con-post-contenuto-nel-corpo-della-richiesta">Esempi con <strong>POST</strong> (contenuto nel corpo della richiesta)</h4>
-<div class="sourceCode" id="cb7"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span><span class="dt">"resource"</span><span class="fu">:</span><span class="st">"odonimi"</span><span class="fu">,</span><span class="dt">"codicecomune"</span><span class="fu">:</span><span class="st">"H501"</span><span class="fu">,</span><span class="dt">"denominazione"</span><span class="fu">:</span><span class="st">"VIA MILANO"</span><span class="fu">}</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span><span class="dt">"resource"</span><span class="fu">:</span><span class="st">"accessi"</span><span class="fu">,</span><span class="dt">"progressivoodonimo"</span><span class="fu">:</span><span class="st">"2000083"</span><span class="fu">,</span><span class="dt">"accesso"</span><span class="fu">:</span><span class="st">"1"</span><span class="fu">}</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span><span class="dt">"resource"</span><span class="fu">:</span><span class="st">"odonimi"</span><span class="fu">,</span><span class="dt">"codicecomune"</span><span class="fu">:</span><span class="st">"H501"</span><span class="fu">,</span><span class="dt">"denominazione"</span><span class="fu">:</span><span class="st">"VIA MILANO"</span><span class="fu">}</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span><span class="dt">"resource"</span><span class="fu">:</span><span class="st">"accessi"</span><span class="fu">,</span><span class="dt">"progressivoodonimo"</span><span class="fu">:</span><span class="st">"2000083"</span><span class="fu">,</span><span class="dt">"accesso"</span><span class="fu">:</span><span class="st">"1"</span><span class="fu">}</span></span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 </section>
 <section id="struttura-della-risposta" class="level3">

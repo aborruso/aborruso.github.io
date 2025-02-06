@@ -90,6 +90,16 @@ Anche questa si può [consultare via browser](https://anncsu.open.agenziaentrate
 }
 ```
 
+## La lista delle strade di una città
+
+Guardando la documentazione non sembra possibile ottenerla. Però forse (da verificare) è possibile utilizzare questo *hack*: `denominazione=%20%20%20`.
+
+Quindi per Palermo, la query potrebbe essere:
+
+```bash
+curl -X GET "https://anncsu.open.agenziaentrate.gov.it/age-inspire/opendata/anncsu/querydata.php?resource=odonimi&codicecomune=G273&denominazione=%20%20%20"
+```
+
 ## Non ci sono le coordinate geografiche
 
 Al momento **non sono leggibili le coordinate geografiche dei numeri civici**. E siccome non è possibile e non è sensato pubblicare questi dati senza queste informazioni, è ipotizzabile e sperabile che sia un errore e che a breve saranno leggibili.

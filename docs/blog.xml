@@ -216,6 +216,18 @@ font-style: inherit;">"4"</span></span>
 background-color: null;
 font-style: inherit;">}</span></span></code></pre></div>
 </section>
+<section id="la-lista-delle-strade-di-una-città" class="level2">
+<h2 class="anchored" data-anchor-id="la-lista-delle-strade-di-una-città">La lista delle strade di una città</h2>
+<p>Guardando la documentazione non sembra possibile ottenerla. Però forse (da verificare) è possibile utilizzare questo <em>hack</em>: <code>denominazione=%20%20%20</code>.</p>
+<p>Quindi per Palermo, la query potrebbe essere:</p>
+<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><span class="ex" style="color: null;
+background-color: null;
+font-style: inherit;">curl</span> <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">-X</span> GET <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"https://anncsu.open.agenziaentrate.gov.it/age-inspire/opendata/anncsu/querydata.php?resource=odonimi&amp;codicecomune=G273&amp;denominazione=%20%20%20"</span></span></code></pre></div>
+</section>
 <section id="non-ci-sono-le-coordinate-geografiche" class="level2">
 <h2 class="anchored" data-anchor-id="non-ci-sono-le-coordinate-geografiche">Non ci sono le coordinate geografiche</h2>
 <p>Al momento <strong>non sono leggibili le coordinate geografiche dei numeri civici</strong>. E siccome non è possibile e non è sensato pubblicare questi dati senza queste informazioni, è ipotizzabile e sperabile che sia un errore e che a breve saranno leggibili.</p>
@@ -253,17 +265,17 @@ font-style: inherit;">}</span></span></code></pre></div>
 <h3 class="anchored" data-anchor-id="esempi-di-richieste">Esempi di richieste</h3>
 <section id="esempi-con-get" class="level4">
 <h4 class="anchored" data-anchor-id="esempi-con-get">Esempi con <strong>GET</strong></h4>
-<div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb5-1">.../querydata.php?resource=odonimi&amp;codicecomune=H501&amp;denominazione=VIA%20MILANO</span>
-<span id="cb5-2">.../querydata.php?resource=accessi&amp;progressivoodonimo=2000083&amp;accesso=1</span></code></pre></div>
+<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb6-1">.../querydata.php?resource=odonimi&amp;codicecomune=H501&amp;denominazione=VIA%20MILANO</span>
+<span id="cb6-2">.../querydata.php?resource=accessi&amp;progressivoodonimo=2000083&amp;accesso=1</span></code></pre></div>
 </section>
 <section id="alternativa-con-get" class="level4">
 <h4 class="anchored" data-anchor-id="alternativa-con-get">Alternativa con <strong>GET</strong></h4>
-<div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb6-1">.../querydata.php/odonimi/H501/MILANO</span>
-<span id="cb6-2">.../querydata.php/accessi/2000083/1</span></code></pre></div>
+<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb7-1">.../querydata.php/odonimi/H501/MILANO</span>
+<span id="cb7-2">.../querydata.php/accessi/2000083/1</span></code></pre></div>
 </section>
 <section id="esempi-con-post-contenuto-nel-corpo-della-richiesta" class="level4">
 <h4 class="anchored" data-anchor-id="esempi-con-post-contenuto-nel-corpo-della-richiesta">Esempi con <strong>POST</strong> (contenuto nel corpo della richiesta)</h4>
-<div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb7-1"><span class="fu" style="color: #4758AB;
+<div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode json code-with-copy"><code class="sourceCode json"><span id="cb8-1"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">{</span><span class="dt" style="color: #AD0000;
 background-color: null;
@@ -290,7 +302,7 @@ background-color: null;
 font-style: inherit;">"VIA MILANO"</span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">}</span></span>
-<span id="cb7-2"><span class="fu" style="color: #4758AB;
+<span id="cb8-2"><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">{</span><span class="dt" style="color: #AD0000;
 background-color: null;
