@@ -32,7 +32,7 @@ image: images/anncsu.png
 Il [Regolamento di esecuzione (UE) 2023/138 della Commissione del 21 dicembre 2022](https://eur-lex.europa.eu/legal-content/IT/TXT/?uri=CELEX:32023R0138) prevede la pubblicazione di una serie di **dati di alto valore**.<br>
 Tra questi i dati che alimentano l'[**Archivio Nazionale dei Numeri Civici e delle Strade Urbane**](https://www.anncsu.gov.it/).
 
-Da oggi sono disponibili in formato aperto e leggibili tramite [API](#come-accedere), e se ne ha evidenza dal dataset disponibili sul [Repertorio nazionale dei dati territoriali](https://geodati.gov.it/geoportale/visualizzazione-metadati/scheda-metadati/?uuid=age:consultazioneANNCSU) (RNDT).
+Da oggi sono disponibili in formato aperto e leggibili tramite [API](#come-accedere), e se ne ha evidenza dal dataset disponibile sul [Repertorio nazionale dei dati territoriali](https://geodati.gov.it/geoportale/visualizzazione-metadati/scheda-metadati/?uuid=age:consultazioneANNCSU) (RNDT).
 
 
 ## Come accedere
