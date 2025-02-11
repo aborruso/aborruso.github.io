@@ -34,6 +34,13 @@ Tra questi i dati che alimentano l'[**Archivio Nazionale dei Numeri Civici e del
 
 Da oggi sono disponibili in formato aperto e leggibili tramite [API](#come-accedere), e se ne ha evidenza dal dataset disponibile sul [Repertorio nazionale dei dati territoriali](https://geodati.gov.it/geoportale/visualizzazione-metadati/scheda-metadati/?uuid=age:consultazioneANNCSU) (RNDT).
 
+::: {.callout-note}
+## L'associazione onData ha creato l'archivio di questi dati
+
+In [questo *repository* su GitHub](https://github.com/ondata/archivio_anncsu), è presente l'archivio di tutte le strade e tutti gli indirizzi di Italia. Alla date del 11 febbraio 2025, moltissimi dei civici non hanno coordinate geografiche associate.
+:::
+
+
 
 ## Come accedere
 
