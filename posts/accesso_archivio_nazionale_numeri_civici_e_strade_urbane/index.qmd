@@ -34,6 +34,8 @@ Tra questi i dati che alimentano l'[**Archivio Nazionale dei Numeri Civici e del
 
 Da oggi sono disponibili in formato aperto e leggibili tramite [API](#come-accedere), e se ne ha evidenza dal dataset disponibile sul [Repertorio nazionale dei dati territoriali](https://geodati.gov.it/geoportale/visualizzazione-metadati/scheda-metadati/?uuid=age:consultazioneANNCSU) (RNDT).
 
+Viva Lorenzo e Andrea
+
 ::: {.callout-note}
 ## Aggiornamento
 
