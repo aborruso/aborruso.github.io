@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Andrea Borruso">
-<meta name="description" content="Come farlo">
+<meta name="description" content="Come ottimizzare la cosa">
 
-<title>uv: installare o lanciare un’applicazione python – aborruso's website</title>
+<title>gdal: export in geoparquet – aborruso’s website</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -124,15 +124,15 @@ background: #75aadb;
 
 
 <link rel="stylesheet" href="../../styles.css">
-<meta property="og:title" content="uv: installare o lanciare un’applicazione python – aborruso’s website">
-<meta property="og:description" content="Come farlo">
+<meta property="og:title" content="gdal: export in geoparquet – aborruso’s website">
+<meta property="og:description" content="Come ottimizzare la cosa">
 <meta property="og:image" content="https://aborruso.github.io/risorse/opengraph.png">
 <meta property="og:site_name" content="aborruso's website">
 <meta property="og:locale" content="it_IT">
 <meta property="og:image:height" content="630">
 <meta property="og:image:width" content="1200">
-<meta name="twitter:title" content="uv: installare o lanciare un’applicazione python – aborruso’s website">
-<meta name="twitter:description" content="Come farlo">
+<meta name="twitter:title" content="gdal: export in geoparquet – aborruso’s website">
+<meta name="twitter:description" content="Come ottimizzare la cosa">
 <meta name="twitter:image" content="https://aborruso.github.io/risorse/twitter-card.png">
 <meta name="twitter:creator" content="@aborruso">
 <meta name="twitter:card" content="summary_large_image">
@@ -175,15 +175,15 @@ background: #75aadb;
 <header id="title-block-header" class="quarto-title-block default toc-left page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">uv: installare o lanciare un’applicazione python</h1>
+      <h1 class="title">gdal: export in geoparquet</h1>
                   <div>
         <div class="description">
-          Come farlo
+          Come ottimizzare la cosa
         </div>
       </div>
                           <div class="quarto-categories">
-                <div class="quarto-category">python</div>
-                <div class="quarto-category">sysadmin</div>
+                <div class="quarto-category">gdal</div>
+                <div class="quarto-category">parquet</div>
               </div>
                   </div>
   </div>
@@ -210,7 +210,7 @@ background: #75aadb;
       <div>
       <div class="quarto-title-meta-heading">Data di Pubblicazione</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">27 dicembre 2024</p>
+        <p class="date">21 aprile 2025</p>
       </div>
     </div>
     
@@ -234,19 +234,18 @@ background: #75aadb;
 
 
 
-<p><a href="https://github.com/astral-sh/uv"><code>uv</code></a> è un gestore di pacchetti e strumenti per Python, estremamente veloce e scritto in Rust. È progettato per sostituire strumenti comuni come pip, poetry e virtualenv, offrendo un’interfaccia familiare ma con prestazioni da 10 a 100 volte superiori. uv gestisce le versioni di Python, le dipendenze dei progetti e supporta script singoli con metadati inline, tutto in modo efficiente e scalabile. Disponibile su macOS, Linux e Windows, uv rappresenta una soluzione innovativa per la gestione dei progetti Python.</p>
-<p>Per <strong>installare</strong> un <strong>pacchetto</strong> e renderlo disponibile a tutto l’ambiente senza dover attivare un <code>virtualenv</code>, è possibile lanciare questo comando:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> tool install nome_pacchetto</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Per lanciarlo invece in modo temporaneo, è possibile usare il comando:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uvx</span> pycowsay hello from uv</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><code>uvx</code> è un alias del comando <code>uv tool run</code>. In questo caso verrà installato ed eseguito temporaneamente <code>pycowsay</code>, senza doverlo installare in modo permanente.</p>
-<p>Se si vuole aggiungere una <strong>dipendenza</strong> a un progetto, è possibile farlo con il comando come:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> add torch torchvision open-webui</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Questo comando aggiungerà le dipendenze <code>torch</code> di <code>torchvision</code> al modulo <code>open-webui</code> già installato.</p>
-<p>Se si vuole fare l’update di un pacchetto già installato:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> tool upgrade nome_pacchetto</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Se si vuole disinstallare un pacchetto:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="ex">uv</span> tool uninstall nome_pacchetto</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Con GDAL è possibile esportare i dati in <a href="https://gdal.org/en/stable/drivers/vector/parquet.html">formato (Geo)Parquet</a>, un formato ottimizzato per l’archiviazione e l’elaborazione di dati geospaziali. Questo formato è particolarmente utile per le applicazioni che richiedono prestazioni elevate e una gestione efficiente dei dati.</p>
+<p>Prendendo spunto dai <a href="https://github.com/cholmes/geoparquet-tools">geoparquet-tools</a> di Chris Holmes, ho scoperto che è possibile replicarne alcune delle <em>feature</em> direttamente in GDAL:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ogr2ogr</span> <span class="dt">\</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">-f</span> <span class="st">"parquet"</span> <span class="dt">\</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  output.parquet <span class="dt">\</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  input.geojson <span class="dt">\</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">-lco</span> compression=zstd <span class="dt">\</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">-lco</span> SORT_BY_BBOX=YES <span class="dt">\</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">-lco</span> ROW_GROUP_SIZE=100000</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Con <code>-lco SORT_BY_BBOX=YES</code> si abilita lo spatial ordering: i dati geografici vicini tra loro sono memorizzati in modo contiguo. Questo permette al software di leggere solo le parti rilevanti del file quando si effettua una query spaziale, evitando di scansionare l’intero dataset.</p>
+<p>Con <code>-lco ROW_GROUP_SIZE=100000</code> si specifica la dimensione del gruppo di righe: un file Parquet è suddiviso in <em>row group</em>, che sono unità di dati contigue. La dimensione dei <em>row group</em> influenza l’efficienza delle query. Se i <em>row group</em> sono troppo grandi, il software potrebbe dover leggere più dati del necessario. Se sono troppo piccoli, l’overhead di metadati può diventare significativo, rallentando l’accesso. Dimensione raccomandata: tra 50.000 e 200.000 righe, oppure 128MB - 256MB per <em>row group</em>.</p>
+<p>Con queste opzioni si ottiene un file di output ottimizzato per <em>query</em> rapide.</p>
 
 
 
@@ -686,7 +685,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><ul><li><a href="https://github.com/aborruso/aborruso.github.io/edit/main/til/uv_tips/index.qmd" class="toc-action"><i class="bi bi-github"></i>Modifica questa pagina</a></li><li><a href="https://github.com/aborruso/aborruso.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Segnala un problema</a></li></ul></div></div>
+    <div class="toc-actions"><ul><li><a href="https://github.com/aborruso/aborruso.github.io/edit/main/til/gdal-export-geoparquet/index.qmd" class="toc-action"><i class="bi bi-github"></i>Modifica questa pagina</a></li><li><a href="https://github.com/aborruso/aborruso.github.io/issues/new" class="toc-action"><i class="bi empty"></i>Segnala un problema</a></li></ul></div></div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
     <li class="nav-item compact">

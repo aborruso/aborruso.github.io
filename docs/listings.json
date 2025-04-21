@@ -1,20 +1,8 @@
 [
   {
-    "listing": "/blog.html",
-    "items": [
-      "/posts/accesso_archivio_nazionale_numeri_civici_e_strade_urbane/index.html",
-      "/posts/tutto-il-pnrr-in-500k/index.html",
-      "/posts/beni_immobili_pubblica_amministrazione/index.html",
-      "/posts/llm-cmd-suggerimenti-ai-a-riga-di-comando/index.html",
-      "/posts/leggere-interrogare-file-parquet/index.html",
-      "/posts/csv-ventitre-gigabyte-senza-affanno/index.html",
-      "/posts/accedere-google-ai-riga-di-comando/index.html",
-      "/posts/duckdb-intro-csv/index.html"
-    ]
-  },
-  {
     "listing": "/til.html",
     "items": [
+      "/til/gdal-export-geoparquet/index.html",
       "/til/uv_tips/index.html",
       "/til/html-pages-with-quarto/index.html",
       "/til/fzf_base/index.html",
@@ -31,6 +19,19 @@
       "/til/renderizzare-csv-quarto-observable/index.html",
       "/til/filtrare-file-elenco-file-esterno/index.html",
       "/til/un-sito-in-quarto/index.html"
+    ]
+  },
+  {
+    "listing": "/blog.html",
+    "items": [
+      "/posts/accesso_archivio_nazionale_numeri_civici_e_strade_urbane/index.html",
+      "/posts/tutto-il-pnrr-in-500k/index.html",
+      "/posts/beni_immobili_pubblica_amministrazione/index.html",
+      "/posts/llm-cmd-suggerimenti-ai-a-riga-di-comando/index.html",
+      "/posts/leggere-interrogare-file-parquet/index.html",
+      "/posts/csv-ventitre-gigabyte-senza-affanno/index.html",
+      "/posts/accedere-google-ai-riga-di-comando/index.html",
+      "/posts/duckdb-intro-csv/index.html"
     ]
   }
 ]
