@@ -1,0 +1,29 @@
+---
+title: "gdal: export in geoparquet"
+description: "Come ottimizzare la cosa"
+date: "2025-04-21"
+draft: false
+categories:
+  - gdal
+  - parquet
+---
+
+Con GDAL è possibile esportare i dati in [formato (Geo)Parquet](https://gdal.org/en/stable/drivers/vector/parquet.html), un formato ottimizzato per l'archiviazione e l'elaborazione di dati geospaziali. Questo formato è particolarmente utile per le applicazioni che richiedono prestazioni elevate e una gestione efficiente dei dati.
+
+Prendendo spunto dai [geoparquet-tools](https://github.com/cholmes/geoparquet-tools) di Chris Holmes, ho scoperto che è possibile replicarne alcune delle *feature* direttamente in GDAL:
+
+```bash
+ogr2ogr \
+  -f "parquet" \
+  output.parquet \
+  input.geojson \
+  -lco compression=zstd \
+  -lco SORT_BY_BBOX=YES \
+  -lco ROW_GROUP_SIZE=100000
+```
+
+Con `-lco SORT_BY_BBOX=YES` si abilita lo spatial ordering: i dati geografici vicini tra loro sono memorizzati in modo contiguo. Questo permette al software di leggere solo le parti rilevanti del file quando si effettua una query spaziale, evitando di scansionare l'intero dataset.
+
+Con `-lco ROW_GROUP_SIZE=100000` si specifica la dimensione del gruppo di righe: un file Parquet è suddiviso in *row group*, che sono unità di dati contigue. La dimensione dei *row group* influenza l'efficienza delle query. Se i *row group* sono troppo grandi, il software potrebbe dover leggere più dati del necessario. Se sono troppo piccoli, l'overhead di metadati può diventare significativo, rallentando l'accesso. Dimensione raccomandata: tra 50.000 e 200.000 righe, oppure 128MB - 256MB per *row group*.
+
+Con queste opzioni si ottiene un file di output ottimizzato per *query* rapide.
