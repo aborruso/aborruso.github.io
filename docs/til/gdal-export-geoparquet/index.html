@@ -245,7 +245,9 @@ background: #75aadb;
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">-lco</span> ROW_GROUP_SIZE=100000</span></code><button title="Copia negli appunti" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Con <code>-lco SORT_BY_BBOX=YES</code> si abilita lo spatial ordering: i dati geografici vicini tra loro sono memorizzati in modo contiguo. Questo permette al software di leggere solo le parti rilevanti del file quando si effettua una query spaziale, evitando di scansionare l’intero dataset.</p>
 <p>Con <code>-lco ROW_GROUP_SIZE=100000</code> si specifica la dimensione del gruppo di righe: un file Parquet è suddiviso in <em>row group</em>, che sono unità di dati contigue. La dimensione dei <em>row group</em> influenza l’efficienza delle query. Se i <em>row group</em> sono troppo grandi, il software potrebbe dover leggere più dati del necessario. Se sono troppo piccoli, l’overhead di metadati può diventare significativo, rallentando l’accesso. Dimensione raccomandata: tra 50.000 e 200.000 righe, oppure 128MB - 256MB per <em>row group</em>.</p>
+<p>Con <code>-lco compression=zstd</code> si abilita la compressione Zstandard, che offre un buon equilibrio tra velocità di compressione e rapporto di compressione. È particolarmente utile per i dati geospaziali, in quanto può ridurre significativamente le dimensioni del file senza compromettere le prestazioni.</p>
 <p>Con queste opzioni si ottiene un file di output ottimizzato per <em>query</em> rapide.</p>
+<p>Da leggere è il markdown sempre a cura di Chris Holmes: <a href="https://github.com/opengeospatial/geoparquet/blob/cholmes/distro-guide/format-specs/distributing-geoparquet.md">Best Practices for Distributing GeoParquet</a></p>
 
 
 
