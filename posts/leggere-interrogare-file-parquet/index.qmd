@@ -85,15 +85,9 @@ Questa caratteristica è molto evidente, soprattutto per tabelle molto grandi, c
 #| id: tbl-cicli
 #| tbl-cap: totale di finanziamento pubblico per ciclo di finanziamento
 
-import os
-
-# Ottieni la directory corrente del file
-current_dir = os.path.dirname(os.path.abspath(__file__)) if '__file__' in globals() else os.getcwd()
-parquet_file = os.path.join(current_dir, 'progetti_esteso_20231231.parquet')
-
-query= f"""
+query= """
   SELECT oc_descr_ciclo Ciclo, SUM(finanz_totale_pubblico) "Totale finanziamento pubblico (€)"
-  FROM '{parquet_file}'
+  FROM 'progetti_esteso_20231231.parquet'
   GROUP BY oc_descr_ciclo
   ORDER BY ciclo;
   """
@@ -234,16 +228,11 @@ Un modo comodissimo per farlo è usare la libreria `duckdb` e il suo metodo `que
 ```python
 # importa modulo duckdb
 import duckdb
-import os
-
-# ottieni il percorso del file parquet
-current_dir = os.path.dirname(os.path.abspath(__file__)) if '__file__' in globals() else os.getcwd()
-parquet_file = os.path.join(current_dir, 'progetti_esteso_20231231.parquet')
 
 # definisci la query
-query= f"""
+query= """
   SELECT oc_descr_ciclo Ciclo, SUM(finanz_totale_pubblico) "Totale finanziamento pubblico (€)"
-  FROM '{parquet_file}'
+  FROM 'progetti_esteso_20231231.parquet'
   GROUP BY oc_descr_ciclo
   ORDER BY ciclo;
   """
