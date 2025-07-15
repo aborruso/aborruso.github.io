@@ -19,6 +19,13 @@ jobs:
       # - name: setup r
       #   uses: r-lib/actions/setup-r@v2
 
+      - name: Setup locale it_IT.UTF-8
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y locales
+          sudo locale-gen it_IT.UTF-8
+          sudo update-locale LANG=it_IT.UTF-8
+
       - name: installa moduli python
         run: |-
           pip3 install nbformat
