@@ -32,6 +32,7 @@ jobs:
           pip3 install jupyter
           pip3 install pandas
           pip3 install altair
+          pip3 install tabulate
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
