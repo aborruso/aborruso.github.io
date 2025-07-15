@@ -87,7 +87,7 @@ Questa caratteristica è molto evidente, soprattutto per tabelle molto grandi, c
 
 query= """
   SELECT oc_descr_ciclo Ciclo, SUM(finanz_totale_pubblico) "Totale finanziamento pubblico (€)"
-  FROM 'progetti_esteso_20231231.parquet'
+  FROM './progetti_esteso_20231231.parquet'
   GROUP BY oc_descr_ciclo
   ORDER BY ciclo;
   """
@@ -184,7 +184,7 @@ Potrebbe essere diversa dalle precedenti, come quella **comodissima** per avere 
 Qui sotto la sintassi della *query* e un esempio di *output* in @fig-duckdb.
 
 ```sql
-SUMMARIZE select * from 'progetti_esteso_20231231.parquet';
+SUMMARIZE select * from './progetti_esteso_20231231.parquet';
 ```
 
 ![Esempio di *output* del comando `SUMMARIZE`](images/duckdb-summarize.png){fig-alt="Esempio di output del comando SUMMARIZE" #fig-duckdb .lightbox}
@@ -192,7 +192,7 @@ SUMMARIZE select * from 'progetti_esteso_20231231.parquet';
 È un comando di grande comodità, che si può usare ad esempio per sapere **quali** sono le **colonne** che hanno **meno del 10% di valori nulli**:
 
 ```sql
-SELECT * FROM (summarize select * from 'progetti_esteso_20231231.parquet')
+SELECT * FROM (summarize select * from './progetti_esteso_20231231.parquet')
 WHERE
 null_percentage <10;
 ```
@@ -202,7 +202,7 @@ Sono **86 colonne su circa 200** e si potrebbe scegliere di concentrarsi su ques
 E sempre da `SUMMARIZE` ci si può fare un'idea delle colonne più "datose", ovvero quelle con **meno valori distinti**, che sono spesso quelle più interessanti per fare analisi e visualizzazioni, perché consentono di definire categorie (le regioni, il settore, la natura, ecc.).
 
 ```sql
-SELECT * FROM (summarize select * from 'progetti_esteso_20231231.parquet')
+SELECT * FROM (summarize select * from './progetti_esteso_20231231.parquet')
 WHERE
 approx_unique <30;
 ```
@@ -232,7 +232,7 @@ import duckdb
 # definisci la query
 query= """
   SELECT oc_descr_ciclo Ciclo, SUM(finanz_totale_pubblico) "Totale finanziamento pubblico (€)"
-  FROM 'progetti_esteso_20231231.parquet'
+  FROM './progetti_esteso_20231231.parquet'
   GROUP BY oc_descr_ciclo
   ORDER BY ciclo;
   """
