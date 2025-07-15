@@ -6,3 +6,6 @@ draft: true
 lorem ipsum
 
 https://www1.finanze.gov.it/finanze/stat_8xMilleSerie/public/index.php?&req_classe=01
+
+
+https://www1.finanze.gov.it/finanze/stat_8xMilleSerie/public/report_d_csv.php?req_block_column=1&req_sub_tema=NO&req_anno=SERI&req_contrib=OTTOX&req_tema=01&req_classe=02&req_pag=1&req_media=no&req_tree=ia_18&req_screen=1001&req_mocode=A250&req_teme=yes&colonneCsv=1

@@ -33,6 +33,8 @@ jobs:
           pip3 install pandas
           pip3 install altair
           pip3 install tabulate
+          pip3 install duckdb
+          pip3 install humanize
 
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
