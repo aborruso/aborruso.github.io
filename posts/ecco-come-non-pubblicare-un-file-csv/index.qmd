@@ -1,0 +1,8 @@
+---
+title: "Ecco come non pubblicare un file CSV"
+draft: true
+---
+
+lorem ipsum
+
+https://www1.finanze.gov.it/finanze/stat_8xMilleSerie/public/index.php?&req_classe=01
