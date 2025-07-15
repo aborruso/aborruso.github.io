@@ -5,6 +5,7 @@ project:
     - "!tmp*qmd"
     - "!risorse/"
     - "!note-compilazione.md"
+    - "!.github/copilot-instructions.md"
   output-dir: docs
   resources:
     - "googlecd08604f4edafe6e.html"

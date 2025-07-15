@@ -1,7 +1,9 @@
 on:
   workflow_dispatch:
-#  push:
-#    branches: main
+  push:
+    branches: [main]
+    paths-ignore:
+      - '.github/copilot-instructions.md'
 
 name: Quarto Publish
 
